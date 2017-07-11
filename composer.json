@@ -16,7 +16,8 @@
         }
     ],
     "require": {
-        "microsoft/tolerant-php-parser": "dev-master"
+        "microsoft/tolerant-php-parser": "dev-master",
+        "twig/twig": "^2.4"
     },
     "require-dev": {
         "phpunit/phpunit": "^6.2"

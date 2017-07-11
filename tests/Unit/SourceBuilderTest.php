@@ -7,7 +7,7 @@ use Phpactor\CodeBuilder\SourceBuilder;
 use Phpactor\CodeBuilder\Domain\Generator;
 use Phpactor\CodeBuilder\Domain\Updater;
 use Phpactor\CodeBuilder\Domain\Prototype;
-use Phpactor\CodeBuilder\Domain\SourceCode;
+use Phpactor\CodeBuilder\Domain\Code;
 
 class SourceBuilderTest extends TestCase
 {
@@ -33,7 +33,7 @@ class SourceBuilderTest extends TestCase
      */
     public function testGenerate()
     {
-        $expectedCode = SourceCode::fromString('');
+        $expectedCode = Code::fromString('');
         $this->generator->generate($this->prototype->reveal())->willReturn($expectedCode);
         $code = $this->builder->generate($this->prototype->reveal());
 
@@ -45,8 +45,8 @@ class SourceBuilderTest extends TestCase
      */
     public function testUpdate()
     {
-        $sourceCode = SourceCode::fromString('');
-        $expectedCode = SourceCode::fromString('');
+        $sourceCode = Code::fromString('');
+        $expectedCode = Code::fromString('');
         $this->updater->apply($this->prototype->reveal(), $sourceCode)->willReturn($expectedCode);
         $code = $this->builder->apply($this->prototype->reveal(), $sourceCode);
 

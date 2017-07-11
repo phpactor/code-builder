@@ -5,7 +5,7 @@ namespace Phpactor\CodeBuilder;
 use Phpactor\CodeBuilder\Domain\Prototype;
 use Phpactor\CodeBuilder\Domain\Generator;
 use Phpactor\CodeBuilder\Domain\Updater;
-use Phpactor\CodeBuilder\Domain\SourceCode;
+use Phpactor\CodeBuilder\Domain\Code;
 
 class SourceBuilder
 {
@@ -33,7 +33,7 @@ class SourceBuilder
         return $this->generator->generate($prototype);
     }
 
-    public function apply(Prototype\Prototype $prototype, SourceCode $code)
+    public function apply(Prototype\Prototype $prototype, Code $code)
     {
         return $this->updater->apply($prototype, $code);
     }

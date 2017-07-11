@@ -2,7 +2,7 @@
 
 namespace Phpactor\CodeBuilder\Domain;
 
-class SourceCode
+class Code
 {
     private $code;
 
