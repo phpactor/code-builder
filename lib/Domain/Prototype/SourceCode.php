@@ -15,26 +15,19 @@ class SourceCode extends Prototype
     private $useStatements;
 
     /**
-     * @var Properties
+     * @var Classes
      */
-    private $properties;
-
-    /**
-     * @var Methods
-     */
-    private $methods;
+    private $classes;
 
     public function __construct(
         NamespaceName $namespace = null,
         UseStatements $useStatements = null,
-        Properties $properties = null,
-        Methods $methods = null
+        Classes $classes = null
     )
     {
         $this->namespace = $namespace ?: NamespaceName::fromString('');
         $this->useStatements = $useStatements ?: new UseStatements();
-        $this->properties = $properties ?: new Properties();
-        $this->methods = $methods ?: new Methods;
+        $this->classes = $classes ?: new Classes();
     }
 
     public function namespace(): NamespaceName
@@ -47,14 +40,8 @@ class SourceCode extends Prototype
         return $this->useStatements;
     }
 
-    public function properties(): Properties
+    public function classes(): Classes
     {
-        return $this->properties;
-    }
-
-    public function methods(): Methods
-    {
-        return $this->methods;
+        return $this->classes;
     }
 }
-
