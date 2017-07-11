@@ -25,16 +25,16 @@ class SourceCode extends Prototype
     private $methods;
 
     public function __construct(
-        NamespaceName $namespace,
-        UseStatements $useStatements,
-        Properties $properties,
-        Methods $methods
+        NamespaceName $namespace = null,
+        UseStatements $useStatements = null,
+        Properties $properties = null,
+        Methods $methods = null
     )
     {
-        $this->namespace = $namespace;
-        $this->useStatements = $useStatements;
-        $this->properties = $properties;
-        $this->methods = $methods;
+        $this->namespace = $namespace ?: NamespaceName::fromString('');
+        $this->useStatements = $useStatements ?: new UseStatements();
+        $this->properties = $properties ?: new Properties();
+        $this->methods = $methods ?: new Methods;
     }
 
     public function namespace(): NamespaceName
