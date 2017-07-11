@@ -6,18 +6,18 @@ use Phpactor\CodeBuilder\Domain\Generator;
 use Phpactor\CodeBuilder\Domain\Code;
 use Phpactor\CodeBuilder\Domain\Prototype\Prototype;
 
-class TwigGenerator implements Generator
+final class TwigGenerator implements Generator
 {
     private $twig;
     private $templateNameResolver;
 
     public function __construct(
         \Twig_Environment $twig,
-        TemplateNameResolver $templateNameResolver
+        TemplateNameResolver $templateNameResolver = null
     )
     {
         $this->twig = $twig;
-        $this->templateNameResolver = $templateNameResolver ?: new ClassShortNameTemplateResolver();
+        $this->templateNameResolver = $templateNameResolver ?: new ClassShortNameResolver();
     }
 
     public function generate(Prototype $prototype): Code

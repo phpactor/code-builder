@@ -36,4 +36,12 @@ class TwigGeneratorTest extends TestCase
         $code = $this->generator->generate($this->prototype->reveal());
         $this->assertEquals(Code::fromString('hello'), $code);
     }
+
+    /**
+     * @testdox It can be instantiated without the name resolver.
+     */
+    public function testNoResolver()
+    {
+        new TwigGenerator($this->twig);
+    }
 }
