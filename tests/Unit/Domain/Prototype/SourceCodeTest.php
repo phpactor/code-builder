@@ -21,8 +21,8 @@ class SourceCodeTest extends TestCase
     public function testAccessors()
     {
         $namespace = NamespaceName::fromString('Ducks');
-        $useStatements = UseStatements::create();
-        $classes = Classes::create();
+        $useStatements = UseStatements::empty();
+        $classes = Classes::empty();
 
 
         $code = new SourceCode($namespace, $useStatements, $classes);

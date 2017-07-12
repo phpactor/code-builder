@@ -26,8 +26,8 @@ class SourceCode extends Prototype
     )
     {
         $this->namespace = $namespace ?: NamespaceName::fromString('');
-        $this->useStatements = $useStatements ?: new UseStatements();
-        $this->classes = $classes ?: new Classes();
+        $this->useStatements = $useStatements ?: UseStatements::empty();
+        $this->classes = $classes ?: Classes::empty();
     }
 
     public function namespace(): NamespaceName

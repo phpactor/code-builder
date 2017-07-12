@@ -15,7 +15,7 @@ class ClassShortNameResolverTest extends TestCase
     {
         $resolver = new ClassShortNameResolver();
         $this->assertEquals(
-            'TestPrototype',
+            'TestPrototype.php.twig',
             $resolver->resolveName(new TestPrototype())
         );
     }

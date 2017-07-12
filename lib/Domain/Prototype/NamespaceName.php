@@ -2,22 +2,10 @@
 
 namespace Phpactor\CodeBuilder\Domain\Prototype;
 
-class NamespaceName
+final class NamespaceName extends QualifiedName
 {
-    private $name;
-
-    private function __construct(string $name)
+    public static function root(): NamespaceName
     {
-        $this->name = $name;
-    }
-
-    public static function fromString(string $name)
-    {
-        return new self($name);
-    }
-
-    public function __toString()
-    {
-        return $this->name;
+        return new self('');
     }
 }

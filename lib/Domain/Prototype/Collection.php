@@ -2,13 +2,18 @@
 
 namespace Phpactor\CodeBuilder\Domain\Prototype;
 
-class Collection implements \IteratorAggregate
+class Collection implements \IteratorAggregate, \Countable
 {
     private $items = [];
 
-    public static function create()
+    protected function __construct(array $items)
     {
-        return new static();
+        $this->items = $items;
+    }
+
+    public static function empty()
+    {
+        return new static([]);
     }
 
     /**
@@ -18,5 +23,12 @@ class Collection implements \IteratorAggregate
     {
         return new \ArrayIterator($this->items);
     }
-}
 
+    /**
+     * {@inheritDoc}
+     */
+    public function count()
+    {
+        return count($this->items);
+    }
+}

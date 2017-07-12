@@ -24,8 +24,9 @@ final class TwigGenerator implements Generator
     {
         $templateName = $this->templateNameResolver->resolveName($prototype);
 
-        return Code::fromString($this->twig->render($templateName, [
-            'prototype' => $prototype
-        ]));
+        return Code::fromString(rtrim($this->twig->render($templateName, [
+            'prototype' => $prototype,
+            'generator' => $this,
+        ]), PHP_EOL));
     }
 }

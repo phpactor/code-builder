@@ -8,6 +8,6 @@ final class ClassShortNameResolver implements TemplateNameResolver
 {
     public function resolveName(Prototype $prototype): string
     {
-        return basename(str_replace('\\', '/', get_class($prototype)));
+        return basename(str_replace('\\', '/', get_class($prototype))) . '.php.twig';
     }
 }
