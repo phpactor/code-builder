@@ -10,6 +10,7 @@ use Phpactor\CodeBuilder\Domain\Builder\ClassBuilder;
 use Phpactor\CodeBuilder\Domain\Prototype\Visibility;
 use Phpactor\CodeBuilder\Domain\Prototype\DefaultValue;
 use Phpactor\CodeBuilder\Domain\Prototype\Property;
+use Phpactor\CodeBuilder\Domain\Prototype\Parameter;
 
 class ParameterBuilder
 {
@@ -55,10 +56,10 @@ class ParameterBuilder
 
     public function build()
     {
-        return new Property(
+        return new Parameter(
             $this->name,
-            $this->defaultValue,
-            $this->type
+            $this->type,
+            $this->defaultValue
         );
     }
 

@@ -36,6 +36,11 @@ class MethodBuilder
      */
     private $returnType;
 
+    /**
+     * @var ParameterBuilder[]
+     */
+    private $parameters = [];
+
     public function __construct(ClassBuilder $parent, string $name)
     {
         $this->parent = $parent;
@@ -68,7 +73,9 @@ class MethodBuilder
         return new Method(
             $this->name,
             $this->visibility,
-            Parameters::empty(),
+            Parameters::fromParameters(array_map(function (ParameterBuilder $builder) {
+                return $builder->build();
+            }, $this->parameters)),
             $this->returnType
         );
     }

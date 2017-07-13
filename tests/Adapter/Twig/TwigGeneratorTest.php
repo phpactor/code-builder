@@ -8,6 +8,7 @@ use Twig\Loader\FilesystemLoader;
 use Phpactor\CodeBuilder\Tests\Adapter\GeneratorTestCase;
 use Phpactor\CodeBuilder\Domain\Generator;
 use Phpactor\CodeBuilder\Adapter\Twig\TwigGenerator;
+use Phpactor\CodeBuilder\Adapter\Twig\TwigExtension;
 
 
 class TwigGeneratorTest extends GeneratorTestCase
@@ -19,11 +20,20 @@ class TwigGeneratorTest extends GeneratorTestCase
         $this->twig = new Environment(new FilesystemLoader(__DIR__ . '/../../../templates'), [
             'strict_variables' => true,
         ]);
+        $this->twig->addExtension(new TwigExtension($this->generator(), '    '));
     }
 
     protected function generator(): Generator
     {
-        return new TwigGenerator($this->twig);
+        static $generator;
+
+        if ($generator) {
+            return $generator;
+        }
+
+        $generator = new TwigGenerator($this->twig);
+
+        return $generator;
     }
 }
 

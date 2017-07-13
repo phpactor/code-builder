@@ -1,15 +1,15 @@
 <?php
-
 {% if prototype.namespace|length %}
+
 namespace {{ prototype.namespace }};
 {% endif %}
 {% if prototype.useStatements|length %}
+
 {% for qualifiedName in prototype.useStatements %}
 use {{ qualifiedName }};
 {% endfor %}
-
 {% endif %}
 {% for class in prototype.classes %}
-{{ generator.generate(class)|raw }}
 
+{{ generator.generate(class)|raw }}
 {% endfor %}

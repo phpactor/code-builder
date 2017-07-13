@@ -225,7 +225,13 @@ class Rabbits extends Leopridae
      */
     private $force = 5;
 
+    public $guile;
+
     public function jump(Height $how = 'high')
+    {
+    }
+
+    public function bark(int $volume)
     {
     }
 }
@@ -241,10 +247,16 @@ EOT
                     ->type('int')
                     ->defaultValue(5)
                 ->end()
+                ->property('guile')->end()
                 ->method('jump')
                     ->parameter('how')
                         ->defaultValue('high')
                         ->type('Height')
+                    ->end()
+                ->end()
+                ->method('bark')
+                    ->parameter('volume')
+                        ->type('int')
                     ->end()
                 ->end()
             ->end()

@@ -5,11 +5,20 @@ class {{ prototype.name }}{% if prototype.extendsClass.notNone %} extends {{ pro
 
 {
 {% for property in prototype.properties %}
-    {{ generator.generate(property)|raw }}
+{{ generator.generate(property)|indent(1)|raw }}
+{% if not loop.last %}
+
+{% endif %}
 {% endfor %}
 {% for method in prototype.methods %}
-    {{ generator.generate(method)|raw }}
-    {
-    }
+{% if loop.first and prototype.properties|length %}
+
+{% endif %}
+{{ generator.generate(method)|indent(1)|raw }}
+{{ '{'|indent(1) }}
+{{ '}'|indent(1) }}
+{% if not loop.last %}
+
+{% endif %}
 {% endfor %}
 }
