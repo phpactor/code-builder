@@ -2,7 +2,7 @@
 
 namespace Phpactor\CodeBuilder\Domain\Prototype;
 
-final class ClassParent
+final class ExtendsClass extends Prototype
 {
     private $class;
 
@@ -24,5 +24,10 @@ final class ClassParent
     public static function none()
     {
         return new self(Type::none());
+    }
+
+    public function notNone(): bool
+    {
+        return $this->class->notNone();
     }
 }

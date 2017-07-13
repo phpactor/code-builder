@@ -21,7 +21,9 @@ use Phpactor\CodeBuilder\Domain\Prototype\SourceCode;
 use Phpactor\CodeBuilder\Domain\Prototype\UseStatements;
 use Phpactor\CodeBuilder\Domain\Prototype\Visibility;
 use Phpactor\CodeBuilder\Domain\Prototype\Type;
-use Phpactor\CodeBuilder\Domain\Prototype\ClassParent;
+use Phpactor\CodeBuilder\Domain\Prototype\ImplementsInterfaces;
+use Phpactor\CodeBuilder\Domain\Prototype\ExtendsClass;
+use Phpactor\CodeBuilder\Domain\Prototype\SourceText;
 
 abstract class GeneratorTestCase extends TestCase
 {
@@ -152,11 +154,29 @@ EOT
                     'Kitten',
                     Properties::empty(),
                     Methods::empty(),
-                    ClassParent::fromString('Cat')
+                    ExtendsClass::fromString('Cat')
                 ),
                 <<<'EOT'
 class Kitten extends Cat
 {
+}
+EOT
+            ],
+            'Generates a class with interfaces' => [
+                new ClassPrototype(
+                    'Kitten',
+                    Properties::empty(),
+                    Methods::empty(),
+                    ExtendsClass::none(),
+                    ImplementsInterfaces::fromTypes([
+                        Type::fromString('Feline'),
+                        Type::fromString('Infant')
+                    ])
+                ),
+                <<<'EOT'
+class Kitten implements Feline, Infant
+{
+}
 EOT
             ],
         ];

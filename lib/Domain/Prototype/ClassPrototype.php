@@ -3,9 +3,22 @@
 namespace Phpactor\CodeBuilder\Domain\Prototype;
 
 use Phpactor\CodeBuilder\Domain\Prototype\Methods;
+use Phpactor\CodeBuilder\Domain\Prototype\ExtendsClass;
+use Phpactor\CodeBuilder\Domain\Prototype\ImplementsInterfaces;
 
 final class ClassPrototype extends Prototype
 {
+
+    /**
+     * @var ExtendsClass
+     */
+    private $extendsClass;
+
+    /**
+     * @var ImplementsInterfaces
+     */
+    private $implementsInterfaces;
+
     /**
      * @var string
      */
@@ -21,17 +34,24 @@ final class ClassPrototype extends Prototype
      */
     private $methods;
 
+    /**
+     * @var ExtendsClasss
+     */
+    private $extendsclasss;
+
     public function __construct(
         string $name,
         Properties $properties = null,
         Methods $methods = null,
-        ClassParent $classParent = null
+        ExtendsClass $extendsClass = null,
+        ImplementsInterfaces $implementsInterfaces = null
     )
     {
         $this->name = $name;
         $this->properties = $properties ?: Properties::empty();
         $this->methods = $methods ?: Methods::empty();
-        $this->parentClass = $classParent ?: ClassParent::none();
+        $this->extendsClass = $extendsClass ?: ExtendsClass::none();
+        $this->implementsInterfaces = $implementsInterfaces ?: ImplementsInterfaces::empty();
     }
 
     public function name()
@@ -48,5 +68,14 @@ final class ClassPrototype extends Prototype
     {
         return $this->methods;
     }
-}
 
+    public function extendsClass(): ExtendsClass
+    {
+        return $this->extendsClass;
+    }
+
+    public function implementsInterfaces(): ImplementsInterfaces
+    {
+        return $this->implementsInterfaces;
+    }
+}

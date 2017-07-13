@@ -1,0 +1,7 @@
+{{ prototype.visibility }} function {{ prototype.name}}({% spaceless %}
+{% for parameter in prototype.parameters %}
+{% if parameter.type.notNone %}{{ parameter.type }} {% endif %}
+{% if true %}${{ parameter.name }}{% endif %}
+{% if parameter.defaultValue.notNone %} = {{ parameter.defaultValue.export }}{% endif %}
+{% if not loop.last %}, {% endif %}
+{% endfor %}{% endspaceless %})

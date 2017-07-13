@@ -2,6 +2,8 @@
 
 namespace Phpactor\CodeBuilder\Domain\Prototype;
 
+use Phpactor\CodeBuilder\Domain\Prototype\Type;
+
 final class Type
 {
     /**
@@ -19,12 +21,12 @@ final class Type
         $this->type = $type;
     }
 
-    public static function fromString(string $string)
+    public static function fromString(string $string): Type
     {
         return new self($string);
     }
 
-    public static function none()
+    public static function none(): Type
     {
         $new = new self();
         $new->none = true;
@@ -42,4 +44,3 @@ final class Type
         return false === $this->none;
     }
 }
-
