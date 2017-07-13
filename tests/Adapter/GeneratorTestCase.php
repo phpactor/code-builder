@@ -179,6 +179,20 @@ class Kitten implements Feline, Infant
 }
 EOT
             ],
+            'Generates a property with a comment' => [
+                new Property(
+                    'planes',
+                    Visibility::public(),
+                    DefaultValue::none(),
+                    Type::fromString('PlaneCollection')
+                ),
+                <<<'EOT'
+/**
+ * @var PlaneCollection
+ */
+public $planes;
+EOT
+            ],
         ];
     }
 }

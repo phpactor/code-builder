@@ -3,21 +3,41 @@
 namespace Phpactor\CodeBuilder\Domain\Prototype;
 
 use Phpactor\CodeBuilder\Domain\Prototype\DefaultValue;
+use Phpactor\CodeBuilder\Domain\Prototype\Type;
 
 final class Property extends Prototype
 {
+    /**
+     * @var string
+     */
     private $name;
+
+    /**
+     * @var Visibility
+     */
     private $visibility;
+
+    /**
+     * @var DefaultValue
+     */
+    private $defaultValue;
+
+    /**
+     * @var Type
+     */
+    private $type;
 
     public function __construct(
         string $name,
         Visibility $visibility = null,
-        DefaultValue $defaultValue = null
+        DefaultValue $defaultValue = null,
+        Type $type = null
     )
     {
         $this->name = $name;
         $this->visibility = $visibility ?: Visibility::public();
         $this->defaultValue = $defaultValue ?: DefaultValue::none();
+        $this->type = $type ?: Type::none();
     }
 
     public function name(): string
@@ -28,5 +48,15 @@ final class Property extends Prototype
     public function visibility(): Visibility
     {
         return $this->visibility;
+    }
+
+    public function defaultValue(): DefaultValue
+    {
+        return $this->defaultValue;
+    }
+
+    public function type(): Type
+    {
+        return $this->type;
     }
 }
