@@ -4,4 +4,4 @@
 {% if true %}${{ parameter.name }}{% endif %}
 {% if parameter.defaultValue.notNone %} = {{ parameter.defaultValue.export }}{% endif %}
 {% if not loop.last %}, {% endif %}
-{% endfor %}{% endspaceless %})
+{% endfor %}{% endspaceless %}){% if prototype.returnType.notNone %}: {{ prototype.returnType }}{% endif %}

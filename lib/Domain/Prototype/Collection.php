@@ -25,6 +25,16 @@ class Collection implements \IteratorAggregate, \Countable
     }
 
     /**
+     * Return first
+     *
+     * @return static
+     */
+    public function first()
+    {
+        return reset($this->items);
+    }
+
+    /**
      * {@inheritDoc}
      */
     public function count()

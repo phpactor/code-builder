@@ -24,6 +24,7 @@ use Phpactor\CodeBuilder\Domain\Prototype\Type;
 use Phpactor\CodeBuilder\Domain\Prototype\ImplementsInterfaces;
 use Phpactor\CodeBuilder\Domain\Prototype\ExtendsClass;
 use Phpactor\CodeBuilder\Domain\Prototype\SourceText;
+use Phpactor\CodeBuilder\Domain\Prototype\ReturnType;
 
 abstract class GeneratorTestCase extends TestCase
 {
@@ -147,6 +148,17 @@ EOT
                 ])),
                 <<<'EOT'
 private function hello($one, string $two, $three = 42)
+EOT
+            ],
+            'Generates method return type' => [
+                new Method(
+                    'hello',
+                    Visibility::private(),
+                    Parameters::empty(),
+                    ReturnType::fromString('Hello')
+                ),
+                <<<'EOT'
+private function hello(): Hello
 EOT
             ],
             'Generates a class with a parent' => [

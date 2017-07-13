@@ -19,15 +19,22 @@ final class Method extends Prototype
      */
     private $parameters;
 
+    /**
+     * @var ReturnType
+     */
+    private $returnType;
+
     public function __construct(
         string $name,
         Visibility $visibility = null,
-        Parameters $parameters = null
+        Parameters $parameters = null,
+        ReturnType $returnType = null
     )
     {
         $this->name = $name;
         $this->visibility = $visibility ?: Visibility::public();
         $this->parameters = $parameters ?: Parameters::empty();
+        $this->returnType = $returnType ?: ReturnType::none();
     }
 
     public function name(): string
@@ -44,6 +51,9 @@ final class Method extends Prototype
     {
         return $this->parameters;
     }
+
+    public function returnType(): ReturnType
+    {
+        return $this->returnType;
+    }
 }
-
-
