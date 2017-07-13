@@ -25,6 +25,7 @@ use Phpactor\CodeBuilder\Domain\Prototype\ImplementsInterfaces;
 use Phpactor\CodeBuilder\Domain\Prototype\ExtendsClass;
 use Phpactor\CodeBuilder\Domain\Prototype\SourceText;
 use Phpactor\CodeBuilder\Domain\Prototype\ReturnType;
+use Phpactor\CodeBuilder\Domain\Builder\SourceCodeBuilder;
 
 abstract class GeneratorTestCase extends TestCase
 {
@@ -206,5 +207,51 @@ public $planes;
 EOT
             ],
         ];
+    }
+
+    public function testBuilder()
+    {
+        $expected = <<<'EOT'
+<?php
+
+namespace Animals;
+
+use Measurements\Height;
+
+class Rabbits extends Leopridae
+{
+    /**
+     * @var int
+     */
+    private $force = 5;
+
+    public function jump(Height $how = 'high')
+    {
+    }
+}
+EOT
+        ;
+        $source = $builder = SourceCodeBuilder::create()
+            ->namespace('Animals')
+            ->use('Measurements\\Height')
+            ->class('Rabbits')
+                ->extends('Leopridae')
+                ->property('force')
+                    ->visibility('private')
+                    ->type('int')
+                    ->defaultValue(5)
+                ->end()
+                ->method('jump')
+                    ->parameter('how')
+                        ->defaultValue('high')
+                        ->type('Height')
+                    ->end()
+                ->end()
+            ->end()
+            ->build();
+
+        $code = $this->generator()->generate($source);
+
+        $this->assertEquals($expected, (string) $code);
     }
 }

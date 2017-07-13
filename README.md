@@ -6,26 +6,55 @@ Class Builder
 Library for generating or applying changes to code:
 
 ```php
-$builder = $sourceBuilder->prototypeBuilder();
-$builder->namespace('Animals');
-$builder->use('Measurements\\Height');
-$builder->class('Rabbits')
-    ->methods()
+$builder = SourceBuilder::create()
+    ->namespace('Animals');
+    ->use('Measurements\\Height');
+    ->class('Rabbits')
+        ->extends('Leopridae')
+        ->property('force')
+            ->visibility('private')
+            ->type('int')
+            ->defaultValue(5)
+        ->end()
         ->method('jump')
-            ->position(0) // prepend
             ->parameters()
-                ->parameter('how)
+                ->parameter('how')
                     ->default('high')
-                    ->type('Measurements\\Height')
+                    ->type('Height')
                 ->end();
+            ->end()
+        ->end()
+    ->end()
+    ->build();
 
-$prototype = $builder->build();
+$sourcePrototype = $builder->build();
 
 // apply prototype to existing source code (idempotent)
-$sourceBuilder->apply($prototype, file_get_contents('SomeFile.php'));
+$sourceBuilder->apply($source, file_get_contents('SomeFile.php'));
 
 // generate source
-$sourceBuilder->generate($prototype);
+$code = $sourceBuilder->generate($prototype);
+
+echo (string) $code;
 ```
 
+Yields:
 
+```
+<?php
+
+namespace Animals;
+
+use Measurements\Height;
+
+class Rabbits extends Leopridae
+{
+    /**
+     * @var int
+     */
+    private $force = 5;
+
+    public function jump(Height $how = 'high')
+    {
+    }
+}
