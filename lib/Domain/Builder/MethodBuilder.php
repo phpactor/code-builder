@@ -2,16 +2,17 @@
 
 namespace Phpactor\CodeBuilder\Domain\Builder;
 
-use Phpactor\CodeBuilder\Domain\ProtoreturnType\ClassProtoreturnType;
-use Phpactor\CodeBuilder\Domain\ProtoreturnType\ExtendsClass;
-use Phpactor\CodeBuilder\Domain\ProtoreturnType\Properties;
-use Phpactor\CodeBuilder\Domain\ProtoreturnType\Type;
+use Phpactor\CodeBuilder\Domain\Prototype\ClassProtoreturnType;
+use Phpactor\CodeBuilder\Domain\Prototype\ExtendsClass;
+use Phpactor\CodeBuilder\Domain\Prototype\Properties;
+use Phpactor\CodeBuilder\Domain\Prototype\Type;
 use Phpactor\CodeBuilder\Domain\Builder\ClassBuilder;
-use Phpactor\CodeBuilder\Domain\ProtoreturnType\Visibility;
-use Phpactor\CodeBuilder\Domain\ProtoreturnType\DefaultValue;
+use Phpactor\CodeBuilder\Domain\Prototype\Visibility;
+use Phpactor\CodeBuilder\Domain\Prototype\DefaultValue;
 use Phpactor\CodeBuilder\Domain\Builder\MethodBuilder;
 use Phpactor\CodeBuilder\Domain\Prototype\Parameters;
 use Phpactor\CodeBuilder\Domain\Prototype\Method;
+use Phpactor\CodeBuilder\Domain\Prototype\ReturnType;
 
 class MethodBuilder
 {
@@ -50,9 +51,16 @@ class MethodBuilder
 
     public function returnType(string $returnType): MethodBuilder
     {
-        $this->returnType = Type::fromString($returnType);
+        $this->returnType = ReturnType::fromString($returnType);
 
         return $this;
+    }
+
+    public function parameter(string $name): ParameterBuilder
+    {
+        $this->parameters[] = $builder = new ParameterBuilder($this, $name);
+
+        return $builder;
     }
 
     public function build()

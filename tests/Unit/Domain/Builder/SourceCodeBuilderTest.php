@@ -45,6 +45,35 @@ class SourceCodeBuilderTest extends TestCase
         $this->assertEquals('method1', $class->methods()->first()->name());
     }
 
+    public function testPropertyBuilder()
+    {
+        $builder = $this->builder();
+
+        $property = $this->builder()->class('Dog')->property('one')
+            ->type('string')
+            ->defaultValue(null)
+            ->build();
+
+        $this->assertEquals('string', $property->type()->__toString());
+        $this->assertEquals('null', $property->defaultValue()->export());
+    }
+
+    public function testMethodBuilder()
+    {
+        $builder = $this->builder();
+
+        $method = $this->builder()->class('Dog')->method('one')
+            ->returnType('string')
+            ->visibility('private')
+            ->parameter('one')
+                ->type('One')
+                ->defaultValue(1)
+            ->end()
+            ->build();
+
+        $this->assertEquals('string', $method->returnType()->__toString());
+    }
+
     private function builder(): SourceCodeBuilder
     {
         return SourceCodeBuilder::create();
