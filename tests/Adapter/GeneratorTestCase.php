@@ -258,7 +258,11 @@ namespace Animals;
 
 use Measurements\Height;
 
-class Rabbits extends Leopridae
+interface Animal
+{
+}
+
+class Rabbits extends Leopridae implements Animal
 {
     /**
      * @var int
@@ -282,6 +286,7 @@ EOT
             ->use('Measurements\\Height')
             ->class('Rabbits')
                 ->extends('Leopridae')
+                ->implements('Animal')
                 ->property('force')
                     ->visibility('private')
                     ->type('int')
@@ -299,6 +304,8 @@ EOT
                         ->type('int')
                     ->end()
                 ->end()
+            ->end()
+            ->interface('Animal')
             ->end()
             ->build();
 

@@ -52,6 +52,13 @@ class SourceCodeBuilder
         return $builder;
     }
 
+    public function interface(string $name): InterfaceBuilder
+    {
+        $this->classes[] = $builder = new ClassBuilder($this, $name);
+
+        return $builder;
+    }
+
     public function build(): SourceCode
     {
         return new SourceCode(
