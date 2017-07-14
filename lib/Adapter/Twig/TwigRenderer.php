@@ -6,21 +6,23 @@ use Phpactor\CodeBuilder\Domain\Generator;
 use Phpactor\CodeBuilder\Domain\Code;
 use Phpactor\CodeBuilder\Domain\Prototype\Prototype;
 use Phpactor\CodeBuilder\Domain\Renderer;
+use Twig\Environment;
+use Twig\Loader\FilesystemLoader;
+use Phpactor\CodeBuilder\Adapter\Twig\TwigExtension;
 
-final class TwigGenerator implements Renderer
+final class TwigRenderer implements Renderer
 {
     private $twig;
     private $templateNameResolver;
 
     public function __construct(
-        \Twig_Environment $twig,
+        Environment $twig = null,
         TemplateNameResolver $templateNameResolver = null
     )
     {
-        $this->twig = $twig;
+        $this->twig = $twig ?: $this->createTwig();
         $this->templateNameResolver = $templateNameResolver ?: new ClassShortNameResolver();
     }
-
     public function render(Prototype $prototype): Code
     {
         $templateName = $this->templateNameResolver->resolveName($prototype);
@@ -29,5 +31,15 @@ final class TwigGenerator implements Renderer
             'prototype' => $prototype,
             'generator' => $this,
         ]), PHP_EOL));
+    }
+
+    private function createTwig()
+    {
+        $twig = new Environment(new FilesystemLoader(__DIR__ . '/../../../templates'), [
+            'strict_variables' => true,
+        ]);
+        $twig->addExtension(new TwigExtension($this, '    '));
+
+        return $twig;
     }
 }

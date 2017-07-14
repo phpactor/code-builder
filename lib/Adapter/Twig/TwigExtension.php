@@ -4,6 +4,7 @@ namespace Phpactor\CodeBuilder\Adapter\Twig;
 
 use Twig\TwigFilter;
 use Twig\Extension\AbstractExtension;
+use Phpactor\CodeBuilder\Adapter\Twig\TwigRenderer;
 
 class TwigExtension extends AbstractExtension
 {
@@ -17,7 +18,7 @@ class TwigExtension extends AbstractExtension
      */
     private $indentation;
 
-    public function __construct(TwigGenerator $generator, string $indentation = '    ')
+    public function __construct(TwigRenderer $generator, string $indentation = '    ')
     {
         $this->generator = $generator;
         $this->indentation = $indentation;
