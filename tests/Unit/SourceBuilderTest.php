@@ -4,7 +4,7 @@ namespace Phpactor\CodeBuilder\Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
 use Phpactor\CodeBuilder\SourceBuilder;
-use Phpactor\CodeBuilder\Domain\Generator;
+use Phpactor\CodeBuilder\Domain\Renderer;
 use Phpactor\CodeBuilder\Domain\Updater;
 use Phpactor\CodeBuilder\Domain\Prototype;
 use Phpactor\CodeBuilder\Domain\Code;
@@ -19,7 +19,7 @@ class SourceBuilderTest extends TestCase
 
     public function setUp()
     {
-        $this->generator = $this->prophesize(Generator::class);
+        $this->generator = $this->prophesize(Renderer::class);
         $this->updater = $this->prophesize(Updater::class);
         $this->builder = new SourceBuilder(
             $this->generator->reveal(),
@@ -34,8 +34,8 @@ class SourceBuilderTest extends TestCase
     public function testGenerate()
     {
         $expectedCode = Code::fromString('');
-        $this->generator->generate($this->prototype->reveal())->willReturn($expectedCode);
-        $code = $this->builder->generate($this->prototype->reveal());
+        $this->generator->render($this->prototype->reveal())->willReturn($expectedCode);
+        $code = $this->builder->render($this->prototype->reveal());
 
         $this->assertSame($expectedCode, $code);
     }

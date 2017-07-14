@@ -5,8 +5,9 @@ namespace Phpactor\CodeBuilder\Adapter\Twig;
 use Phpactor\CodeBuilder\Domain\Generator;
 use Phpactor\CodeBuilder\Domain\Code;
 use Phpactor\CodeBuilder\Domain\Prototype\Prototype;
+use Phpactor\CodeBuilder\Domain\Renderer;
 
-final class TwigGenerator implements Generator
+final class TwigGenerator implements Renderer
 {
     private $twig;
     private $templateNameResolver;
@@ -20,7 +21,7 @@ final class TwigGenerator implements Generator
         $this->templateNameResolver = $templateNameResolver ?: new ClassShortNameResolver();
     }
 
-    public function generate(Prototype $prototype): Code
+    public function render(Prototype $prototype): Code
     {
         $templateName = $this->templateNameResolver->resolveName($prototype);
 

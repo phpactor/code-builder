@@ -4,7 +4,7 @@ namespace Phpactor\CodeBuilder\Tests\Adapter;
 
 use PHPUnit\Framework\TestCase;
 use Phpactor\CodeBuilder\Domain\Code;
-use Phpactor\CodeBuilder\Domain\Generator;
+use Phpactor\CodeBuilder\Domain\Renderer;
 use Phpactor\CodeBuilder\Domain\Prototype\ClassPrototype;
 use Phpactor\CodeBuilder\Domain\Prototype\Classes;
 use Phpactor\CodeBuilder\Domain\Prototype\DefaultValue;
@@ -29,25 +29,25 @@ use Phpactor\CodeBuilder\Domain\Builder\SourceCodeBuilder;
 
 abstract class GeneratorTestCase extends TestCase
 {
-    abstract protected function generator(): Generator;
+    abstract protected function renderer(): Renderer;
     /**
-     * @testdox It should use twig to generate a template
-     * @dataProvider provideGenerate
+     * @testdox It should use twig to render a template
+     * @dataProvider provideRender
      */
-    public function testGenerate(Prototype $prototype, string $expectedCode)
+    public function testRender(Prototype $prototype, string $expectedCode)
     {
-        $code = $this->generator()->generate($prototype);
+        $code = $this->renderer()->render($prototype);
         $this->assertEquals(rtrim(Code::fromString($expectedCode), PHP_EOL), rtrim($code, PHP_EOL));
     }
 
-    public function provideGenerate()
+    public function provideRender()
     {
         return [
-            'Generates an empty PHP file' => [
+            'Renders an empty PHP file' => [
                 new SourceCode(),
                 '<?php',
             ],
-            'Generates a PHP file with a namespace' => [
+            'Renders a PHP file with a namespace' => [
                 new SourceCode(
                     NamespaceName::fromString('Acme')
                 ),
@@ -57,7 +57,7 @@ abstract class GeneratorTestCase extends TestCase
 namespace Acme;
 EOT
             ],
-            'Generates a class' => [
+            'Renders a class' => [
                 new ClassPrototype('Dog'),
                 <<<'EOT'
 class Dog
@@ -65,7 +65,7 @@ class Dog
 }
 EOT
             ],
-            'Generates source code with classes' => [
+            'Renders source code with classes' => [
                 new SourceCode(
                     NamespaceName::root(),
                     UseStatements::empty(),
@@ -83,7 +83,7 @@ class Cat
 }
 EOT
             ],
-            'Generates source code with use statements' => [
+            'Renders source code with use statements' => [
                 new SourceCode(
                     NamespaceName::root(),
                     UseStatements::fromQualifiedNames([
@@ -98,7 +98,7 @@ use Acme\Post\Board;
 use Acme\Post\Zebra;
 EOT
             ],
-            'Generates a class with properties' => [
+            'Renders a class with properties' => [
                 new ClassPrototype(
                     'Dog',
                     Properties::fromProperties([
@@ -112,19 +112,19 @@ class Dog
 }
 EOT
             ],
-            'Generates a property' => [
+            'Renders a property' => [
                 new Property('planes'),
                 <<<'EOT'
 public $planes;
 EOT
             ],
-            'Generates private properties with default value' => [
+            'Renders private properties with default value' => [
                 new Property('trains', Visibility::private(), DefaultValue::null()),
                 <<<'EOT'
 private $trains = null;
 EOT
             ],
-            'Generates a class with methods' => [
+            'Renders a class with methods' => [
                 new ClassPrototype(
                     'Dog',
                     Properties::empty(),
@@ -141,7 +141,7 @@ class Dog
 }
 EOT
             ],
-            'Generates a method parameters' => [
+            'Renders a method parameters' => [
                 new Method('hello', Visibility::private(), Parameters::fromParameters([
                     new Parameter('one'),
                     new Parameter('two', Type::fromString('string')),
@@ -151,7 +151,7 @@ EOT
 private function hello($one, string $two, $three = 42)
 EOT
             ],
-            'Generates method return type' => [
+            'Renders method return type' => [
                 new Method(
                     'hello',
                     Visibility::private(),
@@ -162,7 +162,7 @@ EOT
 private function hello(): Hello
 EOT
             ],
-            'Generates a class with a parent' => [
+            'Renders a class with a parent' => [
                 new ClassPrototype(
                     'Kitten',
                     Properties::empty(),
@@ -175,7 +175,7 @@ class Kitten extends Cat
 }
 EOT
             ],
-            'Generates a class with interfaces' => [
+            'Renders a class with interfaces' => [
                 new ClassPrototype(
                     'Kitten',
                     Properties::empty(),
@@ -192,7 +192,7 @@ class Kitten implements Feline, Infant
 }
 EOT
             ],
-            'Generates a property with a comment' => [
+            'Renders a property with a comment' => [
                 new Property(
                     'planes',
                     Visibility::public(),
@@ -262,7 +262,7 @@ EOT
             ->end()
             ->build();
 
-        $code = $this->generator()->generate($source);
+        $code = $this->renderer()->render($source);
 
         $this->assertEquals($expected, (string) $code);
     }

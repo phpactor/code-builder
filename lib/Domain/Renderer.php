@@ -5,7 +5,7 @@ namespace Phpactor\CodeBuilder\Domain;
 use Phpactor\CodeBuilder\Domain\Prototype\Prototype;
 use Phpactor\CodeBuilder\Domain\Code;
 
-interface Generator
+interface Renderer
 {
-    public function generate(Prototype $prototype): Code;
+    public function render(Prototype $prototype): Code;
 }

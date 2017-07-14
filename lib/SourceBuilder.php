@@ -3,7 +3,7 @@
 namespace Phpactor\CodeBuilder;
 
 use Phpactor\CodeBuilder\Domain\Prototype;
-use Phpactor\CodeBuilder\Domain\Generator;
+use Phpactor\CodeBuilder\Domain\Renderer;
 use Phpactor\CodeBuilder\Domain\Updater;
 use Phpactor\CodeBuilder\Domain\Code;
 
@@ -20,7 +20,7 @@ class SourceBuilder
     private $updater;
 
     public function __construct(
-        Generator $generator,
+        Renderer $generator,
         Updater $updater
     )
     {
@@ -28,9 +28,9 @@ class SourceBuilder
         $this->updater = $updater;
     }
 
-    public function generate(Prototype\Prototype $prototype)
+    public function render(Prototype\Prototype $prototype)
     {
-        return $this->generator->generate($prototype);
+        return $this->generator->render($prototype);
     }
 
     public function apply(Prototype\Prototype $prototype, Code $code)

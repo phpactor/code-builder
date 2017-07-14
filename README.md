@@ -32,8 +32,8 @@ $sourcePrototype = $builder->build();
 // apply prototype to existing source code (idempotent)
 $sourceBuilder->apply($source, file_get_contents('SomeFile.php'));
 
-// generate source
-$code = $sourceBuilder->generate($prototype);
+// render source
+$code = $sourceBuilder->render($prototype);
 
 echo (string) $code;
 ```

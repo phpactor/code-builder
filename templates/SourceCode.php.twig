@@ -11,5 +11,5 @@ use {{ qualifiedName }};
 {% endif %}
 {% for class in prototype.classes %}
 
-{{ generator.generate(class)|raw }}
+{{ generator.render(class)|raw }}
 {% endfor %}
