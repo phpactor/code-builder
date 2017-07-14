@@ -2,6 +2,8 @@
 
 namespace Phpactor\CodeBuilder\Domain\Prototype;
 
+use Phpactor\CodeBuilder\Domain\Prototype\Interfaces;
+
 class SourceCode extends Prototype
 {
     /**
@@ -19,15 +21,22 @@ class SourceCode extends Prototype
      */
     private $classes;
 
+    /**
+     * @var Interfaces
+     */
+    private $interfaces;
+
     public function __construct(
         NamespaceName $namespace = null,
         UseStatements $useStatements = null,
-        Classes $classes = null
+        Classes $classes = null,
+        Interfaces $interfaces = null
     )
     {
         $this->namespace = $namespace ?: NamespaceName::fromString('');
         $this->useStatements = $useStatements ?: UseStatements::empty();
         $this->classes = $classes ?: Classes::empty();
+        $this->interfaces = $interfaces ?: Interfaces::empty();
     }
 
     public function namespace(): NamespaceName
@@ -43,5 +52,10 @@ class SourceCode extends Prototype
     public function classes(): Classes
     {
         return $this->classes;
+    }
+
+    public function interfaces(): Interfaces
+    {
+        return $this->interfaces;
     }
 }

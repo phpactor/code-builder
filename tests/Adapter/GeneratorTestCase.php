@@ -25,6 +25,8 @@ use Phpactor\CodeBuilder\Domain\Prototype\ImplementsInterfaces;
 use Phpactor\CodeBuilder\Domain\Prototype\ExtendsClass;
 use Phpactor\CodeBuilder\Domain\Prototype\SourceText;
 use Phpactor\CodeBuilder\Domain\Prototype\ReturnType;
+use Phpactor\CodeBuilder\Domain\Prototype\Interfaces;
+use Phpactor\CodeBuilder\Domain\Prototype\InterfacePrototype;
 use Phpactor\CodeBuilder\Domain\Builder\SourceCodeBuilder;
 
 abstract class GeneratorTestCase extends TestCase
@@ -57,14 +59,6 @@ abstract class GeneratorTestCase extends TestCase
 namespace Acme;
 EOT
             ],
-            'Renders a class' => [
-                new ClassPrototype('Dog'),
-                <<<'EOT'
-class Dog
-{
-}
-EOT
-            ],
             'Renders source code with classes' => [
                 new SourceCode(
                     NamespaceName::root(),
@@ -83,6 +77,25 @@ class Cat
 }
 EOT
             ],
+            'Renders source code with interfacess' => [
+                new SourceCode(
+                    NamespaceName::root(),
+                    UseStatements::empty(),
+                    Classes::empty(),
+                    Interfaces::fromInterfaces([ new InterfacePrototype('Cat'), new InterfacePrototype('Squirrel') ])
+                ),
+                <<<'EOT'
+<?php
+
+interface Cat
+{
+}
+
+interface Squirrel
+{
+}
+EOT
+            ],
             'Renders source code with use statements' => [
                 new SourceCode(
                     NamespaceName::root(),
@@ -96,6 +109,14 @@ EOT
 
 use Acme\Post\Board;
 use Acme\Post\Zebra;
+EOT
+            ],
+            'Renders a class' => [
+                new ClassPrototype('Dog'),
+                <<<'EOT'
+class Dog
+{
+}
 EOT
             ],
             'Renders a class with properties' => [
@@ -204,6 +225,25 @@ EOT
  * @var PlaneCollection
  */
 public $planes;
+EOT
+            ],
+            'Renders an interface' => [
+                new InterfacePrototype('Dog'),
+                <<<'EOT'
+interface Dog
+{
+}
+EOT
+            ],
+            'Renders an interface with methods' => [
+                new InterfacePrototype('Dog', Methods::fromMethods([
+                    new Method('hello'),
+                ])),
+                <<<'EOT'
+interface Dog
+{
+    public function hello();
+}
 EOT
             ],
         ];

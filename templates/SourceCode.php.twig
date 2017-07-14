@@ -9,6 +9,10 @@ namespace {{ prototype.namespace }};
 use {{ qualifiedName }};
 {% endfor %}
 {% endif %}
+{% for interface in prototype.interfaces %}
+
+{{ generator.render(interface)|raw }}
+{% endfor %}
 {% for class in prototype.classes %}
 
 {{ generator.render(class)|raw }}
