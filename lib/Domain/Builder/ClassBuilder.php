@@ -9,18 +9,8 @@ use Phpactor\CodeBuilder\Domain\Prototype\Type;
 use Phpactor\CodeBuilder\Domain\Prototype\Methods;
 use Phpactor\CodeBuilder\Domain\Prototype\ImplementsInterfaces;
 
-class ClassBuilder
+class ClassBuilder extends ClassLikeBuilder
 {
-    /**
-     * @var SourceCodeBuilder
-     */
-    private $parent;
-
-    /**
-     * @var string
-     */
-    private $name;
-
     /**
      * @var string
      */
@@ -32,20 +22,9 @@ class ClassBuilder
     private $properties = [];
 
     /**
-     * @var MethodBuilder[]
-     */
-    private $methods = [];
-
-    /**
      * @var Type[]
      */
     private $interfaces = [];
-
-    public function __construct(SourceCodeBuilder $parent, string $name)
-    {
-        $this->parent = $parent;
-        $this->name = $name;
-    }
 
     public function extends(string $class): ClassBuilder
     {
@@ -59,13 +38,6 @@ class ClassBuilder
         $this->interfaces[] = Type::fromString($interface);
 
         return $this;
-    }
-
-    public function method(string $name): MethodBuilder
-    {
-        $this->methods[] = $builder = new MethodBuilder($this, $name);
-
-        return $builder;
     }
 
     public function property(string $name): PropertyBuilder
@@ -88,10 +60,5 @@ class ClassBuilder
             $this->extends,
             ImplementsInterfaces::fromTypes($this->interfaces)
         );
-    }
-
-    public function end(): SourceCodeBuilder
-    {
-        return $this->parent;
     }
 }

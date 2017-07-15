@@ -260,6 +260,7 @@ use Measurements\Height;
 
 interface Animal
 {
+    public function sleep();
 }
 
 class Rabbits extends Leopridae implements Animal
@@ -306,6 +307,7 @@ EOT
                 ->end()
             ->end()
             ->interface('Animal')
+                ->method('sleep')->end()
             ->end()
             ->build();
 

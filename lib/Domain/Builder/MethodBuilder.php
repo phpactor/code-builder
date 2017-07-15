@@ -41,7 +41,7 @@ class MethodBuilder
      */
     private $parameters = [];
 
-    public function __construct(ClassBuilder $parent, string $name)
+    public function __construct(ClassLikeBuilder $parent, string $name)
     {
         $this->parent = $parent;
         $this->name = $name;
@@ -80,7 +80,7 @@ class MethodBuilder
         );
     }
 
-    public function end(): ClassBuilder
+    public function end(): ClassLikeBuilder
     {
         return $this->parent;
     }
