@@ -8,6 +8,7 @@ use Phpactor\CodeBuilder\Domain\Prototype\Type;
 use Phpactor\CodeBuilder\Domain\Builder\ClassBuilder;
 use Phpactor\CodeBuilder\Domain\Prototype\Classes;
 use Phpactor\CodeBuilder\Domain\Prototype\UseStatements;
+use Phpactor\CodeBuilder\Domain\Prototype\Interfaces;
 
 class SourceCodeBuilder
 {
@@ -25,6 +26,11 @@ class SourceCodeBuilder
      * @var ClassBuilder[]
      */
     private $classes = [];
+
+    /**
+     * @var InterfaceBuilder[]
+     */
+    private $interfaces = [];
 
     public static function create()
     {
@@ -54,7 +60,7 @@ class SourceCodeBuilder
 
     public function interface(string $name): InterfaceBuilder
     {
-        $this->classes[] = $builder = new ClassBuilder($this, $name);
+        $this->interfaces[] = $builder = new InterfaceBuilder($this, $name);
 
         return $builder;
     }
@@ -66,7 +72,10 @@ class SourceCodeBuilder
             UseStatements::fromQualifiedNames($this->useStatements),
             Classes::fromClasses(array_map(function (ClassBuilder $builder) {
                 return $builder->build();
-            }, $this->classes))
+            }, $this->classes)),
+            Interfaces::fromInterfaces(array_map(function (InterfaceBuilder $builder) {
+                return $builder->build();
+            }, $this->interfaces))
         );
     }
 }
