@@ -32,7 +32,7 @@ class SourceCodeBuilder
      */
     private $interfaces = [];
 
-    public static function create()
+    public static function create(): SourceCodeBuilder
     {
         return new self();
     }
