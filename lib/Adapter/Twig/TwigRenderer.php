@@ -9,6 +9,7 @@ use Phpactor\CodeBuilder\Domain\Renderer;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 use Phpactor\CodeBuilder\Adapter\Twig\TwigExtension;
+use Twig\Error\LoaderError;
 
 final class TwigRenderer implements Renderer
 {
@@ -26,16 +27,23 @@ final class TwigRenderer implements Renderer
 
     public function render(Prototype $prototype, string $variant = null): Code
     {
-        $templateName = $this->templateNameResolver->resolveName($prototype);
+        $templateName = $baseTemplateName = $this->templateNameResolver->resolveName($prototype);
 
         if ($variant) {
             $templateName = $variant . '/' . $templateName;
         }
 
-        return Code::fromString(rtrim($this->twig->render($templateName, [
-            'prototype' => $prototype,
-            'generator' => $this,
-        ]), PHP_EOL));
+        try {
+            $code = $this->twigRender($prototype, $templateName);
+        } catch (LoaderError $error) {
+            if (null === $variant) {
+                throw $error;
+            }
+
+            $code = $this->twigRender($prototype, $baseTemplateName);
+        }
+
+        return Code::fromString(rtrim($code), PHP_EOL);
     }
 
     private function createTwig()
@@ -46,5 +54,13 @@ final class TwigRenderer implements Renderer
         $twig->addExtension(new TwigExtension($this, '    '));
 
         return $twig;
+    }
+
+    private function twigRender(Prototype $prototype, string $templateName)
+    {
+        return $this->twig->render($templateName, [
+            'prototype' => $prototype,
+            'generator' => $this,
+        ]);
     }
 }
