@@ -34,13 +34,13 @@ final class TwigRenderer implements Renderer
         }
 
         try {
-            $code = $this->twigRender($prototype, $templateName);
+            $code = $this->twigRender($prototype, $templateName, $variant);
         } catch (LoaderError $error) {
             if (null === $variant) {
                 throw $error;
             }
 
-            $code = $this->twigRender($prototype, $baseTemplateName);
+            $code = $this->twigRender($prototype, $baseTemplateName, $variant);
         }
 
         return Code::fromString(rtrim($code), PHP_EOL);
@@ -56,11 +56,12 @@ final class TwigRenderer implements Renderer
         return $twig;
     }
 
-    private function twigRender(Prototype $prototype, string $templateName)
+    private function twigRender(Prototype $prototype, string $templateName, string $variant = null)
     {
         return $this->twig->render($templateName, [
             'prototype' => $prototype,
             'generator' => $this,
+            'variant' => $variant,
         ]);
     }
 }

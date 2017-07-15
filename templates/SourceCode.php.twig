@@ -11,9 +11,9 @@ use {{ qualifiedName }};
 {% endif %}
 {% for interface in prototype.interfaces %}
 
-{{ generator.render(interface)|raw }}
+{{ generator.render(interface, variant)|raw }}
 {% endfor %}
 {% for class in prototype.classes %}
 
-{{ generator.render(class)|raw }}
+{{ generator.render(class, variant)|raw }}
 {% endfor %}

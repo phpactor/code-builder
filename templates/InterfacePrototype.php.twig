@@ -4,7 +4,7 @@ interface {{ prototype.name }}
 {% endif %}
 {
 {% for method in prototype.methods %}
-{{ generator.render(method)|indent(1)|raw }};
+{{ generator.render(method, variant)|indent(1)|raw }};
 {% if not loop.last %}
 
 {% endif %}
