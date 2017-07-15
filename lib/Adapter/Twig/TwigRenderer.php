@@ -23,9 +23,14 @@ final class TwigRenderer implements Renderer
         $this->twig = $twig ?: $this->createTwig();
         $this->templateNameResolver = $templateNameResolver ?: new ClassShortNameResolver();
     }
-    public function render(Prototype $prototype): Code
+
+    public function render(Prototype $prototype, string $variant = null): Code
     {
         $templateName = $this->templateNameResolver->resolveName($prototype);
+
+        if ($variant) {
+            $templateName = $variant . '/' . $templateName;
+        }
 
         return Code::fromString(rtrim($this->twig->render($templateName, [
             'prototype' => $prototype,
