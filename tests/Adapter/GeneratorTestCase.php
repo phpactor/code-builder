@@ -272,6 +272,9 @@ class Rabbits extends Leopridae implements Animal
 
     public $guile;
 
+    /**
+     * All the world will be your enemy, prince with a thousand enemies
+     */
     public function jump(Height $how = 'high')
     {
     }
@@ -295,6 +298,7 @@ EOT
                 ->end()
                 ->property('guile')->end()
                 ->method('jump')
+                    ->docblock('All the world will be your enemy, prince with a thousand enemies')
                     ->parameter('how')
                         ->defaultValue('high')
                         ->type('Height')

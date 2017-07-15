@@ -1,3 +1,10 @@
+{% if prototype.docblock.notNone %}
+/**
+{% for line in prototype.docblock.asLines %}
+ * {{ line }}
+{% endfor %}
+ */
+{% endif %}
 {{ prototype.visibility }} function {{ prototype.name}}({% spaceless %}
 {% for parameter in prototype.parameters %}
 {% if parameter.type.notNone %}{{ parameter.type }} {% endif %}

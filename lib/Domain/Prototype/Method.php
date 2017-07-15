@@ -24,17 +24,24 @@ final class Method extends Prototype
      */
     private $returnType;
 
+    /*
+     * @var Docblock
+     */
+    private $docblock;
+
     public function __construct(
         string $name,
         Visibility $visibility = null,
         Parameters $parameters = null,
-        ReturnType $returnType = null
+        ReturnType $returnType = null,
+        Docblock $docblock = null
     )
     {
         $this->name = $name;
         $this->visibility = $visibility ?: Visibility::public();
         $this->parameters = $parameters ?: Parameters::empty();
         $this->returnType = $returnType ?: ReturnType::none();
+        $this->docblock = $docblock ?: Docblock::none();
     }
 
     public function name(): string
@@ -55,5 +62,10 @@ final class Method extends Prototype
     public function returnType(): ReturnType
     {
         return $this->returnType;
+    }
+
+    public function docblock(): Docblock
+    {
+        return $this->docblock;
     }
 }

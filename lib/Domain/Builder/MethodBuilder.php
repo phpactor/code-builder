@@ -13,6 +13,7 @@ use Phpactor\CodeBuilder\Domain\Builder\MethodBuilder;
 use Phpactor\CodeBuilder\Domain\Prototype\Parameters;
 use Phpactor\CodeBuilder\Domain\Prototype\Method;
 use Phpactor\CodeBuilder\Domain\Prototype\ReturnType;
+use Phpactor\CodeBuilder\Domain\Prototype\Docblock;
 
 class MethodBuilder
 {
@@ -41,6 +42,11 @@ class MethodBuilder
      */
     private $parameters = [];
 
+    /**
+     * @var Docblock
+     */
+    private $docblock;
+
     public function __construct(ClassLikeBuilder $parent, string $name)
     {
         $this->parent = $parent;
@@ -68,6 +74,13 @@ class MethodBuilder
         return $builder;
     }
 
+    public function docblock(string $docblock): MethodBuilder
+    {
+        $this->docblock = Docblock::fromString($docblock);
+
+        return $this;
+    }
+
     public function build()
     {
         return new Method(
@@ -76,7 +89,8 @@ class MethodBuilder
             Parameters::fromParameters(array_map(function (ParameterBuilder $builder) {
                 return $builder->build();
             }, $this->parameters)),
-            $this->returnType
+            $this->returnType,
+            $this->docblock
         );
     }
 
