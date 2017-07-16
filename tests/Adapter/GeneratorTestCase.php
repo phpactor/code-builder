@@ -249,7 +249,7 @@ EOT
         ];
     }
 
-    public function testBuilder()
+    public function testFromBuilder()
     {
         $expected = <<<'EOT'
 <?php
