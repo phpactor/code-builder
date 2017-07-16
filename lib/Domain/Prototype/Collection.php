@@ -4,7 +4,7 @@ namespace Phpactor\CodeBuilder\Domain\Prototype;
 
 class Collection implements \IteratorAggregate, \Countable
 {
-    private $items = [];
+    protected $items = [];
 
     protected function __construct(array $items)
     {

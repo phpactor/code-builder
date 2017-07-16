@@ -16,6 +16,8 @@ use Microsoft\PhpParser\Node\Statement\InlineHtml;
 use Phpactor\CodeBuilder\Domain\Renderer;
 use Microsoft\PhpParser\Node\Statement\NamespaceUseDeclaration;
 use Phpactor\CodeBuilder\Domain\Prototype\Type;
+use Phpactor\CodeBuilder\Domain\Prototype\ClassPrototype;
+use Microsoft\PhpParser\Node\Statement\ClassDeclaration;
 
 class TolerantUpdater implements Updater
 {
@@ -47,10 +49,7 @@ class TolerantUpdater implements Updater
 
         $this->updateNamespace($prototype, $node);
         $this->updateUseStatements($prototype, $node);
-
-        foreach ($prototype->classes() as $class) {
-            $this->updateClasses($prototype, $node);
-        }
+        $this->updateClasses($prototype, $node);
 
         return Code::fromString(trim(TextEdit::applyEdits($this->edits, (string) $code)));
     }
@@ -110,8 +109,32 @@ class TolerantUpdater implements Updater
         }
     }
 
-    private function updateClasses()
+    private function updateClasses(SourceCode $prototype, SourceFileNode $node)
     {
+        $classNodes = [];
+        $lastStatement = null;
+        foreach ($node->statementList as $classNode) {
+            $lastStatement = $classNode;
+            if (!$classNode instanceof ClassDeclaration) {
+                continue;
+            }
+
+            $name = $classNode->name->getText($node->getFileContents());
+            $classNodes[$name] = $classNode;
+        }
+
+        if (substr($lastStatement->getText(), -1) !== PHP_EOL) {
+            $this->after($lastStatement, PHP_EOL);
+        }
+
+        $classes = $prototype->classes()->notIn(array_keys($classNodes));
+        foreach ($classes as $index => $classPrototype) {
+
+            if ($index > 0 && $index != count($classes)) {
+                $this->after($lastStatement, PHP_EOL);
+            }
+            $this->after($lastStatement, PHP_EOL . $this->renderer->render($classPrototype));
+        }
     }
 
     private function remove(Node $node)

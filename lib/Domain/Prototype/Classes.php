@@ -8,4 +8,11 @@ class Classes extends Collection
     {
         return new static($classes);
     }
+
+    public function notIn(array $names): Classes
+    {
+        return new static(array_filter($this->items, function (ClassPrototype $prototype) use ($names) {
+            return false === in_array($prototype->name(), $names);
+        }));
+    }
 }

@@ -15,8 +15,7 @@ abstract class UpdaterTestCase extends TestCase
      */
     public function testNamespaceAndUse(string $existingCode, SourceCode $prototype, string $expectedCode)
     {
-        $code = $this->updater()->apply($prototype, Code::fromString('<?php'.PHP_EOL.$existingCode));
-        $this->assertEquals('<?php'.PHP_EOL. $expectedCode, (string) $code);
+        $this->assertUpdate($existingCode, $prototype, $expectedCode);
     }
 
     public function provideNamespaceAndUse()
@@ -178,8 +177,7 @@ EOT
      */
     public function testClasses(string $existingCode, SourceCode $prototype, string $expectedCode)
     {
-        $code = $this->updater()->apply($prototype, Code::fromString($existingCode));
-        $this->assertEquals($expectedCode, (string) $code);
+        $this->assertUpdate($existingCode, $prototype, $expectedCode);
     }
 
     public function provideClasses()
@@ -199,7 +197,19 @@ class Aardvark
 }
 EOT
             ],
-            'It does adds a class' => [
+            'It adds a class to an empty file' => [
+                
+                <<<'EOT'
+EOT
+                , SourceCodeBuilder::create()->class('Anteater')->end()->build(),
+                <<<'EOT'
+
+class Anteater
+{
+}
+EOT
+            ],
+            'It adds a class' => [
                 
                 <<<'EOT'
 class Aardvark
@@ -217,15 +227,53 @@ class Anteater
 }
 EOT
             ],
+            'It adds a class after a namespace' => [
+                
+                <<<'EOT'
+namespace Animals;
+
+class Aardvark
+{
+}
+EOT
+                , SourceCodeBuilder::create()->class('Anteater')->end()->build(),
+                <<<'EOT'
+namespace Animals;
+
+class Aardvark
+{
+}
+
+class Anteater
+{
+}
+EOT
+            ],
+            'It adds multiple classes' => [
+                
+                <<<'EOT'
+EOT
+                , SourceCodeBuilder::create()->class('Aardvark')->end()->class('Anteater')->end()->build(),
+                <<<'EOT'
+
+class Aardvark
+{
+}
+
+class Anteater
+{
+}
+EOT
+            ],
         ];
     }
 
-    public function testUseStatements()
+    /**
+     * @dataProvider provideProperties
+     */
+    public function testProperties(string $existingCode, SourceCode $prototype, string $expectedCode)
     {
-    }
-
-    public function testProperties()
-    {
+        $this->assertUpdate($existingCode, $prototype, $expectedCode);
     }
 
     public function provideProperties()
@@ -275,4 +323,10 @@ EOT
     }
 
     abstract protected function updater(): Updater;
+
+    private function assertUpdate(string $existingCode, SourceCode $prototype, string $expectedCode)
+    {
+        $code = $this->updater()->apply($prototype, Code::fromString('<?php'.PHP_EOL.$existingCode));
+        $this->assertEquals('<?php'.PHP_EOL. $expectedCode, (string) $code);
+    }
 }
