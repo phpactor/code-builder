@@ -5,6 +5,17 @@ Class Builder
 
 Library which applies idempotent changes to code:
 
+Can idempotently apply:
+
+- Namespace and use statements.
+- Methods or properties to classes.
+- Implements / extends.
+- New classes to the source.
+
+TODO:
+
+- Currently does not modify properties of existing properties methods (e.g.
+  changing return types or adding parameters).
 
 ```php
 $builder = SourceBuilder::create()

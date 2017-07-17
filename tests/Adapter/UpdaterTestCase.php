@@ -303,6 +303,45 @@ class Aardvark extends Animal
 }
 EOT
             ],
+            'It is implements an interface' => [
+                <<<'EOT'
+class Aardvark
+{
+}
+EOT
+                , SourceCodeBuilder::create()->class('Aardvark')->implements('Animal')->end()->build(),
+                <<<'EOT'
+class Aardvark implements Animal
+{
+}
+EOT
+            ],
+            'It is implements implementss' => [
+                <<<'EOT'
+class Aardvark
+{
+}
+EOT
+                , SourceCodeBuilder::create()->class('Aardvark')->implements('Zoo')->implements('Animal')->end()->build(),
+                <<<'EOT'
+class Aardvark implements Zoo, Animal
+{
+}
+EOT
+            ],
+            'It ignores existing implements names' => [
+                <<<'EOT'
+class Aardvark implements Animal
+{
+}
+EOT
+                , SourceCodeBuilder::create()->class('Aardvark')->implements('Zoo')->implements('Animal')->end()->build(),
+                <<<'EOT'
+class Aardvark implements Animal, Zoo
+{
+}
+EOT
+            ],
         ];
     }
 
