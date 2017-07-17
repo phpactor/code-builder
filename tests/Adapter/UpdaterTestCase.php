@@ -329,6 +329,19 @@ class Aardvark implements Zoo, Animal
 }
 EOT
             ],
+            'It is adds implements' => [
+                <<<'EOT'
+class Aardvark implements Zoo
+{
+}
+EOT
+                , SourceCodeBuilder::create()->class('Aardvark')->implements('Animal')->end()->build(),
+                <<<'EOT'
+class Aardvark implements Zoo, Animal
+{
+}
+EOT
+            ],
             'It ignores existing implements names' => [
                 <<<'EOT'
 class Aardvark implements Animal

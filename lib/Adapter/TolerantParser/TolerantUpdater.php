@@ -22,6 +22,7 @@ use Phpactor\CodeBuilder\Util\TextFormat;
 use Microsoft\PhpParser\Node\PropertyDeclaration;
 use Microsoft\PhpParser\Node\MethodDeclaration;
 use Phpactor\CodeBuilder\Domain\Prototype\ExtendsClass;
+use Phpactor\CodeBuilder\Domain\Prototype\ImplementsInterfaces;
 
 class TolerantUpdater implements Updater
 {
@@ -155,11 +156,12 @@ class TolerantUpdater implements Updater
     private function updateClass(ClassPrototype $classPrototype, ClassDeclaration $classNode)
     {
         $this->updateExtends($classPrototype, $classNode);
+        $this->updateImplements($classPrototype, $classNode);
         $this->updateProperties($classPrototype, $classNode);
         $this->updateMethods($classPrototype, $classNode);
     }
 
-    private function updateExtends(ClassPrototype $classPrototype, $classNode)
+    private function updateExtends(ClassPrototype $classPrototype, ClassDeclaration $classNode)
     {
         if (ExtendsClass::none() == $classPrototype->extendsClass()) {
             return;
@@ -172,6 +174,33 @@ class TolerantUpdater implements Updater
 
 
         $this->replace($classNode->classBaseClause, ' extends ' . (string) $classPrototype->extendsClass());
+    }
+
+    private function updateImplements(ClassPrototype $classPrototype, ClassDeclaration $classNode)
+    {
+        if (ImplementsInterfaces::empty() == $classPrototype->implementsInterfaces()) {
+            return;
+        }
+
+        if (null === $classNode->classInterfaceClause) {
+            $this->after($classNode->name, ' implements ' . (string) $classPrototype->implementsInterfaces()->__toString());
+            return;
+        }
+
+        $existingNames = [];
+        foreach ($classNode->classInterfaceClause->interfaceNameList->getElements() as $name) {
+            $existingNames[] = $name->getText();
+        }
+
+        $additionalNames = $classPrototype->implementsInterfaces()->notIn($existingNames);
+
+        if (0 === count($additionalNames)) {
+            return;
+        }
+
+        $names = join(', ', [ implode(', ', $existingNames), $additionalNames->__toString()]);
+
+        $this->replace($classNode->classInterfaceClause, ' implements ' . $names);
     }
 
     private function updateProperties(ClassPrototype $classPrototype, ClassDeclaration $classNode)

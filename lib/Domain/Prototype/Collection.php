@@ -63,15 +63,15 @@ abstract class Collection implements \IteratorAggregate, \Countable
 
     public function notIn(array $names): Collection
     {
-        return new static(array_filter($this->items, function (Prototype $prototype) use ($names) {
-            return false === in_array($prototype->name(), $names);
-        }));
+        return new static(array_filter($this->items, function ($name) use ($names) {
+            return false === in_array($name, $names);
+        }, ARRAY_FILTER_USE_KEY));
     }
 
     public function in(array $names): Collection
     {
-        return new static(array_filter($this->items, function (Prototype $prototype) use ($names) {
-            return true === in_array($prototype->name(), $names);
-        }));
+        return new static(array_filter($this->items, function ($name) use ($names) {
+            return true === in_array($name, $names);
+        }, ARRAY_FILTER_USE_KEY));
     }
 }
