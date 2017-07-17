@@ -335,6 +335,25 @@ class Aardvark
 }
 EOT
             ],
+            'It adds is idempotent' => [
+                <<<'EOT'
+class Aardvark
+{
+    public $propertyOne;
+}
+EOT
+                , SourceCodeBuilder::create()
+                    ->class('Aardvark')
+                        ->property('propertyOne')->end()
+                    ->end()
+                    ->build(),
+                <<<'EOT'
+class Aardvark
+{
+    public $propertyOne;
+}
+EOT
+            ],
             'It adds a property after existing properties' => [
                 <<<'EOT'
 class Aardvark
@@ -427,6 +446,29 @@ EOT
                 <<<'EOT'
 class Aardvark
 {
+}
+EOT
+                , SourceCodeBuilder::create()
+                    ->class('Aardvark')
+                        ->method('methodOne')->end()
+                    ->end()
+                    ->build(),
+                <<<'EOT'
+class Aardvark
+{
+    public function methodOne()
+    {
+    }
+}
+EOT
+            ],
+            'It is idempotent' => [
+                <<<'EOT'
+class Aardvark
+{
+    public function methodOne()
+    {
+    }
 }
 EOT
                 , SourceCodeBuilder::create()

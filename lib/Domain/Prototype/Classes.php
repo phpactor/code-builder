@@ -16,18 +16,4 @@ class Classes extends Collection
     {
         return 'class';
     }
-
-    public function notIn(array $names): Classes
-    {
-        return new static(array_filter($this->items, function (ClassPrototype $prototype) use ($names) {
-            return false === in_array($prototype->name(), $names);
-        }));
-    }
-
-    public function in(array $names): Classes
-    {
-        return new static(array_filter($this->items, function (ClassPrototype $prototype) use ($names) {
-            return true === in_array($prototype->name(), $names);
-        }));
-    }
 }

@@ -21,6 +21,7 @@ use Microsoft\PhpParser\Token;
 use Phpactor\CodeBuilder\Util\TextFormat;
 use Microsoft\PhpParser\Node\PropertyDeclaration;
 use Microsoft\PhpParser\Node\MethodDeclaration;
+use Phpactor\CodeBuilder\Domain\Prototype\ExtendsClass;
 
 class TolerantUpdater implements Updater
 {
@@ -160,7 +161,7 @@ class TolerantUpdater implements Updater
 
     private function updateExtends(ClassPrototype $classPrototype, $classNode)
     {
-        if (Type::none() == $classPrototype->extendsClass()) {
+        if (ExtendsClass::none() == $classPrototype->extendsClass()) {
             return;
         }
 
@@ -183,18 +184,23 @@ class TolerantUpdater implements Updater
         $nextMember = null;
 
         $memberDeclarations = $classNode->classMembers->classMemberDeclarations;
+        $existingPropertyNames = [];
         foreach ($memberDeclarations as $memberNode) {
             if (null === $nextMember) {
                 $nextMember = $memberNode;
             }
+
             if ($memberNode instanceof PropertyDeclaration) {
+                foreach ($memberNode->propertyElements->getElements() as $variable) {
+                    $existingPropertyNames[] = $variable->getName();
+                }
                 $lastProperty = $memberNode;
                 $nextMember = next($memberDeclarations) ?: $nextMember;
                 prev($memberDeclarations);
             }
         }
 
-        foreach ($classPrototype->properties() as $property) {
+        foreach ($classPrototype->properties()->notIn($existingPropertyNames) as $property) {
             if ($lastProperty instanceof PropertyDeclaration && $property->type() != Type::none()) {
                 $this->after($lastProperty, PHP_EOL);
             }
@@ -220,6 +226,7 @@ class TolerantUpdater implements Updater
 
         $newLine = false;
         $memberDeclarations = $classNode->classMembers->classMemberDeclarations;
+        $existingMethodNames = [];
         foreach ($memberDeclarations as $memberNode) {
             if ($memberNode instanceof PropertyDeclaration) {
                 $lastMember = $memberNode;
@@ -228,15 +235,22 @@ class TolerantUpdater implements Updater
 
             if ($memberNode instanceof MethodDeclaration) {
                 $lastMember = $memberNode;
+                $existingMethodNames[] = $memberNode->getName();
                 $newLine = true;
             }
+        }
+
+        $methods = $classPrototype->methods()->notIn($existingMethodNames);
+
+        if (0 === count($methods)) {
+            return;
         }
 
         if ($newLine) {
             $this->after($lastMember, PHP_EOL);
         }
 
-        foreach ($classPrototype->methods() as $method) {
+        foreach ($methods as $method) {
             $this->after(
                 $lastMember,
                 PHP_EOL . $this->textFormat->indent($this->renderer->render($method) . PHP_EOL . '{' . PHP_EOL . '}', 1)
