@@ -230,6 +230,7 @@ class TolerantUpdater implements Updater
         }
 
         foreach ($classPrototype->properties()->notIn($existingPropertyNames) as $property) {
+            // if property type exists then the last property has a docblock - add a line break
             if ($lastProperty instanceof PropertyDeclaration && $property->type() != Type::none()) {
                 $this->after($lastProperty, PHP_EOL);
             }
@@ -284,6 +285,10 @@ class TolerantUpdater implements Updater
                 $lastMember,
                 PHP_EOL . $this->textFormat->indent($this->renderer->render($method) . PHP_EOL . '{' . PHP_EOL . '}', 1)
             );
+
+            if (false === $classPrototype->methods()->isLast($method)) {
+                $this->after($lastMember, PHP_EOL);
+            }
         }
     }
 

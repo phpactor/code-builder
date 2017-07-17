@@ -533,6 +533,31 @@ class Aardvark
 }
 EOT
             ],
+            'It adds multiple methods' => [
+                <<<'EOT'
+class Aardvark
+{
+}
+EOT
+                , SourceCodeBuilder::create()
+                    ->class('Aardvark')
+                        ->method('methodOne')->end()
+                        ->method('methodTwo')->end()
+                    ->end()
+                    ->build(),
+                <<<'EOT'
+class Aardvark
+{
+    public function methodOne()
+    {
+    }
+
+    public function methodTwo()
+    {
+    }
+}
+EOT
+            ],
             'It is idempotent' => [
                 <<<'EOT'
 class Aardvark
