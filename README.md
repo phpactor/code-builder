@@ -3,9 +3,7 @@ Class Builder
 
 [![Build Status](https://travis-ci.org/phpactor/class-transform.svg?branch=master)](https://travis-ci.org/phpactor/class-transform)
 
-Library which applies idempotent changes to code:
-
-Can idempotently apply:
+Library which generates or idempotently modifies code:
 
 - Namespace and use statements.
 - Methods or properties to classes.
