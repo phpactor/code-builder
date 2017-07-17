@@ -26,6 +26,11 @@ abstract class Collection implements \IteratorAggregate, \Countable
         return new \ArrayIterator($this->items);
     }
 
+    public function isLast($item): bool
+    {
+        return end($this->items) === $item;
+    }
+
     /**
      * Return first
      *

@@ -20,6 +20,7 @@ use Microsoft\PhpParser\Node\Statement\ClassDeclaration;
 use Microsoft\PhpParser\Token;
 use Phpactor\CodeBuilder\Util\TextFormat;
 use Microsoft\PhpParser\Node\PropertyDeclaration;
+use Microsoft\PhpParser\Node\MethodDeclaration;
 
 class TolerantUpdater implements Updater
 {
@@ -153,22 +154,76 @@ class TolerantUpdater implements Updater
     private function updateClass(ClassPrototype $classPrototype, ClassDeclaration $classNode)
     {
         $this->updateProperties($classPrototype, $classNode);
+        $this->updateMethods($classPrototype, $classNode);
     }
 
     private function updateProperties(ClassPrototype $classPrototype, ClassDeclaration $classNode)
     {
-        $lastProperty = $classNode->classMembers->openBrace;
+        if (count($classPrototype->properties()) === 0) {
+            return;
+        }
 
-        foreach ($classNode->classMembers->classMemberDeclarations as $memberNode) {
+        $lastProperty = $classNode->classMembers->openBrace;
+        $nextMember = null;
+
+        $memberDeclarations = $classNode->classMembers->classMemberDeclarations;
+        foreach ($memberDeclarations as $memberNode) {
+            if (null === $nextMember) {
+                $nextMember = $memberNode;
+            }
             if ($memberNode instanceof PropertyDeclaration) {
                 $lastProperty = $memberNode;
+                $nextMember = next($memberDeclarations) ?: $nextMember;
+                prev($memberDeclarations);
             }
         }
 
         foreach ($classPrototype->properties() as $property) {
+            if ($lastProperty instanceof PropertyDeclaration && $property->type() != Type::none()) {
+                $this->after($lastProperty, PHP_EOL);
+            }
+
             $this->after(
                 $lastProperty,
                 PHP_EOL . $this->textFormat->indent($this->renderer->render($property), 1)
+            );
+
+            if ($classPrototype->properties()->isLast($property) && $nextMember instanceof MethodDeclaration) {
+                $this->after($lastProperty, PHP_EOL);
+            }
+        }
+    }
+
+    private function updateMethods(ClassPrototype $classPrototype, ClassDeclaration $classNode)
+    {
+        if (count($classPrototype->methods()) === 0) {
+            return;
+        }
+
+        $lastMember = $classNode->classMembers->openBrace;
+
+        $newLine = false;
+        $memberDeclarations = $classNode->classMembers->classMemberDeclarations;
+        foreach ($memberDeclarations as $memberNode) {
+            if ($memberNode instanceof PropertyDeclaration) {
+                $lastMember = $memberNode;
+                $newLine = true;
+            }
+
+            if ($memberNode instanceof MethodDeclaration) {
+                $lastMember = $memberNode;
+                $newLine = true;
+            }
+        }
+
+        if ($newLine) {
+            $this->after($lastMember, PHP_EOL);
+        }
+
+        foreach ($classPrototype->methods() as $method) {
+            $this->after(
+                $lastMember,
+                PHP_EOL . $this->textFormat->indent($this->renderer->render($method) . PHP_EOL . '{' . PHP_EOL . '}', 1)
             );
         }
     }

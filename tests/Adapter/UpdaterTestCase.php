@@ -318,7 +318,158 @@ class Aardvark
     public $propertyOne;
 }
 EOT
+            ],
+            'It adds a documented properties' => [
+                <<<'EOT'
+class Aardvark
+{
+    public $eyes
+}
+EOT
+                , SourceCodeBuilder::create()
+                    ->class('Aardvark')
+                        ->property('propertyOne')->type('Hello')->end()
+                    ->end()
+                    ->build(),
+                <<<'EOT'
+class Aardvark
+{
+    public $eyes
+
+    /**
+     * @var Hello
+     */
+    public $propertyOne;
+}
+EOT
+            ],
+            'It adds before methods' => [
+                <<<'EOT'
+class Aardvark
+{
+    public function crawl()
+    {
+    }
+}
+EOT
+                , SourceCodeBuilder::create()
+                    ->class('Aardvark')
+                        ->property('propertyOne')->type('Hello')->end()
+                    ->end()
+                    ->build(),
+                <<<'EOT'
+class Aardvark
+{
+    /**
+     * @var Hello
+     */
+    public $propertyOne;
+
+    public function crawl()
+    {
+    }
+}
+EOT
             ]
+        ];
+    }
+
+    /**
+     * @dataProvider provideMethods
+     */
+    public function testMethods(string $existingCode, SourceCode $prototype, string $expectedCode)
+    {
+        $this->assertUpdate($existingCode, $prototype, $expectedCode);
+    }
+
+    public function provideMethods()
+    {
+        return [
+            'It adds a method' => [
+                <<<'EOT'
+class Aardvark
+{
+}
+EOT
+                , SourceCodeBuilder::create()
+                    ->class('Aardvark')
+                        ->method('methodOne')->end()
+                    ->end()
+                    ->build(),
+                <<<'EOT'
+class Aardvark
+{
+    public function methodOne()
+    {
+    }
+}
+EOT
+            ],
+            'It adds a method after existing methods' => [
+                <<<'EOT'
+class Aardvark
+{
+    public function eyes()
+    {
+    }
+
+    public function nose()
+    {
+    }
+}
+EOT
+                , SourceCodeBuilder::create()
+                    ->class('Aardvark')
+                        ->method('methodOne')->end()
+                    ->end()
+                    ->build(),
+                <<<'EOT'
+class Aardvark
+{
+    public function eyes()
+    {
+    }
+
+    public function nose()
+    {
+    }
+
+    public function methodOne()
+    {
+    }
+}
+EOT
+            ],
+            'It adds a documented methods' => [
+                <<<'EOT'
+class Aardvark
+{
+    public function eyes()
+    {
+    }
+}
+EOT
+                , SourceCodeBuilder::create()
+                    ->class('Aardvark')
+                        ->method('methodOne')->docblock('Hello')->end()
+                    ->end()
+                    ->build(),
+                <<<'EOT'
+class Aardvark
+{
+    public function eyes()
+    {
+    }
+
+    /**
+     * Hello
+     */
+    public function methodOne()
+    {
+    }
+}
+EOT
+            ],
         ];
     }
 
