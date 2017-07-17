@@ -428,6 +428,25 @@ class Aardvark
 }
 EOT
             ],
+            'It adds multiple properties' => [
+                <<<'EOT'
+class Aardvark
+{
+}
+EOT
+                , SourceCodeBuilder::create()
+                    ->class('Aardvark')
+                        ->property('propertyOne')->end()->property('propertyTwo')->end()
+                    ->end()
+                    ->build(),
+                <<<'EOT'
+class Aardvark
+{
+    public $propertyOne;
+    public $propertyTwo;
+}
+EOT
+            ],
             'It adds a documented properties' => [
                 <<<'EOT'
 class Aardvark

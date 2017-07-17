@@ -10,7 +10,6 @@ use Microsoft\PhpParser\Node\SourceFileNode;
 use Microsoft\PhpParser\Node\Statement\NamespaceDefinition;
 use Phpactor\CodeBuilder\Domain\Prototype\NamespaceName;
 use Microsoft\PhpParser\Node;
-use Microsoft\PhpParser\TextEdit;
 use Microsoft\PhpParser\Node\Statement\InlineHtml;
 use Phpactor\CodeBuilder\Domain\Renderer;
 use Microsoft\PhpParser\Node\Statement\NamespaceUseDeclaration;
@@ -23,6 +22,7 @@ use Microsoft\PhpParser\Node\PropertyDeclaration;
 use Microsoft\PhpParser\Node\MethodDeclaration;
 use Phpactor\CodeBuilder\Domain\Prototype\ExtendsClass;
 use Phpactor\CodeBuilder\Domain\Prototype\ImplementsInterfaces;
+use Phpactor\CodeBuilder\Adapter\TolerantParser\TextEdit;
 
 class TolerantUpdater implements Updater
 {
