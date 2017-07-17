@@ -153,8 +153,24 @@ class TolerantUpdater implements Updater
 
     private function updateClass(ClassPrototype $classPrototype, ClassDeclaration $classNode)
     {
+        $this->updateExtends($classPrototype, $classNode);
         $this->updateProperties($classPrototype, $classNode);
         $this->updateMethods($classPrototype, $classNode);
+    }
+
+    private function updateExtends(ClassPrototype $classPrototype, $classNode)
+    {
+        if (Type::none() == $classPrototype->extendsClass()) {
+            return;
+        }
+
+        if (null === $classNode->classBaseClause) {
+            $this->after($classNode->name, ' extends ' . (string) $classPrototype->extendsClass());
+            return;
+        }
+
+
+        $this->replace($classNode->classBaseClause, ' extends ' . (string) $classPrototype->extendsClass());
     }
 
     private function updateProperties(ClassPrototype $classPrototype, ClassDeclaration $classNode)

@@ -250,7 +250,6 @@ class Anteater
 EOT
             ],
             'It adds multiple classes' => [
-                
                 <<<'EOT'
 EOT
                 , SourceCodeBuilder::create()->class('Aardvark')->end()->class('Anteater')->end()->build(),
@@ -261,6 +260,45 @@ class Aardvark
 }
 
 class Anteater
+{
+}
+EOT
+            ],
+            'It extends a class' => [
+                <<<'EOT'
+class Aardvark
+{
+}
+EOT
+                , SourceCodeBuilder::create()->class('Aardvark')->extends('Animal')->end()->build(),
+                <<<'EOT'
+class Aardvark extends Animal
+{
+}
+EOT
+            ],
+            'It modifies an existing extends' => [
+                <<<'EOT'
+class Aardvark extends Giraffe
+{
+}
+EOT
+                , SourceCodeBuilder::create()->class('Aardvark')->extends('Animal')->end()->build(),
+                <<<'EOT'
+class Aardvark extends Animal
+{
+}
+EOT
+            ],
+            'It is idempotent extends' => [
+                <<<'EOT'
+class Aardvark extends Animal
+{
+}
+EOT
+                , SourceCodeBuilder::create()->class('Aardvark')->extends('Animal')->end()->build(),
+                <<<'EOT'
+class Aardvark extends Animal
 {
 }
 EOT
