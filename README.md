@@ -3,7 +3,17 @@ Class Builder
 
 [![Build Status](https://travis-ci.org/phpactor/class-transform.svg?branch=master)](https://travis-ci.org/phpactor/class-transform)
 
-Library for generating or applying changes to code:
+Library which generates or idempotently modifies code:
+
+- Namespace and use statements.
+- Methods or properties to classes.
+- Implements / extends.
+- New classes to the source.
+
+TODO:
+
+- Currently does not modify properties of existing properties methods (e.g.
+  changing return types or adding parameters).
 
 ```php
 $builder = SourceBuilder::create()
@@ -40,7 +50,7 @@ echo (string) $code;
 
 Yields:
 
-```
+```php
 <?php
 
 namespace Animals;
@@ -58,3 +68,4 @@ class Rabbits extends Leopridae
     {
     }
 }
+```

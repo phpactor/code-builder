@@ -8,4 +8,9 @@ class Interfaces extends Collection
     {
         return new static($interfaces);
     }
+
+    protected function singularName(): string
+    {
+        return 'interface';
+    }
 }

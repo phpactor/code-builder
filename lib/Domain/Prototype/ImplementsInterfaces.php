@@ -6,6 +6,22 @@ class ImplementsInterfaces extends Collection
 {
     public static function fromTypes(array $types)
     {
-        return new self($types);
+        return new static(array_reduce($types, function ($acc, $type) {
+            $acc[(string) $type] = $type;
+            return $acc;
+        }, []));
+    }
+
+    protected function singularName(): string
+    {
+        return 'implement interface';
+    }
+
+    public function __toString()
+    {
+        return implode(', ', array_reduce($this->items, function ($acc, $interfaceName) {
+            $acc[] = $interfaceName->__toString();
+            return $acc;
+        }));
     }
 }
