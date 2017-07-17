@@ -5,38 +5,34 @@ namespace Phpactor\CodeBuilder\Tests\Unit\Domain\Prototype;
 use PHPUnit\Framework\TestCase;
 use Phpactor\CodeBuilder\Domain\Prototype\ClassPrototype;
 use Phpactor\CodeBuilder\Domain\Prototype\Classes;
+use Phpactor\CodeBuilder\Domain\Prototype\Collection;
 
-class ClassesTest extends TestCase
+class CollectionTest extends TestCase
 {
     /**
-     * @testdox Create from classes
+     * @testdox Get throws exception
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage Unknown test "foo", known items
      */
-    public function testCreateFromClasses()
+    public function testGetException()
     {
-        $classes = Classes::fromClasses([
-            new ClassPrototype('One'),
-            new ClassPrototype('Two'),
+        $collection = TestCollection::fromArray([
+            'one' => new \stdClass()
         ]);
-        $this->assertCount(2, iterator_to_array($classes));
+
+        $collection->get('foo');
+    }
+}
+
+class TestCollection extends Collection
+{
+    public static function fromArray(array $items)
+    {
+        return new self($items);
     }
 
-    public function testNotIn()
+    protected function singularName(): string
     {
-        $classes = Classes::fromClasses([
-            new ClassPrototype('One'),
-            new ClassPrototype('Two'),
-            new ClassPrototype('Three'),
-        ]);
-        $this->assertCount(2, $classes->notIn(['One']));
-    }
-
-    public function testIn()
-    {
-        $classes = Classes::fromClasses([
-            new ClassPrototype('One'),
-            new ClassPrototype('Two'),
-            new ClassPrototype('Three'),
-        ]);
-        $this->assertCount(2, $classes->in(['One', 'Two']));
+        return 'test';
     }
 }

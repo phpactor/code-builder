@@ -5,6 +5,7 @@ namespace Phpactor\CodeBuilder\Adapter\Twig;
 use Twig\TwigFilter;
 use Twig\Extension\AbstractExtension;
 use Phpactor\CodeBuilder\Adapter\Twig\TwigRenderer;
+use Phpactor\CodeBuilder\Util\TextFormat;
 
 class TwigExtension extends AbstractExtension
 {
@@ -16,12 +17,12 @@ class TwigExtension extends AbstractExtension
     /**
      * @var int
      */
-    private $indentation;
+    private $textFormat;
 
-    public function __construct(TwigRenderer $generator, string $indentation = '    ')
+    public function __construct(TwigRenderer $generator, TextFormat $textFormat = null)
     {
         $this->generator = $generator;
-        $this->indentation = $indentation;
+        $this->textFormat = $textFormat ?: new TextFormat('    ');
     }
 
     public function getFilters()
@@ -33,12 +34,7 @@ class TwigExtension extends AbstractExtension
 
     public function indent(string $string, int $level = 0)
     {
-        $lines = explode(PHP_EOL, $string);
-        $lines = array_map(function ($line) use ($level) {
-            return str_repeat($this->indentation, $level) . $line;
-        }, $lines);
-
-        return implode(PHP_EOL, $lines);
+        return $this->textFormat->indent($string, $level);
     }
 }
 

@@ -2,7 +2,7 @@
 
 namespace Phpactor\CodeBuilder\Domain\Prototype;
 
-class Collection implements \IteratorAggregate, \Countable
+abstract class Collection implements \IteratorAggregate, \Countable
 {
     protected $items = [];
 
@@ -10,6 +10,8 @@ class Collection implements \IteratorAggregate, \Countable
     {
         $this->items = $items;
     }
+
+    abstract protected function singularName(): string;
 
     public static function empty()
     {
@@ -40,5 +42,17 @@ class Collection implements \IteratorAggregate, \Countable
     public function count()
     {
         return count($this->items);
+    }
+
+    public function get(string $name)
+    {
+        if (!isset($this->items[$name])) {
+            throw new \InvalidArgumentException(sprintf(
+                'Unknown %s "%s", known items: "%s"',
+                $this->singularName(), $name, implode('", "', array_keys($this->items))
+            ));
+        }
+
+        return $this->items[$name];
     }
 }

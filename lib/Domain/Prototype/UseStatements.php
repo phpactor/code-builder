@@ -8,4 +8,9 @@ class UseStatements extends Collection
     {
         return new self($names);
     }
+
+    protected function singularName(): string
+    {
+        return 'use statement';
+    }
 }

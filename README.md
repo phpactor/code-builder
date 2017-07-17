@@ -3,7 +3,8 @@ Class Builder
 
 [![Build Status](https://travis-ci.org/phpactor/class-transform.svg?branch=master)](https://travis-ci.org/phpactor/class-transform)
 
-Library for generating or applying changes to code:
+Library which applies idempotent changes to code:
+
 
 ```php
 $builder = SourceBuilder::create()
@@ -40,7 +41,7 @@ echo (string) $code;
 
 Yields:
 
-```
+```php
 <?php
 
 namespace Animals;
@@ -58,3 +59,4 @@ class Rabbits extends Leopridae
     {
     }
 }
+```

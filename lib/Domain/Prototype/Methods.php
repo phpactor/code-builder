@@ -8,4 +8,9 @@ class Methods extends Collection
     {
         return new self($methods);
     }
+
+    protected function singularName(): string
+    {
+        return 'method';
+    }
 }

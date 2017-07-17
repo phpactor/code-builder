@@ -8,4 +8,9 @@ class Parameters extends Collection
     {
         return new self($parameters);
     }
+
+    protected function singularName(): string
+    {
+        return 'parameter';
+    }
 }

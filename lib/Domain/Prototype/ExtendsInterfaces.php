@@ -8,4 +8,9 @@ class ExtendsInterfaces extends Collection
     {
         return new self($types);
     }
+
+    protected function singularName(): string
+    {
+        return 'extend interface';
+    }
 }

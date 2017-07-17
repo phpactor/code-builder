@@ -1,5 +1,4 @@
-<?php
-
+<?php 
 namespace Phpactor\CodeBuilder\Adapter\TolerantParser;
 
 use Phpactor\CodeBuilder\Domain\Updater;
@@ -18,6 +17,9 @@ use Microsoft\PhpParser\Node\Statement\NamespaceUseDeclaration;
 use Phpactor\CodeBuilder\Domain\Prototype\Type;
 use Phpactor\CodeBuilder\Domain\Prototype\ClassPrototype;
 use Microsoft\PhpParser\Node\Statement\ClassDeclaration;
+use Microsoft\PhpParser\Token;
+use Phpactor\CodeBuilder\Util\TextFormat;
+use Microsoft\PhpParser\Node\PropertyDeclaration;
 
 class TolerantUpdater implements Updater
 {
@@ -36,9 +38,15 @@ class TolerantUpdater implements Updater
      */
     private $edits = [];
 
-    public function __construct(Renderer $renderer, Parser $parser = null)
+    /**
+     * @var TextFormat
+     */
+    private $textFormat;
+
+    public function __construct(Renderer $renderer, TextFormat $textFormat = null, Parser $parser = null)
     {
         $this->parser = $parser ?: new Parser();
+        $this->textFormat = $textFormat ?: new TextFormat();
         $this->renderer = $renderer;
     }
 
@@ -123,32 +131,65 @@ class TolerantUpdater implements Updater
             $classNodes[$name] = $classNode;
         }
 
+        foreach ($prototype->classes()->in(array_keys($classNodes)) as $classPrototype) {
+            $this->updateClass($classPrototype, $classNodes[$classPrototype->name()]);
+        }
+
         if (substr($lastStatement->getText(), -1) !== PHP_EOL) {
             $this->after($lastStatement, PHP_EOL);
         }
 
         $classes = $prototype->classes()->notIn(array_keys($classNodes));
-        foreach ($classes as $index => $classPrototype) {
-
-            if ($index > 0 && $index != count($classes)) {
+        $index = 0;
+        foreach ($classes as $classPrototype) {
+            if ($index > 0 && $index + 1 == count($classes)) {
                 $this->after($lastStatement, PHP_EOL);
             }
             $this->after($lastStatement, PHP_EOL . $this->renderer->render($classPrototype));
+            $index++;
         }
     }
 
-    private function remove(Node $node)
+    private function updateClass(ClassPrototype $classPrototype, ClassDeclaration $classNode)
+    {
+        $this->updateProperties($classPrototype, $classNode);
+    }
+
+    private function updateProperties(ClassPrototype $classPrototype, ClassDeclaration $classNode)
+    {
+        $lastProperty = $classNode->classMembers->openBrace;
+
+        foreach ($classNode->classMembers->classMemberDeclarations as $memberNode) {
+            if ($memberNode instanceof PropertyDeclaration) {
+                $lastProperty = $memberNode;
+            }
+        }
+
+        foreach ($classPrototype->properties() as $property) {
+            $this->after(
+                $lastProperty,
+                PHP_EOL . $this->textFormat->indent($this->renderer->render($property), 1)
+            );
+        }
+    }
+
+    private function remove($node)
     {
         $this->edits[] = new TextEdit($node->getFullStart(), $node->getFullWidth(), '');
     }
 
-    private function after(Node $node, string $text)
+    private function after($node, string $text)
     {
-        $this->edits[] = new TextEdit($node->getEndPosition(), 0, $text);
+        $this->edits[] = new TextEdit($this->getEndPos($node), 0, $text);
     }
 
-    private function replace(Node $node, string $text)
+    private function replace($node, string $text)
     {
         $this->edits[] = new TextEdit($node->getFullStart(), $node->getFullWidth(), $text);
+    }
+
+    private function getEndPos($node)
+    {
+        return $node->getEndPosition();
     }
 }

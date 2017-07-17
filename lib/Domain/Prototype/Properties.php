@@ -8,4 +8,9 @@ class Properties extends Collection
     {
         return new self($properties);
     }
+
+    protected function singularName(): string
+    {
+        return 'property';
+    }
 }

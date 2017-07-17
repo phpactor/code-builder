@@ -8,4 +8,9 @@ class ImplementsInterfaces extends Collection
     {
         return new self($types);
     }
+
+    protected function singularName(): string
+    {
+        return 'implement interface';
+    }
 }
