@@ -1,28 +1,28 @@
 <?php 
 namespace Phpactor\CodeBuilder\Adapter\TolerantParser;
 
-use Phpactor\CodeBuilder\Domain\Updater;
-use Phpactor\CodeBuilder\Domain\Prototype\Prototype;
-use Phpactor\CodeBuilder\Domain\Code;
-use Microsoft\PhpParser\Parser;
-use Phpactor\CodeBuilder\Domain\Prototype\SourceCode;
-use Microsoft\PhpParser\Node\SourceFileNode;
-use Microsoft\PhpParser\Node\Statement\NamespaceDefinition;
-use Phpactor\CodeBuilder\Domain\Prototype\NamespaceName;
 use Microsoft\PhpParser\Node;
-use Microsoft\PhpParser\Node\Statement\InlineHtml;
-use Phpactor\CodeBuilder\Domain\Renderer;
-use Microsoft\PhpParser\Node\Statement\NamespaceUseDeclaration;
-use Phpactor\CodeBuilder\Domain\Prototype\Type;
-use Phpactor\CodeBuilder\Domain\Prototype\ClassPrototype;
-use Microsoft\PhpParser\Node\Statement\ClassDeclaration;
-use Microsoft\PhpParser\Token;
-use Phpactor\CodeBuilder\Util\TextFormat;
-use Microsoft\PhpParser\Node\PropertyDeclaration;
 use Microsoft\PhpParser\Node\MethodDeclaration;
+use Microsoft\PhpParser\Node\PropertyDeclaration;
+use Microsoft\PhpParser\Node\SourceFileNode;
+use Microsoft\PhpParser\Node\Statement\ClassDeclaration;
+use Microsoft\PhpParser\Node\Statement\InlineHtml;
+use Microsoft\PhpParser\Node\Statement\NamespaceDefinition;
+use Microsoft\PhpParser\Node\Statement\NamespaceUseDeclaration;
+use Microsoft\PhpParser\Parser;
+use Microsoft\PhpParser\Token;
+use Phpactor\CodeBuilder\Adapter\TolerantParser\TextEdit;
+use Phpactor\CodeBuilder\Domain\Code;
+use Phpactor\CodeBuilder\Domain\Prototype\ClassPrototype;
 use Phpactor\CodeBuilder\Domain\Prototype\ExtendsClass;
 use Phpactor\CodeBuilder\Domain\Prototype\ImplementsInterfaces;
-use Phpactor\CodeBuilder\Adapter\TolerantParser\TextEdit;
+use Phpactor\CodeBuilder\Domain\Prototype\NamespaceName;
+use Phpactor\CodeBuilder\Domain\Prototype\Prototype;
+use Phpactor\CodeBuilder\Domain\Prototype\SourceCode;
+use Phpactor\CodeBuilder\Domain\Prototype\Type;
+use Phpactor\CodeBuilder\Domain\Renderer;
+use Phpactor\CodeBuilder\Domain\Updater;
+use Phpactor\CodeBuilder\Util\TextFormat;
 
 class TolerantUpdater implements Updater
 {

@@ -4,6 +4,9 @@ namespace Phpactor\CodeBuilder\Domain\Prototype;
 
 final class Method extends Prototype
 {
+    const IS_STATIC = 1;
+    const IS_ABSTRACT = 2;
+
     /**
      * @var string
      */
@@ -34,7 +37,8 @@ final class Method extends Prototype
         Visibility $visibility = null,
         Parameters $parameters = null,
         ReturnType $returnType = null,
-        Docblock $docblock = null
+        Docblock $docblock = null,
+        int $modifierFlags = 0
     )
     {
         $this->name = $name;
@@ -42,6 +46,8 @@ final class Method extends Prototype
         $this->parameters = $parameters ?: Parameters::empty();
         $this->returnType = $returnType ?: ReturnType::none();
         $this->docblock = $docblock ?: Docblock::none();
+        $this->isStatic = $modifierFlags & self::IS_STATIC;
+        $this->isAbstract = $modifierFlags & self::IS_ABSTRACT;
     }
 
     public function name(): string
@@ -67,5 +73,15 @@ final class Method extends Prototype
     public function docblock(): Docblock
     {
         return $this->docblock;
+    }
+
+    public function isStatic(): bool
+    {
+        return $this->isStatic;
+    }
+
+    public function isAbstract(): bool
+    {
+        return $this->isAbstract;
     }
 }
