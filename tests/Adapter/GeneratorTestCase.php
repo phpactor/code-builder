@@ -7,6 +7,7 @@ use Phpactor\CodeBuilder\Domain\Code;
 use Phpactor\CodeBuilder\Domain\Renderer;
 use Phpactor\CodeBuilder\Domain\Prototype\ClassPrototype;
 use Phpactor\CodeBuilder\Domain\Prototype\Classes;
+use Phpactor\CodeBuilder\Domain\Prototype\Docblock;
 use Phpactor\CodeBuilder\Domain\Prototype\DefaultValue;
 use Phpactor\CodeBuilder\Domain\Prototype\Method;
 use Phpactor\CodeBuilder\Domain\Prototype\Methods;
@@ -170,6 +171,32 @@ EOT
                 ])),
                 <<<'EOT'
 private function hello($one, string $two, $three = 42)
+EOT
+            ],
+            'Renders static method' => [
+                new Method(
+                    'hello',
+                    Visibility::private(),
+                    Parameters::empty(),
+                    ReturnType::none(),
+                    Docblock::none(),
+                    Method::IS_STATIC
+                ),
+                <<<'EOT'
+private static function hello()
+EOT
+            ],
+            'Renders abstract method' => [
+                new Method(
+                    'hello',
+                    Visibility::private(),
+                    Parameters::empty(),
+                    ReturnType::none(),
+                    Docblock::none(),
+                    Method::IS_ABSTRACT
+                ),
+                <<<'EOT'
+abstract private function hello()
 EOT
             ],
             'Renders method return type' => [

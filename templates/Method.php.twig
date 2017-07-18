@@ -5,7 +5,7 @@
 {% endfor %}
  */
 {% endif %}
-{{ prototype.visibility }} function {{ prototype.name}}({% spaceless %}
+{% if prototype.isAbstract %}abstract {%endif %}{{ prototype.visibility }} {% if prototype.isStatic %}static {%endif %}function {{ prototype.name}}({% spaceless %}
 {% for parameter in prototype.parameters %}
 {% if parameter.type.notNone %}{{ parameter.type }} {% endif %}
 {% if true %}${{ parameter.name }}{% endif %}
