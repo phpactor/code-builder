@@ -1,10 +1,10 @@
-Class Builder
-=============
+Code Builder
+============
 
 [![Build Status](https://travis-ci.org/phpactor/code-builder.svg?branch=master)](https://travis-ci.org/phpactor/code-builder)
 
-This library can be used to idempotently **generate** or **add** *classes*, *methods*, *properties*, *use
-statements*, etc. to existing source code using **prototypes**.
+This library can be used to *generate* or idempotently *add* **classes**, **methods**, **properties**, **use
+statements**, etc. to existing source code using *prototypes*.
 
 A prototype is an object which defines structural code elements.
 
