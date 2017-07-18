@@ -47,6 +47,16 @@ class MethodBuilder
      */
     private $docblock;
 
+    /**
+     * @var bool
+     */
+    private $static = false;
+
+    /**
+     * @var bool
+     */
+    private $abstract = false;
+
     public function __construct(ClassLikeBuilder $parent, string $name)
     {
         $this->parent = $parent;
@@ -83,6 +93,16 @@ class MethodBuilder
 
     public function build()
     {
+        $modifiers = 0;
+
+        if ($this->static) {
+            $modifiers = $modifiers|Method::IS_STATIC;
+        }
+
+        if ($this->abstract) {
+            $modifiers = $modifiers|Method::IS_ABSTRACT;
+        }
+
         return new Method(
             $this->name,
             $this->visibility,
@@ -90,8 +110,21 @@ class MethodBuilder
                 return $builder->build();
             }, $this->parameters)),
             $this->returnType,
-            $this->docblock
+            $this->docblock,
+            $modifiers
         );
+    }
+
+    public function static(): MethodBuilder
+    {
+        $this->static = true;
+        return $this;
+    }
+
+    public function abstract(): MethodBuilder
+    {
+        $this->abstract = true;
+        return $this;
     }
 
     public function end(): ClassLikeBuilder

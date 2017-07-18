@@ -6,6 +6,7 @@ use PHPUnit\Framework\TestCase;
 use Phpactor\CodeBuilder\Domain\Builder\SourceCodeBuilder;
 use Phpactor\CodeBuilder\Domain\Prototype\SourceCode;
 use Phpactor\CodeBuilder\Domain\Prototype\ClassPrototype;
+use Phpactor\CodeBuilder\Domain\Builder\MethodBuilder;
 
 class SourceCodeBuilderTest extends TestCase
 {
@@ -58,20 +59,46 @@ class SourceCodeBuilderTest extends TestCase
         $this->assertEquals('null', $property->defaultValue()->export());
     }
 
-    public function testMethodBuilder()
+    /**
+     * @dataProvider provideMethodBuilder
+     */
+    public function testMethodBuilder(MethodBuilder $methodBuilder, \Closure $assertion)
     {
         $builder = $this->builder();
+        $method = $methodBuilder->build();
+        $assertion($method);
+    }
 
-        $method = $this->builder()->class('Dog')->method('one')
-            ->returnType('string')
-            ->visibility('private')
-            ->parameter('one')
-                ->type('One')
-                ->defaultValue(1)
-            ->end()
-            ->build();
-
-        $this->assertEquals('string', $method->returnType()->__toString());
+    public function provideMethodBuilder()
+    {
+        return [
+            [
+                $this->builder()->class('Dog')->method('one')
+                    ->returnType('string')
+                    ->visibility('private')
+                    ->parameter('one')
+                        ->type('One')
+                        ->defaultValue(1)
+                    ->end(),
+                function ($method) {
+                    $this->assertEquals('string', $method->returnType()->__toString());
+                }
+            ],
+            [
+                $this->builder()->class('Dog')->method('one')->static()->abstract(),
+                function ($method) {
+                    $this->assertTrue($method->isStatic());
+                    $this->assertTrue($method->isAbstract());
+                }
+            ],
+            [
+                $this->builder()->class('Dog')->method('one')->abstract(),
+                function ($method) {
+                    $this->assertFalse($method->isStatic());
+                    $this->assertTrue($method->isAbstract());
+                }
+            ],
+        ];
     }
 
     private function builder(): SourceCodeBuilder
