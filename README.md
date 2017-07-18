@@ -73,7 +73,11 @@ use Measurements\Height;
 
 class Rabbits extends Leopridae
 {
-    // ... etc
+    private $force = 5;
+
+    public function jump(Height $how = 'high')
+    {
+    }
 }
 ```
 
