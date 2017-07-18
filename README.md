@@ -1,19 +1,17 @@
 Class Builder
 =============
 
-[![Build Status](https://travis-ci.org/phpactor/class-transform.svg?branch=master)](https://travis-ci.org/phpactor/class-transform)
+[![Build Status](https://travis-ci.org/phpactor/code-builder.svg?branch=master)](https://travis-ci.org/phpactor/code-builder)
 
-Library which generates or idempotently modifies code:
+This library can be used to idempotently **generate** or **add** *classes*, *methods*, *properties*, *use
+statements*, etc. to existing source code using **prototypes**.
 
-- Namespace and use statements.
-- Methods or properties to classes.
-- Implements / extends.
-- New classes to the source.
+A prototype is an object which defines structural code elements.
 
-TODO:
+Usage
+-----
 
-- Currently does not modify properties of existing properties methods (e.g.
-  changing return types or adding parameters).
+The library provides a source code prototype builder:
 
 ```php
 $builder = SourceBuilder::create()
@@ -34,21 +32,37 @@ $builder = SourceBuilder::create()
                 ->end();
             ->end()
         ->end()
-    ->end()
-    ->build();
+    ->end();
 
 $sourcePrototype = $builder->build();
-
-// apply prototype to existing source code (idempotent)
-$sourceBuilder->apply($source, file_get_contents('SomeFile.php'));
-
-// render source
-$code = $sourceBuilder->render($prototype);
-
-echo (string) $code;
 ```
 
-Yields:
+the above prototype can either be used to generate a new class:
+
+```php
+$renderer = new TwigRenderer();
+$renderer->render($sourcePrototype);
+```
+
+Or it can be applied to an existing source code, given the following:
+
+
+```php
+<?php
+
+class Rabbits
+{
+}
+```
+
+When we do:
+
+```php
+$updater = new TolerantUpdater();
+$updater->apply($sourcePrototype, Code::fromString(file_get_contents('Rabbits.php')));
+```
+
+Then we get:
 
 ```php
 <?php
@@ -59,13 +73,12 @@ use Measurements\Height;
 
 class Rabbits extends Leopridae
 {
-    /**
-     * @var int
-     */
-    private $force = 5;
-
-    public function jump(Height $how = 'high')
-    {
-    }
+    // ... etc
 }
 ```
+
+About this project
+------------------
+
+This library is part of the [phpactor](https://github.com/phpactor/phpactor)
+project.
