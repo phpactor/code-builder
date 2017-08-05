@@ -4,9 +4,14 @@ namespace Phpactor\CodeBuilder\Domain\Prototype;
 
 class Lines extends Collection
 {
-    public static function fromLines(array $parameters)
+    public static function fromLines(array $lines)
     {
-        return new self($parameters);
+        return new self($lines);
+    }
+
+    public function __toString()
+    {
+        return implode(PHP_EOL, $this->items);
     }
 
     protected function singularName(): string

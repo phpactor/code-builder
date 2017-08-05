@@ -692,6 +692,81 @@ class Aardvark
 }
 EOT
             ],
+            'Add line to a methods body' => [
+                <<<'EOT'
+class Aardvark
+{
+    public function eyes()
+    {
+    }
+}
+EOT
+                , SourceCodeBuilder::create()
+                    ->class('Aardvark')
+                        ->method('eyes')->body()->line('echo "Hello World";')->end()->end()
+                    ->end()
+                    ->build(),
+                <<<'EOT'
+class Aardvark
+{
+    public function eyes()
+    {
+        echo "Hello World";
+    }
+}
+EOT
+            ],
+            'Add lines after existing lines' => [
+                <<<'EOT'
+class Aardvark
+{
+    public function eyes()
+    {
+        echo "Goodbye world!";
+    }
+}
+EOT
+                , SourceCodeBuilder::create()
+                    ->class('Aardvark')
+                        ->method('eyes')->body()->line('echo "Hello World";')->end()->end()
+                    ->end()
+                    ->build(),
+                <<<'EOT'
+class Aardvark
+{
+    public function eyes()
+    {
+        echo "Goodbye world!";
+        echo "Hello World";
+    }
+}
+EOT
+            ],
+            'Should not add the same line twice' => [
+                <<<'EOT'
+class Aardvark
+{
+    public function eyes()
+    {
+        echo "Hello World";
+    }
+}
+EOT
+                , SourceCodeBuilder::create()
+                    ->class('Aardvark')
+                        ->method('eyes')->body()->line('echo "Hello World";')->end()->end()
+                    ->end()
+                    ->build(),
+                <<<'EOT'
+class Aardvark
+{
+    public function eyes()
+    {
+        echo "Hello World";
+    }
+}
+EOT
+            ],
         ];
     }
 
