@@ -57,10 +57,16 @@ class MethodBuilder
      */
     private $abstract = false;
 
+    /**
+     * @var MethodBodyBuilder
+     */
+    private $bodyBuilder;
+
     public function __construct(ClassLikeBuilder $parent, string $name)
     {
         $this->parent = $parent;
         $this->name = $name;
+        $this->bodyBuilder = new MethodBodyBuilder($this);
     }
 
     public function visibility(string $visibility): MethodBuilder
@@ -103,6 +109,8 @@ class MethodBuilder
             $modifiers = $modifiers|Method::IS_ABSTRACT;
         }
 
+        $methodBody = $this->bodyBuilder->build();
+
         return new Method(
             $this->name,
             $this->visibility,
@@ -111,7 +119,8 @@ class MethodBuilder
             }, $this->parameters)),
             $this->returnType,
             $this->docblock,
-            $modifiers
+            $modifiers,
+            $methodBody
         );
     }
 
@@ -130,5 +139,10 @@ class MethodBuilder
     public function end(): ClassLikeBuilder
     {
         return $this->parent;
+    }
+
+    public function body(): MethodBodyBuilder
+    {
+        return $this->bodyBuilder;
     }
 }

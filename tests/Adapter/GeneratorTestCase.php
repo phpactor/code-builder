@@ -29,6 +29,9 @@ use Phpactor\CodeBuilder\Domain\Prototype\ReturnType;
 use Phpactor\CodeBuilder\Domain\Prototype\Interfaces;
 use Phpactor\CodeBuilder\Domain\Prototype\InterfacePrototype;
 use Phpactor\CodeBuilder\Domain\Builder\SourceCodeBuilder;
+use Phpactor\CodeBuilder\Domain\Prototype\MethodBody;
+use Phpactor\CodeBuilder\Domain\Prototype\Line;
+
 
 abstract class GeneratorTestCase extends TestCase
 {
@@ -159,6 +162,34 @@ class Dog
 {
     public function hello()
     {
+    }
+}
+EOT
+            ],
+            'Renders a class method with a body' => [
+                new ClassPrototype(
+                    'Dog',
+                    Properties::empty(),
+                    Methods::fromMethods([
+                        new Method(
+                            'hello',
+                            null,
+                            Parameters::empty(),
+                            ReturnType::none(),
+                            Docblock::none(),
+                            0,
+                            MethodBody::fromLines([
+                                Line::fromString('$this->foobar = $barfoo;')
+                            ])
+                        ),
+                    ])
+                ),
+                <<<'EOT'
+class Dog
+{
+    public function hello()
+    {
+        $this->foobar = $barfoo;
     }
 }
 EOT

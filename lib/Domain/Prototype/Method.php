@@ -32,13 +32,29 @@ final class Method extends Prototype
      */
     private $docblock;
 
+    /**
+     * @var bool
+     */
+    private $isStatic;
+
+    /**
+     * @var bool
+     */
+    private $isAbstract;
+
+    /**
+     * @var MethodBody
+     */
+    private $methodBody;
+
     public function __construct(
         string $name,
         Visibility $visibility = null,
         Parameters $parameters = null,
         ReturnType $returnType = null,
         Docblock $docblock = null,
-        int $modifierFlags = 0
+        int $modifierFlags = 0,
+        MethodBody $methodBody = null
     )
     {
         $this->name = $name;
@@ -48,6 +64,7 @@ final class Method extends Prototype
         $this->docblock = $docblock ?: Docblock::none();
         $this->isStatic = $modifierFlags & self::IS_STATIC;
         $this->isAbstract = $modifierFlags & self::IS_ABSTRACT;
+        $this->methodBody = $methodBody ?: MethodBody::empty();
     }
 
     public function name(): string
@@ -83,5 +100,10 @@ final class Method extends Prototype
     public function isAbstract(): bool
     {
         return $this->isAbstract;
+    }
+
+    public function body(): MethodBody
+    {
+        return $this->methodBody;
     }
 }

@@ -72,7 +72,7 @@ class SourceCodeBuilderTest extends TestCase
     public function provideMethodBuilder()
     {
         return [
-            [
+            'Method return type' => [
                 $this->builder()->class('Dog')->method('one')
                     ->returnType('string')
                     ->visibility('private')
@@ -84,18 +84,25 @@ class SourceCodeBuilderTest extends TestCase
                     $this->assertEquals('string', $method->returnType()->__toString());
                 }
             ],
-            [
+            'Method mofifiers 1' => [
                 $this->builder()->class('Dog')->method('one')->static()->abstract(),
                 function ($method) {
                     $this->assertTrue($method->isStatic());
                     $this->assertTrue($method->isAbstract());
                 }
             ],
-            [
+            'Method mofifiers 2' => [
                 $this->builder()->class('Dog')->method('one')->abstract(),
                 function ($method) {
                     $this->assertFalse($method->isStatic());
                     $this->assertTrue($method->isAbstract());
+                }
+            ],
+            'Method lines' => [
+                $this->builder()->class('Dog')->method('one')->body()->line('one')->line('two')->end(),
+                function ($method) {
+                    $this->assertCount(2, $method->body()->lines());
+                    $this->assertEquals('one', (string) $method->body()->lines()->first());
                 }
             ],
         ];
