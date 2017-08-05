@@ -23,6 +23,7 @@ use Phpactor\CodeBuilder\Domain\Prototype\Type;
 use Phpactor\CodeBuilder\Domain\Renderer;
 use Phpactor\CodeBuilder\Domain\Updater;
 use Phpactor\CodeBuilder\Util\TextFormat;
+use Microsoft\PhpParser\Node\Statement\CompoundStatementNode;
 
 class TolerantUpdater implements Updater
 {
@@ -257,6 +258,7 @@ class TolerantUpdater implements Updater
         $newLine = false;
         $memberDeclarations = $classNode->classMembers->classMemberDeclarations;
         $existingMethodNames = [];
+        $existingMethods = [];
         foreach ($memberDeclarations as $memberNode) {
             if ($memberNode instanceof PropertyDeclaration) {
                 $lastMember = $memberNode;
@@ -266,7 +268,38 @@ class TolerantUpdater implements Updater
             if ($memberNode instanceof MethodDeclaration) {
                 $lastMember = $memberNode;
                 $existingMethodNames[] = $memberNode->getName();
+                $existingMethods[$memberNode->getName()] = $memberNode;
                 $newLine = true;
+            }
+        }
+
+        // Update methods
+        $methods = $classPrototype->methods()->in($existingMethodNames);
+
+        foreach ($methods as $method) {
+            $methodDeclaration = $existingMethods[$method->name()];
+            $bodyNode = $methodDeclaration->compoundStatementOrSemicolon;
+
+            if ($method->body()->lines()->count()) {
+                if ($bodyNode instanceof CompoundStatementNode) {
+                    $lastStatement = end($bodyNode->statements) ?: $bodyNode->openBrace;
+
+                    foreach ($method->body()->lines() as $line) {
+                        // do not add duplicate lines
+                        $bodyNodeLines = explode(PHP_EOL, $bodyNode->getText());
+
+                        foreach ($bodyNodeLines as $bodyNodeLine) {
+                            if (trim($bodyNodeLine) == trim((string) $line)) {
+                                continue 2;
+                            }
+                        }
+
+                        $this->after(
+                            $lastStatement,
+                            PHP_EOL . $this->textFormat->indent((string) $line, 2)
+                        );
+                    }
+                }
             }
         }
 
@@ -280,10 +313,11 @@ class TolerantUpdater implements Updater
             $this->after($lastMember, PHP_EOL);
         }
 
+        // Add methods
         foreach ($methods as $method) {
             $this->after(
                 $lastMember,
-                PHP_EOL . $this->textFormat->indent($this->renderer->render($method) . PHP_EOL . '{' . PHP_EOL . '}', 1)
+                PHP_EOL . $this->textFormat->indent($this->renderer->render($method) . PHP_EOL . $this->renderer->render($method->body()), 1)
             );
 
             if (false === $classPrototype->methods()->isLast($method)) {
