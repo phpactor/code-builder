@@ -11,6 +11,7 @@ use Phpactor\CodeBuilder\Domain\Prototype\ImplementsInterfaces;
 use Phpactor\CodeBuilder\Domain\Builder\InterfaceBuilder;
 use Phpactor\CodeBuilder\Domain\Prototype\ExtendsInterfaces;
 use Phpactor\CodeBuilder\Domain\Prototype\InterfacePrototype;
+use Phpactor\CodeBuilder\Domain\Builder\MethodHeaderBuilder;
 
 class InterfaceBuilder extends ClassLikeBuilder
 {
@@ -30,7 +31,7 @@ class InterfaceBuilder extends ClassLikeBuilder
     {
         return new InterfacePrototype(
             $this->name,
-            Methods::fromMethods(array_map(function (MethodBuilder $builder) {
+            Methods::fromMethods(array_map(function (MethodHeaderBuilder $builder) {
                 return $builder->build();
             }, $this->methods)),
             ExtendsInterfaces::fromTypes($this->extends)

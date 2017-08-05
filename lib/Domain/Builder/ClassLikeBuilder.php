@@ -9,6 +9,7 @@ use Phpactor\CodeBuilder\Domain\Prototype\Type;
 use Phpactor\CodeBuilder\Domain\Prototype\Methods;
 use Phpactor\CodeBuilder\Domain\Prototype\ImplementsInterfaces;
 use Phpactor\CodeBuilder\Domain\Builder\ClassLikeBuilder;
+use Phpactor\CodeBuilder\Domain\Builder\MethodHeaderBuilder;
 
 abstract class ClassLikeBuilder
 {
@@ -33,9 +34,9 @@ abstract class ClassLikeBuilder
         $this->name = $name;
     }
 
-    public function method(string $name): MethodBuilder
+    public function method(string $name): MethodHeaderBuilder
     {
-        $this->methods[] = $builder = new MethodBuilder($this, $name);
+        $this->methods[] = $builder = new MethodHeaderBuilder($this, $name);
 
         return $builder;
     }

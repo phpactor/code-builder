@@ -11,6 +11,7 @@ use Phpactor\CodeBuilder\Domain\Prototype\Visibility;
 use Phpactor\CodeBuilder\Domain\Prototype\DefaultValue;
 use Phpactor\CodeBuilder\Domain\Prototype\Property;
 use Phpactor\CodeBuilder\Domain\Prototype\Parameter;
+use Phpactor\CodeBuilder\Domain\Builder\MethodHeaderBuilder;
 
 class ParameterBuilder
 {
@@ -34,7 +35,7 @@ class ParameterBuilder
      */
     private $defaultValue;
 
-    public function __construct(MethodBuilder $parent, string $name)
+    public function __construct(MethodHeaderBuilder $parent, string $name)
     {
         $this->parent = $parent;
         $this->name = $name;
@@ -63,7 +64,7 @@ class ParameterBuilder
         );
     }
 
-    public function end(): MethodBuilder
+    public function end(): MethodHeaderBuilder
     {
         return $this->parent;
     }

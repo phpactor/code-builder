@@ -6,7 +6,7 @@ use PHPUnit\Framework\TestCase;
 use Phpactor\CodeBuilder\Domain\Builder\SourceCodeBuilder;
 use Phpactor\CodeBuilder\Domain\Prototype\SourceCode;
 use Phpactor\CodeBuilder\Domain\Prototype\ClassPrototype;
-use Phpactor\CodeBuilder\Domain\Builder\MethodBuilder;
+use Phpactor\CodeBuilder\Domain\Builder\MethodHeaderBuilder;
 
 class SourceCodeBuilderTest extends TestCase
 {
@@ -62,7 +62,7 @@ class SourceCodeBuilderTest extends TestCase
     /**
      * @dataProvider provideMethodBuilder
      */
-    public function testMethodBuilder(MethodBuilder $methodBuilder, \Closure $assertion)
+    public function testMethodBuilder(MethodHeaderBuilder $methodBuilder, \Closure $assertion)
     {
         $builder = $this->builder();
         $method = $methodBuilder->build();

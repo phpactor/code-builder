@@ -9,7 +9,7 @@ use Phpactor\CodeBuilder\Domain\Prototype\ClassPrototype;
 use Phpactor\CodeBuilder\Domain\Prototype\Classes;
 use Phpactor\CodeBuilder\Domain\Prototype\Docblock;
 use Phpactor\CodeBuilder\Domain\Prototype\DefaultValue;
-use Phpactor\CodeBuilder\Domain\Prototype\Method;
+use Phpactor\CodeBuilder\Domain\Prototype\MethodHeader;
 use Phpactor\CodeBuilder\Domain\Prototype\Methods;
 use Phpactor\CodeBuilder\Domain\Prototype\NamespaceName;
 use Phpactor\CodeBuilder\Domain\Prototype\Parameter;
@@ -28,7 +28,12 @@ use Phpactor\CodeBuilder\Domain\Prototype\SourceText;
 use Phpactor\CodeBuilder\Domain\Prototype\ReturnType;
 use Phpactor\CodeBuilder\Domain\Prototype\Interfaces;
 use Phpactor\CodeBuilder\Domain\Prototype\InterfacePrototype;
+use Phpactor\CodeBuilder\Domain\Prototype\Lines;
+use Phpactor\CodeBuilder\Domain\Prototype\Line;
 use Phpactor\CodeBuilder\Domain\Builder\SourceCodeBuilder;
+use Phpactor\CodeBuilder\Domain\Prototype\MethodBody;
+use Phpactor\CodeBuilder\Domain\Prototype\Method;
+
 
 abstract class GeneratorTestCase extends TestCase
 {
@@ -151,7 +156,9 @@ EOT
                     'Dog',
                     Properties::empty(),
                     Methods::fromMethods([
-                        new Method('hello'),
+                        new Method(
+                            new MethodHeader('hello')
+                        )
                     ])
                 ),
                 <<<'EOT'
@@ -164,7 +171,7 @@ class Dog
 EOT
             ],
             'Renders a method parameters' => [
-                new Method('hello', Visibility::private(), Parameters::fromParameters([
+                new MethodHeader('hello', Visibility::private(), Parameters::fromParameters([
                     new Parameter('one'),
                     new Parameter('two', Type::fromString('string')),
                     new Parameter('three', Type::none(), DefaultValue::fromValue(42)),
@@ -174,33 +181,52 @@ private function hello($one, string $two, $three = 42)
 EOT
             ],
             'Renders static method' => [
-                new Method(
+                new MethodHeader(
                     'hello',
                     Visibility::private(),
                     Parameters::empty(),
                     ReturnType::none(),
                     Docblock::none(),
-                    Method::IS_STATIC
+                    MethodHeader::IS_STATIC
                 ),
                 <<<'EOT'
 private static function hello()
 EOT
             ],
-            'Renders abstract method' => [
-                new Method(
+            'Renders method with body' => [
+                new MethodHeader(
                     'hello',
                     Visibility::private(),
                     Parameters::empty(),
                     ReturnType::none(),
                     Docblock::none(),
-                    Method::IS_ABSTRACT
+                    0,
+                    MethodBody::fromLines(Lines::fromLines([
+                        Line::fromString('$this->foobar = FOO')
+                    ]))
+                ),
+                <<<'EOT'
+private static function hello()
+{
+    $this->foobar = FOO;
+}
+EOT
+            ],
+            'Renders abstract method' => [
+                new MethodHeader(
+                    'hello',
+                    Visibility::private(),
+                    Parameters::empty(),
+                    ReturnType::none(),
+                    Docblock::none(),
+                    MethodHeader::IS_ABSTRACT
                 ),
                 <<<'EOT'
 abstract private function hello()
 EOT
             ],
             'Renders method with a docblock' => [
-                new Method(
+                new MethodHeader(
                     'hello',
                     Visibility::private(),
                     Parameters::empty(),
@@ -215,7 +241,7 @@ private function hello()
 EOT
             ],
             'Renders method with a with special chars' => [
-                new Method(
+                new MethodHeader(
                     'hello',
                     Visibility::private(),
                     Parameters::empty(),
@@ -230,7 +256,7 @@ private function hello()
 EOT
             ],
             'Renders method return type' => [
-                new Method(
+                new MethodHeader(
                     'hello',
                     Visibility::private(),
                     Parameters::empty(),
@@ -294,7 +320,7 @@ EOT
             ],
             'Renders an interface with methods' => [
                 new InterfacePrototype('Dog', Methods::fromMethods([
-                    new Method('hello'),
+                    new MethodHeader('hello'),
                 ])),
                 <<<'EOT'
 interface Dog

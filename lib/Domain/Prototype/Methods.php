@@ -6,7 +6,7 @@ class Methods extends Collection
 {
     public static function fromMethods(array $methods)
     {
-        return new static(array_reduce($methods, function ($acc, $method) {
+        return new static(array_reduce($methods, function ($acc, Method $method) {
             $acc[$method->name()] = $method;
             return $acc;
         }, []));

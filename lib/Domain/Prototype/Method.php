@@ -2,86 +2,37 @@
 
 namespace Phpactor\CodeBuilder\Domain\Prototype;
 
+use Phpactor\CodeBuilder\Domain\Prototype\Lines;
+use Phpactor\CodeBuilder\Domain\Prototype\MethodBody;
+
 final class Method extends Prototype
 {
-    const IS_STATIC = 1;
-    const IS_ABSTRACT = 2;
+    /**
+     * @var MethodHeader
+     */
+    private $header;
 
     /**
-     * @var string
+     * @var MethodBody
      */
-    private $name;
-
-    /**
-     * @var Visibility
-     */
-    private $visibility;
-
-    /**
-     * @var Parameters
-     */
-    private $parameters;
-
-    /**
-     * @var ReturnType
-     */
-    private $returnType;
-
-    /*
-     * @var Docblock
-     */
-    private $docblock;
+    private $body;
 
     public function __construct(
-        string $name,
-        Visibility $visibility = null,
-        Parameters $parameters = null,
-        ReturnType $returnType = null,
-        Docblock $docblock = null,
-        int $modifierFlags = 0
+        MethodHeader $header,
+        MethodBody $body = null
     )
     {
-        $this->name = $name;
-        $this->visibility = $visibility ?: Visibility::public();
-        $this->parameters = $parameters ?: Parameters::empty();
-        $this->returnType = $returnType ?: ReturnType::none();
-        $this->docblock = $docblock ?: Docblock::none();
-        $this->isStatic = $modifierFlags & self::IS_STATIC;
-        $this->isAbstract = $modifierFlags & self::IS_ABSTRACT;
+        $this->header = $header;
+        $this->body = $body ?: MethodBody::empty();
     }
 
-    public function name(): string
+    public function header(): MethodHeader
     {
-        return $this->name;
+        return $this->header;
     }
 
-    public function visibility(): Visibility
+    public function body(): MethodBody
     {
-        return $this->visibility;
-    }
-
-    public function parameters(): Parameters
-    {
-        return $this->parameters;
-    }
-
-    public function returnType(): ReturnType
-    {
-        return $this->returnType;
-    }
-
-    public function docblock(): Docblock
-    {
-        return $this->docblock;
-    }
-
-    public function isStatic(): bool
-    {
-        return $this->isStatic;
-    }
-
-    public function isAbstract(): bool
-    {
-        return $this->isAbstract;
+        return $this->body;
     }
 }
