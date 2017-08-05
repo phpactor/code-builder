@@ -664,6 +664,34 @@ class Aardvark
 }
 EOT
             ],
+            'It adds a method with a body' => [
+                <<<'EOT'
+class Aardvark
+{
+    public function eyes()
+    {
+    }
+}
+EOT
+                , SourceCodeBuilder::create()
+                    ->class('Aardvark')
+                        ->method('methodOne')->body()->line('echo "Hello World";')->end()->end()
+                    ->end()
+                    ->build(),
+                <<<'EOT'
+class Aardvark
+{
+    public function eyes()
+    {
+    }
+
+    public function methodOne()
+    {
+        echo "Hello World";
+    }
+}
+EOT
+            ],
         ];
     }
 

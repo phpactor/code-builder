@@ -280,10 +280,11 @@ class TolerantUpdater implements Updater
             $this->after($lastMember, PHP_EOL);
         }
 
+        // Add methods
         foreach ($methods as $method) {
             $this->after(
                 $lastMember,
-                PHP_EOL . $this->textFormat->indent($this->renderer->render($method) . PHP_EOL . '{' . PHP_EOL . '}', 1)
+                PHP_EOL . $this->textFormat->indent($this->renderer->render($method) . PHP_EOL . $this->renderer->render($method->body()), 1)
             );
 
             if (false === $classPrototype->methods()->isLast($method)) {
