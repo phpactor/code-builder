@@ -1,7 +1,7 @@
 {% if prototype.docblock.notNone %}
 /**
 {% for line in prototype.docblock.asLines %}
- * {{ line }}
+ * {{ line|raw }}
 {% endfor %}
  */
 {% endif %}

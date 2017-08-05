@@ -199,6 +199,36 @@ EOT
 abstract private function hello()
 EOT
             ],
+            'Renders method with a docblock' => [
+                new Method(
+                    'hello',
+                    Visibility::private(),
+                    Parameters::empty(),
+                    ReturnType::none(),
+                    Docblock::fromString('Hello bob')
+                ),
+                <<<'EOT'
+/**
+ * Hello bob
+ */
+private function hello()
+EOT
+            ],
+            'Renders method with a with special chars' => [
+                new Method(
+                    'hello',
+                    Visibility::private(),
+                    Parameters::empty(),
+                    ReturnType::none(),
+                    Docblock::fromString('<hello bob>')
+                ),
+                <<<'EOT'
+/**
+ * <hello bob>
+ */
+private function hello()
+EOT
+            ],
             'Renders method return type' => [
                 new Method(
                     'hello',

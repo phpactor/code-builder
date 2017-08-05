@@ -249,6 +249,24 @@ class Anteater
 }
 EOT
             ],
+            'It does not modify a class with a namespace' => [
+                
+                <<<'EOT'
+namespace Animals;
+
+class Aardvark
+{
+}
+EOT
+                , SourceCodeBuilder::create()->namespace('Animals')->class('Aardvark')->end()->build(),
+                <<<'EOT'
+namespace Animals;
+
+class Aardvark
+{
+}
+EOT
+            ],
             'It adds multiple classes' => [
                 <<<'EOT'
 EOT
