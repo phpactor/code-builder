@@ -15,6 +15,7 @@ class SourceCodeBuilderTest extends TestCase
         $builder = $this->builder();
         $builder->namespace('Barfoo');
         $builder->use('Foobar');
+        $builder->use('Foobar');
         $builder->use('Barfoo');
         $builder->class('Hello');
 

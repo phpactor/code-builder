@@ -46,7 +46,7 @@ class SourceCodeBuilder
 
     public function use(string $use): SourceCodeBuilder
     {
-        $this->useStatements[] = Type::fromString($use);
+        $this->useStatements[$use] = Type::fromString($use);
 
         return $this;
     }

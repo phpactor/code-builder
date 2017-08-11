@@ -138,6 +138,19 @@ namespace Kingdom;
 use Primate;
 EOT
             ],
+            'It ignores repeated namespaced use statements' => [
+                
+                <<<'EOT'
+namespace Kingdom;
+
+EOT
+                , SourceCodeBuilder::create()->use('Primate\Ape')->use('Primate\Ape')->build(),
+                <<<'EOT'
+namespace Kingdom;
+
+use Primate\Ape;
+EOT
+            ],
             'It ignores existing aliased use statements' => [
                 
                 <<<'EOT'
