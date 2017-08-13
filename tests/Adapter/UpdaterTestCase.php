@@ -418,7 +418,7 @@ class Aardvark
 }
 EOT
             ],
-            'It adds is idempotent' => [
+            'It adds a property idempotently' => [
                 <<<'EOT'
 class Aardvark
 {
@@ -434,6 +434,25 @@ EOT
 class Aardvark
 {
     public $propertyOne;
+}
+EOT
+            ],
+            'It adds a property with existing assigned property' => [
+                <<<'EOT'
+class Aardvark
+{
+    public $propertyOne = false;
+}
+EOT
+                , SourceCodeBuilder::create()
+                    ->class('Aardvark')
+                        ->property('propertyOne')->end()
+                    ->end()
+                    ->build(),
+                <<<'EOT'
+class Aardvark
+{
+    public $propertyOne = false;
 }
 EOT
             ],

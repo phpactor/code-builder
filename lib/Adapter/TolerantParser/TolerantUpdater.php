@@ -24,6 +24,8 @@ use Phpactor\CodeBuilder\Domain\Renderer;
 use Phpactor\CodeBuilder\Domain\Updater;
 use Phpactor\CodeBuilder\Util\TextFormat;
 use Microsoft\PhpParser\Node\Statement\CompoundStatementNode;
+use Microsoft\PhpParser\Node\Expression\Variable;
+use Microsoft\PhpParser\Node\Expression\AssignmentExpression;
 
 class TolerantUpdater implements Updater
 {
@@ -221,8 +223,8 @@ class TolerantUpdater implements Updater
             }
 
             if ($memberNode instanceof PropertyDeclaration) {
-                foreach ($memberNode->propertyElements->getElements() as $variable) {
-                    $existingPropertyNames[] = $variable->getName();
+                foreach ($memberNode->propertyElements->getElements() as $property) {
+                    $existingPropertyNames[] = $this->resolvePropertyName($property);
                 }
                 $lastProperty = $memberNode;
                 $nextMember = next($memberDeclarations) ?: $nextMember;
@@ -324,6 +326,22 @@ class TolerantUpdater implements Updater
                 $this->after($lastMember, PHP_EOL);
             }
         }
+    }
+
+    private function resolvePropertyName(Node $property)
+    {
+        if ($property instanceof Variable) {
+            return $property->getName();
+        }
+
+        if ($property instanceof AssignmentExpression) {
+            return $this->resolvePropertyName($property->leftOperand);
+        }
+
+        throw new \InvalidArgumentException(sprintf(
+            'Do not know how to resolve property elemnt of type "%s"',
+            get_class($property)
+        ));
     }
 
     private function remove($node)
