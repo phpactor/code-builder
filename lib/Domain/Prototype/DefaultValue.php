@@ -2,24 +2,13 @@
 
 namespace Phpactor\CodeBuilder\Domain\Prototype;
 
-final class DefaultValue
+final class DefaultValue extends Value
 {
-    private $value;
     private $none = false;
-
-    private function __construct($value = null)
-    {
-        $this->value = $value;
-    }
-
-    public static function fromValue($value)
-    {
-        return new self($value);
-    }
 
     public static function none()
     {
-        $new = new self();
+        $new = new static();
         $new->none = true;
 
         return $new;
@@ -27,21 +16,12 @@ final class DefaultValue
 
     public static function null(): DefaultValue
     {
-        return new self(null);
+        return new static(null);
     }
 
     public function notNone()
     {
         return false === $this->none;
-    }
-
-    public function export()
-    {
-        if ($this->value === null) {
-            return 'null';
-        }
-
-        return var_export($this->value, true);
     }
 }
 

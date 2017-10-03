@@ -2,10 +2,15 @@
 namespace Phpactor\CodeBuilder\Adapter\TolerantParser;
 
 use Microsoft\PhpParser\Node;
+use Microsoft\PhpParser\Node\ClassConstDeclaration;
+use Microsoft\PhpParser\Node\Expression\AssignmentExpression;
+use Microsoft\PhpParser\Node\Expression\Variable;
 use Microsoft\PhpParser\Node\MethodDeclaration;
 use Microsoft\PhpParser\Node\PropertyDeclaration;
 use Microsoft\PhpParser\Node\SourceFileNode;
 use Microsoft\PhpParser\Node\Statement\ClassDeclaration;
+use Microsoft\PhpParser\Node\Statement\CompoundStatementNode;
+use Microsoft\PhpParser\Node\Statement\ConstDeclaration;
 use Microsoft\PhpParser\Node\Statement\InlineHtml;
 use Microsoft\PhpParser\Node\Statement\NamespaceDefinition;
 use Microsoft\PhpParser\Node\Statement\NamespaceUseDeclaration;
@@ -23,9 +28,6 @@ use Phpactor\CodeBuilder\Domain\Prototype\Type;
 use Phpactor\CodeBuilder\Domain\Renderer;
 use Phpactor\CodeBuilder\Domain\Updater;
 use Phpactor\CodeBuilder\Util\TextFormat;
-use Microsoft\PhpParser\Node\Statement\CompoundStatementNode;
-use Microsoft\PhpParser\Node\Expression\Variable;
-use Microsoft\PhpParser\Node\Expression\AssignmentExpression;
 
 class TolerantUpdater implements Updater
 {
@@ -160,6 +162,7 @@ class TolerantUpdater implements Updater
     {
         $this->updateExtends($classPrototype, $classNode);
         $this->updateImplements($classPrototype, $classNode);
+        $this->updateConstants($classPrototype, $classNode);
         $this->updateProperties($classPrototype, $classNode);
         $this->updateMethods($classPrototype, $classNode);
     }
@@ -204,6 +207,53 @@ class TolerantUpdater implements Updater
         $names = join(', ', [ implode(', ', $existingNames), $additionalNames->__toString()]);
 
         $this->replace($classNode->classInterfaceClause, ' implements ' . $names);
+    }
+
+    private function updateConstants(ClassPrototype $classPrototype, ClassDeclaration $classNode)
+    {
+        if (count($classPrototype->constants()) === 0) {
+            return;
+        }
+
+        $lastConstant = $classNode->classMembers->openBrace;
+        $nextMember = null;
+
+        $memberDeclarations = $classNode->classMembers->classMemberDeclarations;
+        $existingConstantNames = [];
+        foreach ($memberDeclarations as $memberNode) {
+            if (null === $nextMember) {
+                $nextMember = $memberNode;
+            }
+
+            if ($memberNode instanceof ClassConstDeclaration) {
+                /** @var ConstDeclaration $memberNode */
+                foreach ($memberNode->constElements->getElements() as $variable) {
+                    $existingConstantNames[] = $variable->getName();
+                }
+                $lastConstant = $memberNode;
+                $nextMember = next($memberDeclarations) ?: $nextMember;
+                prev($memberDeclarations);
+            }
+        }
+
+        foreach ($classPrototype->constants()->notIn($existingConstantNames) as $constant) {
+            // if constant type exists then the last constant has a docblock - add a line break
+            if ($lastConstant instanceof ConstantDeclaration && $constant->type() != Type::none()) {
+                $this->after($lastConstant, PHP_EOL);
+            }
+
+            $this->after(
+                $lastConstant,
+                PHP_EOL . $this->textFormat->indent($this->renderer->render($constant), 1)
+            );
+
+            if ($classPrototype->constants()->isLast($constant) && (
+                $nextMember instanceof MethodDeclaration ||
+                $nextMember instanceof PropertyDeclaration
+            )) {
+                $this->after($lastConstant, PHP_EOL);
+            }
+        }
     }
 
     private function updateProperties(ClassPrototype $classPrototype, ClassDeclaration $classNode)

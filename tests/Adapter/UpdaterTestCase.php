@@ -802,6 +802,143 @@ EOT
         ];
     }
 
+    /**
+     * @dataProvider provideConstants
+     */
+    public function testConstants(string $existingCode, SourceCode $prototype, string $expectedCode)
+    {
+        $this->assertUpdate($existingCode, $prototype, $expectedCode);
+    }
+
+    public function provideConstants()
+    {
+        return [
+            'It adds a constant' => [
+                <<<'EOT'
+class Aardvark
+{
+}
+EOT
+                , SourceCodeBuilder::create()
+                    ->class('Aardvark')
+                        ->constant('constantOne', 'foo')->end()
+                    ->end()
+                    ->build(),
+                <<<'EOT'
+class Aardvark
+{
+    const constantOne = 'foo';
+}
+EOT
+            ],
+            'It adds is idempotent' => [
+                <<<'EOT'
+class Aardvark
+{
+    const constantOne = 'aaa';
+}
+EOT
+                , SourceCodeBuilder::create()
+                    ->class('Aardvark')
+                        ->constant('constantOne', 'aaa')->end()
+                    ->end()
+                    ->build(),
+                <<<'EOT'
+class Aardvark
+{
+    const constantOne = 'aaa';
+}
+EOT
+            ],
+            'It adds a constant after existing constants' => [
+                <<<'EOT'
+class Aardvark
+{
+    const constantOne = 'aaa';
+}
+EOT
+                , SourceCodeBuilder::create()
+                    ->class('Aardvark')
+                        ->constant('constantTwo', 'bbb')->end()
+                    ->end()
+                    ->build(),
+                <<<'EOT'
+class Aardvark
+{
+    const constantOne = 'aaa';
+    const constantTwo = 'bbb';
+}
+EOT
+            ],
+            'It adds multiple constants' => [
+                <<<'EOT'
+class Aardvark
+{
+}
+EOT
+                , SourceCodeBuilder::create()
+                    ->class('Aardvark')
+                        ->constant('constantOne', 'a')->end()->constant('constantTwo', 'b')->end()
+                    ->end()
+                    ->build(),
+                <<<'EOT'
+class Aardvark
+{
+    const constantOne = 'a';
+    const constantTwo = 'b';
+}
+EOT
+            ],
+            'It adds before methods' => [
+                <<<'EOT'
+class Aardvark
+{
+    public function crawl()
+    {
+    }
+}
+EOT
+                , SourceCodeBuilder::create()
+                    ->class('Aardvark')
+                    ->constant('constantOne', 1)->end()
+                    ->end()
+                    ->build(),
+                <<<'EOT'
+class Aardvark
+{
+    const constantOne = 1;
+
+    public function crawl()
+    {
+    }
+}
+EOT
+            ],
+            'It adds before properties' => [
+                <<<'EOT'
+class Aardvark
+{
+    private $crawlSpace;
+}
+EOT
+                , SourceCodeBuilder::create()
+                    ->class('Aardvark')
+                    ->constant('constantOne', 1)->end()
+                    ->end()
+                    ->build(),
+                <<<'EOT'
+class Aardvark
+{
+    const constantOne = 1;
+
+    private $crawlSpace;
+}
+EOT
+            ]
+        ];
+    }
+
+
     abstract protected function updater(): Updater;
 
     private function assertUpdate(string $existingCode, SourceCode $prototype, string $expectedCode)

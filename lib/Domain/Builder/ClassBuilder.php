@@ -8,6 +8,8 @@ use Phpactor\CodeBuilder\Domain\Prototype\Properties;
 use Phpactor\CodeBuilder\Domain\Prototype\Type;
 use Phpactor\CodeBuilder\Domain\Prototype\Methods;
 use Phpactor\CodeBuilder\Domain\Prototype\ImplementsInterfaces;
+use Phpactor\CodeBuilder\Domain\Builder\ConstantBuilder;
+use Phpactor\CodeBuilder\Domain\Prototype\Constants;
 
 class ClassBuilder extends ClassLikeBuilder
 {
@@ -25,6 +27,11 @@ class ClassBuilder extends ClassLikeBuilder
      * @var Type[]
      */
     private $interfaces = [];
+
+    /**
+     * @var ConstantBuilder[]
+     */
+    private $constants = [];
 
     public function extends(string $class): ClassBuilder
     {
@@ -47,6 +54,14 @@ class ClassBuilder extends ClassLikeBuilder
         return $builder;
     }
 
+    public function constant(string $name, $value): ConstantBuilder
+    {
+        $this->constants[] = $builder = new ConstantBuilder($this, $name, $value);
+
+        return $builder;
+    }
+
+
     public function build(): ClassPrototype
     {
         return new ClassPrototype(
@@ -54,6 +69,9 @@ class ClassBuilder extends ClassLikeBuilder
             Properties::fromProperties(array_map(function (PropertyBuilder $builder) {
                 return $builder->build();
             }, $this->properties)),
+            Constants::fromConstants(array_map(function (ConstantBuilder $builder) {
+                return $builder->build();
+            }, $this->constants)),
             Methods::fromMethods(array_map(function (MethodBuilder $builder) {
                 return $builder->build();
             }, $this->methods)),
@@ -62,3 +80,4 @@ class ClassBuilder extends ClassLikeBuilder
         );
     }
 }
+

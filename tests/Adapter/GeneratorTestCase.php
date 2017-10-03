@@ -29,6 +29,7 @@ use Phpactor\CodeBuilder\Domain\Prototype\ReturnType;
 use Phpactor\CodeBuilder\Domain\Prototype\Interfaces;
 use Phpactor\CodeBuilder\Domain\Prototype\InterfacePrototype;
 use Phpactor\CodeBuilder\Domain\Builder\SourceCodeBuilder;
+use Phpactor\CodeBuilder\Domain\Prototype\Constants;
 use Phpactor\CodeBuilder\Domain\Prototype\MethodBody;
 use Phpactor\CodeBuilder\Domain\Prototype\Line;
 
@@ -153,6 +154,7 @@ EOT
                 new ClassPrototype(
                     'Dog',
                     Properties::empty(),
+                    Constants::empty(),
                     Methods::fromMethods([
                         new Method('hello'),
                     ])
@@ -170,6 +172,7 @@ EOT
                 new ClassPrototype(
                     'Dog',
                     Properties::empty(),
+                    Constants::empty(),
                     Methods::fromMethods([
                         new Method(
                             'hello',
@@ -275,6 +278,7 @@ EOT
                 new ClassPrototype(
                     'Kitten',
                     Properties::empty(),
+                    Constants::empty(),
                     Methods::empty(),
                     ExtendsClass::fromString('Cat')
                 ),
@@ -288,6 +292,7 @@ EOT
                 new ClassPrototype(
                     'Kitten',
                     Properties::empty(),
+                    Constants::empty(),
                     Methods::empty(),
                     ExtendsClass::none(),
                     ImplementsInterfaces::fromTypes([

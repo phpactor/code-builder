@@ -4,6 +4,12 @@ class {{ prototype.name }}{% if prototype.extendsClass.notNone %} extends {{ pro
 {% endif %}
 
 {
+{% for constant in prototype.constants %}
+{{ generator.render(constant, variabt)|indent(1)|raw }}
+{% if not loop.last %}
+
+{% endif %}
+{% endfor %}
 {% for property in prototype.properties %}
 {{ generator.render(property, variant)|indent(1)|raw }}
 {% if not loop.last %}
