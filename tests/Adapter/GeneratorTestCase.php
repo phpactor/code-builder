@@ -3,13 +3,21 @@
 namespace Phpactor\CodeBuilder\Tests\Adapter;
 
 use PHPUnit\Framework\TestCase;
+use Phpactor\CodeBuilder\Domain\Builder\SourceCodeBuilder;
 use Phpactor\CodeBuilder\Domain\Code;
-use Phpactor\CodeBuilder\Domain\Renderer;
 use Phpactor\CodeBuilder\Domain\Prototype\ClassPrototype;
 use Phpactor\CodeBuilder\Domain\Prototype\Classes;
-use Phpactor\CodeBuilder\Domain\Prototype\Docblock;
+use Phpactor\CodeBuilder\Domain\Prototype\Constant;
+use Phpactor\CodeBuilder\Domain\Prototype\Constants;
 use Phpactor\CodeBuilder\Domain\Prototype\DefaultValue;
+use Phpactor\CodeBuilder\Domain\Prototype\Docblock;
+use Phpactor\CodeBuilder\Domain\Prototype\ExtendsClass;
+use Phpactor\CodeBuilder\Domain\Prototype\ImplementsInterfaces;
+use Phpactor\CodeBuilder\Domain\Prototype\InterfacePrototype;
+use Phpactor\CodeBuilder\Domain\Prototype\Interfaces;
+use Phpactor\CodeBuilder\Domain\Prototype\Line;
 use Phpactor\CodeBuilder\Domain\Prototype\Method;
+use Phpactor\CodeBuilder\Domain\Prototype\MethodBody;
 use Phpactor\CodeBuilder\Domain\Prototype\Methods;
 use Phpactor\CodeBuilder\Domain\Prototype\NamespaceName;
 use Phpactor\CodeBuilder\Domain\Prototype\Parameter;
@@ -18,21 +26,14 @@ use Phpactor\CodeBuilder\Domain\Prototype\Properties;
 use Phpactor\CodeBuilder\Domain\Prototype\Property;
 use Phpactor\CodeBuilder\Domain\Prototype\Prototype;
 use Phpactor\CodeBuilder\Domain\Prototype\QualifiedName;
-use Phpactor\CodeBuilder\Domain\Prototype\SourceCode;
-use Phpactor\CodeBuilder\Domain\Prototype\UseStatements;
-use Phpactor\CodeBuilder\Domain\Prototype\Visibility;
-use Phpactor\CodeBuilder\Domain\Prototype\Type;
-use Phpactor\CodeBuilder\Domain\Prototype\ImplementsInterfaces;
-use Phpactor\CodeBuilder\Domain\Prototype\ExtendsClass;
-use Phpactor\CodeBuilder\Domain\Prototype\SourceText;
 use Phpactor\CodeBuilder\Domain\Prototype\ReturnType;
-use Phpactor\CodeBuilder\Domain\Prototype\Interfaces;
-use Phpactor\CodeBuilder\Domain\Prototype\InterfacePrototype;
-use Phpactor\CodeBuilder\Domain\Builder\SourceCodeBuilder;
-use Phpactor\CodeBuilder\Domain\Prototype\Constants;
-use Phpactor\CodeBuilder\Domain\Prototype\MethodBody;
-use Phpactor\CodeBuilder\Domain\Prototype\Line;
-
+use Phpactor\CodeBuilder\Domain\Prototype\SourceCode;
+use Phpactor\CodeBuilder\Domain\Prototype\SourceText;
+use Phpactor\CodeBuilder\Domain\Prototype\Type;
+use Phpactor\CodeBuilder\Domain\Prototype\UseStatements;
+use Phpactor\CodeBuilder\Domain\Prototype\Value;
+use Phpactor\CodeBuilder\Domain\Prototype\Visibility;
+use Phpactor\CodeBuilder\Domain\Renderer;
 
 abstract class GeneratorTestCase extends TestCase
 {
@@ -148,6 +149,21 @@ EOT
                 new Property('trains', Visibility::private(), DefaultValue::null()),
                 <<<'EOT'
 private $trains = null;
+EOT
+            ],
+            'Renders a class with constants' => [
+                new ClassPrototype(
+                    'Dog',
+                    Properties::empty(),
+                    Constants::fromConstants([
+                        new Constant('AAA', Value::fromValue('aaa'))
+                    ])
+                ),
+                <<<'EOT'
+class Dog
+{
+    const AAA = 'aaa';
+}
 EOT
             ],
             'Renders a class with methods' => [

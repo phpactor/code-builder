@@ -5,7 +5,7 @@ class {{ prototype.name }}{% if prototype.extendsClass.notNone %} extends {{ pro
 
 {
 {% for constant in prototype.constants %}
-{{ generator.render(constant, variabt)|indent(1)|raw }}
+{{ generator.render(constant, variant)|indent(1)|raw }}
 {% if not loop.last %}
 
 {% endif %}
