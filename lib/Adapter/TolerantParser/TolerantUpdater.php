@@ -28,6 +28,9 @@ use Phpactor\CodeBuilder\Domain\Prototype\Type;
 use Phpactor\CodeBuilder\Domain\Renderer;
 use Phpactor\CodeBuilder\Domain\Updater;
 use Phpactor\CodeBuilder\Util\TextFormat;
+use Phpactor\CodeBuilder\Domain\Prototype\Method;
+use Phpactor\CodeBuilder\Domain\Prototype\Parameter;
+use Phpactor\CodeBuilder\Domain\Prototype\Parameters;
 
 class TolerantUpdater implements Updater
 {
@@ -328,31 +331,17 @@ class TolerantUpdater implements Updater
         // Update methods
         $methods = $classPrototype->methods()->in($existingMethodNames);
 
+        /** @var Method $method */
         foreach ($methods as $method) {
+            /** @var MethodDeclaration $methodDeclaration */
             $methodDeclaration = $existingMethods[$method->name()];
             $bodyNode = $methodDeclaration->compoundStatementOrSemicolon;
 
             if ($method->body()->lines()->count()) {
-                if ($bodyNode instanceof CompoundStatementNode) {
-                    $lastStatement = end($bodyNode->statements) ?: $bodyNode->openBrace;
-
-                    foreach ($method->body()->lines() as $line) {
-                        // do not add duplicate lines
-                        $bodyNodeLines = explode(PHP_EOL, $bodyNode->getText());
-
-                        foreach ($bodyNodeLines as $bodyNodeLine) {
-                            if (trim($bodyNodeLine) == trim((string) $line)) {
-                                continue 2;
-                            }
-                        }
-
-                        $this->after(
-                            $lastStatement,
-                            PHP_EOL . $this->textFormat->indent((string) $line, 2)
-                        );
-                    }
-                }
+                $this->appendLinesToMethod($method, $bodyNode);
             }
+
+            $this->updateOrAddParameters($method->parameters(), $methodDeclaration);
         }
 
         $methods = $classPrototype->methods()->notIn($existingMethodNames);
@@ -375,6 +364,31 @@ class TolerantUpdater implements Updater
             if (false === $classPrototype->methods()->isLast($method)) {
                 $this->after($lastMember, PHP_EOL);
             }
+        }
+    }
+
+    private function appendLinesToMethod(Method $method, Node $bodyNode)
+    {
+        if (false === $bodyNode instanceof CompoundStatementNode) {
+            return;
+        }
+
+        $lastStatement = end($bodyNode->statements) ?: $bodyNode->openBrace;
+
+        foreach ($method->body()->lines() as $line) {
+            // do not add duplicate lines
+            $bodyNodeLines = explode(PHP_EOL, $bodyNode->getText());
+
+            foreach ($bodyNodeLines as $bodyNodeLine) {
+                if (trim($bodyNodeLine) == trim((string) $line)) {
+                    continue 2;
+                }
+            }
+
+            $this->after(
+                $lastStatement,
+                PHP_EOL . $this->textFormat->indent((string) $line, 2)
+            );
         }
     }
 
@@ -401,7 +415,7 @@ class TolerantUpdater implements Updater
 
     private function after($node, string $text)
     {
-        $this->edits[] = new TextEdit($this->getEndPos($node), 0, $text);
+        $this->edits[] = new TextEdit($node->getEndPosition(), 0, $text);
     }
 
     private function replace($node, string $text)
@@ -409,8 +423,61 @@ class TolerantUpdater implements Updater
         $this->edits[] = new TextEdit($node->getFullStart(), $node->getFullWidth(), $text);
     }
 
-    private function getEndPos($node)
+    private function updateOrAddParameters(Parameters $parameters, MethodDeclaration $methodDeclaration)
     {
-        return $node->getEndPosition();
+        if (0 === $parameters->count()) {
+            return;
+        }
+
+        $parameterNodes = [];
+        if ($methodDeclaration->parameters) {
+            $parameterNodes = iterator_to_array($methodDeclaration->parameters->getElements());
+        }
+        $replacementParameters = [];
+
+        foreach ($parameters as $parameter) {
+            $parameterNode = current($parameterNodes);
+
+            if ($parameterNode) {
+                $parameterNodeName = ltrim($parameterNode->variableName->getText($parameterNode->getFileContents()), '$');
+
+                if ($parameterNodeName == $parameter->name()) {
+                    $replacementParameters[] = $this->renderer->render($parameter);
+                    array_shift($parameterNodes);
+                    continue;
+                }
+            }
+
+            $replacementParameters[] = $this->renderer->render($parameter);
+        }
+
+        foreach ($parameterNodes as $parameterNode) {
+            $replacementParameters[] = $parameterNode->getText($parameterNode->getFileContents());
+        }
+
+        if ($methodDeclaration->parameters) {
+            $this->replace($methodDeclaration->parameters, implode(', ', $replacementParameters));
+            return;
+        }
+
+        $this->edits[] = new TextEdit($methodDeclaration->openParen->getStartPosition() + 1, 0, implode(', ', $replacementParameters));
+    }
+
+    private function updateParameters(Parameters $parameters, ParameterDeclarationList $parameterList)
+    {
+        $seenParameters = [];
+        foreach ($parameters as $parameter) {
+            $parameterString = $this->renderer->render($parameter);
+            foreach ($parameterList->getElements() as $parameterNode) {
+                $parameterNodeName = ltrim($parameterNode->variableName->getText($parameterNode->getFileContents()), '$');
+
+                if ($parameterNodeName == $parameter->name()) {
+                    $this->replace($methodDeclaration->parameters, $parameterString);
+                    $seenParameters[] = $parameter->name();
+                }
+            }
+        }
+
+        return $seenParameters;
     }
 }

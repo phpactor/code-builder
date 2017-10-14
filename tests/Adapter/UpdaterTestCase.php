@@ -608,6 +608,30 @@ class Aardvark
 }
 EOT
             ],
+            'It adds parameterized method' => [
+                <<<'EOT'
+class Aardvark
+{
+}
+EOT
+                , SourceCodeBuilder::create()
+                    ->class('Aardvark')
+                        ->method('methodOne')
+                            ->parameter('sniff')
+                                ->type('Snort')
+                            ->end()
+                        ->end()
+                    ->end()
+                    ->build(),
+                <<<'EOT'
+class Aardvark
+{
+    public function methodOne(Snort $sniff)
+    {
+    }
+}
+EOT
+            ],
             'It is idempotent' => [
                 <<<'EOT'
 class Aardvark
@@ -626,6 +650,92 @@ EOT
 class Aardvark
 {
     public function methodOne()
+    {
+    }
+}
+EOT
+            ],
+            'It updates parameters' => [
+                <<<'EOT'
+class Aardvark
+{
+    public function methodOne(Snort $sniff)
+    {
+    }
+}
+EOT
+                , SourceCodeBuilder::create()
+                    ->class('Aardvark')
+                        ->method('methodOne')
+                            ->parameter('sniff')
+                                ->type('Barf')
+                            ->end()
+                            ->parameter('plod')
+                                ->type('Blog')
+                            ->end()
+                        ->end()
+                    ->end()
+                    ->build(),
+                <<<'EOT'
+class Aardvark
+{
+    public function methodOne(Barf $sniff, Blog $plod)
+    {
+    }
+}
+EOT
+            ],
+            'It adds parameters' => [
+                <<<'EOT'
+class Aardvark
+{
+    public function methodOne()
+    {
+    }
+}
+EOT
+                , SourceCodeBuilder::create()
+                    ->class('Aardvark')
+                        ->method('methodOne')
+                            ->parameter('sniff')
+                                ->type('Barf')
+                            ->end()
+                        ->end()
+                    ->end()
+                    ->build(),
+                <<<'EOT'
+class Aardvark
+{
+    public function methodOne(Barf $sniff)
+    {
+    }
+}
+EOT
+            ],
+            'It adds parameters and leaves existing ones in place' => [
+                <<<'EOT'
+class Aardvark
+{
+    public function methodOne($arg1, Hello $hello, $arg2)
+    {
+    }
+}
+EOT
+                , SourceCodeBuilder::create()
+                    ->class('Aardvark')
+                        ->method('methodOne')
+                            ->parameter('arg1')
+                            ->end()
+                            ->parameter('sniff')
+                                ->type('Barf')
+                            ->end()
+                        ->end()
+                    ->end()
+                    ->build(),
+                <<<'EOT'
+class Aardvark
+{
+    public function methodOne($arg1, Barf $sniff, Hello $hello, $arg2)
     {
     }
 }
