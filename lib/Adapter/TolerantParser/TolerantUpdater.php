@@ -104,6 +104,16 @@ class TolerantUpdater implements Updater
 
         $lastNode = $node->getFirstChildNode(NamespaceUseDeclaration::class, NamespaceDefinition::class, InlineHtml::class);
 
+        // fast forward to last use declaration
+        if ($lastNode instanceof NamespaceUseDeclaration) {
+            $parent = $lastNode->parent;
+            foreach ($parent->getChildNodes() as $child) {
+                if ($child instanceof NamespaceUseDeclaration) {
+                    $lastNode = $child;
+                }
+            }
+        }
+
         $this->after($lastNode, PHP_EOL);
 
         if ($lastNode instanceof NamespaceDefinition) {
@@ -121,7 +131,7 @@ class TolerantUpdater implements Updater
                     }
                 }
             }
-            $this->after($lastNode, 'use ' . (string) $usePrototype . ';' . PHP_EOL);
+            $this->after($lastNode, 'use ' . (string) $usePrototype . ';');
         }
     }
 
