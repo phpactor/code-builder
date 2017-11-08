@@ -114,8 +114,6 @@ class TolerantUpdater implements Updater
             }
         }
 
-        $this->after($lastNode, PHP_EOL);
-
         if ($lastNode instanceof NamespaceDefinition) {
             $this->after($lastNode, PHP_EOL);
         }
@@ -131,7 +129,10 @@ class TolerantUpdater implements Updater
                     }
                 }
             }
-            $this->after($lastNode, 'use ' . (string) $usePrototype . ';');
+
+            $newUseStatement = PHP_EOL . 'use ' . (string) $usePrototype . ';';
+
+            $this->after($lastNode, $newUseStatement);
         }
     }
 

@@ -109,7 +109,8 @@ namespace Kingdom;
 use Bovine;
 EOT
             ],
-            'It appends use statements' => [
+
+            'class import: It appends use statements' => [
                 
                 <<<'EOT'
 namespace Kingdom;
@@ -124,7 +125,7 @@ use Primate;
 use Bovine;
 EOT
             ],
-            'It ignores existing use statements' => [
+            'class import: It ignores existing use statements' => [
                 
                 <<<'EOT'
 namespace Kingdom;
@@ -138,7 +139,7 @@ namespace Kingdom;
 use Primate;
 EOT
             ],
-            'It ignores repeated namespaced use statements' => [
+            'class import: It ignores repeated namespaced use statements' => [
                 
                 <<<'EOT'
 namespace Kingdom;
@@ -151,7 +152,7 @@ namespace Kingdom;
 use Primate\Ape;
 EOT
             ],
-            'It ignores existing aliased use statements' => [
+            'class import: It ignores existing aliased use statements' => [
                 
                 <<<'EOT'
 namespace Kingdom;
@@ -165,7 +166,7 @@ namespace Kingdom;
 use Primate as Foobar;
 EOT
             ],
-            'It appends multiple use statements' => [
+            'class import: It appends multiple use statements' => [
                 
                 <<<'EOT'
 namespace Kingdom;
@@ -180,6 +181,43 @@ use Primate;
 use Animal\Bovine;
 use Feline;
 use Canine;
+EOT
+            ],
+            'class import: It appends multiple use statements' => [
+                
+                <<<'EOT'
+namespace Kingdom;
+
+use Primate;
+EOT
+                , SourceCodeBuilder::create()->use('Animal\Bovine')->use('Feline')->use('Canine')->build(),
+                <<<'EOT'
+namespace Kingdom;
+
+use Primate;
+use Animal\Bovine;
+use Feline;
+use Canine;
+EOT
+            ],
+            'class import: It maintains an empty line between the class and the use statements' => [
+                
+                <<<'EOT'
+namespace Kingdom;
+
+class Foobar
+{
+}
+EOT
+                , SourceCodeBuilder::create()->use('Feline')->build(),
+                <<<'EOT'
+namespace Kingdom;
+
+use Feline;
+
+class Foobar
+{
+}
 EOT
             ],
         ];
