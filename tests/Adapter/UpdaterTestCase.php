@@ -220,6 +220,23 @@ class Foobar
 }
 EOT
             ],
+            'class import: it maintains empty line between class with no namespace' => [
+                
+                <<<'EOT'
+class Foobar
+{
+}
+EOT
+                , SourceCodeBuilder::create()->use('Feline')->build(),
+                <<<'EOT'
+
+use Feline;
+
+class Foobar
+{
+}
+EOT
+            ],
         ];
     }
 

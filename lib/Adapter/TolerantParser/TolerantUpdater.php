@@ -137,6 +137,10 @@ class TolerantUpdater implements Updater
 
             $this->after($lastNode, $newUseStatement);
         }
+
+        if ($lastNode instanceof InlineHtml) {
+            $this->after($lastNode, PHP_EOL . PHP_EOL);
+        }
     }
 
     private function updateClasses(SourceCode $prototype, SourceFileNode $node)
