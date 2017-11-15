@@ -2,6 +2,10 @@
 
 namespace Phpactor\CodeBuilder\Domain\Prototype;
 
+/**
+ * @method \Phpactor\CodeBuilder\Domain\Prototype\ClassPrototype first()
+ * @method \Phpactor\CodeBuilder\Domain\Prototype\ClassPrototype get()
+ */
 class Classes extends Collection
 {
     public static function fromClasses(array $classes)

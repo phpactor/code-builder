@@ -18,6 +18,11 @@ class Value
         return new static($value);
     }
 
+    public function value()
+    {
+        return $this->value;
+    }
+
     public function export()
     {
         if ($this->value === null) {

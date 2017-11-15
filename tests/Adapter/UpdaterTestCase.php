@@ -1109,6 +1109,6 @@ EOT
     private function assertUpdate(string $existingCode, SourceCode $prototype, string $expectedCode)
     {
         $code = $this->updater()->apply($prototype, Code::fromString('<?php'.PHP_EOL.$existingCode));
-        $this->assertEquals('<?php'.PHP_EOL. $expectedCode, (string) $code);
+        $this->assertEquals('<?php' . PHP_EOL . $expectedCode, (string) $code);
     }
 }

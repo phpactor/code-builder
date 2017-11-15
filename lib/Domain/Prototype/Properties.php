@@ -2,6 +2,10 @@
 
 namespace Phpactor\CodeBuilder\Domain\Prototype;
 
+/**
+ * @method \Phpactor\CodeBuilder\Domain\Prototype\Property first()
+ * @method \Phpactor\CodeBuilder\Domain\Prototype\Property get()
+ */
 class Properties extends Collection
 {
     public static function fromProperties(array $properties)
