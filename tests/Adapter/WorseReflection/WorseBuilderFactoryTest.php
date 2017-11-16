@@ -36,9 +36,16 @@ class WorseBuilderFactoryTest extends TestCase
 
     public function testClassWithProperty()
     {
-        $source = $this->build('<?php class Foobar { private $foo; }');
+        $source = $this->build('<?php class Foobar { public $foo; }');
         $this->assertCount(1, $source->classes()->first()->properties());
         $this->assertEquals('foo', $source->classes()->first()->properties()->first()->name());
+    }
+
+    public function testClassWithProtectedProperty()
+    {
+        $source = $this->build('<?php class Foobar { private $foo; }');
+        $this->assertCount(1, $source->classes()->first()->properties());
+        $this->assertEquals('private', (string) $source->classes()->first()->properties()->first()->visibility());
     }
 
     public function testClassWithPropertyDefaultValue()

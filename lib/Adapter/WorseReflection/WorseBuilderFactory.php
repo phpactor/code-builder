@@ -62,6 +62,7 @@ class WorseBuilderFactory implements BuilderFactory
     private function buildProperty(ClassBuilder $classBuilder, ReflectionProperty $property)
     {
         $propertyBuilder = $classBuilder->property($property->name());
+        $propertyBuilder->visibility((string) $property->visibility());
 
         if ($property->type()->isDefined()) {
             $type = $property->type();
@@ -75,7 +76,6 @@ class WorseBuilderFactory implements BuilderFactory
     private function buildMethod(ClassBuilder $classBuilder, ReflectionMethod $method)
     {
         $methodBuilder = $classBuilder->method($method->name());
-
         $methodBuilder->visibility((string) $method->visibility());
 
         if ($method->returnType()->isDefined()) {
