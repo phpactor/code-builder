@@ -53,14 +53,22 @@ class SourceCodeBuilder
 
     public function class(string $name): ClassBuilder
     {
-        $this->classes[] = $builder = new ClassBuilder($this, $name);
+        if (isset($this->classes[$name])) {
+            return $this->classes[$name];
+        }
+
+        $this->classes[$name] = $builder = new ClassBuilder($this, $name);
 
         return $builder;
     }
 
     public function interface(string $name): InterfaceBuilder
     {
-        $this->interfaces[] = $builder = new InterfaceBuilder($this, $name);
+        if (isset($this->interfaces[$name])) {
+            return $this->interfaces[$name];
+        }
+
+        $this->interfaces[$name] = $builder = new InterfaceBuilder($this, $name);
 
         return $builder;
     }

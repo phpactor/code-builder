@@ -85,7 +85,11 @@ class MethodBuilder
 
     public function parameter(string $name): ParameterBuilder
     {
-        $this->parameters[] = $builder = new ParameterBuilder($this, $name);
+        if (isset($this->parameters[$name])) {
+            return $this->parameters[$name];
+        }
+
+        $this->parameters[$name] = $builder = new ParameterBuilder($this, $name);
 
         return $builder;
     }

@@ -35,7 +35,11 @@ abstract class ClassLikeBuilder
 
     public function method(string $name): MethodBuilder
     {
-        $this->methods[] = $builder = new MethodBuilder($this, $name);
+        if (isset($this->methods[$name])) {
+            return $this->methods[$name];
+        }
+
+        $this->methods[$name] = $builder = new MethodBuilder($this, $name);
 
         return $builder;
     }

@@ -31,33 +31,56 @@ class SourceCodeBuilderTest extends TestCase
     public function testClassBuilder()
     {
         $builder = $this->builder();
-
-        $class = $this->builder()->class('Dog')
+        $classBuilder = $builder->class('Dog')
             ->extends('Canine')
             ->implements('Teeth')
             ->property('one')->end()
             ->property('two')->end()
             ->method('method1')->end()
-            ->method('method2')->end()
-            ->build();
+            ->method('method2')->end();
 
+        $class = $classBuilder->build();
+
+        $this->assertSame($classBuilder, $builder->class('Dog'));
         $this->assertEquals('Canine', $class->extendsClass()->__toString());
         $this->assertEquals('Teeth', $class->implementsInterfaces()->first());
         $this->assertEquals('one', $class->properties()->first()->name());
         $this->assertEquals('method1', $class->methods()->first()->name());
     }
 
+    public function testInterfaceBuilder()
+    {
+        $builder = $this->builder();
+        $interfaceBuilder = $builder->interface('Dog')
+            ->extends('Canine')
+            ->method('method1')->end()
+            ->method('method2')->end();
+
+        $class = $interfaceBuilder->build();
+
+        $this->assertSame($interfaceBuilder, $builder->interface('Dog'));
+    }
+
     public function testPropertyBuilder()
     {
         $builder = $this->builder();
-
-        $property = $this->builder()->class('Dog')->property('one')
+        $propertyBuilder = $builder->class('Dog')->property('one')
             ->type('string')
-            ->defaultValue(null)
-            ->build();
+            ->defaultValue(null);
+
+        $property = $propertyBuilder->build();
 
         $this->assertEquals('string', $property->type()->__toString());
         $this->assertEquals('null', $property->defaultValue()->export());
+        $this->assertSame($propertyBuilder, $builder->class('Dog')->property('one'));
+    }
+
+    public function testClassMethodBuilderAccess()
+    {
+        $builder = $this->builder();
+        $methodBuilder = $builder->class('Bar')->method('foo');
+
+        $this->assertSame($methodBuilder, $builder->class('Bar')->method('foo'));
     }
 
     /**
@@ -107,6 +130,15 @@ class SourceCodeBuilderTest extends TestCase
                 }
             ],
         ];
+    }
+
+    public function testParameterBuilder()
+    {
+        $builder = $this->builder();
+        $method = $builder->class('Bar')->method('foo');
+        $parameterBuilder = $method->parameter('foo');
+
+        $this->assertSame($parameterBuilder, $method->parameter('foo'));
     }
 
     private function builder(): SourceCodeBuilder

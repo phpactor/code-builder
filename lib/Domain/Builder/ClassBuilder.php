@@ -49,7 +49,11 @@ class ClassBuilder extends ClassLikeBuilder
 
     public function property(string $name): PropertyBuilder
     {
-        $this->properties[] = $builder = new PropertyBuilder($this, $name);
+        if (isset($this->properties[$name])) {
+            return $this->properties[$name];
+        }
+
+        $this->properties[$name] = $builder = new PropertyBuilder($this, $name);
 
         return $builder;
     }
