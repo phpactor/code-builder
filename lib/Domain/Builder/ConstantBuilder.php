@@ -4,8 +4,9 @@ namespace Phpactor\CodeBuilder\Domain\Builder;
 
 use Phpactor\CodeBuilder\Domain\Prototype\Constant;
 use Phpactor\CodeBuilder\Domain\Prototype\Value;
+use Phpactor\CodeBuilder\Domain\Builder\NamedBuilder;
 
-class ConstantBuilder
+class ConstantBuilder implements NamedBuilder
 {
     /**
      * @var ClassBuilder
@@ -41,5 +42,9 @@ class ConstantBuilder
     {
         return $this->parent;
     }
-}
 
+    public function builderName(): string
+    {
+        return $this->name;
+    }
+}

@@ -14,8 +14,10 @@ use Phpactor\CodeBuilder\Domain\Prototype\Parameters;
 use Phpactor\CodeBuilder\Domain\Prototype\Method;
 use Phpactor\CodeBuilder\Domain\Prototype\ReturnType;
 use Phpactor\CodeBuilder\Domain\Prototype\Docblock;
+use Phpactor\CodeBuilder\Domain\Builder\NamedBuilder;
+use Phpactor\CodeBuilder\Domain\Builder\Exception\InvalidBuilderException;
 
-class MethodBuilder
+class MethodBuilder implements NamedBuilder
 {
     /**
      * @var SourceCodeBuilder
@@ -67,6 +69,15 @@ class MethodBuilder
         $this->parent = $parent;
         $this->name = $name;
         $this->bodyBuilder = new MethodBodyBuilder($this);
+    }
+
+    public function add(NamedBuilder $builder)
+    {
+        if ($builder instanceof ParameterBuilder) {
+            $this->parameters[$builder->builderName()] = $builder;
+        }
+
+        throw new InvalidBuilderException($this, $builder);
     }
 
     public function visibility(string $visibility): MethodBuilder
@@ -148,5 +159,10 @@ class MethodBuilder
     public function body(): MethodBodyBuilder
     {
         return $this->bodyBuilder;
+    }
+
+    public function builderName(): string
+    {
+        return $this->name;
     }
 }

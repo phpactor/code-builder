@@ -10,6 +10,8 @@ use Phpactor\CodeBuilder\Domain\Prototype\Methods;
 use Phpactor\CodeBuilder\Domain\Prototype\ImplementsInterfaces;
 use Phpactor\CodeBuilder\Domain\Builder\ConstantBuilder;
 use Phpactor\CodeBuilder\Domain\Prototype\Constants;
+use Phpactor\CodeBuilder\Domain\Builder\Builder;
+use Phpactor\CodeBuilder\Domain\Builder\PropertyBuilder;
 
 class ClassBuilder extends ClassLikeBuilder
 {
@@ -40,6 +42,16 @@ class ClassBuilder extends ClassLikeBuilder
         return $this;
     }
 
+    public function add(Builder $builder)
+    {
+        if ($builder instanceof PropertyBuilder) {
+            $this->properties[$builder->builderName()] = $builder;
+            return;
+        }
+
+        parent::add($builder);
+    }
+
     public function implements(string $interface): ClassBuilder
     {
         $this->interfaces[] = Type::fromString($interface);
@@ -64,7 +76,6 @@ class ClassBuilder extends ClassLikeBuilder
 
         return $builder;
     }
-
 
     public function build(): ClassPrototype
     {

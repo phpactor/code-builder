@@ -11,8 +11,9 @@ use Phpactor\CodeBuilder\Domain\Prototype\Visibility;
 use Phpactor\CodeBuilder\Domain\Prototype\DefaultValue;
 use Phpactor\CodeBuilder\Domain\Prototype\Property;
 use Phpactor\CodeBuilder\Domain\Builder\PropertyBuilder;
+use Phpactor\CodeBuilder\Domain\Builder\NamedBuilder;
 
-class PropertyBuilder
+class PropertyBuilder implements NamedBuilder
 {
     /**
      * @var SourceCodeBuilder
@@ -79,5 +80,10 @@ class PropertyBuilder
     public function end(): ClassBuilder
     {
         return $this->parent;
+    }
+
+    public function builderName(): string
+    {
+        return $this->name;
     }
 }

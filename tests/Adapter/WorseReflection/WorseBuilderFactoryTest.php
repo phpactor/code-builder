@@ -108,6 +108,6 @@ class WorseBuilderFactoryTest extends TestCase
         $reflector = Reflector::create();
 
         $worseFactory = new WorseBuilderFactory($reflector);
-        return $worseFactory->forSource($source)->build();
+        return $worseFactory->fromSource($source)->build();
     }
 }

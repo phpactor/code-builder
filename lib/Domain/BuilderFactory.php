@@ -7,5 +7,5 @@ use Phpactor\CodeBuilder\Domain\Builder\SourceCodeBuilder;
 
 interface BuilderFactory
 {
-    public function forSource(string $source): SourceCodeBuilder;
+    public function fromSource(string $source): SourceCodeBuilder;
 }

@@ -9,8 +9,10 @@ use Phpactor\CodeBuilder\Domain\Prototype\Type;
 use Phpactor\CodeBuilder\Domain\Prototype\Methods;
 use Phpactor\CodeBuilder\Domain\Prototype\ImplementsInterfaces;
 use Phpactor\CodeBuilder\Domain\Builder\ClassLikeBuilder;
+use Phpactor\CodeBuilder\Domain\Builder\Builder;
+use Phpactor\CodeBuilder\Domain\Builder\Exception\InvalidBuilderException;
 
-abstract class ClassLikeBuilder
+abstract class ClassLikeBuilder implements Builder
 {
     /**
      * @var SourceCodeBuilder
@@ -31,6 +33,16 @@ abstract class ClassLikeBuilder
     {
         $this->parent = $parent;
         $this->name = $name;
+    }
+
+    public function add(Builder $builder)
+    {
+        if ($builder instanceof MethodBuilder) {
+            $this->methods[$builder->builderName()] = $builder;
+            return;
+        }
+
+        throw new InvalidBuilderException($this, $builder);
     }
 
     public function method(string $name): MethodBuilder

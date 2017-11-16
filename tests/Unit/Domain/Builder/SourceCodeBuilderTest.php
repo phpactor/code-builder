@@ -48,6 +48,26 @@ class SourceCodeBuilderTest extends TestCase
         $this->assertEquals('method1', $class->methods()->first()->name());
     }
 
+    public function testClassBuilderAddMethodBuilder()
+    {
+        $builder = $this->builder();
+        $methodBuilder = $this->builder()->class('Cat')->method('Whiskers');
+        $classBuilder = $builder->class('Dog');
+        $classBuilder->add($methodBuilder);
+
+        $this->assertSame($classBuilder->method('Whiskers'), $methodBuilder);
+    }
+
+    public function testClassBuilderAddPropertyBuilder()
+    {
+        $builder = $this->builder();
+        $propertyBuilder = $this->builder()->class('Cat')->property('whiskers');
+        $classBuilder = $builder->class('Dog');
+        $classBuilder->add($propertyBuilder);
+
+        $this->assertSame($classBuilder->property('whiskers'), $propertyBuilder);
+    }
+
     public function testInterfaceBuilder()
     {
         $builder = $this->builder();

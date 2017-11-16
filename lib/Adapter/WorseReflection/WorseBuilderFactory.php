@@ -33,7 +33,7 @@ class WorseBuilderFactory implements BuilderFactory
         $this->builder = SourceCodeBuilder::create();
     }
 
-    public function forSource(string $source): SourceCodeBuilder
+    public function fromSource(string $source): SourceCodeBuilder
     {
         $classes = $this->reflector->reflectClassesIn($source);
         $builder = $this->builder;
