@@ -79,6 +79,12 @@ class WorseBuilderFactoryTest extends TestCase
         $this->assertEquals('string', $source->classes()->first()->methods()->first()->returnType());
     }
 
+    public function testMethodProtected()
+    {
+        $source = $this->build('<?php class Foobar { protected function method() {} }');
+        $this->assertEquals('protected', $source->classes()->first()->methods()->first()->visibility());
+    }
+
     public function testMethodWithParameter()
     {
         $source = $this->build('<?php class Foobar { public function method($param) {} }');

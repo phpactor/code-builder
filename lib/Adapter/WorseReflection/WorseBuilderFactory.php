@@ -76,6 +76,8 @@ class WorseBuilderFactory implements BuilderFactory
     {
         $methodBuilder = $classBuilder->method($method->name());
 
+        $methodBuilder->visibility((string) $method->visibility());
+
         if ($method->returnType()->isDefined()) {
             $type = $method->returnType();
             $this->resolveClassMemberType($classBuilder, $method->class()->name(), $type);
