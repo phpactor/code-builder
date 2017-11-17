@@ -33,19 +33,35 @@ class WorseBuilderFactory implements BuilderFactory
         $builder = SourceCodeBuilder::create();
 
         foreach ($classes as $class) {
-            $class = $this->buildClass($builder, $class);
+            if ($class->isClass()) {
+                $this->build('class', $builder, $class);
+                continue;
+            }
+
+            if ($class->isInterface()) {
+                $this->build('interface', $builder, $class);
+                continue;
+            }
+
+            // TODO: traits not currently supported
+            // if ($class->isTrait()) {
+            //     $this->build('trait', $builder, $class);
+            //     continue;
+            // }
         }
 
         return $builder;
     }
 
-    private function buildClass(SourceCodeBuilder $builder, ReflectionClass $reflectionClass)
+    private function build(string $type, SourceCodeBuilder $builder, ReflectionClassLike $reflectionClass)
     {
-        $classBuilder = $builder->class($reflectionClass->name()->short());
+        $classBuilder = $builder->$type($reflectionClass->name()->short());
         $builder->namespace($reflectionClass->name()->namespace());
 
-        foreach ($reflectionClass->properties() as $property) {
-            $this->buildProperty($classBuilder, $property);
+        if ($reflectionClass->isClass()) {
+            foreach ($reflectionClass->properties() as $property) {
+                $this->buildProperty($classBuilder, $property);
+            }
         }
 
         foreach ($reflectionClass->methods() as $method) {

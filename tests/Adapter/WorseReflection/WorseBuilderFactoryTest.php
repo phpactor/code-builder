@@ -116,6 +116,12 @@ class WorseBuilderFactoryTest extends TestCase
         $this->assertEquals('1234', (string) $source->classes()->first()->methods()->first()->parameters()->first()->defaultValue()->value());
     }
 
+    public function testInterface()
+    {
+        $source = $this->build('<?php interface Foobar {}');
+        $this->assertEquals('Foobar', (string) $source->interfaces()->first()->name());
+    }
+
     private function build(string $source): SourceCode
     {
         $reflector = Reflector::create();
