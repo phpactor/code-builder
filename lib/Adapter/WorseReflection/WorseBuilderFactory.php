@@ -22,27 +22,21 @@ class WorseBuilderFactory implements BuilderFactory
      */
     private $reflector;
 
-    /**
-     * @var SourceCodeBuilder
-     */
-    private $builder;
-
     public function __construct(Reflector $reflector)
     {
         $this->reflector = $reflector;
-        $this->builder = SourceCodeBuilder::create();
     }
 
     public function fromSource(string $source): SourceCodeBuilder
     {
         $classes = $this->reflector->reflectClassesIn($source);
-        $builder = $this->builder;
+        $builder = SourceCodeBuilder::create();
 
         foreach ($classes as $class) {
             $class = $this->buildClass($builder, $class);
         }
 
-        return $this->builder;
+        return $builder;
     }
 
     private function buildClass(SourceCodeBuilder $builder, ReflectionClass $reflectionClass)
