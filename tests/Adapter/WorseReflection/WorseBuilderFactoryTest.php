@@ -8,6 +8,8 @@ use Phpactor\CodeBuilder\Adapter\WorseReflection\WorseBuilderFactory;
 use Phpactor\CodeBuilder\SourceBuilder;
 use Phpactor\CodeBuilder\Domain\Prototype\SourceCode;
 use Phpactor\CodeBuilder\Domain\Builder\SourceCodeBuilder;
+use Phpactor\WorseReflection\Core\SourceCodeLocator\StringSourceLocator;
+use Phpactor\WorseReflection\Core\SourceCode as WorseSourceCode;
 
 class WorseBuilderFactoryTest extends TestCase
 {
@@ -116,6 +118,28 @@ class WorseBuilderFactoryTest extends TestCase
         $this->assertEquals('1234', (string) $source->classes()->first()->methods()->first()->parameters()->first()->defaultValue()->value());
     }
 
+    public function testClassWhichExtendsClassWithMethods()
+    {
+        $source = $this->build(<<<'EOT'
+<?php 
+class Foobar 
+{ 
+    protected $bar;
+
+    public function method() 
+    {
+    }
+} 
+
+class BarBar extends Foobar
+{
+}
+EOT
+        );
+        $this->assertCount(0, $source->classes()->get('BarBar')->methods());
+        $this->assertCount(0, $source->classes()->get('BarBar')->properties());
+    }
+
     public function testInterface()
     {
         $source = $this->build('<?php interface Foobar {}');
@@ -124,7 +148,7 @@ class WorseBuilderFactoryTest extends TestCase
 
     private function build(string $source): SourceCode
     {
-        $reflector = Reflector::create();
+        $reflector = Reflector::create(new StringSourceLocator(WorseSourceCode::fromString($source)));
 
         $worseFactory = new WorseBuilderFactory($reflector);
         return $worseFactory->fromSource($source)->build();

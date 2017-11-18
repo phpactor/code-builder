@@ -59,12 +59,13 @@ class WorseBuilderFactory implements BuilderFactory
         $builder->namespace($reflectionClass->name()->namespace());
 
         if ($reflectionClass->isClass()) {
-            foreach ($reflectionClass->properties() as $property) {
+            // TODO: Worse reflection doesn't support ->belongingTo properties
+            foreach ($reflectionClass->properties()->belongingTo($reflectionClass->name()) as $property) {
                 $this->buildProperty($classBuilder, $property);
             }
         }
 
-        foreach ($reflectionClass->methods() as $method) {
+        foreach ($reflectionClass->methods()->belongingTo($reflectionClass->name()) as $method) {
             $this->buildMethod($classBuilder, $method);
         }
     }
