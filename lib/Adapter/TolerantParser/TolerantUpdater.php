@@ -302,7 +302,7 @@ class TolerantUpdater implements Updater
 
         foreach ($classPrototype->properties()->notIn($existingPropertyNames) as $property) {
             // if property type exists and the last property has a docblock - add a line break
-            if ($lastProperty instanceof PropertyDeclaration && $property->inferredTypes()->best() != Type::none()) {
+            if ($lastProperty instanceof PropertyDeclaration && $property->type() != Type::none()) {
                 $this->after($lastProperty, PHP_EOL);
             }
 
