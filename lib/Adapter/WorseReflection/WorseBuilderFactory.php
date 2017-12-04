@@ -18,7 +18,7 @@ use Phpactor\CodeBuilder\Domain\Builder\MethodBuilder;
 class WorseBuilderFactory implements BuilderFactory
 {
     /**
-     * @var Reflector
+     * @var Reflector|ClassName
      */
     private $reflector;
 
@@ -75,12 +75,10 @@ class WorseBuilderFactory implements BuilderFactory
         $propertyBuilder = $classBuilder->property($property->name());
         $propertyBuilder->visibility((string) $property->visibility());
 
-        if ($property->type()->isDefined()) {
-            $type = $property->type();
-
+        $type = $property->inferredTypes()->best();
+        if ($type->isDefined()) {
             $this->resolveClassMemberType($classBuilder, $property->class()->name(), $type);
-
-            $propertyBuilder->type((string) $property->type()->short());
+            $propertyBuilder->type((string) $type->short());
         }
     }
 
