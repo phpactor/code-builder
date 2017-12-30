@@ -17,6 +17,7 @@ use Phpactor\CodeBuilder\Domain\Updater;
 use Phpactor\CodeBuilder\Util\TextFormat;
 use Phpactor\CodeBuilder\Adapter\TolerantParser\Updater\ClassUpdater;
 use Microsoft\PhpParser\Node\Statement\InterfaceDeclaration;
+use Phpactor\CodeBuilder\Adapter\TolerantParser\Updater\InterfaceUpdater;
 
 class TolerantUpdater implements Updater
 {
@@ -46,6 +47,7 @@ class TolerantUpdater implements Updater
         $this->textFormat = $textFormat ?: new TextFormat();
         $this->renderer = $renderer;
         $this->classUpdater = new ClassUpdater($renderer);
+        $this->interfaceUpdater = new InterfaceUpdater($renderer);
     }
 
     public function apply(Prototype $prototype, Code $code): Code
@@ -151,6 +153,10 @@ class TolerantUpdater implements Updater
 
         foreach ($prototype->classes()->in(array_keys($classNodes)) as $classPrototype) {
             $this->classUpdater->updateClass($edits, $classPrototype, $classNodes[$classPrototype->name()]);
+        }
+
+        foreach ($prototype->interfaces()->in(array_keys($interfaceNodes)) as $classPrototype) {
+            $this->interfaceUpdater->updateInterface($edits, $classPrototype, $interfaceNodes[$classPrototype->name()]);
         }
 
         if (substr($lastStatement->getText(), -1) !== PHP_EOL) {
