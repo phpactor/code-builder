@@ -63,17 +63,17 @@ class TolerantUpdater implements Updater
 
     public function apply(Prototype $prototype, Code $code): Code
     {
-        $this->edits = [];
+        $edits = new Edits();
         $node = $this->parser->parseSourceFile((string) $code);
 
-        $this->updateNamespace($prototype, $node);
-        $this->updateUseStatements($prototype, $node);
-        $this->updateClasses($prototype, $node);
+        $this->updateNamespace($edits, $prototype, $node);
+        $this->updateUseStatements($edits, $prototype, $node);
+        $this->updateClasses($edits, $prototype, $node);
 
-        return Code::fromString(trim(TextEdit::applyEdits($this->edits, (string) $code)));
+        return Code::fromString($edits->apply((string) $code));
     }
 
-    private function updateNamespace(SourceCode $prototype, SourceFileNode $node)
+    private function updateNamespace(Edits $edits, SourceCode $prototype, SourceFileNode $node)
     {
         $namespaceNode = $node->getFirstChildNode(NamespaceDefinition::class);
 
@@ -91,15 +91,15 @@ class TolerantUpdater implements Updater
         }
 
         if ($namespaceNode) {
-            $this->replace($namespaceNode, 'namespace ' . (string) $prototype->namespace() . ';');
+            $edits->replace($namespaceNode, 'namespace ' . (string) $prototype->namespace() . ';');
             return;
         }
 
         $startTag = $node->getFirstChildNode(InlineHtml::class);
-        $this->after($startTag, 'namespace ' . (string) $prototype->namespace() . ';' . PHP_EOL.PHP_EOL);
+        $edits->after($startTag, 'namespace ' . (string) $prototype->namespace() . ';' . PHP_EOL.PHP_EOL);
     }
 
-    private function updateUseStatements(SourceCode $prototype, SourceFileNode $node)
+    private function updateUseStatements(Edits $edits, SourceCode $prototype, SourceFileNode $node)
     {
         if (0 === count($prototype->useStatements())) {
             return;
@@ -118,7 +118,7 @@ class TolerantUpdater implements Updater
         }
 
         if ($lastNode instanceof NamespaceDefinition) {
-            $this->after($lastNode, PHP_EOL);
+            $edits->after($lastNode, PHP_EOL);
         }
 
         /** @var $usePrototype Type */
@@ -135,15 +135,15 @@ class TolerantUpdater implements Updater
 
             $newUseStatement = PHP_EOL . 'use ' . (string) $usePrototype . ';';
 
-            $this->after($lastNode, $newUseStatement);
+            $edits->after($lastNode, $newUseStatement);
         }
 
         if ($lastNode instanceof InlineHtml) {
-            $this->after($lastNode, PHP_EOL . PHP_EOL);
+            $edits->after($lastNode, PHP_EOL . PHP_EOL);
         }
     }
 
-    private function updateClasses(SourceCode $prototype, SourceFileNode $node)
+    private function updateClasses(Edits $edits, SourceCode $prototype, SourceFileNode $node)
     {
         $classNodes = [];
         $lastStatement = null;
@@ -158,56 +158,56 @@ class TolerantUpdater implements Updater
         }
 
         foreach ($prototype->classes()->in(array_keys($classNodes)) as $classPrototype) {
-            $this->updateClass($classPrototype, $classNodes[$classPrototype->name()]);
+            $this->updateClass($edits, $classPrototype, $classNodes[$classPrototype->name()]);
         }
 
         if (substr($lastStatement->getText(), -1) !== PHP_EOL) {
-            $this->after($lastStatement, PHP_EOL);
+            $edits->after($lastStatement, PHP_EOL);
         }
 
         $classes = $prototype->classes()->notIn(array_keys($classNodes));
         $index = 0;
         foreach ($classes as $classPrototype) {
             if ($index > 0 && $index + 1 == count($classes)) {
-                $this->after($lastStatement, PHP_EOL);
+                $edits->after($lastStatement, PHP_EOL);
             }
-            $this->after($lastStatement, PHP_EOL . $this->renderer->render($classPrototype));
+            $edits->after($lastStatement, PHP_EOL . $this->renderer->render($classPrototype));
             $index++;
         }
     }
 
-    private function updateClass(ClassPrototype $classPrototype, ClassDeclaration $classNode)
+    private function updateClass(Edits $edits, ClassPrototype $classPrototype, ClassDeclaration $classNode)
     {
-        $this->updateExtends($classPrototype, $classNode);
-        $this->updateImplements($classPrototype, $classNode);
-        $this->updateConstants($classPrototype, $classNode);
-        $this->updateProperties($classPrototype, $classNode);
-        $this->updateMethods($classPrototype, $classNode);
+        $this->updateExtends($edits, $classPrototype, $classNode);
+        $this->updateImplements($edits, $classPrototype, $classNode);
+        $this->updateConstants($edits, $classPrototype, $classNode);
+        $this->updateProperties($edits, $classPrototype, $classNode);
+        $this->updateMethods($edits, $classPrototype, $classNode);
     }
 
-    private function updateExtends(ClassPrototype $classPrototype, ClassDeclaration $classNode)
+    private function updateExtends(Edits $edits, ClassPrototype $classPrototype, ClassDeclaration $classNode)
     {
         if (ExtendsClass::none() == $classPrototype->extendsClass()) {
             return;
         }
 
         if (null === $classNode->classBaseClause) {
-            $this->after($classNode->name, ' extends ' . (string) $classPrototype->extendsClass());
+            $edits->after($classNode->name, ' extends ' . (string) $classPrototype->extendsClass());
             return;
         }
 
 
-        $this->replace($classNode->classBaseClause, ' extends ' . (string) $classPrototype->extendsClass());
+        $edits->replace($classNode->classBaseClause, ' extends ' . (string) $classPrototype->extendsClass());
     }
 
-    private function updateImplements(ClassPrototype $classPrototype, ClassDeclaration $classNode)
+    private function updateImplements(Edits $edits, ClassPrototype $classPrototype, ClassDeclaration $classNode)
     {
         if (ImplementsInterfaces::empty() == $classPrototype->implementsInterfaces()) {
             return;
         }
 
         if (null === $classNode->classInterfaceClause) {
-            $this->after($classNode->name, ' implements ' . (string) $classPrototype->implementsInterfaces()->__toString());
+            $edits->after($classNode->name, ' implements ' . (string) $classPrototype->implementsInterfaces()->__toString());
             return;
         }
 
@@ -224,10 +224,10 @@ class TolerantUpdater implements Updater
 
         $names = join(', ', [ implode(', ', $existingNames), $additionalNames->__toString()]);
 
-        $this->replace($classNode->classInterfaceClause, ' implements ' . $names);
+        $edits->replace($classNode->classInterfaceClause, ' implements ' . $names);
     }
 
-    private function updateConstants(ClassPrototype $classPrototype, ClassDeclaration $classNode)
+    private function updateConstants(Edits $edits, ClassPrototype $classPrototype, ClassDeclaration $classNode)
     {
         if (count($classPrototype->constants()) === 0) {
             return;
@@ -257,10 +257,10 @@ class TolerantUpdater implements Updater
         foreach ($classPrototype->constants()->notIn($existingConstantNames) as $constant) {
             // if constant type exists then the last constant has a docblock - add a line break
             if ($lastConstant instanceof ConstantDeclaration && $constant->type() != Type::none()) {
-                $this->after($lastConstant, PHP_EOL);
+                $edits->after($lastConstant, PHP_EOL);
             }
 
-            $this->after(
+            $edits->after(
                 $lastConstant,
                 PHP_EOL . $this->textFormat->indent($this->renderer->render($constant), 1)
             );
@@ -269,12 +269,12 @@ class TolerantUpdater implements Updater
                 $nextMember instanceof MethodDeclaration ||
                 $nextMember instanceof PropertyDeclaration
             )) {
-                $this->after($lastConstant, PHP_EOL);
+                $edits->after($lastConstant, PHP_EOL);
             }
         }
     }
 
-    private function updateProperties(ClassPrototype $classPrototype, ClassDeclaration $classNode)
+    private function updateProperties(Edits $edits, ClassPrototype $classPrototype, ClassDeclaration $classNode)
     {
         if (count($classPrototype->properties()) === 0) {
             return;
@@ -303,21 +303,21 @@ class TolerantUpdater implements Updater
         foreach ($classPrototype->properties()->notIn($existingPropertyNames) as $property) {
             // if property type exists and the last property has a docblock - add a line break
             if ($lastProperty instanceof PropertyDeclaration && $property->type() != Type::none()) {
-                $this->after($lastProperty, PHP_EOL);
+                $edits->after($lastProperty, PHP_EOL);
             }
 
-            $this->after(
+            $edits->after(
                 $lastProperty,
                 PHP_EOL . $this->textFormat->indent($this->renderer->render($property), 1)
             );
 
             if ($classPrototype->properties()->isLast($property) && $nextMember instanceof MethodDeclaration) {
-                $this->after($lastProperty, PHP_EOL);
+                $edits->after($lastProperty, PHP_EOL);
             }
         }
     }
 
-    private function updateMethods(ClassPrototype $classPrototype, ClassDeclaration $classNode)
+    private function updateMethods(Edits $edits, ClassPrototype $classPrototype, ClassDeclaration $classNode)
     {
         if (count($classPrototype->methods()) === 0) {
             return;
@@ -353,10 +353,10 @@ class TolerantUpdater implements Updater
             $bodyNode = $methodDeclaration->compoundStatementOrSemicolon;
 
             if ($method->body()->lines()->count()) {
-                $this->appendLinesToMethod($method, $bodyNode);
+                $this->appendLinesToMethod($edits, $method, $bodyNode);
             }
 
-            $this->updateOrAddParameters($method->parameters(), $methodDeclaration);
+            $this->updateOrAddParameters($edits, $method->parameters(), $methodDeclaration);
         }
 
         $methods = $classPrototype->methods()->notIn($existingMethodNames);
@@ -366,23 +366,23 @@ class TolerantUpdater implements Updater
         }
 
         if ($newLine) {
-            $this->after($lastMember, PHP_EOL);
+            $edits->after($lastMember, PHP_EOL);
         }
 
         // Add methods
         foreach ($methods as $method) {
-            $this->after(
+            $edits->after(
                 $lastMember,
                 PHP_EOL . $this->textFormat->indent($this->renderer->render($method) . PHP_EOL . $this->renderer->render($method->body()), 1)
             );
 
             if (false === $classPrototype->methods()->isLast($method)) {
-                $this->after($lastMember, PHP_EOL);
+                $edits->after($lastMember, PHP_EOL);
             }
         }
     }
 
-    private function appendLinesToMethod(Method $method, Node $bodyNode)
+    private function appendLinesToMethod(Edits $edits, Method $method, Node $bodyNode)
     {
         if (false === $bodyNode instanceof CompoundStatementNode) {
             return;
@@ -400,7 +400,7 @@ class TolerantUpdater implements Updater
                 }
             }
 
-            $this->after(
+            $edits->after(
                 $lastStatement,
                 PHP_EOL . $this->textFormat->indent((string) $line, 2)
             );
@@ -423,22 +423,7 @@ class TolerantUpdater implements Updater
         ));
     }
 
-    private function remove($node)
-    {
-        $this->edits[] = new TextEdit($node->getFullStart(), $node->getFullWidth(), '');
-    }
-
-    private function after($node, string $text)
-    {
-        $this->edits[] = new TextEdit($node->getEndPosition(), 0, $text);
-    }
-
-    private function replace($node, string $text)
-    {
-        $this->edits[] = new TextEdit($node->getFullStart(), $node->getFullWidth(), $text);
-    }
-
-    private function updateOrAddParameters(Parameters $parameters, MethodDeclaration $methodDeclaration)
+    private function updateOrAddParameters(Edits $edits, Parameters $parameters, MethodDeclaration $methodDeclaration)
     {
         if (0 === $parameters->count()) {
             return;
@@ -471,11 +456,11 @@ class TolerantUpdater implements Updater
         }
 
         if ($methodDeclaration->parameters) {
-            $this->replace($methodDeclaration->parameters, implode(', ', $replacementParameters));
+            $edits->replace($methodDeclaration->parameters, implode(', ', $replacementParameters));
             return;
         }
 
-        $this->edits[] = new TextEdit($methodDeclaration->openParen->getStartPosition() + 1, 0, implode(', ', $replacementParameters));
+        $edits->add(new TextEdit($methodDeclaration->openParen->getStartPosition() + 1, 0, implode(', ', $replacementParameters)));
     }
 
     private function updateParameters(Parameters $parameters, ParameterDeclarationList $parameterList)
@@ -487,7 +472,7 @@ class TolerantUpdater implements Updater
                 $parameterNodeName = ltrim($parameterNode->variableName->getText($parameterNode->getFileContents()), '$');
 
                 if ($parameterNodeName == $parameter->name()) {
-                    $this->replace($methodDeclaration->parameters, $parameterString);
+                    $edits->replace($methodDeclaration->parameters, $parameterString);
                     $seenParameters[] = $parameter->name();
                 }
             }
