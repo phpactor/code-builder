@@ -55,8 +55,7 @@ final class Method extends Prototype
         Docblock $docblock = null,
         int $modifierFlags = 0,
         MethodBody $methodBody = null
-    )
-    {
+    ) {
         $this->name = $name;
         $this->visibility = $visibility ?: Visibility::public();
         $this->parameters = $parameters ?: Parameters::empty();

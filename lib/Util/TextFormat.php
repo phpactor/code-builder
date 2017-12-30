@@ -24,4 +24,3 @@ class TextFormat
         return implode(PHP_EOL, $lines);
     }
 }
-

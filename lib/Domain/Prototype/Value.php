@@ -2,8 +2,6 @@
 
 namespace Phpactor\CodeBuilder\Domain\Prototype;
 
-use Phpactor\CodeBuilder\Domain\Prototype\Value;
-
 class Value
 {
     protected $value;
@@ -32,4 +30,3 @@ class Value
         return var_export($this->value, true);
     }
 }
-

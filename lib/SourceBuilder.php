@@ -22,8 +22,7 @@ class SourceBuilder
     public function __construct(
         Renderer $generator,
         Updater $updater
-    )
-    {
+    ) {
         $this->generator = $generator;
         $this->updater = $updater;
     }
@@ -38,4 +37,3 @@ class SourceBuilder
         return $this->updater->apply($prototype, $code);
     }
 }
-

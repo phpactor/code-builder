@@ -10,7 +10,8 @@ class InvalidBuilderException extends OutOfBoundsException
     {
         parent::__construct(sprintf(
             'Builder "%s" cannot be added to builder "%s"',
-            get_class($builder), get_class($containerBuilder)
+            get_class($builder),
+            get_class($containerBuilder)
         ));
     }
 }

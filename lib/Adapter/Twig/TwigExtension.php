@@ -4,7 +4,6 @@ namespace Phpactor\CodeBuilder\Adapter\Twig;
 
 use Twig\TwigFilter;
 use Twig\Extension\AbstractExtension;
-use Phpactor\CodeBuilder\Adapter\Twig\TwigRenderer;
 use Phpactor\CodeBuilder\Util\TextFormat;
 
 class TwigExtension extends AbstractExtension
@@ -37,4 +36,3 @@ class TwigExtension extends AbstractExtension
         return $this->textFormat->indent($string, $level);
     }
 }
-

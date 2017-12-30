@@ -1103,6 +1103,47 @@ EOT
         ];
     }
 
+    /**
+     * @dataProvider provideInterfaces
+     */
+    public function testInterfaces(string $existingCode, SourceCode $prototype, string $expectedCode)
+    {
+        $this->assertUpdate($existingCode, $prototype, $expectedCode);
+    }
+
+    public function provideInterfaces()
+    {
+        return [
+            'It adds an interface' => [
+                
+                <<<'EOT'
+EOT
+                , SourceCodeBuilder::create()->interface('Aardvark')->end()->build(),
+                <<<'EOT'
+
+interface Aardvark
+{
+}
+EOT
+            ],
+            'It adds methods to an interface' => [
+                
+                <<<'EOT'
+interface Aardvark
+{
+}
+EOT
+                , SourceCodeBuilder::create()->interface('Aardvark')->method('foo')->end()->end()->build(),
+                <<<'EOT'
+interface Aardvark
+{
+    public function foo();
+}
+EOT
+            ],
+        ];
+    }
+
 
     abstract protected function updater(): Updater;
 

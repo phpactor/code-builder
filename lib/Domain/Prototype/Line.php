@@ -13,7 +13,7 @@ final class Line
 
     public static function fromString(string $line): Line
     {
-         return new self($line);
+        return new self($line);
     }
 
     public function __toString()

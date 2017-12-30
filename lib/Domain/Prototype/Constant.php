@@ -2,8 +2,6 @@
 
 namespace Phpactor\CodeBuilder\Domain\Prototype;
 
-use Phpactor\CodeBuilder\Domain\Prototype\DefaultValue;
-use Phpactor\CodeBuilder\Domain\Prototype\Value;
 
 class Constant extends Prototype
 {
@@ -30,4 +28,3 @@ class Constant extends Prototype
         return $this->value;
     }
 }
-

@@ -8,7 +8,6 @@ use Phpactor\CodeBuilder\Domain\Prototype\Prototype;
 use Phpactor\CodeBuilder\Domain\Renderer;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
-use Phpactor\CodeBuilder\Adapter\Twig\TwigExtension;
 use Twig\Error\LoaderError;
 
 final class TwigRenderer implements Renderer
@@ -19,8 +18,7 @@ final class TwigRenderer implements Renderer
     public function __construct(
         Environment $twig = null,
         TemplateNameResolver $templateNameResolver = null
-    )
-    {
+    ) {
         $this->twig = $twig ?: $this->createTwig();
         $this->templateNameResolver = $templateNameResolver ?: new ClassShortNameResolver();
     }
