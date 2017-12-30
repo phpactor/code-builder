@@ -2,14 +2,6 @@
 
 namespace Phpactor\CodeBuilder\Domain\Builder;
 
-use Phpactor\CodeBuilder\Domain\Prototype\ClassPrototype;
-use Phpactor\CodeBuilder\Domain\Prototype\ExtendsClass;
-use Phpactor\CodeBuilder\Domain\Prototype\Properties;
-use Phpactor\CodeBuilder\Domain\Prototype\Type;
-use Phpactor\CodeBuilder\Domain\Prototype\Methods;
-use Phpactor\CodeBuilder\Domain\Prototype\ImplementsInterfaces;
-use Phpactor\CodeBuilder\Domain\Builder\ClassLikeBuilder;
-use Phpactor\CodeBuilder\Domain\Builder\Builder;
 use Phpactor\CodeBuilder\Domain\Builder\Exception\InvalidBuilderException;
 
 abstract class ClassLikeBuilder implements Builder

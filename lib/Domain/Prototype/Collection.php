@@ -54,7 +54,9 @@ abstract class Collection implements \IteratorAggregate, \Countable
         if (!isset($this->items[$name])) {
             throw new \InvalidArgumentException(sprintf(
                 'Unknown %s "%s", known items: "%s"',
-                $this->singularName(), $name, implode('", "', array_keys($this->items))
+                $this->singularName(),
+                $name,
+                implode('", "', array_keys($this->items))
             ));
         }
 

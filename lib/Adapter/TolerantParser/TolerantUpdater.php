@@ -1,26 +1,13 @@
 <?php 
 namespace Phpactor\CodeBuilder\Adapter\TolerantParser;
 
-use Microsoft\PhpParser\Node;
-use Microsoft\PhpParser\Node\ClassConstDeclaration;
-use Microsoft\PhpParser\Node\Expression\AssignmentExpression;
-use Microsoft\PhpParser\Node\Expression\Variable;
-use Microsoft\PhpParser\Node\MethodDeclaration;
-use Microsoft\PhpParser\Node\PropertyDeclaration;
 use Microsoft\PhpParser\Node\SourceFileNode;
 use Microsoft\PhpParser\Node\Statement\ClassDeclaration;
-use Microsoft\PhpParser\Node\Statement\CompoundStatementNode;
-use Microsoft\PhpParser\Node\Statement\ConstDeclaration;
 use Microsoft\PhpParser\Node\Statement\InlineHtml;
 use Microsoft\PhpParser\Node\Statement\NamespaceDefinition;
 use Microsoft\PhpParser\Node\Statement\NamespaceUseDeclaration;
 use Microsoft\PhpParser\Parser;
-use Microsoft\PhpParser\Token;
-use Phpactor\CodeBuilder\Adapter\TolerantParser\TextEdit;
 use Phpactor\CodeBuilder\Domain\Code;
-use Phpactor\CodeBuilder\Domain\Prototype\ClassPrototype;
-use Phpactor\CodeBuilder\Domain\Prototype\ExtendsClass;
-use Phpactor\CodeBuilder\Domain\Prototype\ImplementsInterfaces;
 use Phpactor\CodeBuilder\Domain\Prototype\NamespaceName;
 use Phpactor\CodeBuilder\Domain\Prototype\Prototype;
 use Phpactor\CodeBuilder\Domain\Prototype\SourceCode;
@@ -28,9 +15,6 @@ use Phpactor\CodeBuilder\Domain\Prototype\Type;
 use Phpactor\CodeBuilder\Domain\Renderer;
 use Phpactor\CodeBuilder\Domain\Updater;
 use Phpactor\CodeBuilder\Util\TextFormat;
-use Phpactor\CodeBuilder\Domain\Prototype\Method;
-use Phpactor\CodeBuilder\Domain\Prototype\Parameter;
-use Phpactor\CodeBuilder\Domain\Prototype\Parameters;
 use Phpactor\CodeBuilder\Adapter\TolerantParser\Updater\ClassUpdater;
 
 class TolerantUpdater implements Updater

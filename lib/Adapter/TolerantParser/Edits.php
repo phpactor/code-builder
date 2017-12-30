@@ -2,7 +2,6 @@
 
 namespace Phpactor\CodeBuilder\Adapter\TolerantParser;
 
-use Phpactor\CodeBuilder\Adapter\TolerantParser\TextEdit;
 use Phpactor\CodeBuilder\Util\TextFormat;
 
 class Edits
@@ -16,7 +15,8 @@ class Edits
 
     public function __construct(TextFormat $format = null)
     {
-        $this->format = $format ?: new TextFormat();;
+        $this->format = $format ?: new TextFormat();
+        ;
     }
 
     public function remove($node)

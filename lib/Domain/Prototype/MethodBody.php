@@ -2,8 +2,6 @@
 
 namespace Phpactor\CodeBuilder\Domain\Prototype;
 
-use Phpactor\CodeBuilder\Domain\Prototype\Lines;
-
 final class MethodBody extends Prototype
 {
     /**
@@ -36,4 +34,3 @@ final class MethodBody extends Prototype
         return $this->lines;
     }
 }
-

@@ -40,4 +40,3 @@ class MethodBodyBuilder
         return $this->parent;
     }
 }
-

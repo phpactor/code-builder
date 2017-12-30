@@ -5,7 +5,6 @@ namespace Phpactor\CodeBuilder\Domain\Builder;
 use Phpactor\CodeBuilder\Domain\Prototype\SourceCode;
 use Phpactor\CodeBuilder\Domain\Prototype\NamespaceName;
 use Phpactor\CodeBuilder\Domain\Prototype\Type;
-use Phpactor\CodeBuilder\Domain\Builder\ClassBuilder;
 use Phpactor\CodeBuilder\Domain\Prototype\Classes;
 use Phpactor\CodeBuilder\Domain\Prototype\UseStatements;
 use Phpactor\CodeBuilder\Domain\Prototype\Interfaces;

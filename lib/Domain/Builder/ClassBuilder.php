@@ -8,10 +8,7 @@ use Phpactor\CodeBuilder\Domain\Prototype\Properties;
 use Phpactor\CodeBuilder\Domain\Prototype\Type;
 use Phpactor\CodeBuilder\Domain\Prototype\Methods;
 use Phpactor\CodeBuilder\Domain\Prototype\ImplementsInterfaces;
-use Phpactor\CodeBuilder\Domain\Builder\ConstantBuilder;
 use Phpactor\CodeBuilder\Domain\Prototype\Constants;
-use Phpactor\CodeBuilder\Domain\Builder\Builder;
-use Phpactor\CodeBuilder\Domain\Builder\PropertyBuilder;
 
 class ClassBuilder extends ClassLikeBuilder
 {
@@ -95,4 +92,3 @@ class ClassBuilder extends ClassLikeBuilder
         );
     }
 }
-

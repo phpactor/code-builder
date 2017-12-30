@@ -2,9 +2,6 @@
 
 namespace Phpactor\CodeBuilder\Domain\Prototype;
 
-use Phpactor\CodeBuilder\Domain\Prototype\DefaultValue;
-use Phpactor\CodeBuilder\Domain\Prototype\Type;
-
 final class Property extends Prototype
 {
     /**
@@ -32,8 +29,7 @@ final class Property extends Prototype
         Visibility $visibility = null,
         DefaultValue $defaultValue = null,
         Type $type = null
-    )
-    {
+    ) {
         $this->name = $name;
         $this->visibility = $visibility ?: Visibility::public();
         $this->defaultValue = $defaultValue ?: DefaultValue::none();

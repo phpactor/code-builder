@@ -24,4 +24,3 @@ final class DefaultValue extends Value
         return false === $this->none;
     }
 }
-

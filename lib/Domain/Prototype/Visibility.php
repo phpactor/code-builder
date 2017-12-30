@@ -24,7 +24,8 @@ final class Visibility
         if (!in_array($visibility, self::VISIBILITIES)) {
             throw new \InvalidArgumentException(sprintf(
                 'Invalid visibility "%s", valid visibilities: "%s"',
-                $visibility, implode('", "', self::VISIBILITIES)
+                $visibility,
+                implode('", "', self::VISIBILITIES)
             ));
         }
 
@@ -56,4 +57,3 @@ final class Visibility
         return $this->visibility;
     }
 }
-

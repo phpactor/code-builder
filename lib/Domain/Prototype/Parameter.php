@@ -2,8 +2,6 @@
 
 namespace Phpactor\CodeBuilder\Domain\Prototype;
 
-use Phpactor\CodeBuilder\Domain\Prototype\DefaultValue;
-
 final class Parameter extends Prototype
 {
     private $name;
@@ -14,8 +12,7 @@ final class Parameter extends Prototype
         string $name,
         Type $type = null,
         DefaultValue $defaultValue = null
-    )
-    {
+    ) {
         $this->name = $name;
         $this->type = $type ?: Type::none();
         $this->defaultValue = $defaultValue ?: DefaultValue::none();

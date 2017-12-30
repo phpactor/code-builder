@@ -2,9 +2,6 @@
 
 namespace Phpactor\CodeBuilder\Domain\Prototype;
 
-use Phpactor\CodeBuilder\Domain\Prototype\Methods;
-use Phpactor\CodeBuilder\Domain\Prototype\ExtendsClass;
-use Phpactor\CodeBuilder\Domain\Prototype\ExtendsInterfaces;
 
 final class InterfacePrototype extends Prototype
 {
@@ -27,8 +24,7 @@ final class InterfacePrototype extends Prototype
         string $name,
         Methods $methods = null,
         ExtendsInterfaces $extendsInterfaces = null
-    )
-    {
+    ) {
         $this->name = $name;
         $this->methods = $methods ?: Methods::empty();
         $this->extendsInterfaces = $extendsInterfaces ?: ExtendsInterfaces::empty();

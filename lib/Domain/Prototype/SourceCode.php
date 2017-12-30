@@ -2,8 +2,6 @@
 
 namespace Phpactor\CodeBuilder\Domain\Prototype;
 
-use Phpactor\CodeBuilder\Domain\Prototype\Interfaces;
-
 class SourceCode extends Prototype
 {
     /**
@@ -31,8 +29,7 @@ class SourceCode extends Prototype
         UseStatements $useStatements = null,
         Classes $classes = null,
         Interfaces $interfaces = null
-    )
-    {
+    ) {
         $this->namespace = $namespace ?: NamespaceName::fromString('');
         $this->useStatements = $useStatements ?: UseStatements::empty();
         $this->classes = $classes ?: Classes::empty();
