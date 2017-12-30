@@ -3,10 +3,21 @@
 namespace Phpactor\CodeBuilder\Adapter\TolerantParser;
 
 use Phpactor\CodeBuilder\Adapter\TolerantParser\TextEdit;
+use Phpactor\CodeBuilder\Util\TextFormat;
 
 class Edits
 {
     private $edits = [];
+
+    /**
+     * @var TextFormat
+     */
+    private $format;
+
+    public function __construct(TextFormat $format = null)
+    {
+        $this->format = $format ?: new TextFormat();;
+    }
 
     public function remove($node)
     {
@@ -31,5 +42,10 @@ class Edits
     public function add(TextEdit $textEdit)
     {
         $this->edits[] = $textEdit;
+    }
+
+    public function indent(string $string, int $level): string
+    {
+        return $this->format->indent($string, $level);
     }
 }
