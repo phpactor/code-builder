@@ -16,6 +16,7 @@ use Phpactor\CodeBuilder\Domain\Renderer;
 use Phpactor\CodeBuilder\Domain\Updater;
 use Phpactor\CodeBuilder\Util\TextFormat;
 use Phpactor\CodeBuilder\Adapter\TolerantParser\Updater\ClassUpdater;
+use Microsoft\PhpParser\Node\Statement\InterfaceDeclaration;
 
 class TolerantUpdater implements Updater
 {
@@ -132,15 +133,20 @@ class TolerantUpdater implements Updater
     private function updateClasses(Edits $edits, SourceCode $prototype, SourceFileNode $node)
     {
         $classNodes = [];
+        $interfaceNodes = [];
         $lastStatement = null;
         foreach ($node->statementList as $classNode) {
             $lastStatement = $classNode;
-            if (!$classNode instanceof ClassDeclaration) {
-                continue;
+
+            if ($classNode instanceof ClassDeclaration) {
+                $name = $classNode->name->getText($node->getFileContents());
+                $classNodes[$name] = $classNode;
             }
 
-            $name = $classNode->name->getText($node->getFileContents());
-            $classNodes[$name] = $classNode;
+            if ($classNode instanceof InterfaceDeclaration) {
+                $name = $classNode->name->getText($node->getFileContents());
+                $interfaceNodes[$name] = $classNode;
+            }
         }
 
         foreach ($prototype->classes()->in(array_keys($classNodes)) as $classPrototype) {
@@ -151,7 +157,11 @@ class TolerantUpdater implements Updater
             $edits->after($lastStatement, PHP_EOL);
         }
 
-        $classes = $prototype->classes()->notIn(array_keys($classNodes));
+        $classes = array_merge(
+            iterator_to_array($prototype->classes()->notIn(array_keys($classNodes))),
+            iterator_to_array($prototype->interfaces()->notIn(array_keys($interfaceNodes)))
+        );
+
         $index = 0;
         foreach ($classes as $classPrototype) {
             if ($index > 0 && $index + 1 == count($classes)) {
