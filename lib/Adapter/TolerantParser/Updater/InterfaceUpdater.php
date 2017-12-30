@@ -7,6 +7,7 @@ use Phpactor\CodeBuilder\Adapter\TolerantParser\Edits;
 use Phpactor\CodeBuilder\Domain\Prototype\ClassPrototype;
 use Microsoft\PhpParser\Node\Statement\InterfaceDeclaration;
 use Phpactor\CodeBuilder\Domain\Prototype\InterfacePrototype;
+use Phpactor\CodeBuilder\Adapter\TolerantParser\Updater\ClassMethodUpdater;
 
 class InterfaceUpdater
 {
@@ -15,9 +16,15 @@ class InterfaceUpdater
      */
     private $renderer;
 
+    /**
+     * @var MethodUpdater
+     */
+    private $methodUpdater;
+
     public function __construct(Renderer $renderer)
     {
         $this->renderer = $renderer;
+        $this->methodUpdater = new InterfaceMethodUpdater($renderer);
     }
 
     public function updateInterface(
@@ -26,5 +33,6 @@ class InterfaceUpdater
         InterfaceDeclaration $classNode
     )
     {
+        $this->methodUpdater->updateMethods($edits, $classPrototype, $classNode);
     }
 }

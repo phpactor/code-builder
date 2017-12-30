@@ -19,7 +19,7 @@ use Phpactor\CodeBuilder\Domain\Prototype\Parameters;
 use Phpactor\CodeBuilder\Adapter\TolerantParser\TextEdit;
 use Phpactor\CodeBuilder\Domain\Prototype\Method;
 use Microsoft\PhpParser\Node\Statement\CompoundStatementNode;
-use Phpactor\CodeBuilder\Adapter\TolerantParser\Updater\MethodUpdater;
+use Phpactor\CodeBuilder\Adapter\TolerantParser\Updater\ClassMethodUpdater;
 
 class ClassUpdater
 {
@@ -37,7 +37,7 @@ class ClassUpdater
     public function __construct(Renderer $renderer)
     {
         $this->renderer = $renderer;
-        $this->methodUpdater = new MethodUpdater($renderer);
+        $this->methodUpdater = new ClassMethodUpdater($renderer);
     }
 
     public function updateClass(Edits $edits, ClassPrototype $classPrototype, ClassDeclaration $classNode)

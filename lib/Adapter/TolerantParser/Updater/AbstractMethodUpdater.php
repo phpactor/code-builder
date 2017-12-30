@@ -13,8 +13,10 @@ use Microsoft\PhpParser\Node;
 use Microsoft\PhpParser\Node\Statement\CompoundStatementNode;
 use Phpactor\CodeBuilder\Domain\Prototype\Parameters;
 use Phpactor\CodeBuilder\Adapter\TolerantParser\TextEdit;
+use Phpactor\CodeBuilder\Domain\Prototype\ClassLikePrototype;
+use Microsoft\PhpParser\ClassLike;
 
-class MethodUpdater
+abstract class AbstractMethodUpdater
 {
     /**
      * @var Renderer
@@ -26,16 +28,15 @@ class MethodUpdater
         $this->renderer = $renderer;
     }
 
-    public function updateMethods(Edits $edits, ClassPrototype $classPrototype, ClassDeclaration $classNode)
+    public function updateMethods(Edits $edits, ClassLikePrototype $classPrototype, ClassLike $classNode)
     {
         if (count($classPrototype->methods()) === 0) {
             return;
         }
 
-        $lastMember = $classNode->classMembers->openBrace;
-
+        $lastMember = $this->memberDeclarationsNode($classNode)->openBrace;
         $newLine = false;
-        $memberDeclarations = $classNode->classMembers->classMemberDeclarations;
+        $memberDeclarations = $this->memberDeclarations($classNode);
         $existingMethodNames = [];
         $existingMethods = [];
         foreach ($memberDeclarations as $memberNode) {
@@ -82,7 +83,7 @@ class MethodUpdater
         foreach ($methods as $method) {
             $edits->after(
                 $lastMember,
-                PHP_EOL . $edits->indent($this->renderer->render($method) . PHP_EOL . $this->renderer->render($method->body()), 1)
+                PHP_EOL . $edits->indent($this->renderMethod($this->renderer, $method), 1)
             );
 
             if (false === $classPrototype->methods()->isLast($method)) {
@@ -155,4 +156,10 @@ class MethodUpdater
 
         $edits->add(new TextEdit($methodDeclaration->openParen->getStartPosition() + 1, 0, implode(', ', $replacementParameters)));
     }
+
+    abstract protected function memberDeclarations(ClassLike $classNode);
+
+    abstract protected function memberDeclarationsNode(ClassLike $classNode);
+
+    abstract protected function renderMethod(Renderer $renderer, Method $method);
 }
