@@ -2,7 +2,7 @@
 
 namespace Phpactor\CodeBuilder\Domain\Prototype;
 
-final class ClassPrototype extends Prototype
+final class ClassPrototype extends ClassLikePrototype
 {
 
     /**
@@ -14,21 +14,6 @@ final class ClassPrototype extends Prototype
      * @var ImplementsInterfaces
      */
     private $implementsInterfaces;
-
-    /**
-     * @var string
-     */
-    private $name;
-
-    /**
-     * @var Properties
-     */
-    private $properties;
-
-    /**
-     * @var Methods
-     */
-    private $methods;
 
     /**
      * @var ExtendsClasss
@@ -48,17 +33,11 @@ final class ClassPrototype extends Prototype
         ExtendsClass $extendsClass = null,
         ImplementsInterfaces $implementsInterfaces = null
     ) {
-        $this->name = $name;
+        parent::__construct($name, $methods);
         $this->properties = $properties ?: Properties::empty();
-        $this->methods = $methods ?: Methods::empty();
         $this->extendsClass = $extendsClass ?: ExtendsClass::none();
         $this->implementsInterfaces = $implementsInterfaces ?: ImplementsInterfaces::empty();
         $this->constants = $constants ?: Constants::empty();
-    }
-
-    public function name()
-    {
-        return $this->name;
     }
 
     public function properties(): Properties
@@ -69,11 +48,6 @@ final class ClassPrototype extends Prototype
     public function constants(): Constants
     {
         return $this->constants;
-    }
-
-    public function methods(): Methods
-    {
-        return $this->methods;
     }
 
     public function extendsClass(): ExtendsClass
