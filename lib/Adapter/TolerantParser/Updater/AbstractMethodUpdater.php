@@ -3,8 +3,6 @@
 namespace Phpactor\CodeBuilder\Adapter\TolerantParser\Updater;
 
 use Phpactor\CodeBuilder\Adapter\TolerantParser\Edits;
-use Phpactor\CodeBuilder\Domain\Prototype\ClassPrototype;
-use Microsoft\PhpParser\Node\Statement\ClassDeclaration;
 use Microsoft\PhpParser\Node\PropertyDeclaration;
 use Microsoft\PhpParser\Node\MethodDeclaration;
 use Phpactor\CodeBuilder\Domain\Renderer;

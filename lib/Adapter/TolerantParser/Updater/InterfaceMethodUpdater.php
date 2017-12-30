@@ -2,10 +2,8 @@
 
 namespace Phpactor\CodeBuilder\Adapter\TolerantParser\Updater;
 
-use Phpactor\CodeBuilder\Adapter\TolerantParser\Updater\AbstractMethodUpdater;
 use Microsoft\PhpParser\ClassLike;
 use Phpactor\CodeBuilder\Domain\Renderer;
-use Phpactor\CodeBuilder\Adapter\TolerantParser\Edits;
 use Phpactor\CodeBuilder\Domain\Prototype\Method;
 
 class InterfaceMethodUpdater extends AbstractMethodUpdater

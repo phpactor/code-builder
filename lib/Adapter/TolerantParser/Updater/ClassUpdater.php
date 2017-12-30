@@ -15,11 +15,6 @@ use Microsoft\PhpParser\Node;
 use Microsoft\PhpParser\Node\Expression\Variable;
 use Microsoft\PhpParser\Node\Expression\AssignmentExpression;
 use Phpactor\CodeBuilder\Domain\Prototype\Type;
-use Phpactor\CodeBuilder\Domain\Prototype\Parameters;
-use Phpactor\CodeBuilder\Adapter\TolerantParser\TextEdit;
-use Phpactor\CodeBuilder\Domain\Prototype\Method;
-use Microsoft\PhpParser\Node\Statement\CompoundStatementNode;
-use Phpactor\CodeBuilder\Adapter\TolerantParser\Updater\ClassMethodUpdater;
 
 class ClassUpdater
 {

@@ -2,9 +2,6 @@
 
 namespace Phpactor\CodeBuilder\Domain\Prototype;
 
-use Phpactor\CodeBuilder\Domain\Prototype\Properties;
-use Phpactor\CodeBuilder\Domain\Prototype\Methods;
-
 abstract class ClassLikePrototype extends Prototype
 {
     /**

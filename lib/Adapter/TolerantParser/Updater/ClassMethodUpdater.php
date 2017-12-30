@@ -2,10 +2,8 @@
 
 namespace Phpactor\CodeBuilder\Adapter\TolerantParser\Updater;
 
-use Phpactor\CodeBuilder\Adapter\TolerantParser\Updater\AbstractMethodUpdater;
 use Microsoft\PhpParser\ClassLike;
 use Phpactor\CodeBuilder\Domain\Renderer;
-use Phpactor\CodeBuilder\Adapter\TolerantParser\Edits;
 use Phpactor\CodeBuilder\Domain\Prototype\Method;
 
 class ClassMethodUpdater extends AbstractMethodUpdater
@@ -22,8 +20,8 @@ class ClassMethodUpdater extends AbstractMethodUpdater
 
     public function renderMethod(Renderer $renderer, Method $method)
     {
-        return $renderer->render($method) . 
-            PHP_EOL . 
+        return $renderer->render($method) .
+            PHP_EOL .
             $renderer->render($method->body());
     }
 }
