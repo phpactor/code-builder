@@ -13,6 +13,7 @@ use Phpactor\WorseReflection\Core\Reflection\ReflectionClassLike;
 use Phpactor\WorseReflection\Core\ClassName;
 use Phpactor\WorseReflection\Core\Reflection\ReflectionParameter;
 use Phpactor\CodeBuilder\Domain\Builder\MethodBuilder;
+use Phpactor\CodeBuilder\Domain\Builder\ClassLikeBuilder;
 
 class WorseBuilderFactory implements BuilderFactory
 {
@@ -81,7 +82,7 @@ class WorseBuilderFactory implements BuilderFactory
         }
     }
 
-    private function buildMethod(ClassBuilder $classBuilder, ReflectionMethod $method)
+    private function buildMethod(ClassLikeBuilder $classBuilder, ReflectionMethod $method)
     {
         $methodBuilder = $classBuilder->method($method->name());
         $methodBuilder->visibility((string) $method->visibility());
@@ -112,7 +113,7 @@ class WorseBuilderFactory implements BuilderFactory
         }
     }
 
-    private function resolveClassMemberType(ClassBuilder $classBuilder, ClassName $classType, Type $type)
+    private function resolveClassMemberType(ClassLikeBuilder $classBuilder, ClassName $classType, Type $type)
     {
         if ($type->isClass() && $classType->namespace() != $type->className()->namespace()) {
             $classBuilder->end()->use((string) $type);

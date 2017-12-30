@@ -146,6 +146,12 @@ EOT
         $this->assertEquals('Foobar', (string) $source->interfaces()->first()->name());
     }
 
+    public function testInterfaceWithMethod()
+    {
+        $source = $this->build('<?php interface Foobar { public function hello(World $world); }');
+        $this->assertEquals('hello', (string) $source->interfaces()->first()->methods()->get('hello')->name());
+    }
+
     private function build(string $source): SourceCode
     {
         $reflector = Reflector::create(new StringSourceLocator(WorseSourceCode::fromString($source)));

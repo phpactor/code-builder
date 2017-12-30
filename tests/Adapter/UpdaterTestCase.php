@@ -1126,6 +1126,20 @@ interface Aardvark
 }
 EOT
             ],
+            'It adds an interface in a namespace' => [
+                
+                <<<'EOT'
+namespace Foobar;
+EOT
+                , SourceCodeBuilder::create()->interface('Aardvark')->end()->build(),
+                <<<'EOT'
+namespace Foobar;
+
+interface Aardvark
+{
+}
+EOT
+            ],
             'It adds methods to an interface' => [
                 
                 <<<'EOT'
