@@ -964,6 +964,37 @@ class Aardvark
 }
 EOT
             ],
+            'It does not modify existing methods' => [
+                <<<'EOT'
+class Aardvark
+{
+    public function hello(
+        array $foobar = []
+    )
+    {
+    }
+}
+EOT
+                , SourceCodeBuilder::create()
+                    ->class('Aardvark')
+                        ->method('hello')->parameter('foobar')->type('array')->defaultValue([])->end()->end()
+                    ->end()
+                    ->build(),
+                <<<'EOT'
+class Aardvark
+{
+    public function hello(
+        array $foobar = []
+    )
+    {
+    }
+
+    public function methodOne()
+    {
+    }
+}
+EOT
+            ],
         ];
     }
 
