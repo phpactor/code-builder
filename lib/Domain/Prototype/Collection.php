@@ -63,6 +63,15 @@ abstract class Collection implements \IteratorAggregate, \Countable
         return $this->items[$name];
     }
 
+    public function has(string $name): bool
+    {
+        if (isset($this->items[$name])) {
+            return true;
+        }
+
+        return false;
+    }
+
     public function notIn(array $names): Collection
     {
         return new static(array_filter($this->items, function ($name) use ($names) {

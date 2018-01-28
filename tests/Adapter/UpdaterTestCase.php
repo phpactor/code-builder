@@ -964,7 +964,7 @@ class Aardvark
 }
 EOT
             ],
-            'It does not modify existing methods' => [
+            'It does not modify existing methods 1' => [
                 <<<'EOT'
 class Aardvark
 {
@@ -988,8 +988,50 @@ class Aardvark
     )
     {
     }
-
-    public function methodOne()
+}
+EOT
+            ],
+            'It modifies the return type' => [
+                <<<'EOT'
+class Aardvark
+{
+    public function hello(): Foobar
+    {
+    }
+}
+EOT
+                , SourceCodeBuilder::create()
+                    ->class('Aardvark')
+                        ->method('hello')->returnType('Barfoo')->end()
+                    ->end()
+                    ->build(),
+                <<<'EOT'
+class Aardvark
+{
+    public function hello(): Barfoo
+    {
+    }
+}
+EOT
+            ],
+            'It modifies the parameter type' => [
+                <<<'EOT'
+class Aardvark
+{
+    public function hello(Foobar $foobar)
+    {
+    }
+}
+EOT
+                , SourceCodeBuilder::create()
+                    ->class('Aardvark')
+                        ->method('hello')->parameter('foobar')->type('Barfoo')->end()->end()
+                    ->end()
+                    ->build(),
+                <<<'EOT'
+class Aardvark
+{
+    public function hello(Barfoo $foobar)
     {
     }
 }

@@ -13,6 +13,9 @@ use Phpactor\CodeBuilder\Domain\Prototype\Parameters;
 use Phpactor\CodeBuilder\Adapter\TolerantParser\TextEdit;
 use Phpactor\CodeBuilder\Domain\Prototype\ClassLikePrototype;
 use Microsoft\PhpParser\ClassLike;
+use Microsoft\PhpParser\Token;
+use Microsoft\PhpParser\Node\Parameter;
+use Phpactor\CodeBuilder\Domain\Prototype\ReturnType;
 
 abstract class AbstractMethodUpdater
 {
@@ -52,24 +55,33 @@ abstract class AbstractMethodUpdater
         }
 
         // Update methods
-        $methods = $classPrototype->methods()->in($existingMethodNames);
+        $methodPrototypes = $classPrototype->methods()->in($existingMethodNames);
 
-        /** @var Method $method */
-        foreach ($methods as $method) {
+        $ignoreMethods = [];
+        /** @var Method $methodBuilder */
+        foreach ($methodPrototypes as $methodPrototype) {
+
             /** @var MethodDeclaration $methodDeclaration */
-            $methodDeclaration = $existingMethods[$method->name()];
-            $bodyNode = $methodDeclaration->compoundStatementOrSemicolon;
+            $methodDeclaration = $existingMethods[$methodPrototype->name()];
 
-            if ($method->body()->lines()->count()) {
-                $this->appendLinesToMethod($edits, $method, $bodyNode);
+            if ($methodPrototype->body()->lines()->count()) {
+                $bodyNode = $methodDeclaration->compoundStatementOrSemicolon;
+                $this->appendLinesToMethod($edits, $methodPrototype, $bodyNode);
             }
 
-            $this->updateOrAddParameters($edits, $method->parameters(), $methodDeclaration);
+            if ($this->prototypeSameAsDeclaration($methodPrototype, $methodDeclaration)) {
+                $ignoreMethods[] = $methodPrototype->name();
+                continue;
+            }
+
+            $this->updateOrAddParameters($edits, $methodPrototype->parameters(), $methodDeclaration);
+            $this->updateOrAddReturnType($edits, $methodPrototype->returnType(), $methodDeclaration);
         }
 
-        $methods = $classPrototype->methods()->notIn($existingMethodNames);
+        // Add methods
+        $methodPrototypes = $classPrototype->methods()->notIn($existingMethodNames)->notIn($ignoreMethods);
 
-        if (0 === count($methods)) {
+        if (0 === count($methodPrototypes)) {
             return;
         }
 
@@ -77,14 +89,13 @@ abstract class AbstractMethodUpdater
             $edits->after($lastMember, PHP_EOL);
         }
 
-        // Add methods
-        foreach ($methods as $method) {
+        foreach ($methodPrototypes as $methodPrototype) {
             $edits->after(
                 $lastMember,
-                PHP_EOL . $edits->indent($this->renderMethod($this->renderer, $method), 1)
+                PHP_EOL . $edits->indent($this->renderMethod($this->renderer, $methodPrototype), 1)
             );
 
-            if (false === $classPrototype->methods()->isLast($method)) {
+            if (false === $classPrototype->methods()->isLast($methodPrototype)) {
                 $edits->after($lastMember, PHP_EOL);
             }
         }
@@ -153,6 +164,85 @@ abstract class AbstractMethodUpdater
         }
 
         $edits->add(new TextEdit($methodDeclaration->openParen->getStartPosition() + 1, 0, implode(', ', $replacementParameters)));
+    }
+
+    private function updateOrAddReturnType(Edits $edits, ReturnType $returnType, MethodDeclaration $methodDeclaration)
+    {
+        if (false === $returnType->notNone()) {
+            return;
+        }
+
+        $returnType = (string) $returnType;
+        $existingReturnType = $returnType ? $methodDeclaration->returnType->getText() : null;
+
+        if (null === $existingReturnType) {
+            // TODO: Add return type
+            return;
+        }
+
+        if ($returnType === $existingReturnType) {
+            return;
+        }
+
+        $edits->replace($methodDeclaration->returnType, ' ' . $returnType);
+    }
+
+    private function prototypeSameAsDeclaration(Method $methodPrototype, MethodDeclaration $methodDeclaration)
+    {
+        $parameters = [];
+        if (null !== $methodDeclaration->parameters) {
+            $parameters = array_filter($methodDeclaration->parameters->children, function ($parameter) {
+                return $parameter instanceof Parameter;
+            });
+
+            /** @var Parameter $parameter */
+            foreach ($parameters as $parameter) {
+                $name = ltrim($parameter->variableName->getText($methodDeclaration->getFileContents()), '$');
+
+                // if method prototype doesn't have the existing parameter
+                if (false === $methodPrototype->parameters()->has($name)) {
+                    return false;
+                }
+
+                $parameterPrototype = $methodPrototype->parameters()->get($name);
+
+                $type = $parameterPrototype->type();
+
+                // adding a parameter type
+                if (null === $parameter->typeDeclaration && $type->notNone()) {
+                    return false;
+                }
+
+                // if parameter has a different type
+                if (null !== $parameter->typeDeclaration) {
+                    $typeName = $parameter->typeDeclaration->getText($methodDeclaration->getFileContents());
+                    if ($type->notNone() && (string) $type !== $typeName) {
+                        return false;
+                    }
+                }
+            }
+
+        }
+
+        // method prototype has all of the parameters, but does it have extra ones?
+        if ($methodPrototype->parameters()->count() !== count($parameters)) {
+            return false;
+        }
+
+        // are we adding a return type?
+        if ($methodPrototype->returnType()->notNone() && null === $methodDeclaration->returnType) {
+            return false;
+        }
+
+        // is the return type the same?
+        if (null !== $methodDeclaration->returnType) {
+            $name = $methodDeclaration->returnType->getText();
+            if ($methodPrototype->returnType()->__toString() !== $name) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     abstract protected function memberDeclarations(ClassLike $classNode);

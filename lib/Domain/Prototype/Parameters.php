@@ -3,8 +3,8 @@
 namespace Phpactor\CodeBuilder\Domain\Prototype;
 
 /**
- * @method \Phpactor\CodeBuilder\Domain\Prototype\Property first()
- * @method \Phpactor\CodeBuilder\Domain\Prototype\Property get()
+ * @method \Phpactor\CodeBuilder\Domain\Prototype\Parameter first()
+ * @method \Phpactor\CodeBuilder\Domain\Prototype\Parameter get()
  */
 class Parameters extends Collection
 {
