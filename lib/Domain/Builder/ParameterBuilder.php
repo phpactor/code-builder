@@ -28,6 +28,11 @@ class ParameterBuilder
      */
     private $defaultValue;
 
+    /**
+     * @var bool
+     */
+    private $byReference = false;
+
     public function __construct(MethodBuilder $parent, string $name)
     {
         $this->parent = $parent;
@@ -53,12 +58,20 @@ class ParameterBuilder
         return new Parameter(
             $this->name,
             $this->type,
-            $this->defaultValue
+            $this->defaultValue,
+            $this->byReference
         );
     }
 
     public function end(): MethodBuilder
     {
         return $this->parent;
+    }
+
+    public function byReference(bool $bool)
+    {
+        $this->byReference = $bool;
+
+        return $this;
     }
 }

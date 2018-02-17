@@ -100,6 +100,12 @@ class WorseBuilderFactoryTest extends TestCase
         $this->assertEquals('param', $source->classes()->first()->methods()->first()->parameters()->first()->name());
     }
 
+    public function testMethodWithParameterByReference()
+    {
+        $source = $this->build('<?php class Foobar { public function method(&$param) {} }');
+        $this->assertTrue($source->classes()->first()->methods()->first()->parameters()->first()->byReference());
+    }
+
     public function testMethodWithTypedParameter()
     {
         $source = $this->build('<?php class Foobar { public function method(string $param) {} }');

@@ -111,6 +111,10 @@ class WorseBuilderFactory implements BuilderFactory
         if ($parameter->default()->isDefined()) {
             $parameterBuilder->defaultValue($parameter->default()->value());
         }
+
+        if ($parameter->byReference()) {
+            $parameterBuilder->byReference(true);
+        }
     }
 
     private function resolveClassMemberType(ClassLikeBuilder $classBuilder, ClassName $classType, Type $type)
