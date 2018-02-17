@@ -223,6 +223,14 @@ EOT
 private function hello($one, string $two, $three = 42)
 EOT
             ],
+            'Renders a method parameter passed as a reference' => [
+                new Method('hello', Visibility::private(), Parameters::fromParameters([
+                    new Parameter('three', Type::none(), DefaultValue::none(), true),
+                ])),
+                <<<'EOT'
+private function hello(&$three)
+EOT
+            ],
             'Renders static method' => [
                 new Method(
                     'hello',

@@ -4,18 +4,36 @@ namespace Phpactor\CodeBuilder\Domain\Prototype;
 
 final class Parameter extends Prototype
 {
+    /**
+     * @var bool
+     */
+    private $byReference;
+
+    /**
+     * @var string
+     */
     private $name;
+
+    /**
+     * @var Type
+     */
     private $type;
+
+    /**
+     * @var DefaultValue
+     */
     private $defaultValue;
 
     public function __construct(
         string $name,
         Type $type = null,
-        DefaultValue $defaultValue = null
+        DefaultValue $defaultValue = null,
+        bool $byReference = false
     ) {
         $this->name = $name;
         $this->type = $type ?: Type::none();
         $this->defaultValue = $defaultValue ?: DefaultValue::none();
+        $this->byReference = $byReference;
     }
 
     public function name(): string
@@ -31,5 +49,10 @@ final class Parameter extends Prototype
     public function defaultValue(): DefaultValue
     {
         return $this->defaultValue;
+    }
+
+    public function byReference(): bool
+    {
+        return $this->byReference;
     }
 }
