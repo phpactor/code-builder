@@ -93,6 +93,10 @@ class WorseBuilderFactory implements BuilderFactory
             $methodBuilder->returnType($type->short());
         }
 
+        if ($method->isStatic()) {
+            $methodBuilder->static();
+        }
+
         foreach ($method->parameters() as $parameter) {
             $this->buildParameter($methodBuilder, $method, $parameter);
         }

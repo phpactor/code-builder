@@ -124,6 +124,13 @@ class WorseBuilderFactoryTest extends TestCase
         $this->assertEquals('1234', (string) $source->classes()->first()->methods()->first()->parameters()->first()->defaultValue()->value());
     }
 
+    public function testStaticMethod()
+
+    {
+        $source = $this->build('<?php class Foobar { public static function method($param = "1234") {} }');
+        $this->assertTrue($source->classes()->first()->methods()->first()->isStatic());
+    }
+
     public function testClassWhichExtendsClassWithMethods()
     {
         $source = $this->build(<<<'EOT'
