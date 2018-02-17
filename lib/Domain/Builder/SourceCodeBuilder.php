@@ -61,6 +61,22 @@ class SourceCodeBuilder
         return $builder;
     }
 
+    public function classLike(string $name): ClassLikeBuilder
+    {
+        if (isset($this->classes[$name])) {
+            return $this->classes[$name];
+        }
+
+        if (isset($this->interfaces[$name])) {
+            return $this->interfaces[$name];
+        }
+
+        throw new InvalidArgumentException(
+            'classLike can only be called as an accessor. Use class() or interface() instead'
+        );
+    }
+
+
     public function interface(string $name): InterfaceBuilder
     {
         if (isset($this->interfaces[$name])) {
