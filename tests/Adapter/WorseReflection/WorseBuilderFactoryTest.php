@@ -10,6 +10,7 @@ use Phpactor\CodeBuilder\Domain\Prototype\SourceCode;
 use Phpactor\CodeBuilder\Domain\Builder\SourceCodeBuilder;
 use Phpactor\WorseReflection\Core\SourceCodeLocator\StringSourceLocator;
 use Phpactor\WorseReflection\Core\SourceCode as WorseSourceCode;
+use Phpactor\WorseReflection\ReflectorBuilder;
 
 class WorseBuilderFactoryTest extends TestCase
 {
@@ -167,7 +168,7 @@ EOT
 
     private function build(string $source): SourceCode
     {
-        $reflector = Reflector::create(new StringSourceLocator(WorseSourceCode::fromString($source)));
+        $reflector = ReflectorBuilder::create()->addSource($source)->build();
 
         $worseFactory = new WorseBuilderFactory($reflector);
         return $worseFactory->fromSource($source)->build();
