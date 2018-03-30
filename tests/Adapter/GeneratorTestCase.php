@@ -31,6 +31,7 @@ use Phpactor\CodeBuilder\Domain\Prototype\SourceCode;
 use Phpactor\CodeBuilder\Domain\Prototype\SourceText;
 use Phpactor\CodeBuilder\Domain\Prototype\Type;
 use Phpactor\CodeBuilder\Domain\Prototype\UseStatements;
+use Phpactor\CodeBuilder\Domain\Prototype\UseStatement;
 use Phpactor\CodeBuilder\Domain\Prototype\Value;
 use Phpactor\CodeBuilder\Domain\Prototype\Visibility;
 use Phpactor\CodeBuilder\Domain\Renderer;
@@ -105,9 +106,9 @@ EOT
             'Renders source code with use statements' => [
                 new SourceCode(
                     NamespaceName::root(),
-                    UseStatements::fromQualifiedNames([
-                        QualifiedName::fromString('Acme\Post\Board'),
-                        QualifiedName::fromString('Acme\Post\Zebra')
+                    UseStatements::fromUseStatements([
+                        UseStatement::fromType('Acme\Post\Board'),
+                        UseStatement::fromType('Acme\Post\Zebra')
                     ])
                 ),
                 <<<'EOT'

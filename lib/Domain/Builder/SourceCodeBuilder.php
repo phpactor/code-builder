@@ -8,6 +8,7 @@ use Phpactor\CodeBuilder\Domain\Prototype\Type;
 use Phpactor\CodeBuilder\Domain\Prototype\Classes;
 use Phpactor\CodeBuilder\Domain\Prototype\UseStatements;
 use Phpactor\CodeBuilder\Domain\Prototype\Interfaces;
+use Phpactor\CodeBuilder\Domain\Prototype\UseStatement;
 
 class SourceCodeBuilder
 {
@@ -17,7 +18,7 @@ class SourceCodeBuilder
     private $namespace;
 
     /**
-     * @var Type[]
+     * @var UseStatement[]
      */
     private $useStatements = [];
 
@@ -43,9 +44,9 @@ class SourceCodeBuilder
         return $this;
     }
 
-    public function use(string $use): SourceCodeBuilder
+    public function use(string $use, string $alias = null): SourceCodeBuilder
     {
-        $this->useStatements[$use] = Type::fromString($use);
+        $this->useStatements[$use] = UseStatement::fromTypeAndAlias($use, $alias);
 
         return $this;
     }
@@ -92,7 +93,7 @@ class SourceCodeBuilder
     {
         return new SourceCode(
             $this->namespace,
-            UseStatements::fromQualifiedNames($this->useStatements),
+            UseStatements::fromUseStatements($this->useStatements),
             Classes::fromClasses(array_map(function (ClassBuilder $builder) {
                 return $builder->build();
             }, $this->classes)),

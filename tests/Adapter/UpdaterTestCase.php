@@ -97,6 +97,16 @@ EOT
 use Bovine;
 EOT
             ],
+            'It adds use statements with an alias' => [
+                
+                <<<'EOT'
+EOT
+                , SourceCodeBuilder::create()->use('Bovine', 'Cow')->build(),
+                <<<'EOT'
+
+use Bovine as Cow;
+EOT
+            ],
             'It adds use statements after a namespace' => [
                 
                 <<<'EOT'

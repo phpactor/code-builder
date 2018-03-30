@@ -5,8 +5,12 @@ namespace {{ prototype.namespace }};
 {% endif %}
 {% if prototype.useStatements|length %}
 
-{% for qualifiedName in prototype.useStatements %}
-use {{ qualifiedName }};
+{% for useStatement in prototype.useStatements %}
+{% if useStatement.hasAlias %}
+use {{ useStatement.className }} as {{ useStatement.alias }};
+{% else %}
+use {{ useStatement.className }};
+{% endif %}
 {% endfor %}
 {% endif %}
 {% for interface in prototype.interfaces %}
