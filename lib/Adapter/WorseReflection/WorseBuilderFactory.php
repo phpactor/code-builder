@@ -14,6 +14,7 @@ use Phpactor\WorseReflection\Core\ClassName;
 use Phpactor\WorseReflection\Core\Reflection\ReflectionParameter;
 use Phpactor\CodeBuilder\Domain\Builder\MethodBuilder;
 use Phpactor\CodeBuilder\Domain\Builder\ClassLikeBuilder;
+use Phpactor\WorseReflection\Core\NameImports;
 
 class WorseBuilderFactory implements BuilderFactory
 {
@@ -108,8 +109,12 @@ class WorseBuilderFactory implements BuilderFactory
 
         if ($parameter->type()->isDefined()) {
             $type = $parameter->type();
+            $imports = $parameter->scope()->nameImports();
+
             $this->resolveClassMemberType($methodBuilder->end(), $method->class()->name(), $type);
-            $parameterBuilder->type($type->short());
+
+            $typeName = $this->resolveTypeNameFromNameImports($type, $imports);
+            $parameterBuilder->type($typeName);
         }
 
         if ($parameter->default()->isDefined()) {
@@ -124,7 +129,19 @@ class WorseBuilderFactory implements BuilderFactory
     private function resolveClassMemberType(ClassLikeBuilder $classBuilder, ClassName $classType, Type $type)
     {
         if ($type->isClass() && $classType->namespace() != $type->className()->namespace()) {
-            $classBuilder->end()->use((string) $type);
+            $classBuilder->end()->use($type->className()->full());
         }
+    }
+
+    private function resolveTypeNameFromNameImports(Type $type, NameImports $imports)
+    {
+        $typeName = $type->short();
+        
+        foreach ($imports as $alias => $import) {
+            if ($type->short() == $import->head()) {
+                $typeName = $alias;
+            }
+        }
+        return $typeName;
     }
 }
