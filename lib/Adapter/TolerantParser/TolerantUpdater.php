@@ -41,7 +41,7 @@ class TolerantUpdater implements Updater
      */
     private $textFormat;
 
-    public function __construct(Renderer $renderer, TextFormat $textFormat = null, Parser $parser = null)
+    public function __construct(Renderer $renderer, TextFormat $textFormat, Parser $parser = null)
     {
         $this->parser = $parser ?: new Parser();
         $this->textFormat = $textFormat ?: new TextFormat();
@@ -52,7 +52,7 @@ class TolerantUpdater implements Updater
 
     public function apply(Prototype $prototype, Code $code): Code
     {
-        $edits = new Edits();
+        $edits = new Edits($this->textFormat);
         $node = $this->parser->parseSourceFile((string) $code);
 
         $this->updateNamespace($edits, $prototype, $node);
