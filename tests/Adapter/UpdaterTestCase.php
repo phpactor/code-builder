@@ -126,18 +126,62 @@ EOT
             ];
 
 
-            yield 'class import: It appends use statements' => [
-                
+            yield 'class import: It inserts use statements before the first lexicographically greater use statement' => [
+
                 <<<'EOT'
 namespace Kingdom;
 
+use Aardvark;
+use Badger;
+use Antilope;
+use Zebra;
 use Primate;
 EOT
                 , SourceCodeBuilder::create()->use('Bovine')->build(),
                 <<<'EOT'
 namespace Kingdom;
 
+use Aardvark;
+use Badger;
+use Antilope;
+use Bovine;
+use Zebra;
 use Primate;
+EOT
+            ];
+
+            yield 'class import: It inserts use statements just before the first lexicographically greater use statement' => [
+
+                <<<'EOT'
+namespace Kingdom;
+
+use Zebra;
+use Primate;
+EOT
+                , SourceCodeBuilder::create()->use('Bovine')->build(),
+                <<<'EOT'
+namespace Kingdom;
+
+use Bovine;
+use Zebra;
+use Primate;
+EOT
+            ];
+
+            yield 'class import: It inserts use statements after all lexicographically smaller use statements' => [
+
+                <<<'EOT'
+namespace Kingdom;
+
+use Badger;
+use Aardvark;
+EOT
+                , SourceCodeBuilder::create()->use('Bovine')->build(),
+                <<<'EOT'
+namespace Kingdom;
+
+use Badger;
+use Aardvark;
 use Bovine;
 EOT
             ];
@@ -197,10 +241,10 @@ EOT
                 <<<'EOT'
 namespace Kingdom;
 
-use Primate;
 use Animal\Bovine;
-use Feline;
 use Canine;
+use Feline;
+use Primate;
 EOT
             ];
 
@@ -215,10 +259,10 @@ EOT
                 <<<'EOT'
 namespace Kingdom;
 
-use Primate;
 use Animal\Bovine;
-use Feline;
 use Canine;
+use Feline;
+use Primate;
 EOT
             ];
 

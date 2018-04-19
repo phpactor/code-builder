@@ -24,6 +24,7 @@ class SourceCodeBuilderTest extends TestCase
         $this->assertInstanceOf(SourceCode::class, $code);
         $this->assertEquals('Barfoo', $code->namespace()->__toString());
         $this->assertCount(2, $code->useStatements());
+        $this->assertEquals('Barfoo', $code->useStatements()->sorted()->first()->__toString());
         $this->assertEquals('Foobar', $code->useStatements()->first()->__toString());
         $this->assertEquals('Hello', $code->classes()->first()->name());
     }

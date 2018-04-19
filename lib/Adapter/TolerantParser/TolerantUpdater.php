@@ -111,11 +111,18 @@ class TolerantUpdater implements Updater
         }
 
         /** @var $usePrototype Type */
-        foreach ($prototype->useStatements() as $usePrototype) {
+        foreach ($prototype->useStatements()->sorted() as $usePrototype) {
             foreach ($node->getChildNodes() as $childNode) {
                 if ($childNode instanceof NamespaceUseDeclaration) {
                     foreach ($childNode->useClauses->getElements() as $useClause) {
-                        if ($useClause->namespaceName->getText() == $usePrototype->__toString()) {
+                        /* try to find the first lexicographycally greater use
+                           statement and insert before if there is one */
+                        $cmp = strcmp($useClause->namespaceName->getText(), $usePrototype->__toString());
+                        if ($cmp === 0) {
+                            continue 3;
+                        }
+                        if ($cmp > 0) {
+                            $edits->before($childNode, 'use ' . (string) $usePrototype . ';' . PHP_EOL);
                             continue 3;
                         }
                     }
