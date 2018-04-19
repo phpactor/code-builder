@@ -1,4 +1,4 @@
-<?php 
+<?php
 namespace Phpactor\CodeBuilder\Adapter\TolerantParser;
 
 use Microsoft\PhpParser\Node\SourceFileNode;

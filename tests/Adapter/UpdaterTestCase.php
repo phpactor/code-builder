@@ -21,7 +21,7 @@ abstract class UpdaterTestCase extends TestCase
     public function provideNamespaceAndUse()
     {
             yield 'It does nothing when given an empty source code protoytpe' => [
-                
+
                 <<<'EOT'
 class Aardvark
 {
@@ -36,7 +36,7 @@ EOT
             ];
 
             yield 'It does not change the namespace if it is the same' => [
-                
+
                 <<<'EOT'
 namespace Animal\Kingdom;
 
@@ -55,7 +55,7 @@ EOT
             ];
 
             yield 'It adds the namespace if it doesnt exist' => [
-                
+
                 <<<'EOT'
 class Aardvark
 {
@@ -72,7 +72,7 @@ EOT
             ];
 
             yield 'It updates the namespace' => [
-                
+
                 <<<'EOT'
 namespace Animal\Kingdom;
 
@@ -91,7 +91,7 @@ EOT
             ];
 
             yield 'It adds use statements' => [
-                
+
                 <<<'EOT'
 EOT
                 , SourceCodeBuilder::create()->use('Bovine')->build(),
@@ -102,7 +102,7 @@ EOT
             ];
 
             yield 'It adds use statements with an alias' => [
-                
+
                 <<<'EOT'
 EOT
                 , SourceCodeBuilder::create()->use('Bovine', 'Cow')->build(),
@@ -113,7 +113,7 @@ EOT
             ];
 
             yield 'It adds use statements after a namespace' => [
-                
+
                 <<<'EOT'
 namespace Kingdom;
 EOT
@@ -143,7 +143,7 @@ EOT
             ];
 
             yield 'class import: It ignores existing use statements' => [
-                
+
                 <<<'EOT'
 namespace Kingdom;
 
@@ -158,7 +158,7 @@ EOT
             ];
 
             yield 'class import: It ignores repeated namespaced use statements' => [
-                
+
                 <<<'EOT'
 namespace Kingdom;
 
@@ -172,7 +172,7 @@ EOT
             ];
 
             yield 'class import: It ignores existing aliased use statements' => [
-                
+
                 <<<'EOT'
 namespace Kingdom;
 
@@ -187,7 +187,7 @@ EOT
             ];
 
             yield 'class import: It appends multiple use statements' => [
-                
+
                 <<<'EOT'
 namespace Kingdom;
 
@@ -205,7 +205,7 @@ EOT
             ];
 
             yield 'class import: It appends multiple use statements' => [
-                
+
                 <<<'EOT'
 namespace Kingdom;
 
@@ -223,7 +223,7 @@ EOT
             ];
 
             yield 'class import: It maintains an empty line between the class and the use statements' => [
-                
+
                 <<<'EOT'
 namespace Kingdom;
 
@@ -244,7 +244,7 @@ EOT
             ];
 
             yield 'class import: it maintains empty line between class with no namespace' => [
-                
+
                 <<<'EOT'
 class Foobar
 {
@@ -273,7 +273,7 @@ EOT
     public function provideClasses()
     {
             yield 'It does nothing when prototype has only the class' => [
-                
+
                 <<<'EOT'
 class Aardvark
 {
@@ -288,7 +288,7 @@ EOT
             ];
 
             yield 'It adds a class to an empty file' => [
-                
+
                 <<<'EOT'
 EOT
                 , SourceCodeBuilder::create()->class('Anteater')->end()->build(),
@@ -301,7 +301,7 @@ EOT
             ];
 
             yield 'It adds a class' => [
-                
+
                 <<<'EOT'
 class Aardvark
 {
@@ -320,7 +320,7 @@ EOT
             ];
 
             yield 'It adds a class after a namespace' => [
-                
+
                 <<<'EOT'
 namespace Animals;
 
@@ -343,7 +343,7 @@ EOT
             ];
 
             yield 'It does not modify a class with a namespace' => [
-                
+
                 <<<'EOT'
 namespace Animals;
 
@@ -1239,7 +1239,7 @@ EOT
     public function provideInterfaces()
     {
             yield 'It adds an interface' => [
-                
+
                 <<<'EOT'
 EOT
                 , SourceCodeBuilder::create()->interface('Aardvark')->end()->build(),
@@ -1252,7 +1252,7 @@ EOT
             ];
 
             yield 'It adds an interface in a namespace' => [
-                
+
                 <<<'EOT'
 namespace Foobar;
 EOT
@@ -1267,7 +1267,7 @@ EOT
             ];
 
             yield 'It adds methods to an interface' => [
-                
+
                 <<<'EOT'
 interface Aardvark
 {
