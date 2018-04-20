@@ -24,6 +24,11 @@ class Edits
         $this->edits[] = new TextEdit($node->getFullStart(), $node->getFullWidth(), '');
     }
 
+    public function before($node, string $text)
+    {
+        $this->edits[] = new TextEdit($node->getStart(), 0, $text);
+    }
+
     public function after($node, string $text)
     {
         $this->edits[] = new TextEdit($node->getEndPosition(), 0, $text);
