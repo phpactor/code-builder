@@ -304,6 +304,32 @@ class Foobar
 }
 EOT
             ];
+
+            yield 'class import: previously included class with a lexigraphically greater member before it' => [
+                <<<'EOT'
+<?php
+
+namespace Phpactor\WorseReflection\Core\Reflection\TypeResolver;
+
+use Phpactor\WorseReflection\Core\Logger;
+use Phpactor\WorseReflection\Core\Reflection\ReflectionMethod;
+use Phpactor\WorseReflection\Core\Reflection\ReflectionClassLike;
+use Phpactor\WorseReflection\Core\Reflection\ReflectionInterface;
+EOT
+                , SourceCodeBuilder::create()
+                    ->use('Phpactor\WorseReflection\Core\Reflection\ReflectionClassLike')
+                ->build(),
+                <<<'EOT'
+<?php
+
+namespace Phpactor\WorseReflection\Core\Reflection\TypeResolver;
+
+use Phpactor\WorseReflection\Core\Logger;
+use Phpactor\WorseReflection\Core\Reflection\ReflectionMethod;
+use Phpactor\WorseReflection\Core\Reflection\ReflectionClassLike;
+use Phpactor\WorseReflection\Core\Reflection\ReflectionInterface;
+EOT
+            ];
     }
 
     /**
