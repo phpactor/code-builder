@@ -14,7 +14,7 @@ class UseStatements extends Collection
         return new self($useStatements);
     }
 
-    public function sorted(): self
+    public function sorted(): UseStatements
     {
         $items = iterator_to_array($this);
         usort($items, function (UseStatement $left, UseStatement $right): int {

@@ -7,11 +7,13 @@ use Microsoft\PhpParser\Node\Statement\InlineHtml;
 use Microsoft\PhpParser\Node\Statement\NamespaceDefinition;
 use Microsoft\PhpParser\Node\Statement\NamespaceUseDeclaration;
 use Microsoft\PhpParser\Parser;
+use Phpactor\CodeBuilder\Adapter\TolerantParser\Util\ImportedNames;
 use Phpactor\CodeBuilder\Domain\Code;
 use Phpactor\CodeBuilder\Domain\Prototype\NamespaceName;
 use Phpactor\CodeBuilder\Domain\Prototype\Prototype;
 use Phpactor\CodeBuilder\Domain\Prototype\SourceCode;
 use Phpactor\CodeBuilder\Domain\Prototype\Type;
+use Phpactor\CodeBuilder\Domain\Prototype\UseStatement;
 use Phpactor\CodeBuilder\Domain\Renderer;
 use Phpactor\CodeBuilder\Domain\Updater;
 use Phpactor\CodeBuilder\Util\TextFormat;
@@ -94,6 +96,7 @@ class TolerantUpdater implements Updater
             return;
         }
 
+
         $lastNode = $node->getFirstChildNode(NamespaceUseDeclaration::class, NamespaceDefinition::class, InlineHtml::class);
 
         // fast forward to last use declaration
@@ -106,12 +109,19 @@ class TolerantUpdater implements Updater
             }
         }
 
+
         if ($lastNode instanceof NamespaceDefinition) {
             $edits->after($lastNode, PHP_EOL);
         }
 
-        /** @var $usePrototype Type */
+        $existingNames = new ImportedNames($lastNode);
+
+        /** @var UseStatement $usePrototype */
         foreach ($prototype->useStatements()->sorted() as $usePrototype) {
+            if (in_array($usePrototype->className()->__toString(), $existingNames->fullyQualifiedNames())) {
+                continue;
+            }
+
             foreach ($node->getChildNodes() as $childNode) {
                 if ($childNode instanceof NamespaceUseDeclaration) {
                     foreach ($childNode->useClauses->getElements() as $useClause) {
