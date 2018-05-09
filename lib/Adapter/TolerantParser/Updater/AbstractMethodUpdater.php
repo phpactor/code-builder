@@ -5,6 +5,7 @@ namespace Phpactor\CodeBuilder\Adapter\TolerantParser\Updater;
 use Phpactor\CodeBuilder\Adapter\TolerantParser\Edits;
 use Microsoft\PhpParser\Node\PropertyDeclaration;
 use Microsoft\PhpParser\Node\MethodDeclaration;
+use Phpactor\CodeBuilder\Adapter\TolerantParser\Util\NodeHelper;
 use Phpactor\CodeBuilder\Domain\Renderer;
 use Phpactor\CodeBuilder\Domain\Prototype\Method;
 use Microsoft\PhpParser\Node;
@@ -141,8 +142,17 @@ abstract class AbstractMethodUpdater
         foreach ($parameters as $parameter) {
             $parameterNode = current($parameterNodes);
 
+            $existingType = '';
+            if ($parameterNode instanceof Parameter) {
+                $existingType = $parameter->type() ? NodeHelper::resolvedShortName($parameterNode->typeDeclaration) : '';
+            }
+
             if ($parameterNode) {
                 $parameterNodeName = ltrim($parameterNode->variableName->getText($parameterNode->getFileContents()), '$');
+
+                if ($parameter->type()->notNone() && $parameterNodeName == $parameter->name() && $existingType == (string) $parameter->type()) {
+                    continue;
+                }
 
                 if ($parameterNodeName == $parameter->name()) {
                     $replacementParameters[] = $this->renderer->render($parameter);
@@ -173,7 +183,7 @@ abstract class AbstractMethodUpdater
         }
 
         $returnType = (string) $returnType;
-        $existingReturnType = $returnType ? $methodDeclaration->returnType->getText() : null;
+        $existingReturnType = $returnType ? NodeHelper::resolvedShortName($methodDeclaration->returnType) : null;
 
         if (null === $existingReturnType) {
             // TODO: Add return type

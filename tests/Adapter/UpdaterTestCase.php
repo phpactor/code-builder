@@ -1110,6 +1110,36 @@ class Aardvark
 EOT
             ];
 
+            yield 'It does not modify existing methods with imported names' => [
+                <<<'EOT'
+
+use Barfoo as Foobar;
+
+class Aardvark
+{
+    public function hello(Foobar $foobar): Foobar
+    {
+    }
+}
+EOT
+                , SourceCodeBuilder::create()
+                    ->class('Aardvark')
+                        ->method('hello')->parameter('foobar')->type('Barfoo')->end()->returnType('Barfoo')->end()
+                    ->end()
+                    ->build(),
+                <<<'EOT'
+
+use Barfoo as Foobar;
+
+class Aardvark
+{
+    public function hello(Foobar $foobar): Foobar
+    {
+    }
+}
+EOT
+            ];
+
             yield 'It modifies the return type' => [
                 <<<'EOT'
 class Aardvark
