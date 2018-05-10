@@ -144,7 +144,7 @@ abstract class AbstractMethodUpdater
 
             $existingType = '';
             if ($parameterNode instanceof Parameter) {
-                $existingType = $parameter->type() ? NodeHelper::resolvedShortName($parameterNode->typeDeclaration) : '';
+                $existingType = $parameter->type() ? NodeHelper::resolvedShortName($parameterNode, $parameterNode->typeDeclaration) : '';
             }
 
             if ($parameterNode) {
@@ -183,7 +183,7 @@ abstract class AbstractMethodUpdater
         }
 
         $returnType = (string) $returnType;
-        $existingReturnType = $returnType ? NodeHelper::resolvedShortName($methodDeclaration->returnType) : null;
+        $existingReturnType = $returnType ? NodeHelper::resolvedShortName($methodDeclaration, $methodDeclaration->returnType) : null;
 
         if (null === $existingReturnType) {
             // TODO: Add return type

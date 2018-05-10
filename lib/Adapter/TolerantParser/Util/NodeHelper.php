@@ -2,6 +2,7 @@
 
 namespace Phpactor\CodeBuilder\Adapter\TolerantParser\Util;
 
+use Microsoft\PhpParser\Node;
 use Microsoft\PhpParser\Node\QualifiedName;
 use Microsoft\PhpParser\ResolvedName;
 use Microsoft\PhpParser\Token;
@@ -9,13 +10,21 @@ use RuntimeException;
 
 class NodeHelper
 {
-    public static function resolvedShortName(QualifiedName $node = null): string
+    /**
+     * @param Node $node
+     * @param QualifiedName|Token $type
+     */
+    public static function resolvedShortName(Node $node, $type = null): string
     {
-        if ($node === null) {
+        if ($type === null) {
             return '';
         }
 
-        $parts = $node->getResolvedName()->getNameParts();
+        if ($type instanceof Token) {
+            return $type->getText($node->getFileContents());
+        }
+
+        $parts = $type->getResolvedName()->getNameParts();
 
         if (count($parts) === 0) {
             return '';
@@ -30,7 +39,7 @@ class NodeHelper
         }
 
         if ($part instanceof Token) {
-            return $part->getText($node->getFileContents());
+            return $part->getText($type->getFileContents());
         }
 
         return $part;
