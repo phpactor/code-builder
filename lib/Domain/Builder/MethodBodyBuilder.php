@@ -6,22 +6,12 @@ use Phpactor\CodeBuilder\Domain\Prototype\Line;
 use Phpactor\CodeBuilder\Domain\Prototype\Lines;
 use Phpactor\CodeBuilder\Domain\Prototype\MethodBody;
 
-class MethodBodyBuilder
+class MethodBodyBuilder extends AbstractBuilder
 {
-    /**
-     * @var MethodBuilder
-     */
-    private $parent;
-
     /**
      * @var Lines[]
      */
     private $lines = [];
-
-    public function __construct(MethodBuilder $parent)
-    {
-        $this->parent = $parent;
-    }
 
     public function line(string $text): MethodBodyBuilder
     {

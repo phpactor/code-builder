@@ -62,14 +62,16 @@ class ClassBuilder extends ClassLikeBuilder
             return $this->properties[$name];
         }
 
-        $this->properties[$name] = $builder = new PropertyBuilder($this, $name);
+        $this->properties[$name] = $builder = new PropertyBuilder($name);
+        $builder->parent = $this;
 
         return $builder;
     }
 
     public function constant(string $name, $value): ConstantBuilder
     {
-        $this->constants[] = $builder = new ConstantBuilder($this, $name, $value);
+        $this->constants[] = $builder = new ConstantBuilder($name, $value);
+        $builder->parent = $this;
 
         return $builder;
     }

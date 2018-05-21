@@ -5,13 +5,8 @@ namespace Phpactor\CodeBuilder\Domain\Builder;
 use Phpactor\CodeBuilder\Domain\Prototype\Constant;
 use Phpactor\CodeBuilder\Domain\Prototype\Value;
 
-class ConstantBuilder implements NamedBuilder
+class ConstantBuilder extends AbstractBuilder implements NamedBuilder
 {
-    /**
-     * @var ClassBuilder
-     */
-    private $parent;
-
     /**
      * @var string
      */
@@ -22,9 +17,8 @@ class ConstantBuilder implements NamedBuilder
      */
     private $value;
 
-    public function __construct(ClassBuilder $parent, string $name, $value)
+    public function __construct(string $name, $value)
     {
-        $this->parent = $parent;
         $this->name = $name;
         $this->value = Value::fromValue($value);
     }

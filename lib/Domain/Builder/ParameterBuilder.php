@@ -6,13 +6,8 @@ use Phpactor\CodeBuilder\Domain\Prototype\Type;
 use Phpactor\CodeBuilder\Domain\Prototype\DefaultValue;
 use Phpactor\CodeBuilder\Domain\Prototype\Parameter;
 
-class ParameterBuilder
+class ParameterBuilder extends AbstractBuilder
 {
-    /**
-     * @var SourceCodeBuilder
-     */
-    private $parent;
-
     /**
      * @var string
      */
@@ -33,9 +28,8 @@ class ParameterBuilder
      */
     private $byReference = false;
 
-    public function __construct(MethodBuilder $parent, string $name)
+    public function __construct(string $name)
     {
-        $this->parent = $parent;
         $this->name = $name;
     }
 

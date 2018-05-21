@@ -7,13 +7,8 @@ use Phpactor\CodeBuilder\Domain\Prototype\Visibility;
 use Phpactor\CodeBuilder\Domain\Prototype\DefaultValue;
 use Phpactor\CodeBuilder\Domain\Prototype\Property;
 
-class PropertyBuilder implements NamedBuilder
+class PropertyBuilder extends AbstractBuilder implements NamedBuilder
 {
-    /**
-     * @var SourceCodeBuilder
-     */
-    private $parent;
-
     /**
      * @var string
      */
@@ -34,9 +29,8 @@ class PropertyBuilder implements NamedBuilder
      */
     private $defaultValue;
 
-    public function __construct(ClassBuilder $parent, string $name)
+    public function __construct(string $name)
     {
-        $this->parent = $parent;
         $this->name = $name;
     }
 

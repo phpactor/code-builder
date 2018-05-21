@@ -10,13 +10,8 @@ use Phpactor\CodeBuilder\Domain\Prototype\ReturnType;
 use Phpactor\CodeBuilder\Domain\Prototype\Docblock;
 use Phpactor\CodeBuilder\Domain\Builder\Exception\InvalidBuilderException;
 
-class MethodBuilder implements NamedBuilder
+class MethodBuilder extends AbstractBuilder implements NamedBuilder
 {
-    /**
-     * @var SourceCodeBuilder
-     */
-    private $parent;
-
     /**
      * @var string
      */
@@ -62,11 +57,11 @@ class MethodBuilder implements NamedBuilder
      */
     private $bodyBuilder;
 
-    public function __construct(ClassLikeBuilder $parent, string $name)
+    public function __construct(string $name)
     {
-        $this->parent = $parent;
         $this->name = $name;
-        $this->bodyBuilder = new MethodBodyBuilder($this);
+        $this->bodyBuilder = new MethodBodyBuilder();
+        $this->bodyBuilder->parent = $this;
     }
 
     public function belongsToInterface()
@@ -103,7 +98,8 @@ class MethodBuilder implements NamedBuilder
             return $this->parameters[$name];
         }
 
-        $this->parameters[$name] = $builder = new ParameterBuilder($this, $name);
+        $this->parameters[$name] = $builder = new ParameterBuilder($name);
+        $builder->parent = $this;
 
         return $builder;
     }

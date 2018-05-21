@@ -10,7 +10,7 @@ use Phpactor\CodeBuilder\Domain\Prototype\UseStatements;
 use Phpactor\CodeBuilder\Domain\Prototype\Interfaces;
 use Phpactor\CodeBuilder\Domain\Prototype\UseStatement;
 
-class SourceCodeBuilder
+class SourceCodeBuilder extends AbstractBuilder
 {
     /**
      * @var NamespaceName
@@ -57,7 +57,8 @@ class SourceCodeBuilder
             return $this->classes[$name];
         }
 
-        $this->classes[$name] = $builder = new ClassBuilder($this, $name);
+        $this->classes[$name] = $builder = new ClassBuilder($name);
+        $builder->parent = $this;
 
         return $builder;
     }
@@ -84,7 +85,8 @@ class SourceCodeBuilder
             return $this->interfaces[$name];
         }
 
-        $this->interfaces[$name] = $builder = new InterfaceBuilder($this, $name);
+        $this->interfaces[$name] = $builder = new InterfaceBuilder($name);
+        $builder->parent = $this;
 
         return $builder;
     }

@@ -4,13 +4,8 @@ namespace Phpactor\CodeBuilder\Domain\Builder;
 
 use Phpactor\CodeBuilder\Domain\Builder\Exception\InvalidBuilderException;
 
-abstract class ClassLikeBuilder implements Builder
+abstract class ClassLikeBuilder extends AbstractBuilder
 {
-    /**
-     * @var SourceCodeBuilder
-     */
-    private $parent;
-
     /**
      * @var MethodBuilder[]
      */
@@ -21,9 +16,8 @@ abstract class ClassLikeBuilder implements Builder
      */
     protected $name;
 
-    public function __construct(SourceCodeBuilder $parent, string $name)
+    public function __construct(string $name)
     {
-        $this->parent = $parent;
         $this->name = $name;
     }
 
@@ -43,7 +37,8 @@ abstract class ClassLikeBuilder implements Builder
             return $this->methods[$name];
         }
 
-        $this->methods[$name] = $builder = new MethodBuilder($this, $name);
+        $this->methods[$name] = $builder = new MethodBuilder($name);
+        $builder->parent = $this;
 
         return $builder;
     }
