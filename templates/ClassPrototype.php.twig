@@ -21,7 +21,6 @@ class {{ prototype.name }}{% if prototype.extendsClass.notNone %} extends {{ pro
 
 {% endif %}
 {{ generator.render(method, variant)|indent(1)|raw }}
-{{ generator.render(method.body)|indent(1)|raw }}
 {% if not loop.last %}
 
 {% endif %}

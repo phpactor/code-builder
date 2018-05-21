@@ -53,6 +53,11 @@ class MethodBuilder implements NamedBuilder
     private $abstract = false;
 
     /**
+     * @var bool
+     */
+    private $belongsToInterface = false;
+
+    /**
      * @var MethodBodyBuilder
      */
     private $bodyBuilder;
@@ -62,6 +67,11 @@ class MethodBuilder implements NamedBuilder
         $this->parent = $parent;
         $this->name = $name;
         $this->bodyBuilder = new MethodBodyBuilder($this);
+    }
+
+    public function belongsToInterface()
+    {
+        $this->belongsToInterface = true;
     }
 
     public function add(NamedBuilder $builder)
@@ -128,7 +138,8 @@ class MethodBuilder implements NamedBuilder
             $this->returnType,
             $this->docblock,
             $modifiers,
-            $methodBody
+            $methodBody,
+            $this->belongsToInterface
         );
     }
 

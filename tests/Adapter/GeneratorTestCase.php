@@ -222,6 +222,8 @@ EOT
                 ])),
                 <<<'EOT'
 private function hello($one, string $two, $three = 42)
+{
+}
 EOT
             ],
             'Renders a method parameter passed as a reference' => [
@@ -230,6 +232,8 @@ EOT
                 ])),
                 <<<'EOT'
 private function hello(&$three)
+{
+}
 EOT
             ],
             'Renders static method' => [
@@ -243,6 +247,8 @@ EOT
                 ),
                 <<<'EOT'
 private static function hello()
+{
+}
 EOT
             ],
             'Renders abstract method' => [
@@ -256,6 +262,8 @@ EOT
                 ),
                 <<<'EOT'
 abstract private function hello()
+{
+}
 EOT
             ],
             'Renders method with a docblock' => [
@@ -271,6 +279,8 @@ EOT
  * Hello bob
  */
 private function hello()
+{
+}
 EOT
             ],
             'Renders method with a with special chars' => [
@@ -286,6 +296,8 @@ EOT
  * <hello bob>
  */
 private function hello()
+{
+}
 EOT
             ],
             'Renders method return type' => [
@@ -297,6 +309,8 @@ EOT
                 ),
                 <<<'EOT'
 private function hello(): Hello
+{
+}
 EOT
             ],
             'Renders a class with a parent' => [
@@ -355,7 +369,7 @@ EOT
             ],
             'Renders an interface with methods' => [
                 new InterfacePrototype('Dog', Methods::fromMethods([
-                    new Method('hello'),
+                    new Method('hello', null, null, null, null, 0, null, true),
                 ])),
                 <<<'EOT'
 interface Dog

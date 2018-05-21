@@ -20,8 +20,6 @@ class ClassMethodUpdater extends AbstractMethodUpdater
 
     public function renderMethod(Renderer $renderer, Method $method)
     {
-        return $renderer->render($method) .
-            PHP_EOL .
-            $renderer->render($method->body());
+        return $renderer->render($method);
     }
 }

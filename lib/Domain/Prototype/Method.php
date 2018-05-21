@@ -47,6 +47,16 @@ final class Method extends Prototype
      */
     private $methodBody;
 
+    /**
+     * @var int
+     */
+    private $modifierFlags;
+
+    /**
+     * @var bool
+     */
+    private $belongsToInterface;
+
     public function __construct(
         string $name,
         Visibility $visibility = null,
@@ -54,7 +64,8 @@ final class Method extends Prototype
         ReturnType $returnType = null,
         Docblock $docblock = null,
         int $modifierFlags = 0,
-        MethodBody $methodBody = null
+        MethodBody $methodBody = null,
+        bool $belongsToInterface = null
     ) {
         $this->name = $name;
         $this->visibility = $visibility ?: Visibility::public();
@@ -64,6 +75,8 @@ final class Method extends Prototype
         $this->isStatic = $modifierFlags & self::IS_STATIC;
         $this->isAbstract = $modifierFlags & self::IS_ABSTRACT;
         $this->methodBody = $methodBody ?: MethodBody::empty();
+        $this->modifierFlags = $modifierFlags;
+        $this->belongsToInterface = $belongsToInterface ?: false;
     }
 
     public function name(): string
@@ -104,5 +117,10 @@ final class Method extends Prototype
     public function body(): MethodBody
     {
         return $this->methodBody;
+    }
+
+    public function belongsToInterface(): bool
+    {
+        return $this->belongsToInterface;
     }
 }

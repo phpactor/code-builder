@@ -26,6 +26,7 @@ class InterfaceBuilder extends ClassLikeBuilder
         return new InterfacePrototype(
             $this->name,
             Methods::fromMethods(array_map(function (MethodBuilder $builder) {
+                $builder->belongsToInterface();
                 return $builder->build();
             }, $this->methods)),
             ExtendsInterfaces::fromTypes($this->extends)
