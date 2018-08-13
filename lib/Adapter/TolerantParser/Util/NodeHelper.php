@@ -24,7 +24,13 @@ class NodeHelper
             return $type->getText($node->getFileContents());
         }
 
-        $parts = $type->getResolvedName()->getNameParts();
+        $resolvedName = $type->getResolvedName();
+
+        if (is_string($resolvedName)) {
+            return $resolvedName;
+        }
+
+        $parts = $resolvedName->getNameParts();
 
         if (count($parts) === 0) {
             return '';
