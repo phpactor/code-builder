@@ -70,13 +70,15 @@ abstract class AbstractMethodUpdater
                 $this->appendLinesToMethod($edits, $methodPrototype, $bodyNode);
             }
 
-            if ($this->prototypeSameAsDeclaration($methodPrototype, $methodDeclaration)) {
+            if (false === $methodPrototype->applyUpdate() || $this->prototypeSameAsDeclaration($methodPrototype, $methodDeclaration)) {
                 $ignoreMethods[] = $methodPrototype->name();
                 continue;
             }
 
-            $this->updateOrAddParameters($edits, $methodPrototype->parameters(), $methodDeclaration);
-            $this->updateOrAddReturnType($edits, $methodPrototype->returnType(), $methodDeclaration);
+            if ($methodPrototype->applyUpdate()) {
+                $this->updateOrAddParameters($edits, $methodPrototype->parameters(), $methodDeclaration);
+                $this->updateOrAddReturnType($edits, $methodPrototype->returnType(), $methodDeclaration);
+            }
         }
 
         // Add methods

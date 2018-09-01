@@ -37,6 +37,10 @@ class ClassUpdater
 
     public function updateClass(Edits $edits, ClassPrototype $classPrototype, ClassDeclaration $classNode)
     {
+        if (false === $classPrototype->applyUpdate()) {
+            return;
+        }
+
         $this->updateExtends($edits, $classPrototype, $classNode);
         $this->updateImplements($edits, $classPrototype, $classNode);
         $this->updateConstants($edits, $classPrototype, $classNode);
