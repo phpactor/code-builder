@@ -14,7 +14,7 @@ final class Type extends Prototype
      */
     private $none = false;
 
-    private function __construct(string $type = null)
+    public function __construct(string $type = null)
     {
         $this->type = $type;
     }

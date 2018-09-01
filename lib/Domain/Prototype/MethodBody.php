@@ -9,7 +9,7 @@ final class MethodBody extends Prototype
      */
     private $lines;
 
-    private function __construct(Lines $lines = null)
+    public function __construct(Lines $lines = null)
     {
         $this->lines = $lines;
     }
