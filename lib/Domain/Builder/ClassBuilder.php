@@ -32,6 +32,15 @@ class ClassBuilder extends ClassLikeBuilder
      */
     private $constants = [];
 
+    public static function childNames(): array
+    {
+        return [
+            'properties',
+            'interfaces',
+            'constants',
+        ];
+    }
+
     public function extends(string $class): ClassBuilder
     {
         $this->extends = ExtendsClass::fromString($class);

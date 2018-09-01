@@ -40,6 +40,11 @@ class PropertyBuilder implements NamedBuilder
         $this->name = $name;
     }
 
+    public static function childNames(): array
+    {
+        return [];
+    }
+
     public function visibility(string $visibility): PropertyBuilder
     {
         $this->visibility = Visibility::fromString($visibility);

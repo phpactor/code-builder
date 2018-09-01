@@ -64,6 +64,13 @@ class MethodBuilder implements NamedBuilder
         $this->bodyBuilder = new MethodBodyBuilder($this);
     }
 
+    public static function childNames(): array
+    {
+        return [
+            'parameters',
+        ];
+    }
+
     public function add(NamedBuilder $builder)
     {
         if ($builder instanceof ParameterBuilder) {

@@ -22,6 +22,11 @@ class ConstantBuilder implements NamedBuilder
      */
     private $value;
 
+    public static function childNames(): array
+    {
+        return [];
+    }
+
     public function __construct(ClassBuilder $parent, string $name, $value)
     {
         $this->parent = $parent;

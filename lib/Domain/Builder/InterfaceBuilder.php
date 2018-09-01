@@ -14,6 +14,11 @@ class InterfaceBuilder extends ClassLikeBuilder
      */
     private $extends = [];
 
+    public static function childNames(): array
+    {
+        return [];
+    }
+
     public function extends(string $class): InterfaceBuilder
     {
         $this->extends[] = Type::fromString($class);

@@ -37,6 +37,14 @@ class SourceCodeBuilder
         return new self();
     }
 
+    public static function childNames(): array
+    {
+        return [
+            'classes',
+            'interfaces',
+        ];
+    }
+
     public function namespace(string $namespace): SourceCodeBuilder
     {
         $this->namespace = NamespaceName::fromString($namespace);

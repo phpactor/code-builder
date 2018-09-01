@@ -6,6 +6,10 @@ use Phpactor\CodeBuilder\Domain\Builder\Exception\InvalidBuilderException;
 
 abstract class ClassLikeBuilder implements Builder
 {
+    const CHILDREN = [
+        'methods',
+    ];
+
     /**
      * @var SourceCodeBuilder
      */
@@ -20,6 +24,13 @@ abstract class ClassLikeBuilder implements Builder
      * @var string
      */
     protected $name;
+
+    public static function childNames(): array
+    {
+        return [
+            'methods',
+        ];
+    }
 
     public function __construct(SourceCodeBuilder $parent, string $name)
     {

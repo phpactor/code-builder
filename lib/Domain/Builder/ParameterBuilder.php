@@ -39,6 +39,11 @@ class ParameterBuilder
         $this->name = $name;
     }
 
+    public static function childNames(): array
+    {
+        return [];
+    }
+
     public function type(string $type): ParameterBuilder
     {
         $this->type = Type::fromString($type);
