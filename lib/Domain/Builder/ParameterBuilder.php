@@ -6,7 +6,7 @@ use Phpactor\CodeBuilder\Domain\Prototype\Type;
 use Phpactor\CodeBuilder\Domain\Prototype\DefaultValue;
 use Phpactor\CodeBuilder\Domain\Prototype\Parameter;
 
-class ParameterBuilder
+class ParameterBuilder extends AbstractBuilder
 {
     /**
      * @var SourceCodeBuilder
@@ -16,22 +16,22 @@ class ParameterBuilder
     /**
      * @var string
      */
-    private $name;
+    protected $name;
 
     /**
      * @var Type
      */
-    private $type;
+    protected $type;
 
     /**
      * @var DefaultValue
      */
-    private $defaultValue;
+    protected $defaultValue;
 
     /**
      * @var bool
      */
-    private $byReference = false;
+    protected $byReference = false;
 
     public function __construct(MethodBuilder $parent, string $name)
     {

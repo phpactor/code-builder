@@ -20,17 +20,17 @@ class MethodBuilder extends AbstractBuilder implements NamedBuilder
     /**
      * @var string
      */
-    private $name;
+    protected $name;
 
     /**
      * @var Visibility
      */
-    private $visibility;
+    protected $visibility;
 
     /**
      * @var Type
      */
-    private $returnType;
+    protected $returnType;
 
     /**
      * @var ParameterBuilder[]
@@ -40,22 +40,22 @@ class MethodBuilder extends AbstractBuilder implements NamedBuilder
     /**
      * @var Docblock
      */
-    private $docblock;
+    protected $docblock;
 
     /**
      * @var bool
      */
-    private $static = false;
+    protected $static = false;
 
     /**
      * @var bool
      */
-    private $abstract = false;
+    protected $abstract = false;
 
     /**
      * @var MethodBodyBuilder
      */
-    private $bodyBuilder;
+    protected $bodyBuilder;
 
     public function __construct(ClassLikeBuilder $parent, string $name)
     {

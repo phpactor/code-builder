@@ -17,22 +17,22 @@ class PropertyBuilder extends AbstractBuilder implements NamedBuilder
     /**
      * @var string
      */
-    private $name;
+    protected $name;
 
     /**
      * @var Visibility
      */
-    private $visibility;
+    protected $visibility;
 
     /**
      * @var Type
      */
-    private $type;
+    protected $type;
 
     /**
      * @var DefaultValue
      */
-    private $defaultValue;
+    protected $defaultValue;
 
     public function __construct(ClassBuilder $parent, string $name)
     {

@@ -15,12 +15,12 @@ class SourceCodeBuilder extends AbstractBuilder
     /**
      * @var NamespaceName
      */
-    private $namespace;
+    protected $namespace;
 
     /**
      * @var UseStatement[]
      */
-    private $useStatements = [];
+    protected $useStatements = [];
 
     /**
      * @var ClassBuilder[]

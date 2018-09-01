@@ -15,12 +15,12 @@ class ConstantBuilder extends AbstractBuilder implements NamedBuilder
     /**
      * @var string
      */
-    private $name;
+    protected $name;
 
     /**
      * @var mixed
      */
-    private $value;
+    protected $value;
 
     public static function childNames(): array
     {

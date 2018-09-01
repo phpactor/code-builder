@@ -7,10 +7,51 @@ use RuntimeException;
 
 abstract class AbstractBuilder implements Builder
 {
-    public function nodes(): Generator
-    {
-        yield $this;
+    private $originalProperties = [];
 
+    public function snapshot()
+    {
+        $propertyValues = [];
+        foreach ($this as $propertyName => $property) {
+            if ($propertyName == 'originalProperties') {
+                continue;
+            }
+            $propertyValues[$propertyName] = is_object($this->$propertyName) ? clone $this->$propertyName : $this->$propertyName;
+        }
+
+        $this->originalProperties = $propertyValues;
+
+        foreach ($this->children() as $child) {
+            $child->snapshot();
+        }
+    }
+
+    public function isModified(): bool
+    {
+        if (empty($this->originalProperties)) {
+            return true;
+        }
+
+        foreach ($this->originalProperties as $propertyName => $propertyValue) {
+            if ($this->$propertyName != $propertyValue) {
+                return true;
+            }
+        }
+
+        foreach ($this->children() as $child) {
+            if ($child->isModified()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * @return Generator<Builder>
+     */
+    public function children(): Generator
+    {
         foreach (static::childNames() as $childName) {
             $children = (array) $this->$childName;
 
@@ -22,9 +63,8 @@ abstract class AbstractBuilder implements Builder
                     ));
                 }
 
-                yield from $child->nodes();
+                yield $child;
             }
-
         }
     }
 }

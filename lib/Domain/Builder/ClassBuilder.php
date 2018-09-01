@@ -25,7 +25,7 @@ class ClassBuilder extends ClassLikeBuilder
     /**
      * @var Type[]
      */
-    private $interfaces = [];
+    protected $interfaces = [];
 
     /**
      * @var ConstantBuilder[]

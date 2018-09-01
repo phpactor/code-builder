@@ -8,6 +8,7 @@ use PHPUnit\Framework\TestCase;
 use Phpactor\CodeBuilder\Domain\Builder\ClassBuilder;
 use Phpactor\CodeBuilder\Domain\Builder\ConstantBuilder;
 use Phpactor\CodeBuilder\Domain\Builder\InterfaceBuilder;
+use Phpactor\CodeBuilder\Domain\Builder\ParameterBuilder;
 use Phpactor\CodeBuilder\Domain\Builder\PropertyBuilder;
 use Phpactor\CodeBuilder\Domain\Builder\SourceCodeBuilder;
 use Phpactor\CodeBuilder\Domain\Prototype\SourceCode;
@@ -16,34 +17,86 @@ use Phpactor\CodeBuilder\Domain\Builder\MethodBuilder;
 
 class SourceCodeBuilderTest extends TestCase
 {
-    public function testItProvidesAGeneratorOfBuilders()
+    /**
+     * @dataProvider provideModificationTracking
+     */
+    public function testModificationTracking(\Closure $setup, \Closure $assertion)
     {
         $builder = $this->builder();
-        $builder->namespace('Barfoo');
-        $builder->use('Foobar');
-        $builder->use('Foobar');
-        $builder->use('Barfoo');
-        $builder->class('Hello');
-        $builder->class('Hello')
-            ->method('foobar1')->end()
-            ->method('foobar2')->end()
-            ->property('barfoo1')->end()
-            ->property('barfoo2')->end()
-            ->constant('const1', 1234)->end()
-            ->constant('const2', 1234)->end();
-        $builder->interface('foobar');
+        $setup($builder);
+        $assertion($builder);
 
-        $nodes = $builder->nodes();
-        $this->assertInstanceOfAndPopNode(SourceCodeBuilder::class, $nodes);
-        $this->assertInstanceOfAndPopNode(ClassBuilder::class, $nodes);
-        $this->assertInstanceOfAndPopNode(MethodBuilder::class, $nodes);
-        $this->assertInstanceOfAndPopNode(MethodBuilder::class, $nodes);
-        $this->assertInstanceOfAndPopNode(PropertyBuilder::class, $nodes);
-        $this->assertInstanceOfAndPopNode(PropertyBuilder::class, $nodes);
-        $this->assertInstanceOfAndPopNode(ConstantBuilder::class, $nodes);
-        $this->assertInstanceOfAndPopNode(ConstantBuilder::class, $nodes);
-        $this->assertInstanceOfAndPopNode(InterfaceBuilder::class, $nodes);
+
+        $builder->class('Hello')->method('goodbye');
+        $this->assertTrue($builder->isModified(), 'method has been modified since last snapshot');
     }
+
+    public function provideModificationTracking()
+    {
+        yield 'new builder is modified by default' => [
+            function (SourceCodeBuilder $builder) {
+                $builder->class('foobar');
+            },
+            function (SourceCodeBuilder $builder) {
+                $this->assertTrue($builder->isModified());
+            }
+        ];
+
+        yield 'is not modified after snapshot' => [
+            function (SourceCodeBuilder $builder) {
+                $builder->class('foobar');
+                $builder->snapshot();
+            },
+            function (SourceCodeBuilder $builder) {
+                $this->assertFalse($builder->isModified());
+            }
+        ];
+
+        yield 'is not modified if updated values are the same 1' => [
+            function (SourceCodeBuilder $builder) {
+                $builder->class('foobar')->method('foobar')->parameter('barfoo');
+                $builder->snapshot();
+                $builder->class('foobar')->method('foobar')->parameter('barfoo');
+            },
+            function (SourceCodeBuilder $builder) {
+                $this->assertFalse($builder->isModified());
+            }
+        ];
+
+        yield 'is not modified if updated values are the same 2' => [
+            function (SourceCodeBuilder $builder) {
+                $builder->class('foobar')->method('foobar');
+                $builder->snapshot();
+                $builder->class('foobar')->method('foobar');
+            },
+            function (SourceCodeBuilder $builder) {
+                $this->assertFalse($builder->isModified());
+            }
+        ];
+
+        yield 'is modified when values are different 1' => [
+            function (SourceCodeBuilder $builder) {
+                $builder->class('foobar')->method('foobar');
+                $builder->snapshot();
+                $builder->class('foobar')->method('barbarr');
+            },
+            function (SourceCodeBuilder $builder) {
+                $this->assertTrue($builder->isModified());
+            }
+        ];
+
+        yield 'is modified when values are different 2' => [
+            function (SourceCodeBuilder $builder) {
+                $builder->class('foobar')->method('foobar')->parameter('barbar');
+                $builder->snapshot();
+                $builder->class('foobar')->method('barbar')->parameter('fofo');
+            },
+            function (SourceCodeBuilder $builder) {
+                $this->assertTrue($builder->isModified());
+            }
+        ];
+    }
+
 
     public function testSourceCodeBuilder()
     {
