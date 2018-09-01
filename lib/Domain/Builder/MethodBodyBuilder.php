@@ -16,7 +16,7 @@ class MethodBodyBuilder
     /**
      * @var Lines[]
      */
-    private $lines = [];
+    protected $lines = [];
 
     public function __construct(MethodBuilder $parent)
     {

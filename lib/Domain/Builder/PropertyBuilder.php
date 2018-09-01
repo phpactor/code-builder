@@ -3,11 +3,12 @@
 namespace Phpactor\CodeBuilder\Domain\Builder;
 
 use Phpactor\CodeBuilder\Domain\Prototype\Type;
+use Phpactor\CodeBuilder\Domain\Prototype\UpdatePolicy;
 use Phpactor\CodeBuilder\Domain\Prototype\Visibility;
 use Phpactor\CodeBuilder\Domain\Prototype\DefaultValue;
 use Phpactor\CodeBuilder\Domain\Prototype\Property;
 
-class PropertyBuilder implements NamedBuilder
+class PropertyBuilder extends AbstractBuilder implements NamedBuilder
 {
     /**
      * @var SourceCodeBuilder
@@ -17,27 +18,32 @@ class PropertyBuilder implements NamedBuilder
     /**
      * @var string
      */
-    private $name;
+    protected $name;
 
     /**
      * @var Visibility
      */
-    private $visibility;
+    protected $visibility;
 
     /**
      * @var Type
      */
-    private $type;
+    protected $type;
 
     /**
      * @var DefaultValue
      */
-    private $defaultValue;
+    protected $defaultValue;
 
     public function __construct(ClassBuilder $parent, string $name)
     {
         $this->parent = $parent;
         $this->name = $name;
+    }
+
+    public static function childNames(): array
+    {
+        return [];
     }
 
     public function visibility(string $visibility): PropertyBuilder
@@ -67,7 +73,8 @@ class PropertyBuilder implements NamedBuilder
             $this->name,
             $this->visibility,
             $this->defaultValue,
-            $this->type
+            $this->type,
+            UpdatePolicy::fromModifiedState($this->isModified())
         );
     }
 

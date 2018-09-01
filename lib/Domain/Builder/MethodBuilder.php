@@ -3,6 +3,7 @@
 namespace Phpactor\CodeBuilder\Domain\Builder;
 
 use Phpactor\CodeBuilder\Domain\Prototype\Type;
+use Phpactor\CodeBuilder\Domain\Prototype\UpdatePolicy;
 use Phpactor\CodeBuilder\Domain\Prototype\Visibility;
 use Phpactor\CodeBuilder\Domain\Prototype\Parameters;
 use Phpactor\CodeBuilder\Domain\Prototype\Method;
@@ -10,7 +11,7 @@ use Phpactor\CodeBuilder\Domain\Prototype\ReturnType;
 use Phpactor\CodeBuilder\Domain\Prototype\Docblock;
 use Phpactor\CodeBuilder\Domain\Builder\Exception\InvalidBuilderException;
 
-class MethodBuilder implements NamedBuilder
+class MethodBuilder extends AbstractBuilder implements NamedBuilder
 {
     /**
      * @var SourceCodeBuilder
@@ -20,48 +21,55 @@ class MethodBuilder implements NamedBuilder
     /**
      * @var string
      */
-    private $name;
+    protected $name;
 
     /**
      * @var Visibility
      */
-    private $visibility;
+    protected $visibility;
 
     /**
      * @var Type
      */
-    private $returnType;
+    protected $returnType;
 
     /**
      * @var ParameterBuilder[]
      */
-    private $parameters = [];
+    protected $parameters = [];
 
     /**
      * @var Docblock
      */
-    private $docblock;
+    protected $docblock;
 
     /**
      * @var bool
      */
-    private $static = false;
+    protected $static = false;
 
     /**
      * @var bool
      */
-    private $abstract = false;
+    protected $abstract = false;
 
     /**
      * @var MethodBodyBuilder
      */
-    private $bodyBuilder;
+    protected $bodyBuilder;
 
     public function __construct(ClassLikeBuilder $parent, string $name)
     {
         $this->parent = $parent;
         $this->name = $name;
         $this->bodyBuilder = new MethodBodyBuilder($this);
+    }
+
+    public static function childNames(): array
+    {
+        return [
+            'parameters',
+        ];
     }
 
     public function add(NamedBuilder $builder)
@@ -128,7 +136,8 @@ class MethodBuilder implements NamedBuilder
             $this->returnType,
             $this->docblock,
             $modifiers,
-            $methodBody
+            $methodBody,
+            UpdatePolicy::fromModifiedState($this->isModified())
         );
     }
 

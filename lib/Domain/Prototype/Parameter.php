@@ -28,8 +28,10 @@ final class Parameter extends Prototype
         string $name,
         Type $type = null,
         DefaultValue $defaultValue = null,
-        bool $byReference = false
+        bool $byReference = false,
+        UpdatePolicy $updatePolicy = null
     ) {
+        parent::__construct($updatePolicy);
         $this->name = $name;
         $this->type = $type ?: Type::none();
         $this->defaultValue = $defaultValue ?: DefaultValue::none();

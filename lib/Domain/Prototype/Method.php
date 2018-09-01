@@ -54,8 +54,10 @@ final class Method extends Prototype
         ReturnType $returnType = null,
         Docblock $docblock = null,
         int $modifierFlags = 0,
-        MethodBody $methodBody = null
+        MethodBody $methodBody = null,
+        UpdatePolicy $updatePolicy = null
     ) {
+        parent::__construct($updatePolicy);
         $this->name = $name;
         $this->visibility = $visibility ?: Visibility::public();
         $this->parameters = $parameters ?: Parameters::empty();

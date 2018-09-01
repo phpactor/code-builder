@@ -6,35 +6,44 @@ use Phpactor\CodeBuilder\Domain\Prototype\SourceCode;
 use Phpactor\CodeBuilder\Domain\Prototype\NamespaceName;
 use Phpactor\CodeBuilder\Domain\Prototype\Type;
 use Phpactor\CodeBuilder\Domain\Prototype\Classes;
+use Phpactor\CodeBuilder\Domain\Prototype\UpdatePolicy;
 use Phpactor\CodeBuilder\Domain\Prototype\UseStatements;
 use Phpactor\CodeBuilder\Domain\Prototype\Interfaces;
 use Phpactor\CodeBuilder\Domain\Prototype\UseStatement;
 
-class SourceCodeBuilder
+class SourceCodeBuilder extends AbstractBuilder
 {
     /**
      * @var NamespaceName
      */
-    private $namespace;
+    protected $namespace;
 
     /**
      * @var UseStatement[]
      */
-    private $useStatements = [];
+    protected $useStatements = [];
 
     /**
      * @var ClassBuilder[]
      */
-    private $classes = [];
+    protected $classes = [];
 
     /**
      * @var InterfaceBuilder[]
      */
-    private $interfaces = [];
+    protected $interfaces = [];
 
     public static function create(): SourceCodeBuilder
     {
         return new self();
+    }
+
+    public static function childNames(): array
+    {
+        return [
+            'classes',
+            'interfaces',
+        ];
     }
 
     public function namespace(string $namespace): SourceCodeBuilder
@@ -99,7 +108,8 @@ class SourceCodeBuilder
             }, $this->classes)),
             Interfaces::fromInterfaces(array_map(function (InterfaceBuilder $builder) {
                 return $builder->build();
-            }, $this->interfaces))
+            }, $this->interfaces)),
+            UpdatePolicy::fromModifiedState($this->isModified())
         );
     }
 }

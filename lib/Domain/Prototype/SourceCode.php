@@ -28,8 +28,10 @@ class SourceCode extends Prototype
         NamespaceName $namespace = null,
         UseStatements $useStatements = null,
         Classes $classes = null,
-        Interfaces $interfaces = null
+        Interfaces $interfaces = null,
+        UpdatePolicy $updatePolicy = null
     ) {
+        parent::__construct($updatePolicy);
         $this->namespace = $namespace ?: NamespaceName::fromString('');
         $this->useStatements = $useStatements ?: UseStatements::empty();
         $this->classes = $classes ?: Classes::empty();

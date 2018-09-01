@@ -51,6 +51,8 @@ class WorseBuilderFactory implements BuilderFactory
             // }
         }
 
+        $builder->snapshot();
+
         return $builder;
     }
 

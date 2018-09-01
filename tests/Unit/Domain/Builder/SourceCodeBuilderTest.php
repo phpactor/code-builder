@@ -2,7 +2,14 @@
 
 namespace Phpactor\CodeBuilder\Tests\Unit\Domain\Builder;
 
+use Closure;
+use Generator;
 use PHPUnit\Framework\TestCase;
+use Phpactor\CodeBuilder\Domain\Builder\ClassBuilder;
+use Phpactor\CodeBuilder\Domain\Builder\ConstantBuilder;
+use Phpactor\CodeBuilder\Domain\Builder\InterfaceBuilder;
+use Phpactor\CodeBuilder\Domain\Builder\ParameterBuilder;
+use Phpactor\CodeBuilder\Domain\Builder\PropertyBuilder;
 use Phpactor\CodeBuilder\Domain\Builder\SourceCodeBuilder;
 use Phpactor\CodeBuilder\Domain\Prototype\SourceCode;
 use Phpactor\CodeBuilder\Domain\Prototype\ClassPrototype;
@@ -10,6 +17,87 @@ use Phpactor\CodeBuilder\Domain\Builder\MethodBuilder;
 
 class SourceCodeBuilderTest extends TestCase
 {
+    /**
+     * @dataProvider provideModificationTracking
+     */
+    public function testModificationTracking(\Closure $setup, \Closure $assertion)
+    {
+        $builder = $this->builder();
+        $setup($builder);
+        $assertion($builder);
+
+
+        $builder->class('Hello')->method('goodbye');
+        $this->assertTrue($builder->isModified(), 'method has been modified since last snapshot');
+    }
+
+    public function provideModificationTracking()
+    {
+        yield 'new builder is modified by default' => [
+            function (SourceCodeBuilder $builder) {
+                $builder->class('foobar');
+            },
+            function (SourceCodeBuilder $builder) {
+                $this->assertTrue($builder->isModified());
+            }
+        ];
+
+        yield 'is not modified after snapshot' => [
+            function (SourceCodeBuilder $builder) {
+                $builder->class('foobar');
+                $builder->snapshot();
+            },
+            function (SourceCodeBuilder $builder) {
+                $this->assertFalse($builder->isModified());
+            }
+        ];
+
+        yield 'is not modified if updated values are the same 1' => [
+            function (SourceCodeBuilder $builder) {
+                $builder->class('foobar')->method('foobar')->parameter('barfoo');
+                $builder->snapshot();
+                $builder->class('foobar')->method('foobar')->parameter('barfoo');
+            },
+            function (SourceCodeBuilder $builder) {
+                $this->assertFalse($builder->isModified());
+            }
+        ];
+
+        yield 'is not modified if updated values are the same 2' => [
+            function (SourceCodeBuilder $builder) {
+                $builder->class('foobar')->method('foobar');
+                $builder->snapshot();
+                $builder->class('foobar')->method('foobar');
+            },
+            function (SourceCodeBuilder $builder) {
+                $this->assertFalse($builder->isModified());
+            }
+        ];
+
+        yield 'is modified when values are different 1' => [
+            function (SourceCodeBuilder $builder) {
+                $builder->class('foobar')->method('foobar');
+                $builder->snapshot();
+                $builder->class('foobar')->method('barbarr');
+            },
+            function (SourceCodeBuilder $builder) {
+                $this->assertTrue($builder->isModified());
+            }
+        ];
+
+        yield 'is modified when values are different 2' => [
+            function (SourceCodeBuilder $builder) {
+                $builder->class('foobar')->method('foobar')->parameter('barbar');
+                $builder->snapshot();
+                $builder->class('foobar')->method('barbar')->parameter('fofo');
+            },
+            function (SourceCodeBuilder $builder) {
+                $this->assertTrue($builder->isModified());
+            }
+        ];
+    }
+
+
     public function testSourceCodeBuilder()
     {
         $builder = $this->builder();
@@ -119,37 +207,37 @@ class SourceCodeBuilderTest extends TestCase
         return [
             'Method return type' => [
                 $this->builder()->class('Dog')->method('one')
-                    ->returnType('string')
-                    ->visibility('private')
-                    ->parameter('one')
-                        ->type('One')
-                        ->defaultValue(1)
-                    ->end(),
+                ->returnType('string')
+                ->visibility('private')
+                ->parameter('one')
+                ->type('One')
+                ->defaultValue(1)
+                ->end(),
                 function ($method) {
                     $this->assertEquals('string', $method->returnType()->__toString());
                 }
-            ],
+        ],
             'Method mofifiers 1' => [
                 $this->builder()->class('Dog')->method('one')->static()->abstract(),
                 function ($method) {
                     $this->assertTrue($method->isStatic());
                     $this->assertTrue($method->isAbstract());
                 }
-            ],
+        ],
             'Method mofifiers 2' => [
                 $this->builder()->class('Dog')->method('one')->abstract(),
                 function ($method) {
                     $this->assertFalse($method->isStatic());
                     $this->assertTrue($method->isAbstract());
                 }
-            ],
+        ],
             'Method lines' => [
                 $this->builder()->class('Dog')->method('one')->body()->line('one')->line('two')->end(),
                 function ($method) {
                     $this->assertCount(2, $method->body()->lines());
                     $this->assertEquals('one', (string) $method->body()->lines()->first());
                 }
-            ],
+        ],
         ];
     }
 
@@ -165,5 +253,11 @@ class SourceCodeBuilderTest extends TestCase
     private function builder(): SourceCodeBuilder
     {
         return SourceCodeBuilder::create();
+    }
+
+    private function assertInstanceOfAndPopNode($className, Generator $nodes)
+    {
+        $this->assertInstanceOf($className, $nodes->current());
+        $nodes->next();
     }
 }

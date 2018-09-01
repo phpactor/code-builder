@@ -28,8 +28,10 @@ final class Property extends Prototype
         string $name,
         Visibility $visibility = null,
         DefaultValue $defaultValue = null,
-        Type $type = null
+        Type $type = null,
+        UpdatePolicy $updatePolicy = null
     ) {
+        parent::__construct($updatePolicy);
         $this->name = $name;
         $this->visibility = $visibility ?: Visibility::public();
         $this->defaultValue = $defaultValue ?: DefaultValue::none();

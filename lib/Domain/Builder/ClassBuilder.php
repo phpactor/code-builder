@@ -9,6 +9,7 @@ use Phpactor\CodeBuilder\Domain\Prototype\Type;
 use Phpactor\CodeBuilder\Domain\Prototype\Methods;
 use Phpactor\CodeBuilder\Domain\Prototype\ImplementsInterfaces;
 use Phpactor\CodeBuilder\Domain\Prototype\Constants;
+use Phpactor\CodeBuilder\Domain\Prototype\UpdatePolicy;
 
 class ClassBuilder extends ClassLikeBuilder
 {
@@ -20,17 +21,25 @@ class ClassBuilder extends ClassLikeBuilder
     /**
      * @var PropertyBuilder[]
      */
-    private $properties = [];
+    protected $properties = [];
 
     /**
      * @var Type[]
      */
-    private $interfaces = [];
+    protected $interfaces = [];
 
     /**
      * @var ConstantBuilder[]
      */
-    private $constants = [];
+    protected $constants = [];
+
+    public static function childNames(): array
+    {
+        return array_merge(parent::childNames(), [
+            'properties',
+            'constants',
+        ]);
+    }
 
     public function extends(string $class): ClassBuilder
     {
@@ -88,7 +97,8 @@ class ClassBuilder extends ClassLikeBuilder
                 return $builder->build();
             }, $this->methods)),
             $this->extends,
-            ImplementsInterfaces::fromTypes($this->interfaces)
+            ImplementsInterfaces::fromTypes($this->interfaces),
+            UpdatePolicy::fromModifiedState($this->isModified())
         );
     }
 }

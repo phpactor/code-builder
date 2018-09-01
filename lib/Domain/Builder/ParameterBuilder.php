@@ -5,8 +5,9 @@ namespace Phpactor\CodeBuilder\Domain\Builder;
 use Phpactor\CodeBuilder\Domain\Prototype\Type;
 use Phpactor\CodeBuilder\Domain\Prototype\DefaultValue;
 use Phpactor\CodeBuilder\Domain\Prototype\Parameter;
+use Phpactor\CodeBuilder\Domain\Prototype\UpdatePolicy;
 
-class ParameterBuilder
+class ParameterBuilder extends AbstractBuilder
 {
     /**
      * @var SourceCodeBuilder
@@ -16,27 +17,32 @@ class ParameterBuilder
     /**
      * @var string
      */
-    private $name;
+    protected $name;
 
     /**
      * @var Type
      */
-    private $type;
+    protected $type;
 
     /**
      * @var DefaultValue
      */
-    private $defaultValue;
+    protected $defaultValue;
 
     /**
      * @var bool
      */
-    private $byReference = false;
+    protected $byReference = false;
 
     public function __construct(MethodBuilder $parent, string $name)
     {
         $this->parent = $parent;
         $this->name = $name;
+    }
+
+    public static function childNames(): array
+    {
+        return [];
     }
 
     public function type(string $type): ParameterBuilder
@@ -59,7 +65,8 @@ class ParameterBuilder
             $this->name,
             $this->type,
             $this->defaultValue,
-            $this->byReference
+            $this->byReference,
+            UpdatePolicy::fromModifiedState($this->isModified())
         );
     }
 
