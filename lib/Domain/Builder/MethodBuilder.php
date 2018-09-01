@@ -10,7 +10,7 @@ use Phpactor\CodeBuilder\Domain\Prototype\ReturnType;
 use Phpactor\CodeBuilder\Domain\Prototype\Docblock;
 use Phpactor\CodeBuilder\Domain\Builder\Exception\InvalidBuilderException;
 
-class MethodBuilder implements NamedBuilder
+class MethodBuilder extends AbstractBuilder implements NamedBuilder
 {
     /**
      * @var SourceCodeBuilder
@@ -35,7 +35,7 @@ class MethodBuilder implements NamedBuilder
     /**
      * @var ParameterBuilder[]
      */
-    private $parameters = [];
+    protected $parameters = [];
 
     /**
      * @var Docblock

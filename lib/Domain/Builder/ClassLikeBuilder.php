@@ -4,12 +4,8 @@ namespace Phpactor\CodeBuilder\Domain\Builder;
 
 use Phpactor\CodeBuilder\Domain\Builder\Exception\InvalidBuilderException;
 
-abstract class ClassLikeBuilder implements Builder
+abstract class ClassLikeBuilder extends AbstractBuilder implements Builder
 {
-    const CHILDREN = [
-        'methods',
-    ];
-
     /**
      * @var SourceCodeBuilder
      */

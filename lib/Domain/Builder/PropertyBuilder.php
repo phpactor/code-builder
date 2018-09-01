@@ -7,7 +7,7 @@ use Phpactor\CodeBuilder\Domain\Prototype\Visibility;
 use Phpactor\CodeBuilder\Domain\Prototype\DefaultValue;
 use Phpactor\CodeBuilder\Domain\Prototype\Property;
 
-class PropertyBuilder implements NamedBuilder
+class PropertyBuilder extends AbstractBuilder implements NamedBuilder
 {
     /**
      * @var SourceCodeBuilder

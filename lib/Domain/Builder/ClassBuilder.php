@@ -20,7 +20,7 @@ class ClassBuilder extends ClassLikeBuilder
     /**
      * @var PropertyBuilder[]
      */
-    private $properties = [];
+    protected $properties = [];
 
     /**
      * @var Type[]
@@ -30,15 +30,14 @@ class ClassBuilder extends ClassLikeBuilder
     /**
      * @var ConstantBuilder[]
      */
-    private $constants = [];
+    protected $constants = [];
 
     public static function childNames(): array
     {
-        return [
+        return array_merge(parent::childNames(), [
             'properties',
-            'interfaces',
             'constants',
-        ];
+        ]);
     }
 
     public function extends(string $class): ClassBuilder

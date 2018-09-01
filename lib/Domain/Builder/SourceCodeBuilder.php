@@ -10,7 +10,7 @@ use Phpactor\CodeBuilder\Domain\Prototype\UseStatements;
 use Phpactor\CodeBuilder\Domain\Prototype\Interfaces;
 use Phpactor\CodeBuilder\Domain\Prototype\UseStatement;
 
-class SourceCodeBuilder
+class SourceCodeBuilder extends AbstractBuilder
 {
     /**
      * @var NamespaceName
@@ -25,12 +25,12 @@ class SourceCodeBuilder
     /**
      * @var ClassBuilder[]
      */
-    private $classes = [];
+    protected $classes = [];
 
     /**
      * @var InterfaceBuilder[]
      */
-    private $interfaces = [];
+    protected $interfaces = [];
 
     public static function create(): SourceCodeBuilder
     {

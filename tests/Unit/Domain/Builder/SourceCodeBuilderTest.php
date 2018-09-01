@@ -2,7 +2,13 @@
 
 namespace Phpactor\CodeBuilder\Tests\Unit\Domain\Builder;
 
+use Closure;
+use Generator;
 use PHPUnit\Framework\TestCase;
+use Phpactor\CodeBuilder\Domain\Builder\ClassBuilder;
+use Phpactor\CodeBuilder\Domain\Builder\ConstantBuilder;
+use Phpactor\CodeBuilder\Domain\Builder\InterfaceBuilder;
+use Phpactor\CodeBuilder\Domain\Builder\PropertyBuilder;
 use Phpactor\CodeBuilder\Domain\Builder\SourceCodeBuilder;
 use Phpactor\CodeBuilder\Domain\Prototype\SourceCode;
 use Phpactor\CodeBuilder\Domain\Prototype\ClassPrototype;
@@ -10,6 +16,35 @@ use Phpactor\CodeBuilder\Domain\Builder\MethodBuilder;
 
 class SourceCodeBuilderTest extends TestCase
 {
+    public function testItProvidesAGeneratorOfBuilders()
+    {
+        $builder = $this->builder();
+        $builder->namespace('Barfoo');
+        $builder->use('Foobar');
+        $builder->use('Foobar');
+        $builder->use('Barfoo');
+        $builder->class('Hello');
+        $builder->class('Hello')
+            ->method('foobar1')->end()
+            ->method('foobar2')->end()
+            ->property('barfoo1')->end()
+            ->property('barfoo2')->end()
+            ->constant('const1', 1234)->end()
+            ->constant('const2', 1234)->end();
+        $builder->interface('foobar');
+
+        $nodes = $builder->nodes();
+        $this->assertInstanceOfAndPopNode(SourceCodeBuilder::class, $nodes);
+        $this->assertInstanceOfAndPopNode(ClassBuilder::class, $nodes);
+        $this->assertInstanceOfAndPopNode(MethodBuilder::class, $nodes);
+        $this->assertInstanceOfAndPopNode(MethodBuilder::class, $nodes);
+        $this->assertInstanceOfAndPopNode(PropertyBuilder::class, $nodes);
+        $this->assertInstanceOfAndPopNode(PropertyBuilder::class, $nodes);
+        $this->assertInstanceOfAndPopNode(ConstantBuilder::class, $nodes);
+        $this->assertInstanceOfAndPopNode(ConstantBuilder::class, $nodes);
+        $this->assertInstanceOfAndPopNode(InterfaceBuilder::class, $nodes);
+    }
+
     public function testSourceCodeBuilder()
     {
         $builder = $this->builder();
@@ -119,37 +154,37 @@ class SourceCodeBuilderTest extends TestCase
         return [
             'Method return type' => [
                 $this->builder()->class('Dog')->method('one')
-                    ->returnType('string')
-                    ->visibility('private')
-                    ->parameter('one')
-                        ->type('One')
-                        ->defaultValue(1)
-                    ->end(),
+                ->returnType('string')
+                ->visibility('private')
+                ->parameter('one')
+                ->type('One')
+                ->defaultValue(1)
+                ->end(),
                 function ($method) {
                     $this->assertEquals('string', $method->returnType()->__toString());
                 }
-            ],
+        ],
             'Method mofifiers 1' => [
                 $this->builder()->class('Dog')->method('one')->static()->abstract(),
                 function ($method) {
                     $this->assertTrue($method->isStatic());
                     $this->assertTrue($method->isAbstract());
                 }
-            ],
+        ],
             'Method mofifiers 2' => [
                 $this->builder()->class('Dog')->method('one')->abstract(),
                 function ($method) {
                     $this->assertFalse($method->isStatic());
                     $this->assertTrue($method->isAbstract());
                 }
-            ],
+        ],
             'Method lines' => [
                 $this->builder()->class('Dog')->method('one')->body()->line('one')->line('two')->end(),
                 function ($method) {
                     $this->assertCount(2, $method->body()->lines());
                     $this->assertEquals('one', (string) $method->body()->lines()->first());
                 }
-            ],
+        ],
         ];
     }
 
@@ -165,5 +200,11 @@ class SourceCodeBuilderTest extends TestCase
     private function builder(): SourceCodeBuilder
     {
         return SourceCodeBuilder::create();
+    }
+
+    private function assertInstanceOfAndPopNode($className, Generator $nodes)
+    {
+        $this->assertInstanceOf($className, $nodes->current());
+        $nodes->next();
     }
 }
