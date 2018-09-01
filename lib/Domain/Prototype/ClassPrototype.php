@@ -20,34 +20,18 @@ final class ClassPrototype extends ClassLikePrototype
      */
     private $extendsclasss;
 
-    /**
-     * @var Constants
-     */
-    private $constants;
-
     public function __construct(
         string $name,
         Properties $properties = null,
         Constants $constants = null,
         Methods $methods = null,
         ExtendsClass $extendsClass = null,
-        ImplementsInterfaces $implementsInterfaces = null
+        ImplementsInterfaces $implementsInterfaces = null,
+        UpdatePolicy $updatePolicy = null
     ) {
-        parent::__construct($name, $methods);
-        $this->properties = $properties ?: Properties::empty();
+        parent::__construct($name, $methods, $properties, $constants, $updatePolicy);
         $this->extendsClass = $extendsClass ?: ExtendsClass::none();
         $this->implementsInterfaces = $implementsInterfaces ?: ImplementsInterfaces::empty();
-        $this->constants = $constants ?: Constants::empty();
-    }
-
-    public function properties(): Properties
-    {
-        return $this->properties;
-    }
-
-    public function constants(): Constants
-    {
-        return $this->constants;
     }
 
     public function extendsClass(): ExtendsClass

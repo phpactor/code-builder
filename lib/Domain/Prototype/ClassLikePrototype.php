@@ -28,8 +28,10 @@ abstract class ClassLikePrototype extends Prototype
         string $name,
         Methods $methods = null,
         Properties $properties = null,
-        Constants $constants = null
+        Constants $constants = null,
+        UpdatePolicy $updatePolicy = null
     ) {
+        parent::__construct($updatePolicy);
         $this->name = $name;
         $this->methods = $methods ?: Methods::empty();
         $this->properties = $properties ?: Properties::empty();

@@ -12,8 +12,9 @@ class Constant extends Prototype
 
     private $value;
 
-    public function __construct(string $name, Value $value)
+    public function __construct(string $name, Value $value, UpdatePolicy $updatePolicy = null)
     {
+        parent::__construct($updatePolicy);
         $this->name = $name;
         $this->value = $value;
     }

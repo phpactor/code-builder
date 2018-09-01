@@ -3,6 +3,7 @@
 namespace Phpactor\CodeBuilder\Domain\Builder;
 
 use Phpactor\CodeBuilder\Domain\Prototype\Type;
+use Phpactor\CodeBuilder\Domain\Prototype\UpdatePolicy;
 use Phpactor\CodeBuilder\Domain\Prototype\Visibility;
 use Phpactor\CodeBuilder\Domain\Prototype\Parameters;
 use Phpactor\CodeBuilder\Domain\Prototype\Method;
@@ -135,7 +136,8 @@ class MethodBuilder extends AbstractBuilder implements NamedBuilder
             $this->returnType,
             $this->docblock,
             $modifiers,
-            $methodBody
+            $methodBody,
+            UpdatePolicy::fromModifiedState($this->isModified())
         );
     }
 

@@ -3,6 +3,7 @@
 namespace Phpactor\CodeBuilder\Domain\Builder;
 
 use Phpactor\CodeBuilder\Domain\Prototype\Constant;
+use Phpactor\CodeBuilder\Domain\Prototype\UpdatePolicy;
 use Phpactor\CodeBuilder\Domain\Prototype\Value;
 
 class ConstantBuilder extends AbstractBuilder implements NamedBuilder
@@ -38,7 +39,8 @@ class ConstantBuilder extends AbstractBuilder implements NamedBuilder
     {
         return new Constant(
             $this->name,
-            $this->value
+            $this->value,
+            UpdatePolicy::fromModifiedState($this->isModified())
         );
     }
 

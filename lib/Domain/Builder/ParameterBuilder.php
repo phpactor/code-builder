@@ -5,6 +5,7 @@ namespace Phpactor\CodeBuilder\Domain\Builder;
 use Phpactor\CodeBuilder\Domain\Prototype\Type;
 use Phpactor\CodeBuilder\Domain\Prototype\DefaultValue;
 use Phpactor\CodeBuilder\Domain\Prototype\Parameter;
+use Phpactor\CodeBuilder\Domain\Prototype\UpdatePolicy;
 
 class ParameterBuilder extends AbstractBuilder
 {
@@ -64,7 +65,8 @@ class ParameterBuilder extends AbstractBuilder
             $this->name,
             $this->type,
             $this->defaultValue,
-            $this->byReference
+            $this->byReference,
+            UpdatePolicy::fromModifiedState($this->isModified())
         );
     }
 
