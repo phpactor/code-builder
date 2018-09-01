@@ -11,8 +11,8 @@ class Prototype
         $this->updatePolicy = $updatePolicy ?: UpdatePolicy::update();
     }
 
-    public function applyUpdate(): UpdatePolicy
+    public function applyUpdate(): bool
     {
-        return $this->updatePolicy;
+        return $this->updatePolicy->applyUpdate();
     }
 }
