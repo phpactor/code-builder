@@ -94,10 +94,10 @@ EOT
 
                 <<<'EOT'
 EOT
-                , SourceCodeBuilder::create()->use('Bovine')->build(),
+                , SourceCodeBuilder::create()->use('Foo\Bovine')->build(),
                 <<<'EOT'
 
-use Bovine;
+use Foo\Bovine;
 EOT
             ];
 
@@ -105,10 +105,10 @@ EOT
 
                 <<<'EOT'
 EOT
-                , SourceCodeBuilder::create()->use('Bovine', 'Cow')->build(),
+                , SourceCodeBuilder::create()->use('Foo\Bovine', 'Cow')->build(),
                 <<<'EOT'
 
-use Bovine as Cow;
+use Foo\Bovine as Cow;
 EOT
             ];
 
@@ -294,10 +294,10 @@ class Foobar
 {
 }
 EOT
-                , SourceCodeBuilder::create()->use('Feline')->build(),
+                , SourceCodeBuilder::create()->use('Foo\Feline')->build(),
                 <<<'EOT'
 
-use Feline;
+use Foo\Feline;
 
 class Foobar
 {
@@ -328,6 +328,17 @@ use Phpactor\WorseReflection\Core\Logger;
 use Phpactor\WorseReflection\Core\Reflection\ReflectionMethod;
 use Phpactor\WorseReflection\Core\Reflection\ReflectionClassLike;
 use Phpactor\WorseReflection\Core\Reflection\ReflectionInterface;
+EOT
+            ];
+
+            yield 'class import: It ignores classes in the same namespace' => [
+
+                <<<'EOT'
+namespace Animal;
+EOT
+                , SourceCodeBuilder::create()->use('Animal\Primate')->build()
+                , <<<'EOT'
+namespace Animal;
 EOT
             ];
     }

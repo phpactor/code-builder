@@ -109,16 +109,21 @@ class TolerantUpdater implements Updater
             }
         }
 
-
         if ($lastNode instanceof NamespaceDefinition) {
             $edits->after($lastNode, PHP_EOL);
         }
 
         $existingNames = new ImportedNames($lastNode);
+        $sourceNamespace = $lastNode->getNamespaceDefinition() 
+            ? $lastNode->getNamespaceDefinition()->name->__toString() : null;
 
         /** @var UseStatement $usePrototype */
         foreach ($prototype->useStatements()->sorted() as $usePrototype) {
             if (in_array($usePrototype->className()->__toString(), $existingNames->fullyQualifiedNames())) {
+                continue;
+            }
+
+            if ($sourceNamespace === $usePrototype->className()->namespace()) {
                 continue;
             }
 
@@ -140,7 +145,6 @@ class TolerantUpdater implements Updater
             }
 
             $newUseStatement = PHP_EOL . 'use ' . (string) $usePrototype . ';';
-
             $edits->after($lastNode, $newUseStatement);
         }
 

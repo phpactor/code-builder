@@ -37,6 +37,19 @@ final class Type extends Prototype
         return $this->type;
     }
 
+    public function namespace(): ?string
+    {
+        if (null === $this->type) {
+            return null;
+        }
+
+        if (false === strpos($this->type, '\\')) {
+            return null;
+        }
+
+        return substr($this->type, 0, strpos($this->type, '\\'));
+    }
+
     public function notNone(): bool
     {
         return false === $this->none;
