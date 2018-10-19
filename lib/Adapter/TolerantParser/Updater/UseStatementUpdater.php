@@ -32,12 +32,15 @@ class UseStatementUpdater
                 }
             }
         }
+        $usePrototypes = $this->resolveUseStatements($prototype, $lastNode);
+
+        if (empty($usePrototypes)) {
+            return;
+        }
 
         if ($lastNode instanceof NamespaceDefinition) {
             $edits->after($lastNode, PHP_EOL);
         }
-
-        $usePrototypes = $this->resolveUseStatements($prototype, $lastNode);
 
         foreach ($usePrototypes as $usePrototype) {
             foreach ($node->getChildNodes() as $childNode) {

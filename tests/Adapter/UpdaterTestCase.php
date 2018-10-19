@@ -341,6 +341,21 @@ EOT
 namespace Animal;
 EOT
             ];
+
+            yield 'it does not add additional space' => [
+
+                <<<'EOT'
+namespace Animal;
+
+class Foo {}
+EOT
+                , SourceCodeBuilder::create()->use('Animal\Primate')->build()
+                , <<<'EOT'
+namespace Animal;
+
+class Foo {}
+EOT
+            ];
     }
 
     /**
