@@ -7,6 +7,7 @@ use Microsoft\PhpParser\Node\Statement\InlineHtml;
 use Microsoft\PhpParser\Node\Statement\NamespaceDefinition;
 use Microsoft\PhpParser\Node\Statement\NamespaceUseDeclaration;
 use Microsoft\PhpParser\Parser;
+use Phpactor\CodeBuilder\Adapter\TolerantParser\Updater\UseStatementUpdater;
 use Phpactor\CodeBuilder\Adapter\TolerantParser\Util\ImportedNames;
 use Phpactor\CodeBuilder\Domain\Code;
 use Phpactor\CodeBuilder\Domain\Prototype\NamespaceName;
@@ -43,6 +44,21 @@ class TolerantUpdater implements Updater
      */
     private $textFormat;
 
+    /**
+     * @var ClassUpdater
+     */
+    private $classUpdater;
+
+    /**
+     * @var InterfaceUpdater
+     */
+    private $interfaceUpdater;
+
+    /**
+     * @var UseStatementUpdater
+     */
+    private $useStatementUpdater;
+
     public function __construct(Renderer $renderer, TextFormat $textFormat = null, Parser $parser = null)
     {
         $this->parser = $parser ?: new Parser();
@@ -50,6 +66,7 @@ class TolerantUpdater implements Updater
         $this->renderer = $renderer;
         $this->classUpdater = new ClassUpdater($renderer);
         $this->interfaceUpdater = new InterfaceUpdater($renderer);
+        $this->useStatementUpdater = new UseStatementUpdater($renderer);
     }
 
     public function apply(Prototype $prototype, Code $code): Code
@@ -58,7 +75,7 @@ class TolerantUpdater implements Updater
         $node = $this->parser->parseSourceFile((string) $code);
 
         $this->updateNamespace($edits, $prototype, $node);
-        $this->updateUseStatements($edits, $prototype, $node);
+        $this->useStatementUpdater->updateUseStatements($edits, $prototype, $node);
         $this->updateClasses($edits, $prototype, $node);
 
         return Code::fromString($edits->apply((string) $code));
@@ -88,69 +105,6 @@ class TolerantUpdater implements Updater
 
         $startTag = $node->getFirstChildNode(InlineHtml::class);
         $edits->after($startTag, 'namespace ' . (string) $prototype->namespace() . ';' . PHP_EOL.PHP_EOL);
-    }
-
-    private function updateUseStatements(Edits $edits, SourceCode $prototype, SourceFileNode $node)
-    {
-        if (0 === count($prototype->useStatements())) {
-            return;
-        }
-
-
-        $lastNode = $node->getFirstChildNode(NamespaceUseDeclaration::class, NamespaceDefinition::class, InlineHtml::class);
-
-        // fast forward to last use declaration
-        if ($lastNode instanceof NamespaceUseDeclaration) {
-            $parent = $lastNode->parent;
-            foreach ($parent->getChildNodes() as $child) {
-                if ($child instanceof NamespaceUseDeclaration) {
-                    $lastNode = $child;
-                }
-            }
-        }
-
-        if ($lastNode instanceof NamespaceDefinition) {
-            $edits->after($lastNode, PHP_EOL);
-        }
-
-        $existingNames = new ImportedNames($lastNode);
-        $sourceNamespace = $lastNode->getNamespaceDefinition() 
-            ? $lastNode->getNamespaceDefinition()->name->__toString() : null;
-
-        /** @var UseStatement $usePrototype */
-        foreach ($prototype->useStatements()->sorted() as $usePrototype) {
-            if (in_array($usePrototype->className()->__toString(), $existingNames->fullyQualifiedNames())) {
-                continue;
-            }
-
-            if ($sourceNamespace === $usePrototype->className()->namespace()) {
-                continue;
-            }
-
-            foreach ($node->getChildNodes() as $childNode) {
-                if ($childNode instanceof NamespaceUseDeclaration) {
-                    foreach ($childNode->useClauses->getElements() as $useClause) {
-                        /* try to find the first lexicographycally greater use
-                           statement and insert before if there is one */
-                        $cmp = strcmp($useClause->namespaceName->getText(), $usePrototype->__toString());
-                        if ($cmp === 0) {
-                            continue 3;
-                        }
-                        if ($cmp > 0) {
-                            $edits->before($childNode, 'use ' . (string) $usePrototype . ';' . PHP_EOL);
-                            continue 3;
-                        }
-                    }
-                }
-            }
-
-            $newUseStatement = PHP_EOL . 'use ' . (string) $usePrototype . ';';
-            $edits->after($lastNode, $newUseStatement);
-        }
-
-        if ($lastNode instanceof InlineHtml) {
-            $edits->after($lastNode, PHP_EOL . PHP_EOL);
-        }
     }
 
     private function updateClasses(Edits $edits, SourceCode $prototype, SourceFileNode $node)
