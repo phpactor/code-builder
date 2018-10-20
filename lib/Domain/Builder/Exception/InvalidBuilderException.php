@@ -6,7 +6,7 @@ use OutOfBoundsException;
 
 class InvalidBuilderException extends OutOfBoundsException
 {
-    public function __construct(Builder $containerBuilder, Builder $containerBuilder)
+    public function __construct(Builder $builder, Builder $containerBuilder)
     {
         parent::__construct(sprintf(
             'Builder "%s" cannot be added to builder "%s"',
