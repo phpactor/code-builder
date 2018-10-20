@@ -3,6 +3,7 @@
 namespace Phpactor\CodeBuilder\Domain\Builder\Exception;
 
 use OutOfBoundsException;
+use Phpactor\CodeBuilder\Domain\Builder\Builder;
 
 class InvalidBuilderException extends OutOfBoundsException
 {
