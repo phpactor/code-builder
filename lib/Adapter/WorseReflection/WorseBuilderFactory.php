@@ -4,6 +4,7 @@ namespace Phpactor\CodeBuilder\Adapter\WorseReflection;
 
 use Phpactor\CodeBuilder\Domain\BuilderFactory;
 use Phpactor\CodeBuilder\Domain\Builder\ClassBuilder;
+use Phpactor\WorseReflection\Core\Name;
 use Phpactor\WorseReflection\Reflector;
 use Phpactor\CodeBuilder\Domain\Builder\SourceCodeBuilder;
 use Phpactor\WorseReflection\Core\Reflection\ReflectionProperty;
@@ -139,11 +140,13 @@ class WorseBuilderFactory implements BuilderFactory
     {
         $typeName = $type->short();
         
+        /** @var Name $import */
         foreach ($imports as $alias => $import) {
-            if ($type->short() == $import->head()) {
+            if ($type->__toString() == $import->full()) {
                 $typeName = $alias;
             }
         }
+
         return $typeName;
     }
 }
