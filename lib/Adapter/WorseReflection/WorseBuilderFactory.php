@@ -4,6 +4,8 @@ namespace Phpactor\CodeBuilder\Adapter\WorseReflection;
 
 use Phpactor\CodeBuilder\Domain\BuilderFactory;
 use Phpactor\CodeBuilder\Domain\Builder\ClassBuilder;
+use Phpactor\TextDocument\TextDocument;
+use Phpactor\TextDocument\TextDocumentBuilder;
 use Phpactor\WorseReflection\Reflector;
 use Phpactor\CodeBuilder\Domain\Builder\SourceCodeBuilder;
 use Phpactor\WorseReflection\Core\Reflection\ReflectionProperty;
@@ -28,8 +30,14 @@ class WorseBuilderFactory implements BuilderFactory
         $this->reflector = $reflector;
     }
 
-    public function fromSource(string $source): SourceCodeBuilder
+    public function fromSource($source): SourceCodeBuilder
     {
+        if (!$source instanceof TextDocument) {
+            $source = TextDocumentBuilder::create($source)
+                ->language('php')
+                ->build();
+        }
+
         $classes = $this->reflector->reflectClassesIn($source);
         $builder = SourceCodeBuilder::create();
 
