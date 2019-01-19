@@ -3,6 +3,7 @@
 namespace Phpactor\CodeBuilder\Tests\Adapter\WorseReflection;
 
 use PHPUnit\Framework\TestCase;
+use Phpactor\WorseReflection\Bridge\Phpactor\MemberProvider\DocblockMemberProvider;
 use Phpactor\WorseReflection\Reflector;
 use Phpactor\CodeBuilder\Adapter\WorseReflection\WorseBuilderFactory;
 use Phpactor\CodeBuilder\SourceBuilder;
@@ -81,6 +82,12 @@ class WorseBuilderFactoryTest extends TestCase
     {
         $source = $this->build('<?php class Foobar { public function method() {} }');
         $this->assertEquals('method', $source->classes()->first()->methods()->first()->name());
+    }
+
+    public function testNoVirtualMethod()
+    {
+        $source = $this->build('<?php /** @method stdClass foobar() */class Foobar {  }');
+        $this->assertCount(0, $source->classes()->first()->methods());
     }
 
     public function testMethodWithReturnType()
@@ -174,7 +181,9 @@ EOT
 
     private function build(string $source): SourceCode
     {
-        $reflector = ReflectorBuilder::create()->addSource($source)->build();
+        $reflector = ReflectorBuilder::create()
+            ->addMemberProvider(new DocblockMemberProvider())
+            ->addSource($source)->build();
 
         $worseFactory = new WorseBuilderFactory($reflector);
         return $worseFactory->fromSource($source)->build();
