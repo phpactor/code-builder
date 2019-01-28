@@ -9,6 +9,7 @@ use Phpactor\CodeBuilder\Domain\Prototype\Classes;
 use Phpactor\CodeBuilder\Domain\Prototype\UpdatePolicy;
 use Phpactor\CodeBuilder\Domain\Prototype\UseStatements;
 use Phpactor\CodeBuilder\Domain\Prototype\Interfaces;
+use Phpactor\CodeBuilder\Domain\Prototype\Traits;
 use Phpactor\CodeBuilder\Domain\Prototype\UseStatement;
 
 class SourceCodeBuilder extends AbstractBuilder
@@ -32,6 +33,11 @@ class SourceCodeBuilder extends AbstractBuilder
      * @var InterfaceBuilder[]
      */
     protected $interfaces = [];
+
+    /**
+     * @var TraitBuilder[]
+     */
+    protected $traits = [];
 
     public static function create(): SourceCodeBuilder
     {
@@ -124,6 +130,9 @@ class SourceCodeBuilder extends AbstractBuilder
             Interfaces::fromInterfaces(array_map(function (InterfaceBuilder $builder) {
                 return $builder->build();
             }, $this->interfaces)),
+            Traits::fromTraits(array_map(function (TraitBuilder $builder) {
+                return $builder->build();
+            }, $this->traits)),
             UpdatePolicy::fromModifiedState($this->isModified())
         );
     }
