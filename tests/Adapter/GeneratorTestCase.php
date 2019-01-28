@@ -29,6 +29,7 @@ use Phpactor\CodeBuilder\Domain\Prototype\QualifiedName;
 use Phpactor\CodeBuilder\Domain\Prototype\ReturnType;
 use Phpactor\CodeBuilder\Domain\Prototype\SourceCode;
 use Phpactor\CodeBuilder\Domain\Prototype\SourceText;
+use Phpactor\CodeBuilder\Domain\Prototype\TraitPrototype;
 use Phpactor\CodeBuilder\Domain\Prototype\Type;
 use Phpactor\CodeBuilder\Domain\Prototype\UseStatements;
 use Phpactor\CodeBuilder\Domain\Prototype\UseStatement;
@@ -361,6 +362,61 @@ EOT
 interface Dog
 {
     public function hello();
+}
+EOT
+            ],
+            'Renders a trait' => [
+                new TraitPrototype(
+                    'Butterfly',
+                ),
+                <<<'EOT'
+trait Butterfly
+{
+}
+EOT
+            ],
+            'Renders a trait with properties' => [
+                new TraitPrototype(
+                    'Butterfly',
+                    Properties::fromProperties([ new Property('colour') ])
+                ),
+                <<<'EOT'
+trait Butterfly
+{
+    public $colour;
+}
+EOT
+            ],
+            'Renders a trait with constants' => [
+                new TraitPrototype(
+                    'Butterfly',
+                    Properties::empty(),
+                    Constants::fromConstants([
+                        new Constant('WAS_CATERPILLAR', Value::fromValue(true)),
+                    ])
+                ),
+                <<<'EOT'
+trait Butterfly
+{
+    const WAS_CATERPILLAR = true;
+}
+EOT
+            ],
+            'Renders a trait with methods' => [
+                new TraitPrototype(
+                    'Butterfly',
+                    Properties::empty(),
+                    Constants::empty(),
+                    Methods::fromMethods([
+                        new Method('wings'),
+                    ])
+                ),
+                <<<'EOT'
+trait Butterfly
+{
+    public function wings()
+    {
+    }
 }
 EOT
             ],
