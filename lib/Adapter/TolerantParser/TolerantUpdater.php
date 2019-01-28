@@ -3,6 +3,7 @@ namespace Phpactor\CodeBuilder\Adapter\TolerantParser;
 
 use Microsoft\PhpParser\Node\SourceFileNode;
 use Microsoft\PhpParser\Node\Statement\ClassDeclaration;
+use Microsoft\PhpParser\Node\Statement\TraitDeclaration;
 use Microsoft\PhpParser\Node\Statement\InlineHtml;
 use Microsoft\PhpParser\Node\Statement\NamespaceDefinition;
 use Microsoft\PhpParser\Node\Statement\NamespaceUseDeclaration;
@@ -21,6 +22,7 @@ use Phpactor\CodeBuilder\Util\TextFormat;
 use Phpactor\CodeBuilder\Adapter\TolerantParser\Updater\ClassUpdater;
 use Microsoft\PhpParser\Node\Statement\InterfaceDeclaration;
 use Phpactor\CodeBuilder\Adapter\TolerantParser\Updater\InterfaceUpdater;
+use Phpactor\CodeBuilder\Adapter\TolerantParser\Updater\TraitUpdater;
 
 class TolerantUpdater implements Updater
 {
@@ -55,6 +57,11 @@ class TolerantUpdater implements Updater
     private $interfaceUpdater;
 
     /**
+     * @var TraitUpdater
+     */
+    private $traitUpdater;
+
+    /**
      * @var UseStatementUpdater
      */
     private $useStatementUpdater;
@@ -66,6 +73,7 @@ class TolerantUpdater implements Updater
         $this->renderer = $renderer;
         $this->classUpdater = new ClassUpdater($renderer);
         $this->interfaceUpdater = new InterfaceUpdater($renderer);
+        $this->traitUpdater = new TraitUpdater($renderer);
         $this->useStatementUpdater = new UseStatementUpdater($renderer);
     }
 
@@ -110,8 +118,10 @@ class TolerantUpdater implements Updater
     private function updateClasses(Edits $edits, SourceCode $prototype, SourceFileNode $node)
     {
         $classNodes = [];
+        $traitNodes = [];
         $interfaceNodes = [];
         $lastStatement = null;
+
         foreach ($node->statementList as $classNode) {
             $lastStatement = $classNode;
 
@@ -124,6 +134,11 @@ class TolerantUpdater implements Updater
                 $name = $classNode->name->getText($node->getFileContents());
                 $interfaceNodes[$name] = $classNode;
             }
+
+            if ($classNode instanceof TraitDeclaration) {
+                $name = $classNode->name->getText($node->getFileContents());
+                $traitNodes[$name] = $classNode;
+            }
         }
 
         foreach ($prototype->classes()->in(array_keys($classNodes)) as $classPrototype) {
@@ -134,13 +149,18 @@ class TolerantUpdater implements Updater
             $this->interfaceUpdater->updateInterface($edits, $classPrototype, $interfaceNodes[$classPrototype->name()]);
         }
 
+        foreach ($prototype->traits()->in(array_keys($traitNodes)) as $traitPrototype) {
+            $this->traitUpdater->updateTrait($edits, $traitPrototype, $traitNodes[$traitPrototype->name()]);
+        }
+
         if (substr($lastStatement->getText(), -1) !== PHP_EOL) {
             $edits->after($lastStatement, PHP_EOL);
         }
 
         $classes = array_merge(
             iterator_to_array($prototype->classes()->notIn(array_keys($classNodes))),
-            iterator_to_array($prototype->interfaces()->notIn(array_keys($interfaceNodes)))
+            iterator_to_array($prototype->interfaces()->notIn(array_keys($interfaceNodes))),
+            iterator_to_array($prototype->traits()->notIn(array_keys($traitNodes)))
         );
 
         $index = 0;
