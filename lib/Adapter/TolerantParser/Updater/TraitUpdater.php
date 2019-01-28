@@ -2,8 +2,8 @@
 
 namespace Phpactor\CodeBuilder\Adapter\TolerantParser\Updater;
 
-use Phpactor\CodeBuilder\Domain\Prototype\ClassPrototype;
-use Microsoft\PhpParser\Node\Statement\ClassDeclaration;
+use Phpactor\CodeBuilder\Domain\Prototype\TraitPrototype;
+use Microsoft\PhpParser\Node\Statement\TraitDeclaration;
 use Phpactor\CodeBuilder\Adapter\TolerantParser\Edits;
 use Phpactor\CodeBuilder\Domain\Renderer;
 use Microsoft\PhpParser\Node\ClassConstDeclaration;
@@ -33,7 +33,7 @@ class TraitUpdater
         $this->methodUpdater = new ClassMethodUpdater($renderer);
     }
 
-    public function updateClass(Edits $edits, ClassPrototype $classPrototype, ClassDeclaration $classNode)
+    public function updateTrait(Edits $edits, TraitPrototype $classPrototype, TraitDeclaration $classNode)
     {
         if (false === $classPrototype->applyUpdate()) {
             return;
@@ -45,16 +45,16 @@ class TraitUpdater
         $this->methodUpdater->updateMethods($edits, $classPrototype, $classNode);
     }
 
-    private function updateConstants(Edits $edits, ClassPrototype $classPrototype, ClassDeclaration $classNode)
+    private function updateConstants(Edits $edits, TraitPrototype $classPrototype, TraitDeclaration $classNode)
     {
         if (count($classPrototype->constants()) === 0) {
             return;
         }
 
-        $lastConstant = $classNode->classMembers->openBrace;
+        $lastConstant = $classNode->traitMembers->openBrace;
         $nextMember = null;
 
-        $memberDeclarations = $classNode->classMembers->classMemberDeclarations;
+        $memberDeclarations = $classNode->traitMembers->classMemberDeclarations;
         $existingConstantNames = [];
 
         foreach ($memberDeclarations as $memberNode) {
@@ -93,16 +93,16 @@ class TraitUpdater
         }
     }
 
-    private function updateProperties(Edits $edits, ClassPrototype $classPrototype, ClassDeclaration $classNode)
+    private function updateProperties(Edits $edits, TraitPrototype $classPrototype, TraitDeclaration $classNode)
     {
         if (count($classPrototype->properties()) === 0) {
             return;
         }
 
-        $lastProperty = $classNode->classMembers->openBrace;
+        $lastProperty = $classNode->traitMembers->openBrace;
         $nextMember = null;
 
-        $memberDeclarations = $classNode->classMembers->classMemberDeclarations;
+        $memberDeclarations = $classNode->traitMembers->traitMemberDeclarations;
         $existingPropertyNames = [];
 
         foreach ($memberDeclarations as $memberNode) {
