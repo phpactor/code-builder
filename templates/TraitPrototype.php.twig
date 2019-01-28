@@ -1,8 +1,4 @@
-trait {{ prototype.name }}{% if prototype.extendsClass.notNone %} extends {{ prototype.extendsClass }}{% endif %}
-{% if prototype.implementsInterfaces|length %}
- implements {% for interface in prototype.implementsInterfaces %}{{ interface }}{% if not loop.last %}, {% endif %}{% endfor %}
-{% endif %}
-
+trait {{ prototype.name }}
 {
 {% for constant in prototype.constants %}
 {{ generator.render(constant, variant)|indent(1)|raw }}

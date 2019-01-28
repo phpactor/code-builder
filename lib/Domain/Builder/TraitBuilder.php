@@ -2,31 +2,18 @@
 
 namespace Phpactor\CodeBuilder\Domain\Builder;
 
-use Phpactor\CodeBuilder\Domain\Prototype\ClassPrototype;
-use Phpactor\CodeBuilder\Domain\Prototype\ExtendsClass;
 use Phpactor\CodeBuilder\Domain\Prototype\Properties;
-use Phpactor\CodeBuilder\Domain\Prototype\Type;
+use Phpactor\CodeBuilder\Domain\Prototype\TraitPrototype;
 use Phpactor\CodeBuilder\Domain\Prototype\Methods;
-use Phpactor\CodeBuilder\Domain\Prototype\ImplementsInterfaces;
 use Phpactor\CodeBuilder\Domain\Prototype\Constants;
 use Phpactor\CodeBuilder\Domain\Prototype\UpdatePolicy;
 
-class ClassBuilder extends ClassLikeBuilder
+class TraitBuilder extends ClassLikeBuilder
 {
-    /**
-     * @var string
-     */
-    private $extends;
-
     /**
      * @var PropertyBuilder[]
      */
     protected $properties = [];
-
-    /**
-     * @var Type[]
-     */
-    protected $interfaces = [];
 
     /**
      * @var ConstantBuilder[]
@@ -41,13 +28,6 @@ class ClassBuilder extends ClassLikeBuilder
         ]);
     }
 
-    public function extends(string $class): ClassBuilder
-    {
-        $this->extends = ExtendsClass::fromString($class);
-
-        return $this;
-    }
-
     public function add(Builder $builder)
     {
         if ($builder instanceof PropertyBuilder) {
@@ -56,13 +36,6 @@ class ClassBuilder extends ClassLikeBuilder
         }
 
         parent::add($builder);
-    }
-
-    public function implements(string $interface): ClassBuilder
-    {
-        $this->interfaces[] = Type::fromString($interface);
-
-        return $this;
     }
 
     public function property(string $name): PropertyBuilder
@@ -83,9 +56,9 @@ class ClassBuilder extends ClassLikeBuilder
         return $builder;
     }
 
-    public function build(): ClassPrototype
+    public function build(): TraitPrototype
     {
-        return new ClassPrototype(
+        return new TraitPrototype(
             $this->name,
             Properties::fromProperties(array_map(function (PropertyBuilder $builder) {
                 return $builder->build();
@@ -96,8 +69,6 @@ class ClassBuilder extends ClassLikeBuilder
             Methods::fromMethods(array_map(function (MethodBuilder $builder) {
                 return $builder->build();
             }, $this->methods)),
-            $this->extends,
-            ImplementsInterfaces::fromTypes($this->interfaces),
             UpdatePolicy::fromModifiedState($this->isModified())
         );
     }
