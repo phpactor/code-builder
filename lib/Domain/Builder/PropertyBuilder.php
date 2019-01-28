@@ -35,7 +35,7 @@ class PropertyBuilder extends AbstractBuilder implements NamedBuilder
      */
     protected $defaultValue;
 
-    public function __construct(ClassBuilder $parent, string $name)
+    public function __construct(ClassLikeBuilder $parent, string $name)
     {
         $this->parent = $parent;
         $this->name = $name;
