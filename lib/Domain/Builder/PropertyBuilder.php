@@ -78,7 +78,7 @@ class PropertyBuilder extends AbstractBuilder implements NamedBuilder
         );
     }
 
-    public function end(): ClassBuilder
+    public function end(): ClassLikeBuilder
     {
         return $this->parent;
     }

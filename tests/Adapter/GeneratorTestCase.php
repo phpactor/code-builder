@@ -437,7 +437,19 @@ interface Animal
     public function sleep();
 }
 
-class Rabbits extends Leopridae implements Animal
+trait Oryctolagus
+{
+    /**
+     * @var bool
+     */
+    private $domesticated = true;
+
+    public function burrow(Depth $depth = 'deep')
+    {
+    }
+}
+
+class Rabbits extends Leporidae implements Animal
 {
     /**
      * @var int
@@ -463,7 +475,7 @@ EOT
             ->namespace('Animals')
             ->use('Measurements\\Height')
             ->class('Rabbits')
-                ->extends('Leopridae')
+                ->extends('Leporidae')
                 ->implements('Animal')
                 ->property('force')
                     ->visibility('private')
@@ -486,6 +498,19 @@ EOT
             ->end()
             ->interface('Animal')
                 ->method('sleep')->end()
+            ->end()
+            ->trait('Oryctolagus')
+                ->property('domesticated')
+                    ->visibility('private')
+                    ->defaultValue(true)
+                    ->type('bool')
+                ->end()
+                ->method('burrow')
+                    ->parameter('depth')
+                        ->type('Depth')
+                        ->defaultValue('deep')
+                    ->end()
+                ->end()
             ->end()
             ->build();
 

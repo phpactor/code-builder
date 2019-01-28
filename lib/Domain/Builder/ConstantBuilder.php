@@ -28,7 +28,7 @@ class ConstantBuilder extends AbstractBuilder implements NamedBuilder
         return [];
     }
 
-    public function __construct(ClassBuilder $parent, string $name, $value)
+    public function __construct(ClassLikeBuilder $parent, string $name, $value)
     {
         $this->parent = $parent;
         $this->name = $name;
@@ -44,7 +44,7 @@ class ConstantBuilder extends AbstractBuilder implements NamedBuilder
         );
     }
 
-    public function end(): ClassBuilder
+    public function end(): ClassLikeBuilder
     {
         return $this->parent;
     }
