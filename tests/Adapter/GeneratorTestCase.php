@@ -30,6 +30,7 @@ use Phpactor\CodeBuilder\Domain\Prototype\ReturnType;
 use Phpactor\CodeBuilder\Domain\Prototype\SourceCode;
 use Phpactor\CodeBuilder\Domain\Prototype\SourceText;
 use Phpactor\CodeBuilder\Domain\Prototype\TraitPrototype;
+use Phpactor\CodeBuilder\Domain\Prototype\Traits;
 use Phpactor\CodeBuilder\Domain\Prototype\Type;
 use Phpactor\CodeBuilder\Domain\Prototype\UseStatements;
 use Phpactor\CodeBuilder\Domain\Prototype\UseStatement;
@@ -104,6 +105,26 @@ interface Squirrel
 }
 EOT
             ],
+            'Renders source code with traits' => [
+                new SourceCode(
+                    NamespaceName::root(),
+                    UseStatements::empty(),
+                    Classes::empty(),
+                    Interfaces::empty(),
+                    Traits::fromTraits([ new TraitPrototype('Fox'), new TraitPrototype('Hare') ])
+                ),
+                <<<'EOT'
+<?php
+
+trait Fox
+{
+}
+
+trait Hare
+{
+}
+EOT
+        ],
             'Renders source code with use statements' => [
                 new SourceCode(
                     NamespaceName::root(),
@@ -416,6 +437,35 @@ trait Butterfly
 {
     public function wings()
     {
+    }
+}
+EOT
+            ],
+            'Renders a trait method with a body' => [
+                new TraitPrototype(
+                    'Butterfly',
+                    Properties::empty(),
+                    Constants::empty(),
+                    Methods::fromMethods([
+                        new Method(
+                            'hello',
+                            null,
+                            Parameters::empty(),
+                            ReturnType::none(),
+                            Docblock::none(),
+                            0,
+                            MethodBody::fromLines([
+                                Line::fromString('$this->foobar = $barfoo;'),
+                            ])
+                        ),
+                    ])
+                ),
+                <<<'EOT'
+trait Butterfly
+{
+    public function hello()
+    {
+        $this->foobar = $barfoo;
     }
 }
 EOT
