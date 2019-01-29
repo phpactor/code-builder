@@ -388,7 +388,7 @@ EOT
             ],
             'Renders a trait' => [
                 new TraitPrototype(
-                    'Butterfly',
+                    'Butterfly'
                 ),
                 <<<'EOT'
 trait Butterfly
