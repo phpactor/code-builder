@@ -39,7 +39,7 @@ abstract class ClassLikeUpdater
         }
 
         throw new \InvalidArgumentException(sprintf(
-            'Do not know how to resolve property elemnt of type "%s"',
+            'Do not know how to resolve property element of type "%s"',
             get_class($property)
         ));
     }
