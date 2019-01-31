@@ -2,16 +2,11 @@
 
 namespace Phpactor\CodeBuilder\Adapter\TolerantParser\Updater;
 
-use Phpactor\CodeBuilder\Domain\Prototype\ClassPrototype;
 use Microsoft\PhpParser\Node\Statement\ClassDeclaration;
-use Phpactor\CodeBuilder\Domain\Prototype\ExtendsClass;
 use Phpactor\CodeBuilder\Adapter\TolerantParser\Edits;
+use Phpactor\CodeBuilder\Domain\Prototype\ClassPrototype;
+use Phpactor\CodeBuilder\Domain\Prototype\ExtendsClass;
 use Phpactor\CodeBuilder\Domain\Prototype\ImplementsInterfaces;
-use Microsoft\PhpParser\Node\ClassConstDeclaration;
-use Microsoft\PhpParser\Node\MethodDeclaration;
-use Microsoft\PhpParser\Node\PropertyDeclaration;
-use Microsoft\PhpParser\Node;
-use Phpactor\CodeBuilder\Domain\Prototype\Type;
 
 class ClassUpdater extends ClassLikeUpdater
 {
@@ -69,48 +64,5 @@ class ClassUpdater extends ClassLikeUpdater
         $names = join(', ', [ implode(', ', $existingNames), $additionalNames->__toString()]);
 
         $edits->replace($classNode->classInterfaceClause, ' implements ' . $names);
-    }
-
-    private function updateProperties(Edits $edits, ClassPrototype $classPrototype, ClassDeclaration $classNode)
-    {
-        if (count($classPrototype->properties()) === 0) {
-            return;
-        }
-
-        $lastProperty = $classNode->classMembers->openBrace;
-        $nextMember = null;
-
-        $memberDeclarations = $classNode->classMembers->classMemberDeclarations;
-        $existingPropertyNames = [];
-        foreach ($memberDeclarations as $memberNode) {
-            if (null === $nextMember) {
-                $nextMember = $memberNode;
-            }
-
-            if ($memberNode instanceof PropertyDeclaration) {
-                foreach ($memberNode->propertyElements->getElements() as $property) {
-                    $existingPropertyNames[] = $this->resolvePropertyName($property);
-                }
-                $lastProperty = $memberNode;
-                $nextMember = next($memberDeclarations) ?: $nextMember;
-                prev($memberDeclarations);
-            }
-        }
-
-        foreach ($classPrototype->properties()->notIn($existingPropertyNames) as $property) {
-            // if property type exists then the last property has a docblock - add a line break
-            if ($lastProperty instanceof PropertyDeclaration && $property->type() != Type::none()) {
-                $edits->after($lastProperty, PHP_EOL);
-            }
-
-            $edits->after(
-                $lastProperty,
-                PHP_EOL . $edits->indent($this->renderer->render($property), 1)
-            );
-
-            if ($classPrototype->properties()->isLast($property) && $nextMember instanceof MethodDeclaration) {
-                $edits->after($lastProperty, PHP_EOL);
-            }
-        }
     }
 }

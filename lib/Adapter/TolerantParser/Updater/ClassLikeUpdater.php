@@ -61,7 +61,7 @@ abstract class ClassLikeUpdater
                 break;
             case 'TraitDeclaration':
                 $lastConstant = $classNode->traitMembers->openBrace;
-                $memberDeclarations = $classNode->traitMembers->classMemberDeclarations;
+                $memberDeclarations = $classNode->traitMembers->traitMemberDeclarations;
                 break;
             default:
                 throw new \InvalidArgumentException(sprintf(
@@ -105,6 +105,63 @@ abstract class ClassLikeUpdater
                 $nextMember instanceof PropertyDeclaration
             )) {
                 $edits->after($lastConstant, PHP_EOL);
+            }
+        }
+    }
+
+    protected function updateProperties(Edits $edits, ClassLikePrototype $classPrototype, StatementNode $classNode)
+    {
+        if (count($classPrototype->properties()) === 0) {
+            return;
+        }
+
+        switch ($classNode->getNodeKindName()) {
+            case 'ClassDeclaration':
+                $lastProperty = $classNode->classMembers->openBrace;
+                $memberDeclarations = $classNode->classMembers->classMemberDeclarations;
+                break;
+            case 'TraitDeclaration':
+                $lastProperty = $classNode->traitMembers->openBrace;
+                $memberDeclarations = $classNode->traitMembers->traitMemberDeclarations;
+                break;
+            default:
+                throw new \InvalidArgumentException(sprintf(
+                    'Do not know how to handle class node declaration type "%s"',
+                    $classNode->getNodeKindName()
+                ));
+        }
+
+        $nextMember = null;
+        $existingPropertyNames = [];
+
+        foreach ($memberDeclarations as $memberNode) {
+            if (null === $nextMember) {
+                $nextMember = $memberNode;
+            }
+
+            if ($memberNode instanceof PropertyDeclaration) {
+                foreach ($memberNode->propertyElements->getElements() as $property) {
+                    $existingPropertyNames[] = $this->resolvePropertyName($property);
+                }
+                $lastProperty = $memberNode;
+                $nextMember = next($memberDeclarations) ?: $nextMember;
+                prev($memberDeclarations);
+            }
+        }
+
+        foreach ($classPrototype->properties()->notIn($existingPropertyNames) as $property) {
+            // if property type exists then the last property has a docblock - add a line break
+            if ($lastProperty instanceof PropertyDeclaration && $property->type() != Type::none()) {
+                $edits->after($lastProperty, PHP_EOL);
+            }
+
+            $edits->after(
+                $lastProperty,
+                PHP_EOL . $edits->indent($this->renderer->render($property), 1)
+            );
+
+            if ($classPrototype->properties()->isLast($property) && $nextMember instanceof MethodDeclaration) {
+                $edits->after($lastProperty, PHP_EOL);
             }
         }
     }
