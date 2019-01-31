@@ -2,8 +2,10 @@
 
 namespace Phpactor\CodeBuilder\Adapter\TolerantParser\Updater;
 
+use Phpactor\CodeBuilder\Domain\Prototype\ClassLikePrototype;
 use Phpactor\CodeBuilder\Domain\Prototype\TraitPrototype;
 use Microsoft\PhpParser\Node\Statement\TraitDeclaration;
+use Microsoft\PhpParser\Node\StatementNode;
 use Phpactor\CodeBuilder\Adapter\TolerantParser\Edits;
 use Microsoft\PhpParser\Node\ClassConstDeclaration;
 use Microsoft\PhpParser\Node\MethodDeclaration;
@@ -23,37 +25,6 @@ class TraitUpdater extends ClassLikeUpdater
         $this->updateProperties($edits, $classPrototype, $classNode);
 
         $this->methodUpdater->updateMethods($edits, $classPrototype, $classNode);
-    }
-
-    private function updateConstants(Edits $edits, TraitPrototype $classPrototype, TraitDeclaration $classNode)
-    {
-        if (count($classPrototype->constants()) === 0) {
-            return;
-        }
-
-        $lastConstant = $classNode->traitMembers->openBrace;
-        $nextMember = null;
-
-        $memberDeclarations = $classNode->traitMembers->classMemberDeclarations;
-        $existingConstantNames = [];
-
-        foreach ($memberDeclarations as $memberNode) {
-            if (null === $nextMember) {
-                $nextMember = $memberNode;
-            }
-
-            if ($memberNode instanceof ClassConstDeclaration) {
-                /** @var ConstDeclaration $memberNode */
-                foreach ($memberNode->constElements->getElements() as $variable) {
-                    $existingConstantNames[] = $variable->getName();
-                }
-                $lastConstant = $memberNode;
-                $nextMember = next($memberDeclarations) ?: $nextMember;
-                prev($memberDeclarations);
-            }
-        }
-
-        $this->updatePrototypeConstants($classPrototype, $existingConstantNames, $lastConstant, $edits, $nextMember);
     }
 
     private function updateProperties(Edits $edits, TraitPrototype $classPrototype, TraitDeclaration $classNode)

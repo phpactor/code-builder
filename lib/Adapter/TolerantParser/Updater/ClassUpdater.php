@@ -71,36 +71,6 @@ class ClassUpdater extends ClassLikeUpdater
         $edits->replace($classNode->classInterfaceClause, ' implements ' . $names);
     }
 
-    private function updateConstants(Edits $edits, ClassPrototype $classPrototype, ClassDeclaration $classNode)
-    {
-        if (count($classPrototype->constants()) === 0) {
-            return;
-        }
-
-        $lastConstant = $classNode->classMembers->openBrace;
-        $nextMember = null;
-
-        $memberDeclarations = $classNode->classMembers->classMemberDeclarations;
-        $existingConstantNames = [];
-        foreach ($memberDeclarations as $memberNode) {
-            if (null === $nextMember) {
-                $nextMember = $memberNode;
-            }
-
-            if ($memberNode instanceof ClassConstDeclaration) {
-                /** @var ConstDeclaration $memberNode */
-                foreach ($memberNode->constElements->getElements() as $variable) {
-                    $existingConstantNames[] = $variable->getName();
-                }
-                $lastConstant = $memberNode;
-                $nextMember = next($memberDeclarations) ?: $nextMember;
-                prev($memberDeclarations);
-            }
-        }
-
-        $this->updatePrototypeConstants($classPrototype, $existingConstantNames, $lastConstant, $edits, $nextMember);
-    }
-
     private function updateProperties(Edits $edits, ClassPrototype $classPrototype, ClassDeclaration $classNode)
     {
         if (count($classPrototype->properties()) === 0) {

@@ -3,10 +3,14 @@
 namespace Phpactor\CodeBuilder\Adapter\TolerantParser\Updater;
 
 use Microsoft\PhpParser\Node;
-use Microsoft\PhpParser\Node\Expression\Variable;
+use Microsoft\PhpParser\Node\ClassConstDeclaration;
 use Microsoft\PhpParser\Node\Expression\AssignmentExpression;
+use Microsoft\PhpParser\Node\Expression\Variable;
 use Microsoft\PhpParser\Node\MethodDeclaration;
 use Microsoft\PhpParser\Node\PropertyDeclaration;
+use Microsoft\PhpParser\Node\StatementNode;
+use Phpactor\CodeBuilder\Adapter\TolerantParser\Edits;
+use Phpactor\CodeBuilder\Domain\Prototype\ClassLikePrototype;
 use Phpactor\CodeBuilder\Domain\Prototype\Type;
 use Phpactor\CodeBuilder\Domain\Renderer;
 
@@ -44,8 +48,47 @@ abstract class ClassLikeUpdater
         ));
     }
 
-    protected function updatePrototypeConstants($classPrototype, $existingConstantNames, $lastConstant, $edits, $nextMember)
+    protected function updateConstants(Edits $edits, ClassLikePrototype $classPrototype, StatementNode $classNode)
     {
+        if (count($classPrototype->constants()) === 0) {
+            return;
+        }
+
+        switch ($classNode->getNodeKindName()) {
+            case 'ClassDeclaration':
+                $lastConstant = $classNode->classMembers->openBrace;
+                $memberDeclarations = $classNode->classMembers->classMemberDeclarations;
+                break;
+            case 'TraitDeclaration':
+                $lastConstant = $classNode->traitMembers->openBrace;
+                $memberDeclarations = $classNode->traitMembers->classMemberDeclarations;
+                break;
+            default:
+                throw new \InvalidArgumentException(sprintf(
+                    'Do not know how to handle class node declaration type "%s"',
+                    $classNode->getNodeKindName()
+                ));
+        }
+
+        $nextMember = null;
+        $existingConstantNames = [];
+
+        foreach ($memberDeclarations as $memberNode) {
+            if (null === $nextMember) {
+                $nextMember = $memberNode;
+            }
+
+            if ($memberNode instanceof ClassConstDeclaration) {
+                /** @var ConstDeclaration $memberNode */
+                foreach ($memberNode->constElements->getElements() as $variable) {
+                    $existingConstantNames[] = $variable->getName();
+                }
+                $lastConstant = $memberNode;
+                $nextMember = next($memberDeclarations) ?: $nextMember;
+                prev($memberDeclarations);
+            }
+        }
+
         foreach ($classPrototype->constants()->notIn($existingConstantNames) as $constant) {
             // if constant type exists then the last constant has a docblock - add a line break
             if ($lastConstant instanceof ConstantDeclaration && $constant->type() != Type::none()) {
