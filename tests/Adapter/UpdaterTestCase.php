@@ -287,6 +287,27 @@ class Foobar
 EOT
             ];
 
+            yield 'class import: It maintains an empty line between the trait and the use statements' => [
+
+                <<<'EOT'
+namespace Kingdom;
+
+trait Foobar
+{
+}
+EOT
+                , SourceCodeBuilder::create()->use('Feline')->build(),
+                <<<'EOT'
+namespace Kingdom;
+
+use Feline;
+
+trait Foobar
+{
+}
+EOT
+            ];
+
             yield 'class import: it maintains empty line between class with no namespace' => [
 
                 <<<'EOT'
@@ -300,6 +321,24 @@ EOT
 use Foo\Feline;
 
 class Foobar
+{
+}
+EOT
+            ];
+
+            yield 'class import: it maintains empty line between trait with no namespace' => [
+
+                <<<'EOT'
+trait Foobar
+{
+}
+EOT
+                , SourceCodeBuilder::create()->use('Foo\Feline')->build(),
+                <<<'EOT'
+
+use Foo\Feline;
+
+trait Foobar
 {
 }
 EOT
@@ -356,6 +395,7 @@ namespace Animal;
 class Foo {}
 EOT
             ];
+
     }
 
     /**
@@ -566,6 +606,122 @@ EOT
                 , SourceCodeBuilder::create()->class('Aardvark')->implements('Zoo')->implements('Animal')->end()->build(),
                 <<<'EOT'
 class Aardvark implements Animal, Zoo
+{
+}
+EOT
+            ];
+    }
+
+    /**
+     * @dataProvider provideTraits
+     */
+    public function testTraits(string $existingCode, SourceCode $prototype, string $expectedCode)
+    {
+        $this->assertUpdate($existingCode, $prototype, $expectedCode);
+    }
+
+    public function provideTraits()
+    {
+            yield 'It does nothing when prototype has only the trait' => [
+
+                <<<'EOT'
+trait Aardvark
+{
+}
+EOT
+                , SourceCodeBuilder::create()->trait('Aardvark')->end()->build(),
+                <<<'EOT'
+trait Aardvark
+{
+}
+EOT
+            ];
+
+            yield 'It adds a trait to an empty file' => [
+
+                <<<'EOT'
+EOT
+                , SourceCodeBuilder::create()->trait('Anteater')->end()->build(),
+                <<<'EOT'
+
+trait Anteater
+{
+}
+EOT
+            ];
+
+            yield 'It adds a trait' => [
+
+                <<<'EOT'
+trait Aardvark
+{
+}
+EOT
+                , SourceCodeBuilder::create()->trait('Anteater')->end()->build(),
+                <<<'EOT'
+trait Aardvark
+{
+}
+
+trait Anteater
+{
+}
+EOT
+            ];
+
+            yield 'It adds a trait after a namespace' => [
+
+                <<<'EOT'
+namespace Animals;
+
+trait Aardvark
+{
+}
+EOT
+                , SourceCodeBuilder::create()->trait('Anteater')->end()->build(),
+                <<<'EOT'
+namespace Animals;
+
+trait Aardvark
+{
+}
+
+trait Anteater
+{
+}
+EOT
+            ];
+
+            yield 'It does not modify a trait with a namespace' => [
+
+                <<<'EOT'
+namespace Animals;
+
+trait Aardvark
+{
+}
+EOT
+                , SourceCodeBuilder::create()->namespace('Animals')->trait('Aardvark')->end()->build(),
+                <<<'EOT'
+namespace Animals;
+
+trait Aardvark
+{
+}
+EOT
+            ];
+
+            yield 'It adds multiple traites' => [
+                <<<'EOT'
+EOT
+                , SourceCodeBuilder::create()->trait('Aardvark')->end()->trait('Anteater')->end()->build(),
+                <<<'EOT'
+
+trait Aardvark
+{
+}
+
+trait Anteater
 {
 }
 EOT
