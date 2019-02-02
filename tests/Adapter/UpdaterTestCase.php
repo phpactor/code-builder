@@ -896,6 +896,173 @@ EOT
     }
 
     /**
+     * @dataProvider provideTraitProperties
+     */
+    public function testTraitProperties(string $existingCode, SourceCode $prototype, string $expectedCode)
+    {
+        $this->assertUpdate($existingCode, $prototype, $expectedCode);
+    }
+
+    public function provideTraitProperties()
+    {
+            yield 'trait: It adds a property' => [
+                <<<'EOT'
+trait Aardvark
+{
+}
+EOT
+                , SourceCodeBuilder::create()
+                    ->trait('Aardvark')
+                        ->property('propertyOne')->end()
+                    ->end()
+                    ->build(),
+                <<<'EOT'
+trait Aardvark
+{
+    public $propertyOne;
+}
+EOT
+            ];
+
+            yield 'trait: It adds a property idempotently' => [
+                <<<'EOT'
+trait Aardvark
+{
+    public $propertyOne;
+}
+EOT
+                , SourceCodeBuilder::create()
+                    ->trait('Aardvark')
+                        ->property('propertyOne')->end()
+                    ->end()
+                    ->build(),
+                <<<'EOT'
+trait Aardvark
+{
+    public $propertyOne;
+}
+EOT
+            ];
+
+            yield 'trait: It adds a property with existing assigned property' => [
+                <<<'EOT'
+trait Aardvark
+{
+    public $propertyOne = false;
+}
+EOT
+                , SourceCodeBuilder::create()
+                    ->trait('Aardvark')
+                        ->property('propertyOne')->end()
+                    ->end()
+                    ->build(),
+                <<<'EOT'
+trait Aardvark
+{
+    public $propertyOne = false;
+}
+EOT
+            ];
+
+            yield 'trait: It adds a property after existing properties' => [
+                <<<'EOT'
+trait Aardvark
+{
+    public $eyes
+    public $nose;
+}
+EOT
+                , SourceCodeBuilder::create()
+                    ->trait('Aardvark')
+                        ->property('propertyOne')->end()
+                    ->end()
+                    ->build(),
+                <<<'EOT'
+trait Aardvark
+{
+    public $eyes
+    public $nose;
+    public $propertyOne;
+}
+EOT
+            ];
+
+            yield 'trait: It adds multiple properties' => [
+                <<<'EOT'
+trait Aardvark
+{
+}
+EOT
+                , SourceCodeBuilder::create()
+                    ->trait('Aardvark')
+                        ->property('propertyOne')->end()->property('propertyTwo')->end()
+                    ->end()
+                    ->build(),
+                <<<'EOT'
+trait Aardvark
+{
+    public $propertyOne;
+    public $propertyTwo;
+}
+EOT
+            ];
+
+            yield 'trait: It adds documented properties' => [
+                <<<'EOT'
+trait Aardvark
+{
+    public $eyes
+}
+EOT
+                , SourceCodeBuilder::create()
+                    ->trait('Aardvark')
+                        ->property('propertyOne')->type('Hello')->end()
+                    ->end()
+                    ->build(),
+                <<<'EOT'
+trait Aardvark
+{
+    public $eyes
+
+    /**
+     * @var Hello
+     */
+    public $propertyOne;
+}
+EOT
+            ];
+
+            yield 'trait: It adds a property before methods' => [
+                <<<'EOT'
+trait Aardvark
+{
+    public function crawl()
+    {
+    }
+}
+EOT
+                , SourceCodeBuilder::create()
+                    ->trait('Aardvark')
+                        ->property('propertyOne')->type('Hello')->end()
+                    ->end()
+                    ->build(),
+                <<<'EOT'
+trait Aardvark
+{
+    /**
+     * @var Hello
+     */
+    public $propertyOne;
+
+    public function crawl()
+    {
+    }
+}
+EOT
+            ];
+    }
+
+    /**
      * @dataProvider provideMethods
      */
     public function testMethods(string $existingCode, SourceCode $prototype, string $expectedCode)
