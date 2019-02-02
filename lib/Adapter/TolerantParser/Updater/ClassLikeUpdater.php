@@ -47,27 +47,18 @@ abstract class ClassLikeUpdater
         ));
     }
 
+    abstract protected function members(Node $node): Node;
+
+    abstract protected function memberDeclarations(Node $node): array;
+
     protected function updateProperties(Edits $edits, ClassLikePrototype $classPrototype, StatementNode $classNode)
     {
         if (count($classPrototype->properties()) === 0) {
             return;
         }
 
-        switch ($classNode->getNodeKindName()) {
-            case 'ClassDeclaration':
-                $lastProperty = $classNode->classMembers->openBrace;
-                $memberDeclarations = $classNode->classMembers->classMemberDeclarations;
-                break;
-            case 'TraitDeclaration':
-                $lastProperty = $classNode->traitMembers->openBrace;
-                $memberDeclarations = $classNode->traitMembers->traitMemberDeclarations;
-                break;
-            default:
-                throw new \InvalidArgumentException(sprintf(
-                    'Do not know how to handle class node declaration type "%s"',
-                    $classNode->getNodeKindName()
-                ));
-        }
+        $lastProperty = $this->members($classNode)->openBrace;
+        $memberDeclarations = $this->memberDeclarations($classNode);
 
         $nextMember = null;
         $existingPropertyNames = [];

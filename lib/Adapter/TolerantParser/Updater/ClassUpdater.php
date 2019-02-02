@@ -2,6 +2,7 @@
 
 namespace Phpactor\CodeBuilder\Adapter\TolerantParser\Updater;
 
+use Microsoft\PhpParser\Node;
 use Microsoft\PhpParser\Node\ClassConstDeclaration;
 use Microsoft\PhpParser\Node\MethodDeclaration;
 use Microsoft\PhpParser\Node\PropertyDeclaration;
@@ -115,5 +116,21 @@ class ClassUpdater extends ClassLikeUpdater
                 $edits->after($lastConstant, PHP_EOL);
             }
         }
+    }
+
+    /**
+     * @return Microsoft\PhpParser\Node\ClassMembersNode
+     */
+    protected function members(Node $node): Node
+    {
+        return $node->classMembers;
+    }
+
+    /**
+     * @return Node[]
+     */
+    protected function memberDeclarations(Node $node): array
+    {
+        return $node->classMembers->classMemberDeclarations;
     }
 }
