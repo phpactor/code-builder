@@ -14,7 +14,6 @@ class TraitUpdater extends ClassLikeUpdater
             return;
         }
 
-        $this->updateConstants($edits, $classPrototype, $classNode);
         $this->updateProperties($edits, $classPrototype, $classNode);
 
         $this->methodUpdater->updateMethods($edits, $classPrototype, $classNode);

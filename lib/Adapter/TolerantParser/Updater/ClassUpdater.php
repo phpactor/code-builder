@@ -2,6 +2,9 @@
 
 namespace Phpactor\CodeBuilder\Adapter\TolerantParser\Updater;
 
+use Microsoft\PhpParser\Node\ClassConstDeclaration;
+use Microsoft\PhpParser\Node\MethodDeclaration;
+use Microsoft\PhpParser\Node\PropertyDeclaration;
 use Microsoft\PhpParser\Node\Statement\ClassDeclaration;
 use Phpactor\CodeBuilder\Adapter\TolerantParser\Edits;
 use Phpactor\CodeBuilder\Domain\Prototype\ClassPrototype;
@@ -64,5 +67,53 @@ class ClassUpdater extends ClassLikeUpdater
         $names = join(', ', [ implode(', ', $existingNames), $additionalNames->__toString()]);
 
         $edits->replace($classNode->classInterfaceClause, ' implements ' . $names);
+    }
+
+    protected function updateConstants(Edits $edits, ClassPrototype $classPrototype, ClassDeclaration $classNode)
+    {
+        if (count($classPrototype->constants()) === 0) {
+            return;
+        }
+
+        $lastConstant = $classNode->classMembers->openBrace;
+        $memberDeclarations = $classNode->classMembers->classMemberDeclarations;
+
+        $nextMember = null;
+        $existingConstantNames = [];
+
+        foreach ($memberDeclarations as $memberNode) {
+            if (null === $nextMember) {
+                $nextMember = $memberNode;
+            }
+
+            if ($memberNode instanceof ClassConstDeclaration) {
+                /** @var ConstDeclaration $memberNode */
+                foreach ($memberNode->constElements->getElements() as $variable) {
+                    $existingConstantNames[] = $variable->getName();
+                }
+                $lastConstant = $memberNode;
+                $nextMember = next($memberDeclarations) ?: $nextMember;
+                prev($memberDeclarations);
+            }
+        }
+
+        foreach ($classPrototype->constants()->notIn($existingConstantNames) as $constant) {
+            // if constant type exists then the last constant has a docblock - add a line break
+            if ($lastConstant instanceof ConstantDeclaration && $constant->type() != Type::none()) {
+                $edits->after($lastConstant, PHP_EOL);
+            }
+
+            $edits->after(
+                $lastConstant,
+                PHP_EOL . $edits->indent($this->renderer->render($constant), 1)
+            );
+
+            if ($classPrototype->constants()->isLast($constant) && (
+                $nextMember instanceof MethodDeclaration ||
+                $nextMember instanceof PropertyDeclaration
+            )) {
+                $edits->after($lastConstant, PHP_EOL);
+            }
+        }
     }
 }
