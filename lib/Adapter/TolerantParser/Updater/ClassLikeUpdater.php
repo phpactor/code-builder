@@ -7,7 +7,6 @@ use Microsoft\PhpParser\Node\Expression\AssignmentExpression;
 use Microsoft\PhpParser\Node\Expression\Variable;
 use Microsoft\PhpParser\Node\MethodDeclaration;
 use Microsoft\PhpParser\Node\PropertyDeclaration;
-use Microsoft\PhpParser\Node\StatementNode;
 use Phpactor\CodeBuilder\Adapter\TolerantParser\Edits;
 use Phpactor\CodeBuilder\Domain\Prototype\ClassLikePrototype;
 use Phpactor\CodeBuilder\Domain\Prototype\Type;
@@ -47,18 +46,16 @@ abstract class ClassLikeUpdater
         ));
     }
 
-    abstract protected function members(Node $node): Node;
-
     abstract protected function memberDeclarations(Node $node): array;
 
-    protected function updateProperties(Edits $edits, ClassLikePrototype $classPrototype, StatementNode $classNode)
+    protected function updateProperties(Edits $edits, ClassLikePrototype $classPrototype, Node $classMembers)
     {
         if (count($classPrototype->properties()) === 0) {
             return;
         }
 
-        $lastProperty = $this->members($classNode)->openBrace;
-        $memberDeclarations = $this->memberDeclarations($classNode);
+        $lastProperty = $classMembers->openBrace;
+        $memberDeclarations = $this->memberDeclarations($classMembers);
 
         $nextMember = null;
         $existingPropertyNames = [];

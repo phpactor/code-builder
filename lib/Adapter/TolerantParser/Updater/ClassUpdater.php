@@ -22,8 +22,8 @@ class ClassUpdater extends ClassLikeUpdater
 
         $this->updateExtends($edits, $classPrototype, $classNode);
         $this->updateImplements($edits, $classPrototype, $classNode);
-        $this->updateConstants($edits, $classPrototype, $classNode);
-        $this->updateProperties($edits, $classPrototype, $classNode);
+        $this->updateConstants($edits, $classPrototype, $classNode->classMembers);
+        $this->updateProperties($edits, $classPrototype, $classNode->classMembers);
 
         $this->methodUpdater->updateMethods($edits, $classPrototype, $classNode);
     }
@@ -70,14 +70,14 @@ class ClassUpdater extends ClassLikeUpdater
         $edits->replace($classNode->classInterfaceClause, ' implements ' . $names);
     }
 
-    protected function updateConstants(Edits $edits, ClassPrototype $classPrototype, ClassDeclaration $classNode)
+    protected function updateConstants(Edits $edits, ClassPrototype $classPrototype, Node $classMembers)
     {
         if (count($classPrototype->constants()) === 0) {
             return;
         }
 
-        $lastConstant = $classNode->classMembers->openBrace;
-        $memberDeclarations = $classNode->classMembers->classMemberDeclarations;
+        $lastConstant = $classMembers->openBrace;
+        $memberDeclarations = $classMembers->classMemberDeclarations;
 
         $nextMember = null;
         $existingConstantNames = [];
@@ -119,18 +119,10 @@ class ClassUpdater extends ClassLikeUpdater
     }
 
     /**
-     * @return Microsoft\PhpParser\Node\ClassMembersNode
-     */
-    protected function members(Node $node): Node
-    {
-        return $node->classMembers;
-    }
-
-    /**
      * @return Node[]
      */
     protected function memberDeclarations(Node $node): array
     {
-        return $node->classMembers->classMemberDeclarations;
+        return $node->classMemberDeclarations;
     }
 }

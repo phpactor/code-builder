@@ -15,17 +15,9 @@ class TraitUpdater extends ClassLikeUpdater
             return;
         }
 
-        $this->updateProperties($edits, $classPrototype, $classNode);
+        $this->updateProperties($edits, $classPrototype, $classNode->traitMembers);
 
         $this->methodUpdater->updateMethods($edits, $classPrototype, $classNode);
-    }
-
-    /**
-     * @return \Microsoft\PhpParser\Node\TraitMembers
-     */
-    protected function members(Node $node): Node
-    {
-        return $node->traitMembers;
     }
 
     /**
@@ -33,6 +25,6 @@ class TraitUpdater extends ClassLikeUpdater
      */
     protected function memberDeclarations(Node $node): array
     {
-        return $node->traitMembers->traitMemberDeclarations;
+        return $node->traitMemberDeclarations;
     }
 }
