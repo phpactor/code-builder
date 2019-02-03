@@ -129,7 +129,7 @@ EOT
 
                 <<<'EOT'
 EOT
-                , SourceCodeBuilder::create()->useFunction('Foo\hello()')->build(),
+                , SourceCodeBuilder::create()->useFunction('Foo\hello')->build(),
                 <<<'EOT'
 
 use function Foo\hello;
@@ -140,7 +140,7 @@ EOT
 
                 <<<'EOT'
 EOT
-                , SourceCodeBuilder::create()->useFunction('Foo\hello()', 'bar')->build(),
+                , SourceCodeBuilder::create()->useFunction('Foo\hello', 'bar')->build(),
                 <<<'EOT'
 
 use function Foo\hello as bar;
@@ -152,9 +152,8 @@ EOT
                 <<<'EOT'
 use function Foo\hello as boo;
 EOT
-                , SourceCodeBuilder::create()->useFunction('Foo\hello()', 'bar')->build(),
+                , SourceCodeBuilder::create()->useFunction('Foo\hello', 'bar')->build(),
                 <<<'EOT'
-
 use function Foo\hello as boo;
 use function Foo\hello as bar;
 EOT
