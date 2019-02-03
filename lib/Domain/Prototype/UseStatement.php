@@ -71,7 +71,7 @@ class UseStatement
         return $this->alias;
     }
 
-    public function className(): Type
+    public function name(): Type
     {
         return $this->className;
     }

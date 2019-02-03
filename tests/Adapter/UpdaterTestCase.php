@@ -159,6 +159,17 @@ use function Foo\hello as bar;
 EOT
             ];
 
+            yield 'It ignores existing function imports' => [
+
+                <<<'EOT'
+use function Foo\hello as boo;
+EOT
+                , SourceCodeBuilder::create()->useFunction('Foo\hello', 'boo')->build(),
+                <<<'EOT'
+use function Foo\hello as boo;
+EOT
+            ];
+
             yield 'class import: It inserts use statements before the first lexicographically greater use statement' => [
 
                 <<<'EOT'

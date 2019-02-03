@@ -86,7 +86,7 @@ class UseStatementUpdater
         $usePrototypes = $prototype->useStatements()->sorted();
         $usePrototypes = array_filter(iterator_to_array($usePrototypes), function (UseStatement $usePrototype) use ($existingNames) {
             return false === in_array(
-                $usePrototype->className()->__toString(),
+                $usePrototype->name()->__toString(),
                 $existingNames->classNames()
             );
         });
@@ -99,7 +99,7 @@ class UseStatementUpdater
             ? $lastNode->getNamespaceDefinition()->name->__toString() : null;
 
         $usePrototypes = array_filter($usePrototypes, function (UseStatement $usePrototype) use ($sourceNamespace) {
-            return $sourceNamespace !== $usePrototype->className()->namespace();
+            return $sourceNamespace !== $usePrototype->name()->namespace();
         });
         return $usePrototypes;
     }
