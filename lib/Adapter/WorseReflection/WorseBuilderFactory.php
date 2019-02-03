@@ -52,11 +52,10 @@ class WorseBuilderFactory implements BuilderFactory
                 continue;
             }
 
-            // TODO: traits not currently supported
-            // if ($class->isTrait()) {
-            //     $this->build('trait', $builder, $class);
-            //     continue;
-            // }
+            if ($class->isTrait()) {
+                $this->build('trait', $builder, $class);
+                continue;
+            }
         }
 
         $builder->snapshot();
@@ -69,7 +68,7 @@ class WorseBuilderFactory implements BuilderFactory
         $classBuilder = $builder->$type($reflectionClass->name()->short());
         $builder->namespace($reflectionClass->name()->namespace());
 
-        if ($reflectionClass->isClass()) {
+        if ($reflectionClass->isClass() || $reflectionClass->isTrait()) {
             // TODO: Worse reflection doesn't support ->belongingTo properties
             foreach ($reflectionClass->properties()->belongingTo($reflectionClass->name()) as $property) {
                 $this->buildProperty($classBuilder, $property);
@@ -81,7 +80,7 @@ class WorseBuilderFactory implements BuilderFactory
         }
     }
 
-    private function buildProperty(ClassBuilder $classBuilder, ReflectionProperty $property)
+    private function buildProperty(ClassLikeBuilder $classBuilder, ReflectionProperty $property)
     {
         $propertyBuilder = $classBuilder->property($property->name());
         $propertyBuilder->visibility((string) $property->visibility());
@@ -146,7 +145,7 @@ class WorseBuilderFactory implements BuilderFactory
     private function resolveTypeNameFromNameImports(Type $type, NameImports $imports)
     {
         $typeName = $type->short();
-        
+
         foreach ($imports as $alias => $import) {
             if ($type->short() == $import->head()) {
                 $typeName = $alias;
