@@ -36,7 +36,6 @@ class SourceCode extends Prototype
         $this->useStatements = $useStatements ?: UseStatements::empty();
         $this->classes = $classes ?: Classes::empty();
         $this->interfaces = $interfaces ?: Interfaces::empty();
-        $this->updatePolicy = $updatePolicy;
     }
 
     public function namespace(): NamespaceName
