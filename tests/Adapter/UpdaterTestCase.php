@@ -125,6 +125,27 @@ use Bovine;
 EOT
             ];
 
+            yield 'It adds use function statements' => [
+
+                <<<'EOT'
+EOT
+                , SourceCodeBuilder::create()->useFunction('Foo\hello()')->build(),
+                <<<'EOT'
+
+use function Foo\hello;
+EOT
+            ];
+
+            yield 'It adds use function statements with an alias' => [
+
+                <<<'EOT'
+EOT
+                , SourceCodeBuilder::create()->useFunction('Foo\hello()', 'bar')->build(),
+                <<<'EOT'
+
+use function Foo\hello as bar;
+EOT
+            ];
 
             yield 'class import: It inserts use statements before the first lexicographically greater use statement' => [
 
