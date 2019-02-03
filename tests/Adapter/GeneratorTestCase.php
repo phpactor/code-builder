@@ -29,6 +29,8 @@ use Phpactor\CodeBuilder\Domain\Prototype\QualifiedName;
 use Phpactor\CodeBuilder\Domain\Prototype\ReturnType;
 use Phpactor\CodeBuilder\Domain\Prototype\SourceCode;
 use Phpactor\CodeBuilder\Domain\Prototype\SourceText;
+use Phpactor\CodeBuilder\Domain\Prototype\TraitPrototype;
+use Phpactor\CodeBuilder\Domain\Prototype\Traits;
 use Phpactor\CodeBuilder\Domain\Prototype\Type;
 use Phpactor\CodeBuilder\Domain\Prototype\UseStatements;
 use Phpactor\CodeBuilder\Domain\Prototype\UseStatement;
@@ -103,6 +105,26 @@ interface Squirrel
 }
 EOT
             ],
+            'Renders source code with traits' => [
+                new SourceCode(
+                    NamespaceName::root(),
+                    UseStatements::empty(),
+                    Classes::empty(),
+                    Interfaces::empty(),
+                    Traits::fromTraits([ new TraitPrototype('Fox'), new TraitPrototype('Hare') ])
+                ),
+                <<<'EOT'
+<?php
+
+trait Fox
+{
+}
+
+trait Hare
+{
+}
+EOT
+        ],
             'Renders source code with use statements' => [
                 new SourceCode(
                     NamespaceName::root(),
@@ -364,6 +386,90 @@ interface Dog
 }
 EOT
             ],
+            'Renders a trait' => [
+                new TraitPrototype(
+                    'Butterfly'
+                ),
+                <<<'EOT'
+trait Butterfly
+{
+}
+EOT
+            ],
+            'Renders a trait with properties' => [
+                new TraitPrototype(
+                    'Butterfly',
+                    Properties::fromProperties([ new Property('colour') ])
+                ),
+                <<<'EOT'
+trait Butterfly
+{
+    public $colour;
+}
+EOT
+            ],
+            'Renders a trait with constants' => [
+                new TraitPrototype(
+                    'Butterfly',
+                    Properties::empty(),
+                    Constants::fromConstants([
+                        new Constant('WAS_CATERPILLAR', Value::fromValue(true)),
+                    ])
+                ),
+                <<<'EOT'
+trait Butterfly
+{
+    const WAS_CATERPILLAR = true;
+}
+EOT
+            ],
+            'Renders a trait with methods' => [
+                new TraitPrototype(
+                    'Butterfly',
+                    Properties::empty(),
+                    Constants::empty(),
+                    Methods::fromMethods([
+                        new Method('wings'),
+                    ])
+                ),
+                <<<'EOT'
+trait Butterfly
+{
+    public function wings()
+    {
+    }
+}
+EOT
+            ],
+            'Renders a trait method with a body' => [
+                new TraitPrototype(
+                    'Butterfly',
+                    Properties::empty(),
+                    Constants::empty(),
+                    Methods::fromMethods([
+                        new Method(
+                            'hello',
+                            null,
+                            Parameters::empty(),
+                            ReturnType::none(),
+                            Docblock::none(),
+                            0,
+                            MethodBody::fromLines([
+                                Line::fromString('$this->foobar = $barfoo;'),
+                            ])
+                        ),
+                    ])
+                ),
+                <<<'EOT'
+trait Butterfly
+{
+    public function hello()
+    {
+        $this->foobar = $barfoo;
+    }
+}
+EOT
+            ],
         ];
     }
 
@@ -381,7 +487,19 @@ interface Animal
     public function sleep();
 }
 
-class Rabbits extends Leopridae implements Animal
+trait Oryctolagus
+{
+    /**
+     * @var bool
+     */
+    private $domesticated = true;
+
+    public function burrow(Depth $depth = 'deep')
+    {
+    }
+}
+
+class Rabbits extends Leporidae implements Animal
 {
     /**
      * @var int
@@ -407,7 +525,7 @@ EOT
             ->namespace('Animals')
             ->use('Measurements\\Height')
             ->class('Rabbits')
-                ->extends('Leopridae')
+                ->extends('Leporidae')
                 ->implements('Animal')
                 ->property('force')
                     ->visibility('private')
@@ -430,6 +548,19 @@ EOT
             ->end()
             ->interface('Animal')
                 ->method('sleep')->end()
+            ->end()
+            ->trait('Oryctolagus')
+                ->property('domesticated')
+                    ->visibility('private')
+                    ->defaultValue(true)
+                    ->type('bool')
+                ->end()
+                ->method('burrow')
+                    ->parameter('depth')
+                        ->type('Depth')
+                        ->defaultValue('deep')
+                    ->end()
+                ->end()
             ->end()
             ->build();
 

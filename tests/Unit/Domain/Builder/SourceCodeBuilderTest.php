@@ -106,6 +106,7 @@ class SourceCodeBuilderTest extends TestCase
         $builder->use('Foobar');
         $builder->use('Barfoo');
         $builder->class('Hello');
+        $builder->trait('Goodbye');
 
         $code = $builder->build();
 
@@ -115,6 +116,7 @@ class SourceCodeBuilderTest extends TestCase
         $this->assertEquals('Barfoo', $code->useStatements()->sorted()->first()->__toString());
         $this->assertEquals('Foobar', $code->useStatements()->first()->__toString());
         $this->assertEquals('Hello', $code->classes()->first()->name());
+        $this->assertEquals('Goodbye', $code->traits()->first()->name());
     }
 
     public function testFunctionUse()
@@ -183,6 +185,42 @@ class SourceCodeBuilderTest extends TestCase
         $this->assertSame($interfaceBuilder, $builder->interface('Dog'));
     }
 
+    public function testTraitBuilder()
+    {
+        $builder = $this->builder();
+        $traitBuilder = $builder->trait('Dog')
+            ->property('one')->end()
+            ->property('two')->end()
+            ->method('method1')->end()
+            ->method('method2')->end();
+
+        $trait = $traitBuilder->build();
+
+        $this->assertSame($traitBuilder, $builder->trait('Dog'));
+        $this->assertEquals('one', $trait->properties()->first()->name());
+        $this->assertEquals('method1', $trait->methods()->first()->name());
+    }
+
+    public function testTraitBuilderAddMethodBuilder()
+    {
+        $builder = $this->builder();
+        $methodBuilder = $this->builder()->trait('Cat')->method('Whiskers');
+        $traitBuilder = $builder->trait('Dog');
+        $traitBuilder->add($methodBuilder);
+
+        $this->assertSame($traitBuilder->method('Whiskers'), $methodBuilder);
+    }
+
+    public function testTraitBuilderAddPropertyBuilder()
+    {
+        $builder = $this->builder();
+        $propertyBuilder = $this->builder()->trait('Cat')->property('whiskers');
+        $traitBuilder = $builder->trait('Dog');
+        $traitBuilder->add($propertyBuilder);
+
+        $this->assertSame($traitBuilder->property('whiskers'), $propertyBuilder);
+    }
+
     public function testPropertyBuilder()
     {
         $builder = $this->builder();
@@ -203,6 +241,14 @@ class SourceCodeBuilderTest extends TestCase
         $methodBuilder = $builder->class('Bar')->method('foo');
 
         $this->assertSame($methodBuilder, $builder->class('Bar')->method('foo'));
+    }
+
+    public function testTraitMethodBuilderAccess()
+    {
+        $builder = $this->builder();
+        $methodBuilder = $builder->trait('Bar')->method('foo');
+
+        $this->assertSame($methodBuilder, $builder->trait('Bar')->method('foo'));
     }
 
     /**

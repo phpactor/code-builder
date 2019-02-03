@@ -331,6 +331,27 @@ class Foobar
 EOT
             ];
 
+            yield 'class import: It maintains an empty line between the trait and the use statements' => [
+
+                <<<'EOT'
+namespace Kingdom;
+
+trait Foobar
+{
+}
+EOT
+                , SourceCodeBuilder::create()->use('Feline')->build(),
+                <<<'EOT'
+namespace Kingdom;
+
+use Feline;
+
+trait Foobar
+{
+}
+EOT
+            ];
+
             yield 'class import: it maintains empty line between class with no namespace' => [
 
                 <<<'EOT'
@@ -344,6 +365,24 @@ EOT
 use Foo\Feline;
 
 class Foobar
+{
+}
+EOT
+            ];
+
+            yield 'class import: it maintains empty line between trait with no namespace' => [
+
+                <<<'EOT'
+trait Foobar
+{
+}
+EOT
+                , SourceCodeBuilder::create()->use('Foo\Feline')->build(),
+                <<<'EOT'
+
+use Foo\Feline;
+
+trait Foobar
 {
 }
 EOT
@@ -400,6 +439,7 @@ namespace Animal;
 class Foo {}
 EOT
             ];
+
     }
 
     /**
@@ -617,6 +657,122 @@ EOT
     }
 
     /**
+     * @dataProvider provideTraits
+     */
+    public function testTraits(string $existingCode, SourceCode $prototype, string $expectedCode)
+    {
+        $this->assertUpdate($existingCode, $prototype, $expectedCode);
+    }
+
+    public function provideTraits()
+    {
+            yield 'It does nothing when prototype has only the trait' => [
+
+                <<<'EOT'
+trait Aardvark
+{
+}
+EOT
+                , SourceCodeBuilder::create()->trait('Aardvark')->end()->build(),
+                <<<'EOT'
+trait Aardvark
+{
+}
+EOT
+            ];
+
+            yield 'It adds a trait to an empty file' => [
+
+                <<<'EOT'
+EOT
+                , SourceCodeBuilder::create()->trait('Anteater')->end()->build(),
+                <<<'EOT'
+
+trait Anteater
+{
+}
+EOT
+            ];
+
+            yield 'It adds a trait' => [
+
+                <<<'EOT'
+trait Aardvark
+{
+}
+EOT
+                , SourceCodeBuilder::create()->trait('Anteater')->end()->build(),
+                <<<'EOT'
+trait Aardvark
+{
+}
+
+trait Anteater
+{
+}
+EOT
+            ];
+
+            yield 'It adds a trait after a namespace' => [
+
+                <<<'EOT'
+namespace Animals;
+
+trait Aardvark
+{
+}
+EOT
+                , SourceCodeBuilder::create()->trait('Anteater')->end()->build(),
+                <<<'EOT'
+namespace Animals;
+
+trait Aardvark
+{
+}
+
+trait Anteater
+{
+}
+EOT
+            ];
+
+            yield 'It does not modify a trait with a namespace' => [
+
+                <<<'EOT'
+namespace Animals;
+
+trait Aardvark
+{
+}
+EOT
+                , SourceCodeBuilder::create()->namespace('Animals')->trait('Aardvark')->end()->build(),
+                <<<'EOT'
+namespace Animals;
+
+trait Aardvark
+{
+}
+EOT
+            ];
+
+            yield 'It adds multiple traites' => [
+                <<<'EOT'
+EOT
+                , SourceCodeBuilder::create()->trait('Aardvark')->end()->trait('Anteater')->end()->build(),
+                <<<'EOT'
+
+trait Aardvark
+{
+}
+
+trait Anteater
+{
+}
+EOT
+            ];
+    }
+
+    /**
      * @dataProvider provideProperties
      */
     public function testProperties(string $existingCode, SourceCode $prototype, string $expectedCode)
@@ -769,6 +925,173 @@ EOT
                     ->build(),
                 <<<'EOT'
 class Aardvark
+{
+    /**
+     * @var Hello
+     */
+    public $propertyOne;
+
+    public function crawl()
+    {
+    }
+}
+EOT
+            ];
+    }
+
+    /**
+     * @dataProvider provideTraitProperties
+     */
+    public function testTraitProperties(string $existingCode, SourceCode $prototype, string $expectedCode)
+    {
+        $this->assertUpdate($existingCode, $prototype, $expectedCode);
+    }
+
+    public function provideTraitProperties()
+    {
+            yield 'trait: It adds a property' => [
+                <<<'EOT'
+trait Aardvark
+{
+}
+EOT
+                , SourceCodeBuilder::create()
+                    ->trait('Aardvark')
+                        ->property('propertyOne')->end()
+                    ->end()
+                    ->build(),
+                <<<'EOT'
+trait Aardvark
+{
+    public $propertyOne;
+}
+EOT
+            ];
+
+            yield 'trait: It adds a property idempotently' => [
+                <<<'EOT'
+trait Aardvark
+{
+    public $propertyOne;
+}
+EOT
+                , SourceCodeBuilder::create()
+                    ->trait('Aardvark')
+                        ->property('propertyOne')->end()
+                    ->end()
+                    ->build(),
+                <<<'EOT'
+trait Aardvark
+{
+    public $propertyOne;
+}
+EOT
+            ];
+
+            yield 'trait: It adds a property with existing assigned property' => [
+                <<<'EOT'
+trait Aardvark
+{
+    public $propertyOne = false;
+}
+EOT
+                , SourceCodeBuilder::create()
+                    ->trait('Aardvark')
+                        ->property('propertyOne')->end()
+                    ->end()
+                    ->build(),
+                <<<'EOT'
+trait Aardvark
+{
+    public $propertyOne = false;
+}
+EOT
+            ];
+
+            yield 'trait: It adds a property after existing properties' => [
+                <<<'EOT'
+trait Aardvark
+{
+    public $eyes
+    public $nose;
+}
+EOT
+                , SourceCodeBuilder::create()
+                    ->trait('Aardvark')
+                        ->property('propertyOne')->end()
+                    ->end()
+                    ->build(),
+                <<<'EOT'
+trait Aardvark
+{
+    public $eyes
+    public $nose;
+    public $propertyOne;
+}
+EOT
+            ];
+
+            yield 'trait: It adds multiple properties' => [
+                <<<'EOT'
+trait Aardvark
+{
+}
+EOT
+                , SourceCodeBuilder::create()
+                    ->trait('Aardvark')
+                        ->property('propertyOne')->end()->property('propertyTwo')->end()
+                    ->end()
+                    ->build(),
+                <<<'EOT'
+trait Aardvark
+{
+    public $propertyOne;
+    public $propertyTwo;
+}
+EOT
+            ];
+
+            yield 'trait: It adds documented properties' => [
+                <<<'EOT'
+trait Aardvark
+{
+    public $eyes
+}
+EOT
+                , SourceCodeBuilder::create()
+                    ->trait('Aardvark')
+                        ->property('propertyOne')->type('Hello')->end()
+                    ->end()
+                    ->build(),
+                <<<'EOT'
+trait Aardvark
+{
+    public $eyes
+
+    /**
+     * @var Hello
+     */
+    public $propertyOne;
+}
+EOT
+            ];
+
+            yield 'trait: It adds a property before methods' => [
+                <<<'EOT'
+trait Aardvark
+{
+    public function crawl()
+    {
+    }
+}
+EOT
+                , SourceCodeBuilder::create()
+                    ->trait('Aardvark')
+                        ->property('propertyOne')->type('Hello')->end()
+                    ->end()
+                    ->build(),
+                <<<'EOT'
+trait Aardvark
 {
     /**
      * @var Hello

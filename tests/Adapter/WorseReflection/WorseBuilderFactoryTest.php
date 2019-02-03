@@ -78,6 +78,36 @@ class WorseBuilderFactoryTest extends TestCase
         $this->assertEquals('Bar\Foobar', (string) $source->useStatements()->first());
     }
 
+    public function testSimpleTrait()
+    {
+        $source = $this->build('<?php trait Foobar {}');
+        $traits = $source->traits();
+        $this->assertCount(1, $traits);
+        $this->assertEquals('Foobar', $traits->first()->name());
+
+    }
+
+    public function testSimpleTraitWithNamespace()
+    {
+        $source = $this->build('<?php namespace Foobar; trait Foobar {}');
+        $traits = $source->traits();
+        $this->assertCount(1, $traits);
+        $this->assertEquals('Foobar', $source->namespace());
+    }
+
+    public function testTraitWithProperty()
+    {
+        $source = $this->build('<?php trait Foobar { public $foo; }');
+        $this->assertCount(1, $source->traits()->first()->properties());
+        $this->assertEquals('foo', $source->traits()->first()->properties()->first()->name());
+    }
+
+    public function testTraitWithMethod()
+    {
+        $source = $this->build('<?php trait Foobar { public function method() {} }');
+        $this->assertEquals('method', $source->traits()->first()->methods()->first()->name());
+    }
+
     public function testMethod()
     {
         $source = $this->build('<?php class Foobar { public function method() {} }');
@@ -148,15 +178,15 @@ class WorseBuilderFactoryTest extends TestCase
     public function testClassWhichExtendsClassWithMethods()
     {
         $source = $this->build(<<<'EOT'
-<?php 
-class Foobar 
-{ 
+<?php
+class Foobar
+{
     protected $bar;
 
-    public function method() 
+    public function method()
     {
     }
-} 
+}
 
 class BarBar extends Foobar
 {

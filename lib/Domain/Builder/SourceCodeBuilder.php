@@ -11,6 +11,7 @@ use Phpactor\CodeBuilder\Domain\Prototype\UseFunctionStatement;
 use Phpactor\CodeBuilder\Domain\Prototype\UseFunctionStatements;
 use Phpactor\CodeBuilder\Domain\Prototype\UseStatements;
 use Phpactor\CodeBuilder\Domain\Prototype\Interfaces;
+use Phpactor\CodeBuilder\Domain\Prototype\Traits;
 use Phpactor\CodeBuilder\Domain\Prototype\UseStatement;
 
 class SourceCodeBuilder extends AbstractBuilder
@@ -35,6 +36,11 @@ class SourceCodeBuilder extends AbstractBuilder
      */
     protected $interfaces = [];
 
+    /**
+     * @var TraitBuilder[]
+     */
+    protected $traits = [];
+
     public static function create(): SourceCodeBuilder
     {
         return new self();
@@ -45,6 +51,7 @@ class SourceCodeBuilder extends AbstractBuilder
         return [
             'classes',
             'interfaces',
+            'traits',
         ];
     }
 
@@ -90,11 +97,14 @@ class SourceCodeBuilder extends AbstractBuilder
             return $this->interfaces[$name];
         }
 
+        if (isset($this->traits[$name])) {
+            return $this->traits[$name];
+        }
+
         throw new InvalidArgumentException(
             'classLike can only be called as an accessor. Use class() or interface() instead'
         );
     }
-
 
     public function interface(string $name): InterfaceBuilder
     {
@@ -103,6 +113,17 @@ class SourceCodeBuilder extends AbstractBuilder
         }
 
         $this->interfaces[$name] = $builder = new InterfaceBuilder($this, $name);
+
+        return $builder;
+    }
+
+    public function trait(string $name): TraitBuilder
+    {
+        if (isset($this->traits[$name])) {
+            return $this->traits[$name];
+        }
+
+        $this->traits[$name] = $builder = new TraitBuilder($this, $name);
 
         return $builder;
     }
@@ -118,6 +139,9 @@ class SourceCodeBuilder extends AbstractBuilder
             Interfaces::fromInterfaces(array_map(function (InterfaceBuilder $builder) {
                 return $builder->build();
             }, $this->interfaces)),
+            Traits::fromTraits(array_map(function (TraitBuilder $builder) {
+                return $builder->build();
+            }, $this->traits)),
             UpdatePolicy::fromModifiedState($this->isModified())
         );
     }

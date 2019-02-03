@@ -29,6 +29,7 @@ class SourceCode extends Prototype
         UseStatements $useStatements = null,
         Classes $classes = null,
         Interfaces $interfaces = null,
+        Traits $traits = null,
         UpdatePolicy $updatePolicy = null
     ) {
         parent::__construct($updatePolicy);
@@ -36,6 +37,7 @@ class SourceCode extends Prototype
         $this->useStatements = $useStatements ?: UseStatements::empty();
         $this->classes = $classes ?: Classes::empty();
         $this->interfaces = $interfaces ?: Interfaces::empty();
+        $this->traits = $traits ?: Traits::empty();
     }
 
     public function namespace(): NamespaceName
@@ -56,5 +58,10 @@ class SourceCode extends Prototype
     public function interfaces(): Interfaces
     {
         return $this->interfaces;
+    }
+
+    public function traits(): Traits
+    {
+        return $this->traits;
     }
 }

@@ -17,6 +17,10 @@ use {{ useStatement.name }};
 
 {{ generator.render(interface, variant)|raw }}
 {% endfor %}
+{% for trait in prototype.traits %}
+
+{{ generator.render(trait, variant)|raw }}
+{% endfor %}
 {% for class in prototype.classes %}
 
 {{ generator.render(class, variant)|raw }}

@@ -2,39 +2,18 @@
 
 namespace Phpactor\CodeBuilder\Adapter\TolerantParser\Updater;
 
-use Phpactor\CodeBuilder\Domain\Prototype\ClassPrototype;
-use Microsoft\PhpParser\Node\Statement\ClassDeclaration;
-use Phpactor\CodeBuilder\Domain\Prototype\ExtendsClass;
-use Phpactor\CodeBuilder\Adapter\TolerantParser\Edits;
-use Phpactor\CodeBuilder\Domain\Prototype\ImplementsInterfaces;
-use Phpactor\CodeBuilder\Domain\Renderer;
+use Microsoft\PhpParser\Node;
 use Microsoft\PhpParser\Node\ClassConstDeclaration;
 use Microsoft\PhpParser\Node\MethodDeclaration;
 use Microsoft\PhpParser\Node\PropertyDeclaration;
-use Microsoft\PhpParser\Node;
-use Microsoft\PhpParser\Node\Expression\Variable;
-use Microsoft\PhpParser\Node\Expression\AssignmentExpression;
-use Phpactor\CodeBuilder\Domain\Prototype\Type;
+use Microsoft\PhpParser\Node\Statement\ClassDeclaration;
+use Phpactor\CodeBuilder\Adapter\TolerantParser\Edits;
+use Phpactor\CodeBuilder\Domain\Prototype\ClassPrototype;
+use Phpactor\CodeBuilder\Domain\Prototype\ExtendsClass;
+use Phpactor\CodeBuilder\Domain\Prototype\ImplementsInterfaces;
 
-class ClassUpdater
+class ClassUpdater extends ClassLikeUpdater
 {
-    /**
-     * @var Renderer
-     */
-    private $renderer;
-
-    /**
-     * @var MethodUpdater
-     */
-    private $methodUpdater;
-
-
-    public function __construct(Renderer $renderer)
-    {
-        $this->renderer = $renderer;
-        $this->methodUpdater = new ClassMethodUpdater($renderer);
-    }
-
     public function updateClass(Edits $edits, ClassPrototype $classPrototype, ClassDeclaration $classNode)
     {
         if (false === $classPrototype->applyUpdate()) {
@@ -43,8 +22,8 @@ class ClassUpdater
 
         $this->updateExtends($edits, $classPrototype, $classNode);
         $this->updateImplements($edits, $classPrototype, $classNode);
-        $this->updateConstants($edits, $classPrototype, $classNode);
-        $this->updateProperties($edits, $classPrototype, $classNode);
+        $this->updateConstants($edits, $classPrototype, $classNode->classMembers);
+        $this->updateProperties($edits, $classPrototype, $classNode->classMembers);
 
         $this->methodUpdater->updateMethods($edits, $classPrototype, $classNode);
     }
@@ -91,17 +70,18 @@ class ClassUpdater
         $edits->replace($classNode->classInterfaceClause, ' implements ' . $names);
     }
 
-    private function updateConstants(Edits $edits, ClassPrototype $classPrototype, ClassDeclaration $classNode)
+    protected function updateConstants(Edits $edits, ClassPrototype $classPrototype, Node $classMembers)
     {
         if (count($classPrototype->constants()) === 0) {
             return;
         }
 
-        $lastConstant = $classNode->classMembers->openBrace;
-        $nextMember = null;
+        $lastConstant = $classMembers->openBrace;
+        $memberDeclarations = $classMembers->classMemberDeclarations;
 
-        $memberDeclarations = $classNode->classMembers->classMemberDeclarations;
+        $nextMember = null;
         $existingConstantNames = [];
+
         foreach ($memberDeclarations as $memberNode) {
             if (null === $nextMember) {
                 $nextMember = $memberNode;
@@ -138,62 +118,11 @@ class ClassUpdater
         }
     }
 
-    private function updateProperties(Edits $edits, ClassPrototype $classPrototype, ClassDeclaration $classNode)
+    /**
+     * @return Node[]
+     */
+    protected function memberDeclarations(Node $node): array
     {
-        if (count($classPrototype->properties()) === 0) {
-            return;
-        }
-
-        $lastProperty = $classNode->classMembers->openBrace;
-        $nextMember = null;
-
-        $memberDeclarations = $classNode->classMembers->classMemberDeclarations;
-        $existingPropertyNames = [];
-        foreach ($memberDeclarations as $memberNode) {
-            if (null === $nextMember) {
-                $nextMember = $memberNode;
-            }
-
-            if ($memberNode instanceof PropertyDeclaration) {
-                foreach ($memberNode->propertyElements->getElements() as $property) {
-                    $existingPropertyNames[] = $this->resolvePropertyName($property);
-                }
-                $lastProperty = $memberNode;
-                $nextMember = next($memberDeclarations) ?: $nextMember;
-                prev($memberDeclarations);
-            }
-        }
-
-        foreach ($classPrototype->properties()->notIn($existingPropertyNames) as $property) {
-            // if property type exists then the last property has a docblock - add a line break
-            if ($lastProperty instanceof PropertyDeclaration && $property->type() != Type::none()) {
-                $edits->after($lastProperty, PHP_EOL);
-            }
-
-            $edits->after(
-                $lastProperty,
-                PHP_EOL . $edits->indent($this->renderer->render($property), 1)
-            );
-
-            if ($classPrototype->properties()->isLast($property) && $nextMember instanceof MethodDeclaration) {
-                $edits->after($lastProperty, PHP_EOL);
-            }
-        }
-    }
-
-    private function resolvePropertyName(Node $property)
-    {
-        if ($property instanceof Variable) {
-            return $property->getName();
-        }
-
-        if ($property instanceof AssignmentExpression) {
-            return $this->resolvePropertyName($property->leftOperand);
-        }
-
-        throw new \InvalidArgumentException(sprintf(
-            'Do not know how to resolve property elemnt of type "%s"',
-            get_class($property)
-        ));
+        return $node->classMemberDeclarations;
     }
 }
