@@ -102,37 +102,10 @@ class WorseBuilderFactoryTest extends TestCase
         $this->assertEquals('foo', $source->traits()->first()->properties()->first()->name());
     }
 
-    public function testTraitWithProtectedProperty()
+    public function testTraitWithMethod()
     {
-        $source = $this->build('<?php trait Foobar { private $foo; }');
-        $this->assertCount(1, $source->traits()->first()->properties());
-        $this->assertEquals('private', (string) $source->traits()->first()->properties()->first()->visibility());
-    }
-
-    public function testTraitWithPropertyDefaultValue()
-    {
-        $this->markTestSkipped('Worse reflection doesn\'t support default property values atm');
-        $source = $this->build('<?php trait Foobar { private $foo = "foobar"; }');
-        $this->assertEquals('foobar', $source->traits()->first()->properties()->first()->defaultValue()->export());
-    }
-
-    public function testTraitWithPropertyTyped()
-    {
-        $source = $this->build('<?php trait Foobar { /** @var Foobar */private $foo; }');
-        $this->assertEquals('Foobar', $source->traits()->first()->properties()->first()->type()->__toString());
-    }
-
-    public function testTraitWithPropertyScalarTyped()
-    {
-        $source = $this->build('<?php trait Foobar { /** @var string */private $foo; }');
-        $this->assertEquals('string', $source->traits()->first()->properties()->first()->type()->__toString());
-    }
-
-    public function testTraitWithPropertyImportedType()
-    {
-        $source = $this->build('<?php use Bar\Foobar; trait Foobar { /** @var Foobar */private $foo; }');
-        $this->assertEquals('Foobar', $source->traits()->first()->properties()->first()->type()->__toString());
-        $this->assertEquals('Bar\Foobar', (string) $source->useStatements()->first());
+        $source = $this->build('<?php trait Foobar { public function method() {} }');
+        $this->assertEquals('method', $source->traits()->first()->methods()->first()->name());
     }
 
     public function testMethod()
@@ -200,60 +173,6 @@ class WorseBuilderFactoryTest extends TestCase
     {
         $source = $this->build('<?php class Foobar { public static function method($param = "1234") {} }');
         $this->assertTrue($source->classes()->first()->methods()->first()->isStatic());
-    }
-
-    public function testTraitMethod()
-    {
-        $source = $this->build('<?php trait Foobar { public function method() {} }');
-        $this->assertEquals('method', $source->traits()->first()->methods()->first()->name());
-    }
-
-    public function testTraitMethodWithReturnType()
-    {
-        $source = $this->build('<?php trait Foobar { public function method(): string {} }');
-        $this->assertEquals('string', $source->traits()->first()->methods()->first()->returnType());
-    }
-
-    public function testTraitMethodProtected()
-    {
-        $source = $this->build('<?php trait Foobar { protected function method() {} }');
-        $this->assertEquals('protected', $source->traits()->first()->methods()->first()->visibility());
-    }
-
-    public function testTraitMethodWithParameter()
-    {
-        $source = $this->build('<?php trait Foobar { public function method($param) {} }');
-        $this->assertEquals('param', $source->traits()->first()->methods()->first()->parameters()->first()->name());
-    }
-
-    public function testTraitMethodWithParameterByReference()
-    {
-        $source = $this->build('<?php trait Foobar { public function method(&$param) {} }');
-        $this->assertTrue($source->traits()->first()->methods()->first()->parameters()->first()->byReference());
-    }
-
-    public function testTraitMethodWithTypedParameter()
-    {
-        $source = $this->build('<?php trait Foobar { public function method(string $param) {} }');
-        $this->assertEquals('string', (string) $source->traits()->first()->methods()->first()->parameters()->first()->type());
-    }
-
-    public function testTraitMethodWithAliasedParameter()
-    {
-        $source = $this->build('<?php use Foobar as Barfoo; trait Foobar { public function method(Barfoo $param) {} }');
-        $this->assertEquals('Barfoo', (string) $source->traits()->first()->methods()->first()->parameters()->first()->type());
-    }
-
-    public function testTraitMethodWithDefaultValue()
-    {
-        $source = $this->build('<?php trait Foobar { public function method($param = 1234) {} }');
-        $this->assertEquals(1234, (string) $source->traits()->first()->methods()->first()->parameters()->first()->defaultValue()->value());
-    }
-
-    public function testTraitMethodWithDefaultValueQuoted()
-    {
-        $source = $this->build('<?php trait Foobar { public function method($param = "1234") {} }');
-        $this->assertEquals('1234', (string) $source->traits()->first()->methods()->first()->parameters()->first()->defaultValue()->value());
     }
 
     public function testClassWhichExtendsClassWithMethods()
