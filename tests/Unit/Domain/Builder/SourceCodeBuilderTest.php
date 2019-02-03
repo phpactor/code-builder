@@ -97,8 +97,7 @@ class SourceCodeBuilderTest extends TestCase
         ];
     }
 
-
-    public function testSourceCodeBuilder()
+    public function testSourceCodeBuilderUse()
     {
         $builder = $this->builder();
         $builder->namespace('Barfoo');
@@ -116,6 +115,18 @@ class SourceCodeBuilderTest extends TestCase
         $this->assertEquals('Foobar', $code->useStatements()->first()->__toString());
         $this->assertEquals('Hello', $code->classes()->first()->name());
     }
+
+    public function testFunctionUse()
+    {
+        $builder = $this->builder();
+        $builder->useFunction('hello');
+        $builder->useFunction('hello\goodbye');
+        $code = $builder->build();
+
+        $this->assertCount(2, $code->useFunctionStatements());
+        $this->assertEquals('hello', $code->useFunctionStatements()->first()->__toString());
+    }
+
 
     public function testClassBuilder()
     {
