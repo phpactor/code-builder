@@ -24,18 +24,12 @@ class SourceCode extends Prototype
      */
     private $interfaces;
 
-    /**
-     * @var UseFunctionStatements
-     */
-    private $useFunctionStatements;
-
     public function __construct(
         NamespaceName $namespace = null,
         UseStatements $useStatements = null,
         Classes $classes = null,
         Interfaces $interfaces = null,
-        UpdatePolicy $updatePolicy = null,
-        UseFunctionStatements $useFunctionStatements = null
+        UpdatePolicy $updatePolicy = null
     ) {
         parent::__construct($updatePolicy);
         $this->namespace = $namespace ?: NamespaceName::fromString('');
@@ -43,7 +37,6 @@ class SourceCode extends Prototype
         $this->classes = $classes ?: Classes::empty();
         $this->interfaces = $interfaces ?: Interfaces::empty();
         $this->updatePolicy = $updatePolicy;
-        $this->useFunctionStatements = $useFunctionStatements;
     }
 
     public function namespace(): NamespaceName
@@ -64,10 +57,5 @@ class SourceCode extends Prototype
     public function interfaces(): Interfaces
     {
         return $this->interfaces;
-    }
-
-    public function useFunctionStatements(): UseFunctionStatements
-    {
-        return $this->useFunctionStatements;
     }
 }

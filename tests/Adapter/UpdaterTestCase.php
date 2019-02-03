@@ -147,6 +147,19 @@ use function Foo\hello as bar;
 EOT
             ];
 
+            yield 'It adds use function statements after with an alias' => [
+
+                <<<'EOT'
+use function Foo\hello as boo;
+EOT
+                , SourceCodeBuilder::create()->useFunction('Foo\hello()', 'bar')->build(),
+                <<<'EOT'
+
+use function Foo\hello as boo;
+use function Foo\hello as bar;
+EOT
+            ];
+
             yield 'class import: It inserts use statements before the first lexicographically greater use statement' => [
 
                 <<<'EOT'

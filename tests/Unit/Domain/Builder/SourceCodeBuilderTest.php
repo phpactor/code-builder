@@ -123,8 +123,8 @@ class SourceCodeBuilderTest extends TestCase
         $builder->useFunction('hello\goodbye');
         $code = $builder->build();
 
-        $this->assertCount(2, $code->useFunctionStatements());
-        $this->assertEquals('hello', $code->useFunctionStatements()->first()->__toString());
+        $this->assertCount(2, $code->useStatements());
+        $this->assertEquals('hello', $code->useStatements()->first()->__toString());
     }
 
 

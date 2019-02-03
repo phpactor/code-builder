@@ -35,11 +35,6 @@ class SourceCodeBuilder extends AbstractBuilder
      */
     protected $interfaces = [];
 
-    /**
-     * @var UseFunctionStatement[]
-     */
-    private $useFunctionStatements = [];
-
     public static function create(): SourceCodeBuilder
     {
         return new self();
@@ -69,7 +64,7 @@ class SourceCodeBuilder extends AbstractBuilder
 
     public function useFunction(string $name, string $alias = null): SourceCodeBuilder
     {
-        $this->useFunctionStatements[$name] = UseFunctionStatement::fromNameAndAlias($name, $alias);
+        $this->useStatements[$name] = UseStatement::fromNameAliasAndType($name, $alias, UseStatement::TYPE_FUNCTION);
 
         return $this;
     }
@@ -123,8 +118,7 @@ class SourceCodeBuilder extends AbstractBuilder
             Interfaces::fromInterfaces(array_map(function (InterfaceBuilder $builder) {
                 return $builder->build();
             }, $this->interfaces)),
-            UpdatePolicy::fromModifiedState($this->isModified()),
-            UseFunctionStatements::fromUseFunctionStatements($this->useFunctionStatements)
+            UpdatePolicy::fromModifiedState($this->isModified())
         );
     }
 }

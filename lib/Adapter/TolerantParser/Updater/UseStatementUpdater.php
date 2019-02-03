@@ -20,7 +20,6 @@ class UseStatementUpdater
             return;
         }
 
-
         $lastNode = $node->getFirstChildNode(NamespaceUseDeclaration::class, NamespaceDefinition::class, InlineHtml::class);
 
         // fast forward to last use declaration
@@ -85,7 +84,7 @@ class UseStatementUpdater
         $usePrototypes = array_filter(iterator_to_array($usePrototypes), function (UseStatement $usePrototype) use ($existingNames) {
             return false === in_array(
                 $usePrototype->className()->__toString(),
-                $existingNames->fullyQualifiedNames()
+                $existingNames->classNames()
             );
         });
         return $usePrototypes;

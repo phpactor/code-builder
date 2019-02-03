@@ -19,7 +19,7 @@ EOT
 
         $iterator = new ImportedNames($node);
 
-        $this->assertEquals([], $iterator->fullyQualifiedNames());
+        $this->assertEquals([], $iterator->classNames());
     }
 
     public function testReturnsFullyQualifiedNames()
@@ -40,7 +40,7 @@ EOT
         }
 
         $iterator = new ImportedNames($node);
-        $this->assertEquals(['Foobar', 'Barfoo\Barfoo'], $iterator->fullyQualifiedNames());
+        $this->assertEquals(['Foobar', 'Barfoo\Barfoo'], $iterator->classNames());
     }
 
     private function parse($source): Node

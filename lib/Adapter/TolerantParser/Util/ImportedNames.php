@@ -23,15 +23,15 @@ class ImportedNames implements IteratorAggregate
      */
     public function getIterator()
     {
-        return new ArrayIterator($this->fullyQualfiedNamesFromNode());
+        return new ArrayIterator($this->classNamesFromNode());
     }
 
-    public function fullyQualifiedNames(): array
+    public function classNames(): array
     {
-        return array_values($this->fullyQualfiedNamesFromNode());
+        return array_values($this->classNamesFromNode());
     }
 
-    private function fullyQualfiedNamesFromNode(): array
+    private function classNamesFromNode(): array
     {
         $names = [];
         foreach ($this->table[0] as $shortName => $resolvedName) {
