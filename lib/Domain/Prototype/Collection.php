@@ -33,8 +33,6 @@ abstract class Collection implements \IteratorAggregate, \Countable
 
     /**
      * Return first
-     *
-     * @return static
      */
     public function first()
     {

@@ -75,4 +75,9 @@ class UseStatement
     {
         return $this->className;
     }
+
+    public function type(): string
+    {
+        return $this->type;
+    }
 }

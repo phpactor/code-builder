@@ -14,6 +14,7 @@ use Phpactor\CodeBuilder\Domain\Builder\SourceCodeBuilder;
 use Phpactor\CodeBuilder\Domain\Prototype\SourceCode;
 use Phpactor\CodeBuilder\Domain\Prototype\ClassPrototype;
 use Phpactor\CodeBuilder\Domain\Builder\MethodBuilder;
+use Phpactor\CodeBuilder\Domain\Prototype\UseStatement;
 
 class SourceCodeBuilderTest extends TestCase
 {
@@ -125,6 +126,7 @@ class SourceCodeBuilderTest extends TestCase
 
         $this->assertCount(2, $code->useStatements());
         $this->assertEquals('hello', $code->useStatements()->first()->__toString());
+        $this->assertEquals(UseStatement::TYPE_FUNCTION, $code->useStatements()->first()->type());
     }
 
 
