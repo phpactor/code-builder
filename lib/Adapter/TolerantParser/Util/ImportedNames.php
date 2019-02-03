@@ -8,11 +8,14 @@ use Microsoft\PhpParser\Node;
 
 class ImportedNames implements IteratorAggregate
 {
-    private $fullyQualifiedNames = [];
+    /**
+     * @var array
+     */
+    private $table;
 
     public function __construct(Node $node)
     {
-        $this->fullyQualfiedNamesFromNode($node);
+        $this->buildTable($node);
     }
 
     /**
@@ -20,24 +23,35 @@ class ImportedNames implements IteratorAggregate
      */
     public function getIterator()
     {
-        return new ArrayIterator($this->fullyQualifiedNames);
+        return new ArrayIterator($this->fullyQualfiedNamesFromNode());
     }
 
-    private function fullyQualfiedNamesFromNode(Node $node)
+    public function fullyQualifiedNames(): array
+    {
+        return array_values($this->fullyQualfiedNamesFromNode());
+    }
+
+    private function fullyQualfiedNamesFromNode(): array
+    {
+        $names = [];
+        foreach ($this->table[0] as $shortName => $resolvedName) {
+            $names[(string) $resolvedName] = (string) $resolvedName;
+        }
+
+        return $names;
+    }
+
+    private function buildTable(Node $node): void
     {
         if ('SourceFileNode' == $node->getNodeKindName()) {
-            return [];
+            $this->table =  [
+                [],
+                [],
+                []
+            ];
+            return;
         }
 
-        $table = $node->getImportTablesForCurrentScope();
-
-        foreach ($table[0] as $shortName => $resolvedName) {
-            $this->fullyQualifiedNames[(string) $resolvedName] = (string) $resolvedName;
-        }
-    }
-
-    public function fullyQualifiedNames()
-    {
-        return array_values($this->fullyQualifiedNames);
+        $this->table = $node->getImportTablesForCurrentScope();
     }
 }
