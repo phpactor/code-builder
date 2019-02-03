@@ -2,8 +2,13 @@
 
 namespace Phpactor\CodeBuilder\Domain\Prototype;
 
+use RuntimeException;
+
 class UseStatement 
 {
+    const TYPE_CLASS = 'class';
+    const TYPE_FUNCTION = 'function';
+
     /**
      * @var Type
      */
@@ -14,15 +19,32 @@ class UseStatement
      */
     private $alias;
 
-    public function __construct(Type $className, string $alias = null)
+    /**
+     * @var string
+     */
+    private $type;
+
+    public function __construct(Type $className, string $alias = null, string $type = self::TYPE_CLASS)
     {
         $this->className = $className;
         $this->alias = $alias;
+        $this->type = $type;
+
+        if (!in_array($type, [ self::TYPE_CLASS, self::TYPE_FUNCTION ])) {
+            throw new RuntimeException(sprintf(
+                'Invalid use type'
+            ));
+        }
     }
 
-    public static function fromTypeAndAlias(string $type, string $alias = null)
+    public static function fromNameAndAlias(string $type, string $alias = null)
     {
         return new self(Type::fromString($type), $alias);
+    }
+
+    public static function fromNameAliasAndType(string $name, string $alias = null, string $type)
+    {
+        return new self(Type::fromString($name), $alias, $type);
     }
 
     public static function fromType(string $type)
@@ -49,8 +71,13 @@ class UseStatement
         return $this->alias;
     }
 
-    public function className(): Type
+    public function name(): Type
     {
         return $this->className;
+    }
+
+    public function type(): string
+    {
+        return $this->type;
     }
 }

@@ -14,6 +14,7 @@ use Phpactor\CodeBuilder\Domain\Builder\SourceCodeBuilder;
 use Phpactor\CodeBuilder\Domain\Prototype\SourceCode;
 use Phpactor\CodeBuilder\Domain\Prototype\ClassPrototype;
 use Phpactor\CodeBuilder\Domain\Builder\MethodBuilder;
+use Phpactor\CodeBuilder\Domain\Prototype\UseStatement;
 
 class SourceCodeBuilderTest extends TestCase
 {
@@ -97,8 +98,7 @@ class SourceCodeBuilderTest extends TestCase
         ];
     }
 
-
-    public function testSourceCodeBuilder()
+    public function testSourceCodeBuilderUse()
     {
         $builder = $this->builder();
         $builder->namespace('Barfoo');
@@ -116,6 +116,19 @@ class SourceCodeBuilderTest extends TestCase
         $this->assertEquals('Foobar', $code->useStatements()->first()->__toString());
         $this->assertEquals('Hello', $code->classes()->first()->name());
     }
+
+    public function testFunctionUse()
+    {
+        $builder = $this->builder();
+        $builder->useFunction('hello');
+        $builder->useFunction('hello\goodbye');
+        $code = $builder->build();
+
+        $this->assertCount(2, $code->useStatements());
+        $this->assertEquals('hello', $code->useStatements()->first()->__toString());
+        $this->assertEquals(UseStatement::TYPE_FUNCTION, $code->useStatements()->first()->type());
+    }
+
 
     public function testClassBuilder()
     {

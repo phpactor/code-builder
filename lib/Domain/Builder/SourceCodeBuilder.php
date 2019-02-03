@@ -7,6 +7,8 @@ use Phpactor\CodeBuilder\Domain\Prototype\NamespaceName;
 use Phpactor\CodeBuilder\Domain\Prototype\Type;
 use Phpactor\CodeBuilder\Domain\Prototype\Classes;
 use Phpactor\CodeBuilder\Domain\Prototype\UpdatePolicy;
+use Phpactor\CodeBuilder\Domain\Prototype\UseFunctionStatement;
+use Phpactor\CodeBuilder\Domain\Prototype\UseFunctionStatements;
 use Phpactor\CodeBuilder\Domain\Prototype\UseStatements;
 use Phpactor\CodeBuilder\Domain\Prototype\Interfaces;
 use Phpactor\CodeBuilder\Domain\Prototype\UseStatement;
@@ -55,7 +57,14 @@ class SourceCodeBuilder extends AbstractBuilder
 
     public function use(string $use, string $alias = null): SourceCodeBuilder
     {
-        $this->useStatements[$use] = UseStatement::fromTypeAndAlias($use, $alias);
+        $this->useStatements[$use] = UseStatement::fromNameAndAlias($use, $alias);
+
+        return $this;
+    }
+
+    public function useFunction(string $name, string $alias = null): SourceCodeBuilder
+    {
+        $this->useStatements[$name] = UseStatement::fromNameAliasAndType($name, $alias, UseStatement::TYPE_FUNCTION);
 
         return $this;
     }

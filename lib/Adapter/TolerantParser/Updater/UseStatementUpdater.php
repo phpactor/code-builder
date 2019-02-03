@@ -20,7 +20,6 @@ class UseStatementUpdater
             return;
         }
 
-
         $lastNode = $node->getFirstChildNode(NamespaceUseDeclaration::class, NamespaceDefinition::class, InlineHtml::class);
 
         // fast forward to last use declaration
@@ -43,24 +42,27 @@ class UseStatementUpdater
         }
 
         foreach ($usePrototypes as $usePrototype) {
+
+            $editText = $this->buildEditText($usePrototype);
+
             foreach ($node->getChildNodes() as $childNode) {
                 if ($childNode instanceof NamespaceUseDeclaration) {
                     foreach ($childNode->useClauses->getElements() as $useClause) {
                         /* try to find the first lexicographycally greater use
-                           statement and insert before if there is one */
+                        statement and insert before if there is one */
                         $cmp = strcmp($useClause->namespaceName->getText(), $usePrototype->__toString());
                         if ($cmp === 0) {
                             continue 3;
                         }
                         if ($cmp > 0) {
-                            $edits->before($childNode, 'use ' . (string) $usePrototype . ';' . PHP_EOL);
+                            $edits->before($childNode, $editText . PHP_EOL);
                             continue 3;
                         }
                     }
                 }
             }
 
-            $newUseStatement = PHP_EOL . 'use ' . (string) $usePrototype . ';';
+            $newUseStatement = PHP_EOL . $editText;
             $edits->after($lastNode, $newUseStatement);
         }
 
@@ -83,9 +85,17 @@ class UseStatementUpdater
         /** @var UseStatement $usePrototype */
         $usePrototypes = $prototype->useStatements()->sorted();
         $usePrototypes = array_filter(iterator_to_array($usePrototypes), function (UseStatement $usePrototype) use ($existingNames) {
+
+            $existing = $usePrototype->type() === UseStatement::TYPE_FUNCTION ? 
+                $existingNames->functionNames() : 
+                $existingNames->classNames();
+
+            $compare = $usePrototype->hasAlias() ? $usePrototype->alias() : $usePrototype->name()->__toString();
+            $existing = $usePrototype->hasAlias() ? array_keys($existing) : array_values($existing);
+
             return false === in_array(
-                $usePrototype->className()->__toString(),
-                $existingNames->fullyQualifiedNames()
+                $compare,
+                $existing
             );
         });
         return $usePrototypes;
@@ -95,10 +105,23 @@ class UseStatementUpdater
     {
         $sourceNamespace = $lastNode->getNamespaceDefinition() 
             ? $lastNode->getNamespaceDefinition()->name->__toString() : null;
-        
+
         $usePrototypes = array_filter($usePrototypes, function (UseStatement $usePrototype) use ($sourceNamespace) {
-            return $sourceNamespace !== $usePrototype->className()->namespace();
+            return $sourceNamespace !== $usePrototype->name()->namespace();
         });
         return $usePrototypes;
+    }
+
+    private function buildEditText($usePrototype): string
+    {
+        $editText = [
+            'use '
+        ];
+        if ($usePrototype->type() === UseStatement::TYPE_FUNCTION) {
+            $editText[] = 'function ';
+        }
+        $editText[] = (string) $usePrototype . ';';
+        $editText = implode('', $editText);
+        return $editText;
     }
 }

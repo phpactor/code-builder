@@ -7,9 +7,9 @@ namespace {{ prototype.namespace }};
 
 {% for useStatement in prototype.useStatements %}
 {% if useStatement.hasAlias %}
-use {{ useStatement.className }} as {{ useStatement.alias }};
+use {{ useStatement.name }} as {{ useStatement.alias }};
 {% else %}
-use {{ useStatement.className }};
+use {{ useStatement.name }};
 {% endif %}
 {% endfor %}
 {% endif %}
