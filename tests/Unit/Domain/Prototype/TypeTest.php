@@ -12,7 +12,13 @@ class TypeTest extends TestCase
         $type = Type::fromString('Foo\\Bar');
         $this->assertEquals('Foo', $type->namespace());
 
+        $type = Type::fromString('?Foo\\Bar', true);
+        $this->assertEquals('Foo', $type->namespace());
+
         $type = Type::fromString('Bar');
+        $this->assertNull($type->namespace());
+
+        $type = Type::fromString('?Bar', true);
         $this->assertNull($type->namespace());
 
         $type = Type::none();
