@@ -29,7 +29,7 @@ class MethodBuilder extends AbstractBuilder implements NamedBuilder
     protected $visibility;
 
     /**
-     * @var Type
+     * @var ReturnType
      */
     protected $returnType;
 

@@ -13,7 +13,7 @@ final class ReturnType extends Prototype
 
     public static function fromString($string)
     {
-        return new self(Type::fromString($string));
+        return new self(Type::fromString($string, true));
     }
 
     public function __toString()
