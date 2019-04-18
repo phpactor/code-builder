@@ -27,18 +27,12 @@ final class Type extends Prototype
         $this->nullable = $nullable;
     }
 
-    public static function fromString(string $string, bool $nullableAllowed = false): Type
+    public static function fromString(string $string): Type
     {
         $nullable = 0 === strpos($string, '?');
         $type = $nullable ? substr($string, 1) : $string;
 
-        $type = new self($type, $nullable);
-
-        if ($nullable && !$nullableAllowed) {
-            throw new TypeCannotBeNullableException($type);
-        }
-
-        return $type;
+        return new self($type, $nullable);
     }
 
     public static function none(): Type

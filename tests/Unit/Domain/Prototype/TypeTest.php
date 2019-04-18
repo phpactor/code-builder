@@ -12,26 +12,17 @@ class TypeTest extends TestCase
         $type = Type::fromString('Foo\\Bar');
         $this->assertEquals('Foo', $type->namespace());
 
-        $type = Type::fromString('?Foo\\Bar', true);
+        $type = Type::fromString('?Foo\\Bar');
         $this->assertEquals('Foo', $type->namespace());
 
         $type = Type::fromString('Bar');
         $this->assertNull($type->namespace());
 
-        $type = Type::fromString('?Bar', true);
+        $type = Type::fromString('?Bar');
         $this->assertNull($type->namespace());
 
         $type = Type::none();
         $this->assertNull($type->namespace());
-    }
-
-    /**
-     * @testdox It throws an exception if type is nullable but it is not allowed
-     * @expectedException Phpactor\CodeBuilder\Domain\Type\Exception\TypeCannotBeNullableException
-     */
-    public function testItAllowsNullableOnlyIfExplicitelyPassed()
-    {
-        $type = Type::fromString('?Foo\\Bar');
     }
 
     public function testItAllowsNullable()
@@ -42,16 +33,16 @@ class TypeTest extends TestCase
         $type = Type::fromString('string');
         $this->assertFalse($type->nullable());
 
-        $type = Type::fromString('Foo\\Bar', true);
+        $type = Type::fromString('Foo\\Bar');
         $this->assertFalse($type->nullable());
 
-        $type = Type::fromString('string', true);
+        $type = Type::fromString('string');
         $this->assertFalse($type->nullable());
 
-        $type = Type::fromString('?Foo\\Bar', true);
+        $type = Type::fromString('?Foo\\Bar');
         $this->assertTrue($type->nullable());
 
-        $type = Type::fromString('?string', true);
+        $type = Type::fromString('?string');
         $this->assertTrue($type->nullable());
     }
 }
