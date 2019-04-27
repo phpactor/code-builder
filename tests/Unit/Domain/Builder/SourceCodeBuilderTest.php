@@ -266,14 +266,14 @@ class SourceCodeBuilderTest extends TestCase
         return [
             'Method return type' => [
                 $this->builder()->class('Dog')->method('one')
-                ->returnType('string')
+                ->returnType('?string')
                 ->visibility('private')
                 ->parameter('one')
                 ->type('One')
                 ->defaultValue(1)
                 ->end(),
                 function ($method) {
-                    $this->assertEquals('string', $method->returnType()->__toString());
+                    $this->assertEquals('?string', $method->returnType()->__toString());
                 }
         ],
             'Method mofifiers 1' => [
