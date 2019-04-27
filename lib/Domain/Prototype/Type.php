@@ -21,7 +21,7 @@ final class Type extends Prototype
      */
     private $nullable = false;
 
-    private function __construct(string $type = null, bool $nullable = false)
+    public function __construct(string $type = null, bool $nullable = false)
     {
         $this->type = $type;
         $this->nullable = $nullable;
