@@ -7,22 +7,51 @@ use Phpactor\CodeBuilder\Domain\Prototype\Type;
 
 class TypeTest extends TestCase
 {
-    public function testItReturnsANamespace()
+    /**
+     * @dataProvider provideNamespace
+     */
+    public function testItReturnsANamespace(string $classFqn, string $expectedNamespace = null)
     {
-        $type = Type::fromString('Foo\\Bar');
-        $this->assertEquals('Foo', $type->namespace());
+        $type = Type::fromString($classFqn);
+        $this->assertEquals($expectedNamespace, $type->namespace());
+    }
 
-        $type = Type::fromString('?Foo\\Bar');
-        $this->assertEquals('Foo', $type->namespace());
+    public function provideNamespace()
+    {
+        yield [
+            'Foo\\Bar',
+            'Foo',
+        ];
 
-        $type = Type::fromString('Bar');
-        $this->assertNull($type->namespace());
+        yield [
+            'Foo\\Bar\\Zoo',
+            'Foo\\Bar',
+        ];
 
-        $type = Type::fromString('?Bar');
-        $this->assertNull($type->namespace());
+        yield [
+            'Foo\\Bar\\Zoo\\Zog',
+            'Foo\\Bar\\Zoo',
+        ];
 
-        $type = Type::none();
-        $this->assertNull($type->namespace());
+        yield [
+            '?Foo\\Bar',
+            'Foo',
+        ];
+
+        yield [
+            '?Bar',
+            null
+        ];
+
+        yield [
+            'Bar',
+            null
+        ];
+
+        yield [
+            '',
+            null
+        ];
     }
 
     public function testItAllowsNullable()

@@ -58,7 +58,7 @@ final class Type extends Prototype
             return null;
         }
 
-        return substr($this->type, 0, strpos($this->type, '\\'));
+        return substr($this->type, 0, strrpos($this->type, '\\'));
     }
 
     public function notNone(): bool
