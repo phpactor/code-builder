@@ -568,4 +568,53 @@ EOT
 
         $this->assertEquals($expected, (string) $code);
     }
+
+    public function testConstantsAndProperties()
+    {
+        $expected = <<<'EOT'
+<?php
+
+namespace Animals;
+
+interface Animal
+{
+    public function sleep();
+}
+
+class Rabbits implements Animal
+{
+    const LEGS = 4;
+    const SKIN = 'soft';
+
+    /**
+     * @var int
+     */
+    private $force = 5;
+
+    public $guile;
+}
+EOT
+        ;
+        $source = $builder = SourceCodeBuilder::create()
+            ->namespace('Animals')
+            ->class('Rabbits')
+                ->implements('Animal')
+                ->property('force')
+                    ->visibility('private')
+                    ->type('int')
+                    ->defaultValue(5)
+                ->end()
+                ->property('guile')->end()
+                ->constant('LEGS', 4)->end()
+                ->constant('SKIN', 'soft')->end()
+            ->end()
+            ->interface('Animal')
+                ->method('sleep')->end()
+            ->end()
+            ->build();
+
+        $code = $this->renderer()->render($source);
+
+        $this->assertEquals($expected, (string) $code);
+    }
 }
