@@ -6,5 +6,5 @@ use Phpactor\CodeBuilder\Domain\Prototype\Prototype;
 
 interface Renderer
 {
-    public function render(Prototype $prototype): Code;
+    public function render(Prototype $prototype, string $variant = null): Code;
 }
