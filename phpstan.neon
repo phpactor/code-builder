@@ -2,6 +2,7 @@ includes:
     - vendor/phpstan/phpstan/conf/config.level1.neon
 
 parameters:
+    inferPrivatePropertyTypeFromConstructor: true
     ignoreErrors:
         
     paths:
