@@ -14,7 +14,6 @@ use Phpactor\CodeBuilder\Domain\Prototype\Parameters;
 use Phpactor\CodeBuilder\Adapter\TolerantParser\TextEdit;
 use Phpactor\CodeBuilder\Domain\Prototype\ClassLikePrototype;
 use Microsoft\PhpParser\ClassLike;
-use Microsoft\PhpParser\Token;
 use Microsoft\PhpParser\Node\Parameter;
 use Phpactor\CodeBuilder\Domain\Prototype\ReturnType;
 
@@ -233,7 +232,6 @@ abstract class AbstractMethodUpdater
                     }
                 }
             }
-
         }
 
         // method prototype has all of the parameters, but does it have extra ones?

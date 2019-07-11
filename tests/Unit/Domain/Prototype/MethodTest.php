@@ -3,7 +3,6 @@
 namespace Phpactor\CodeBuilder\Tests\Unit\Domain\Prototype;
 
 use PHPUnit\Framework\TestCase;
-use Phpactor\CodeBuilder\Domain\Builder\SourceCodeBuilder;
 use Phpactor\CodeBuilder\Domain\Prototype\Method;
 
 class MethodTest extends TestCase

@@ -4,13 +4,8 @@ namespace Phpactor\CodeBuilder\Tests\Adapter\WorseReflection;
 
 use PHPUnit\Framework\TestCase;
 use Phpactor\WorseReflection\Bridge\Phpactor\MemberProvider\DocblockMemberProvider;
-use Phpactor\WorseReflection\Reflector;
 use Phpactor\CodeBuilder\Adapter\WorseReflection\WorseBuilderFactory;
-use Phpactor\CodeBuilder\SourceBuilder;
 use Phpactor\CodeBuilder\Domain\Prototype\SourceCode;
-use Phpactor\CodeBuilder\Domain\Builder\SourceCodeBuilder;
-use Phpactor\WorseReflection\Core\SourceCodeLocator\StringSourceLocator;
-use Phpactor\WorseReflection\Core\SourceCode as WorseSourceCode;
 use Phpactor\WorseReflection\ReflectorBuilder;
 
 class WorseBuilderFactoryTest extends TestCase
@@ -27,7 +22,6 @@ class WorseBuilderFactoryTest extends TestCase
         $classes = $source->classes();
         $this->assertCount(1, $classes);
         $this->assertEquals('Foobar', $classes->first()->name());
-
     }
 
     public function testSimpleClassWithNamespace()
@@ -84,7 +78,6 @@ class WorseBuilderFactoryTest extends TestCase
         $traits = $source->traits();
         $this->assertCount(1, $traits);
         $this->assertEquals('Foobar', $traits->first()->name());
-
     }
 
     public function testSimpleTraitWithNamespace()
@@ -169,7 +162,6 @@ class WorseBuilderFactoryTest extends TestCase
     }
 
     public function testStaticMethod()
-
     {
         $source = $this->build('<?php class Foobar { public static function method($param = "1234") {} }');
         $this->assertTrue($source->classes()->first()->methods()->first()->isStatic());
@@ -177,7 +169,8 @@ class WorseBuilderFactoryTest extends TestCase
 
     public function testClassWhichExtendsClassWithMethods()
     {
-        $source = $this->build(<<<'EOT'
+        $source = $this->build(
+            <<<'EOT'
 <?php
 class Foobar
 {

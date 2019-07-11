@@ -2,7 +2,6 @@
 
 namespace Phpactor\CodeBuilder\Adapter\Twig;
 
-use Phpactor\CodeBuilder\Domain\Generator;
 use Phpactor\CodeBuilder\Domain\Code;
 use Phpactor\CodeBuilder\Domain\Prototype\Prototype;
 use Phpactor\CodeBuilder\Domain\Renderer;

@@ -4,9 +4,7 @@ namespace Phpactor\CodeBuilder\Adapter\TolerantParser\Util;
 
 use Microsoft\PhpParser\Node;
 use Microsoft\PhpParser\Node\QualifiedName;
-use Microsoft\PhpParser\ResolvedName;
 use Microsoft\PhpParser\Token;
-use RuntimeException;
 
 class NodeHelper
 {

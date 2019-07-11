@@ -4,7 +4,7 @@ namespace Phpactor\CodeBuilder\Domain\Prototype;
 
 use RuntimeException;
 
-class UseStatement 
+class UseStatement
 {
     const TYPE_CLASS = 'class';
     const TYPE_FUNCTION = 'function';

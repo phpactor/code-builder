@@ -1,0 +1,9 @@
+includes:
+    - vendor/phpstan/phpstan/conf/config.level1.neon
+
+parameters:
+    ignoreErrors:
+        
+    paths:
+        - lib
+

@@ -3,15 +3,19 @@ language: php
 php:
     - 7.1
     - 7.2
-
+    - 7.3
+    
 sudo: false
 
 cache:
-  directories:
-    - $HOME/.composer/cache
+    directories:
+        - $HOME/.composer/cache
 
 before_script:
-  - composer install
+    - composer install
 
 script:
-  - ./vendor/bin/phpunit
+    - ./vendor/bin/php-cs-fixer fix --dry-run
+    - ./vendor/bin/phpstan analyse lib -c phpstan.neon
+    - ./vendor/bin/phpunit
+    

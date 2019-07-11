@@ -2,8 +2,6 @@
 
 namespace Phpactor\CodeBuilder\Domain\Prototype;
 
-use Phpactor\CodeBuilder\Domain\Type\Exception\TypeCannotBeNullableException;
-
 final class Type extends Prototype
 {
     /**

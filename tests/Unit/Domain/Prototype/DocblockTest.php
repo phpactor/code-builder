@@ -13,7 +13,8 @@ class DocblockTest extends TestCase
     public function testAsLines()
     {
         $this->assertEquals([''], Docblock::fromString('')->asLines());
-        $this->assertEquals(['One', 'Two'], Docblock::fromString(<<<'EOT'
+        $this->assertEquals(['One', 'Two'], Docblock::fromString(
+            <<<'EOT'
 One
 Two
 EOT

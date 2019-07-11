@@ -2,7 +2,6 @@
 
 namespace Phpactor\CodeBuilder\Domain\Prototype;
 
-
 class Constant extends Prototype
 {
     /**
