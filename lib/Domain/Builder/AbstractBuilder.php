@@ -59,7 +59,8 @@ abstract class AbstractBuilder implements Builder
                 if (!$child instanceof Builder) {
                     throw new RuntimeException(sprintf(
                         'Child "%s" is not a builder instance, it is a "%s"',
-                        $childName, is_object($child) ? get_class($child) : gettype($child)
+                        $childName,
+                        is_object($child) ? get_class($child) : gettype($child)
                     ));
                 }
 

@@ -3,8 +3,6 @@
 namespace Phpactor\CodeBuilder\Tests\Unit\Domain\Prototype;
 
 use PHPUnit\Framework\TestCase;
-use Phpactor\CodeBuilder\Domain\Prototype\ClassPrototype;
-use Phpactor\CodeBuilder\Domain\Prototype\Classes;
 use Phpactor\CodeBuilder\Domain\Prototype\Collection;
 
 class CollectionTest extends TestCase

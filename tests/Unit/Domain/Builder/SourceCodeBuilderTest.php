@@ -2,17 +2,10 @@
 
 namespace Phpactor\CodeBuilder\Tests\Unit\Domain\Builder;
 
-use Closure;
 use Generator;
 use PHPUnit\Framework\TestCase;
-use Phpactor\CodeBuilder\Domain\Builder\ClassBuilder;
-use Phpactor\CodeBuilder\Domain\Builder\ConstantBuilder;
-use Phpactor\CodeBuilder\Domain\Builder\InterfaceBuilder;
-use Phpactor\CodeBuilder\Domain\Builder\ParameterBuilder;
-use Phpactor\CodeBuilder\Domain\Builder\PropertyBuilder;
 use Phpactor\CodeBuilder\Domain\Builder\SourceCodeBuilder;
 use Phpactor\CodeBuilder\Domain\Prototype\SourceCode;
-use Phpactor\CodeBuilder\Domain\Prototype\ClassPrototype;
 use Phpactor\CodeBuilder\Domain\Builder\MethodBuilder;
 use Phpactor\CodeBuilder\Domain\Prototype\UseStatement;
 

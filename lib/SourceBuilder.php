@@ -10,12 +10,12 @@ use Phpactor\CodeBuilder\Domain\Code;
 class SourceBuilder
 {
     /**
-     * @var SourceGenerator
+     * @var Renderer
      */
     private $generator;
 
     /**
-     * @var SourceMutator
+     * @var Updater
      */
     private $updater;
 

@@ -20,7 +20,7 @@ abstract class UpdaterTestCase extends TestCase
 
     public function provideNamespaceAndUse()
     {
-            yield 'It does nothing when given an empty source code protoytpe' => [
+        yield 'It does nothing when given an empty source code protoytpe' => [
 
                 <<<'EOT'
 class Aardvark
@@ -35,7 +35,7 @@ class Aardvark
 EOT
             ];
 
-            yield 'It does not change the namespace if it is the same' => [
+        yield 'It does not change the namespace if it is the same' => [
 
                 <<<'EOT'
 namespace Animal\Kingdom;
@@ -54,7 +54,7 @@ class Aardvark
 EOT
             ];
 
-            yield 'It adds the namespace if it doesnt exist' => [
+        yield 'It adds the namespace if it doesnt exist' => [
 
                 <<<'EOT'
 class Aardvark
@@ -71,7 +71,7 @@ class Aardvark
 EOT
             ];
 
-            yield 'It updates the namespace' => [
+        yield 'It updates the namespace' => [
 
                 <<<'EOT'
 namespace Animal\Kingdom;
@@ -90,7 +90,7 @@ class Aardvark
 EOT
             ];
 
-            yield 'It adds use statements' => [
+        yield 'It adds use statements' => [
 
                 <<<'EOT'
 EOT
@@ -101,7 +101,7 @@ use Foo\Bovine;
 EOT
             ];
 
-            yield 'It adds use statements with an alias' => [
+        yield 'It adds use statements with an alias' => [
 
                 <<<'EOT'
 EOT
@@ -112,7 +112,7 @@ use Foo\Bovine as Cow;
 EOT
             ];
 
-            yield 'It adds use statements after a namespace' => [
+        yield 'It adds use statements after a namespace' => [
 
                 <<<'EOT'
 namespace Kingdom;
@@ -125,7 +125,7 @@ use Bovine;
 EOT
             ];
 
-            yield 'It adds use function statements' => [
+        yield 'It adds use function statements' => [
 
                 <<<'EOT'
 EOT
@@ -136,7 +136,7 @@ use function Foo\hello;
 EOT
             ];
 
-            yield 'It adds use function statements with an alias' => [
+        yield 'It adds use function statements with an alias' => [
 
                 <<<'EOT'
 EOT
@@ -147,7 +147,7 @@ use function Foo\hello as bar;
 EOT
             ];
 
-            yield 'It adds use function statements after with an alias' => [
+        yield 'It adds use function statements after with an alias' => [
 
                 <<<'EOT'
 use function Foo\hello as boo;
@@ -159,7 +159,7 @@ use function Foo\hello as bar;
 EOT
             ];
 
-            yield 'It ignores existing function imports' => [
+        yield 'It ignores existing function imports' => [
 
                 <<<'EOT'
 use function Foo\hello as boo;
@@ -170,7 +170,7 @@ use function Foo\hello as boo;
 EOT
             ];
 
-            yield 'class import: It inserts use statements before the first lexicographically greater use statement' => [
+        yield 'class import: It inserts use statements before the first lexicographically greater use statement' => [
 
                 <<<'EOT'
 namespace Kingdom;
@@ -194,7 +194,7 @@ use Primate;
 EOT
             ];
 
-            yield 'class import: It inserts use statements just before the first lexicographically greater use statement' => [
+        yield 'class import: It inserts use statements just before the first lexicographically greater use statement' => [
 
                 <<<'EOT'
 namespace Kingdom;
@@ -212,7 +212,7 @@ use Primate;
 EOT
             ];
 
-            yield 'class import: It inserts use statements after all lexicographically smaller use statements' => [
+        yield 'class import: It inserts use statements after all lexicographically smaller use statements' => [
 
                 <<<'EOT'
 namespace Kingdom;
@@ -230,7 +230,7 @@ use Bovine;
 EOT
             ];
 
-            yield 'class import: It ignores existing use statements' => [
+        yield 'class import: It ignores existing use statements' => [
 
                 <<<'EOT'
 namespace Kingdom;
@@ -245,7 +245,7 @@ use Primate;
 EOT
             ];
 
-            yield 'class import: It ignores repeated namespaced use statements' => [
+        yield 'class import: It ignores repeated namespaced use statements' => [
 
                 <<<'EOT'
 namespace Kingdom;
@@ -259,7 +259,7 @@ use Primate\Ape;
 EOT
             ];
 
-            yield 'class import: It ignores existing aliased use statements' => [
+        yield 'class import: It ignores existing aliased use statements' => [
 
                 <<<'EOT'
 namespace Kingdom;
@@ -274,7 +274,7 @@ use Primate as Foobar;
 EOT
             ];
 
-            yield 'class import: It appends multiple use statements' => [
+        yield 'class import: It appends multiple use statements' => [
 
                 <<<'EOT'
 namespace Kingdom;
@@ -292,7 +292,7 @@ use Primate;
 EOT
             ];
 
-            yield 'class import: It appends multiple use statements' => [
+        yield 'class import: It appends multiple use statements' => [
 
                 <<<'EOT'
 namespace Kingdom;
@@ -310,7 +310,7 @@ use Primate;
 EOT
             ];
 
-            yield 'class import: It maintains an empty line between the class and the use statements' => [
+        yield 'class import: It maintains an empty line between the class and the use statements' => [
 
                 <<<'EOT'
 namespace Kingdom;
@@ -331,7 +331,7 @@ class Foobar
 EOT
             ];
 
-            yield 'class import: It maintains an empty line between the trait and the use statements' => [
+        yield 'class import: It maintains an empty line between the trait and the use statements' => [
 
                 <<<'EOT'
 namespace Kingdom;
@@ -352,7 +352,7 @@ trait Foobar
 EOT
             ];
 
-            yield 'class import: it maintains empty line between class with no namespace' => [
+        yield 'class import: it maintains empty line between class with no namespace' => [
 
                 <<<'EOT'
 class Foobar
@@ -370,7 +370,7 @@ class Foobar
 EOT
             ];
 
-            yield 'class import: it maintains empty line between trait with no namespace' => [
+        yield 'class import: it maintains empty line between trait with no namespace' => [
 
                 <<<'EOT'
 trait Foobar
@@ -388,7 +388,7 @@ trait Foobar
 EOT
             ];
 
-            yield 'class import: previously included class with a lexigraphically greater member before it' => [
+        yield 'class import: previously included class with a lexigraphically greater member before it' => [
                 <<<'EOT'
 <?php
 
@@ -414,7 +414,7 @@ use Phpactor\WorseReflection\Core\Reflection\ReflectionInterface;
 EOT
             ];
 
-            yield 'class import: It ignores classes in the same namespace' => [
+        yield 'class import: It ignores classes in the same namespace' => [
 
                 <<<'EOT'
 namespace Animal;
@@ -425,7 +425,7 @@ namespace Animal;
 EOT
             ];
 
-            yield 'it does not add additional space' => [
+        yield 'it does not add additional space' => [
 
                 <<<'EOT'
 namespace Animal;
@@ -439,7 +439,6 @@ namespace Animal;
 class Foo {}
 EOT
             ];
-
     }
 
     /**
@@ -452,7 +451,7 @@ EOT
 
     public function provideClasses()
     {
-            yield 'It does nothing when prototype has only the class' => [
+        yield 'It does nothing when prototype has only the class' => [
 
                 <<<'EOT'
 class Aardvark
@@ -467,7 +466,7 @@ class Aardvark
 EOT
             ];
 
-            yield 'It adds a class to an empty file' => [
+        yield 'It adds a class to an empty file' => [
 
                 <<<'EOT'
 EOT
@@ -480,7 +479,7 @@ class Anteater
 EOT
             ];
 
-            yield 'It adds a class' => [
+        yield 'It adds a class' => [
 
                 <<<'EOT'
 class Aardvark
@@ -499,7 +498,7 @@ class Anteater
 EOT
             ];
 
-            yield 'It adds a class after a namespace' => [
+        yield 'It adds a class after a namespace' => [
 
                 <<<'EOT'
 namespace Animals;
@@ -522,7 +521,7 @@ class Anteater
 EOT
             ];
 
-            yield 'It does not modify a class with a namespace' => [
+        yield 'It does not modify a class with a namespace' => [
 
                 <<<'EOT'
 namespace Animals;
@@ -541,7 +540,7 @@ class Aardvark
 EOT
             ];
 
-            yield 'It adds multiple classes' => [
+        yield 'It adds multiple classes' => [
                 <<<'EOT'
 EOT
                 , SourceCodeBuilder::create()->class('Aardvark')->end()->class('Anteater')->end()->build(),
@@ -557,7 +556,7 @@ class Anteater
 EOT
             ];
 
-            yield 'It extends a class' => [
+        yield 'It extends a class' => [
                 <<<'EOT'
 class Aardvark
 {
@@ -571,7 +570,7 @@ class Aardvark extends Animal
 EOT
             ];
 
-            yield 'It modifies an existing extends' => [
+        yield 'It modifies an existing extends' => [
                 <<<'EOT'
 class Aardvark extends Giraffe
 {
@@ -585,7 +584,7 @@ class Aardvark extends Animal
 EOT
             ];
 
-            yield 'It is idempotent extends' => [
+        yield 'It is idempotent extends' => [
                 <<<'EOT'
 class Aardvark extends Animal
 {
@@ -599,7 +598,7 @@ class Aardvark extends Animal
 EOT
             ];
 
-            yield 'It is implements an interface' => [
+        yield 'It is implements an interface' => [
                 <<<'EOT'
 class Aardvark
 {
@@ -613,7 +612,7 @@ class Aardvark implements Animal
 EOT
             ];
 
-            yield 'It is implements implementss' => [
+        yield 'It is implements implementss' => [
                 <<<'EOT'
 class Aardvark
 {
@@ -627,7 +626,7 @@ class Aardvark implements Zoo, Animal
 EOT
             ];
 
-            yield 'It is adds implements' => [
+        yield 'It is adds implements' => [
                 <<<'EOT'
 class Aardvark implements Zoo
 {
@@ -641,7 +640,7 @@ class Aardvark implements Zoo, Animal
 EOT
             ];
 
-            yield 'It ignores existing implements names' => [
+        yield 'It ignores existing implements names' => [
                 <<<'EOT'
 class Aardvark implements Animal
 {
@@ -666,7 +665,7 @@ EOT
 
     public function provideTraits()
     {
-            yield 'It does nothing when prototype has only the trait' => [
+        yield 'It does nothing when prototype has only the trait' => [
 
                 <<<'EOT'
 trait Aardvark
@@ -681,7 +680,7 @@ trait Aardvark
 EOT
             ];
 
-            yield 'It adds a trait to an empty file' => [
+        yield 'It adds a trait to an empty file' => [
 
                 <<<'EOT'
 EOT
@@ -694,7 +693,7 @@ trait Anteater
 EOT
             ];
 
-            yield 'It adds a trait' => [
+        yield 'It adds a trait' => [
 
                 <<<'EOT'
 trait Aardvark
@@ -713,7 +712,7 @@ trait Anteater
 EOT
             ];
 
-            yield 'It adds a trait after a namespace' => [
+        yield 'It adds a trait after a namespace' => [
 
                 <<<'EOT'
 namespace Animals;
@@ -736,7 +735,7 @@ trait Anteater
 EOT
             ];
 
-            yield 'It does not modify a trait with a namespace' => [
+        yield 'It does not modify a trait with a namespace' => [
 
                 <<<'EOT'
 namespace Animals;
@@ -755,7 +754,7 @@ trait Aardvark
 EOT
             ];
 
-            yield 'It adds multiple traites' => [
+        yield 'It adds multiple traites' => [
                 <<<'EOT'
 EOT
                 , SourceCodeBuilder::create()->trait('Aardvark')->end()->trait('Anteater')->end()->build(),
@@ -782,7 +781,7 @@ EOT
 
     public function provideProperties()
     {
-            yield 'It adds a property' => [
+        yield 'It adds a property' => [
                 <<<'EOT'
 class Aardvark
 {
@@ -801,7 +800,7 @@ class Aardvark
 EOT
             ];
 
-            yield 'It adds a property idempotently' => [
+        yield 'It adds a property idempotently' => [
                 <<<'EOT'
 class Aardvark
 {
@@ -821,7 +820,7 @@ class Aardvark
 EOT
             ];
 
-            yield 'It adds a property with existing assigned property' => [
+        yield 'It adds a property with existing assigned property' => [
                 <<<'EOT'
 class Aardvark
 {
@@ -841,7 +840,7 @@ class Aardvark
 EOT
             ];
 
-            yield 'It adds a property after existing properties' => [
+        yield 'It adds a property after existing properties' => [
                 <<<'EOT'
 class Aardvark
 {
@@ -864,7 +863,7 @@ class Aardvark
 EOT
             ];
 
-            yield 'It adds multiple properties' => [
+        yield 'It adds multiple properties' => [
                 <<<'EOT'
 class Aardvark
 {
@@ -884,7 +883,7 @@ class Aardvark
 EOT
             ];
 
-            yield 'It adds a documented properties' => [
+        yield 'It adds a documented properties' => [
                 <<<'EOT'
 class Aardvark
 {
@@ -909,7 +908,7 @@ class Aardvark
 EOT
             ];
 
-            yield 'It adds before methods' => [
+        yield 'It adds before methods' => [
                 <<<'EOT'
 class Aardvark
 {
@@ -949,7 +948,7 @@ EOT
 
     public function provideTraitProperties()
     {
-            yield 'trait: It adds a property' => [
+        yield 'trait: It adds a property' => [
                 <<<'EOT'
 trait Aardvark
 {
@@ -968,7 +967,7 @@ trait Aardvark
 EOT
             ];
 
-            yield 'trait: It adds a property idempotently' => [
+        yield 'trait: It adds a property idempotently' => [
                 <<<'EOT'
 trait Aardvark
 {
@@ -988,7 +987,7 @@ trait Aardvark
 EOT
             ];
 
-            yield 'trait: It adds a property with existing assigned property' => [
+        yield 'trait: It adds a property with existing assigned property' => [
                 <<<'EOT'
 trait Aardvark
 {
@@ -1008,7 +1007,7 @@ trait Aardvark
 EOT
             ];
 
-            yield 'trait: It adds a property after existing properties' => [
+        yield 'trait: It adds a property after existing properties' => [
                 <<<'EOT'
 trait Aardvark
 {
@@ -1031,7 +1030,7 @@ trait Aardvark
 EOT
             ];
 
-            yield 'trait: It adds multiple properties' => [
+        yield 'trait: It adds multiple properties' => [
                 <<<'EOT'
 trait Aardvark
 {
@@ -1051,7 +1050,7 @@ trait Aardvark
 EOT
             ];
 
-            yield 'trait: It adds documented properties' => [
+        yield 'trait: It adds documented properties' => [
                 <<<'EOT'
 trait Aardvark
 {
@@ -1076,7 +1075,7 @@ trait Aardvark
 EOT
             ];
 
-            yield 'trait: It adds a property before methods' => [
+        yield 'trait: It adds a property before methods' => [
                 <<<'EOT'
 trait Aardvark
 {
@@ -1116,7 +1115,7 @@ EOT
 
     public function provideMethods()
     {
-            yield 'It adds a method' => [
+        yield 'It adds a method' => [
                 <<<'EOT'
 class Aardvark
 {
@@ -1137,7 +1136,7 @@ class Aardvark
 EOT
             ];
 
-            yield 'It adds multiple methods' => [
+        yield 'It adds multiple methods' => [
                 <<<'EOT'
 class Aardvark
 {
@@ -1163,7 +1162,7 @@ class Aardvark
 EOT
             ];
 
-            yield 'It adds parameterized method' => [
+        yield 'It adds parameterized method' => [
                 <<<'EOT'
 class Aardvark
 {
@@ -1188,7 +1187,7 @@ class Aardvark
 EOT
             ];
 
-            yield 'It is idempotent' => [
+        yield 'It is idempotent' => [
                 <<<'EOT'
 class Aardvark
 {
@@ -1212,7 +1211,7 @@ class Aardvark
 EOT
             ];
 
-            yield 'It updates parameters' => [
+        yield 'It updates parameters' => [
                 <<<'EOT'
 class Aardvark
 {
@@ -1243,7 +1242,7 @@ class Aardvark
 EOT
             ];
 
-            yield 'It adds parameters' => [
+        yield 'It adds parameters' => [
                 <<<'EOT'
 class Aardvark
 {
@@ -1271,7 +1270,7 @@ class Aardvark
 EOT
             ];
 
-            yield 'It adds parameters and leaves existing ones in place' => [
+        yield 'It adds parameters and leaves existing ones in place' => [
                 <<<'EOT'
 class Aardvark
 {
@@ -1301,7 +1300,7 @@ class Aardvark
 EOT
             ];
 
-            yield 'It adds a method after existing methods' => [
+        yield 'It adds a method after existing methods' => [
                 <<<'EOT'
 class Aardvark
 {
@@ -1337,7 +1336,7 @@ class Aardvark
 EOT
             ];
 
-            yield 'It adds a documented methods' => [
+        yield 'It adds a documented methods' => [
                 <<<'EOT'
 class Aardvark
 {
@@ -1368,7 +1367,7 @@ class Aardvark
 EOT
             ];
 
-            yield 'It adds a method with a body' => [
+        yield 'It adds a method with a body' => [
                 <<<'EOT'
 class Aardvark
 {
@@ -1397,7 +1396,7 @@ class Aardvark
 EOT
             ];
 
-            yield 'Add line to a methods body' => [
+        yield 'Add line to a methods body' => [
                 <<<'EOT'
 class Aardvark
 {
@@ -1422,7 +1421,7 @@ class Aardvark
 EOT
             ];
 
-            yield 'Add lines after existing lines' => [
+        yield 'Add lines after existing lines' => [
                 <<<'EOT'
 class Aardvark
 {
@@ -1449,7 +1448,7 @@ class Aardvark
 EOT
             ];
 
-            yield 'Should not add the same line twice' => [
+        yield 'Should not add the same line twice' => [
                 <<<'EOT'
 class Aardvark
 {
@@ -1475,7 +1474,7 @@ class Aardvark
 EOT
             ];
 
-            yield 'It does not modify existing methods 1' => [
+        yield 'It does not modify existing methods 1' => [
                 <<<'EOT'
 class Aardvark
 {
@@ -1503,7 +1502,7 @@ class Aardvark
 EOT
             ];
 
-            yield 'It does not modify existing methods with imported names' => [
+        yield 'It does not modify existing methods with imported names' => [
                 <<<'EOT'
 
 use Barfoo as Foobar;
@@ -1533,7 +1532,7 @@ class Aardvark
 EOT
             ];
 
-            yield 'It modifies the return type' => [
+        yield 'It modifies the return type' => [
                 <<<'EOT'
 class Aardvark
 {
@@ -1557,7 +1556,7 @@ class Aardvark
 EOT
             ];
 
-            yield 'It modifies the parameter type' => [
+        yield 'It modifies the parameter type' => [
                 <<<'EOT'
 class Aardvark
 {
@@ -1592,7 +1591,7 @@ EOT
 
     public function provideConstants()
     {
-            yield 'It adds a constant' => [
+        yield 'It adds a constant' => [
                 <<<'EOT'
 class Aardvark
 {
@@ -1611,7 +1610,7 @@ class Aardvark
 EOT
             ];
 
-            yield 'It adds is idempotent' => [
+        yield 'It adds is idempotent' => [
                 <<<'EOT'
 class Aardvark
 {
@@ -1631,7 +1630,7 @@ class Aardvark
 EOT
             ];
 
-            yield 'It adds a constant after existing constants' => [
+        yield 'It adds a constant after existing constants' => [
                 <<<'EOT'
 class Aardvark
 {
@@ -1652,7 +1651,7 @@ class Aardvark
 EOT
             ];
 
-            yield 'It adds multiple constants' => [
+        yield 'It adds multiple constants' => [
                 <<<'EOT'
 class Aardvark
 {
@@ -1672,7 +1671,7 @@ class Aardvark
 EOT
             ];
 
-            yield 'It adds before methods' => [
+        yield 'It adds before methods' => [
                 <<<'EOT'
 class Aardvark
 {
@@ -1698,7 +1697,7 @@ class Aardvark
 EOT
             ];
 
-            yield 'It adds before properties' => [
+        yield 'It adds before properties' => [
                 <<<'EOT'
 class Aardvark
 {
@@ -1731,7 +1730,7 @@ EOT
 
     public function provideInterfaces()
     {
-            yield 'It adds an interface' => [
+        yield 'It adds an interface' => [
 
                 <<<'EOT'
 EOT
@@ -1744,7 +1743,7 @@ interface Aardvark
 EOT
             ];
 
-            yield 'It adds an interface in a namespace' => [
+        yield 'It adds an interface in a namespace' => [
 
                 <<<'EOT'
 namespace Foobar;
@@ -1759,7 +1758,7 @@ interface Aardvark
 EOT
             ];
 
-            yield 'It adds methods to an interface' => [
+        yield 'It adds methods to an interface' => [
 
                 <<<'EOT'
 interface Aardvark

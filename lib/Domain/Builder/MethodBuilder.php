@@ -2,7 +2,6 @@
 
 namespace Phpactor\CodeBuilder\Domain\Builder;
 
-use Phpactor\CodeBuilder\Domain\Prototype\Type;
 use Phpactor\CodeBuilder\Domain\Prototype\UpdatePolicy;
 use Phpactor\CodeBuilder\Domain\Prototype\Visibility;
 use Phpactor\CodeBuilder\Domain\Prototype\Parameters;

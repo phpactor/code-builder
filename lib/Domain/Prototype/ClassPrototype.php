@@ -16,7 +16,7 @@ final class ClassPrototype extends ClassLikePrototype
     private $implementsInterfaces;
 
     /**
-     * @var ExtendsClasss
+     * @var ExtendsClass
      */
     private $extendsclasss;
 

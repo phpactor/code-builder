@@ -2,7 +2,6 @@
 
 namespace Phpactor\CodeBuilder\Adapter\Twig;
 
-use Phpactor\CodeBuilder\Domain\Generator;
 use Phpactor\CodeBuilder\Domain\Code;
 use Phpactor\CodeBuilder\Domain\Prototype\Prototype;
 use Phpactor\CodeBuilder\Domain\Renderer;
@@ -41,7 +40,7 @@ final class TwigRenderer implements Renderer
             $code = $this->twigRender($prototype, $baseTemplateName, $variant);
         }
 
-        return Code::fromString(rtrim($code), PHP_EOL);
+        return Code::fromString(rtrim($code));
     }
 
     private function createTwig()

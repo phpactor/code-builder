@@ -20,7 +20,7 @@ abstract class ClassLikeUpdater
     protected $renderer;
 
     /**
-     * @var MethodUpdater
+     * @var ClassMethodUpdater
      */
     protected $methodUpdater;
 

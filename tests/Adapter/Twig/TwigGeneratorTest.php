@@ -2,15 +2,10 @@
 
 namespace Phpactor\CodeBuilder\Tests\Adapter\Twig;
 
-use Twig\Environment;
-use Twig\Loader\ArrayLoader;
-use Twig\Loader\FilesystemLoader;
 use Phpactor\CodeBuilder\Tests\Adapter\GeneratorTestCase;
 use Phpactor\CodeBuilder\Domain\Renderer;
 use Phpactor\CodeBuilder\Adapter\Twig\TwigRenderer;
-use Phpactor\CodeBuilder\Adapter\Twig\TwigExtension;
 use Phpactor\CodeBuilder\Domain\Builder\SourceCodeBuilder;
-
 
 class TwigGeneratorTest extends GeneratorTestCase
 {
@@ -38,4 +33,3 @@ class TwigGeneratorTest extends GeneratorTestCase
         $this->assertEquals('<?php', (string) $source);
     }
 }
-

@@ -3,7 +3,6 @@
 namespace Phpactor\CodeBuilder\Adapter\WorseReflection;
 
 use Phpactor\CodeBuilder\Domain\BuilderFactory;
-use Phpactor\CodeBuilder\Domain\Builder\ClassBuilder;
 use Phpactor\TextDocument\TextDocument;
 use Phpactor\TextDocument\TextDocumentBuilder;
 use Phpactor\WorseReflection\Reflector;

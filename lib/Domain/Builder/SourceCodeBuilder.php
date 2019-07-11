@@ -2,13 +2,11 @@
 
 namespace Phpactor\CodeBuilder\Domain\Builder;
 
+use InvalidArgumentException;
 use Phpactor\CodeBuilder\Domain\Prototype\SourceCode;
 use Phpactor\CodeBuilder\Domain\Prototype\NamespaceName;
-use Phpactor\CodeBuilder\Domain\Prototype\Type;
 use Phpactor\CodeBuilder\Domain\Prototype\Classes;
 use Phpactor\CodeBuilder\Domain\Prototype\UpdatePolicy;
-use Phpactor\CodeBuilder\Domain\Prototype\UseFunctionStatement;
-use Phpactor\CodeBuilder\Domain\Prototype\UseFunctionStatements;
 use Phpactor\CodeBuilder\Domain\Prototype\UseStatements;
 use Phpactor\CodeBuilder\Domain\Prototype\Interfaces;
 use Phpactor\CodeBuilder\Domain\Prototype\Traits;

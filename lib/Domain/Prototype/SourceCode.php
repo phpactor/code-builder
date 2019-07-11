@@ -24,6 +24,11 @@ class SourceCode extends Prototype
      */
     private $interfaces;
 
+    /**
+     * @var Traits
+     */
+    private $traits;
+
     public function __construct(
         NamespaceName $namespace = null,
         UseStatements $useStatements = null,

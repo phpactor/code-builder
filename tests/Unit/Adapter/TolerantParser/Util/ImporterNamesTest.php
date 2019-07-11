@@ -3,7 +3,6 @@
 namespace Phpactor\CodeBuilder\Tests\Unit\Adapter\TolerantParser\Util;
 
 use Microsoft\PhpParser\Node;
-use Microsoft\PhpParser\Node\Statement\NamespaceUseDeclaration;
 use Microsoft\PhpParser\Parser;
 use PHPUnit\Framework\TestCase;
 use Phpactor\CodeBuilder\Adapter\TolerantParser\Util\ImportedNames;
@@ -12,7 +11,8 @@ class ImporterNamesTest extends TestCase
 {
     public function testReturnsEmptyArrayForSourceFileNode()
     {
-        $node = $this->parse(<<<'EOT'
+        $node = $this->parse(
+            <<<'EOT'
 <?php
 EOT
         );
@@ -24,7 +24,8 @@ EOT
 
     public function testReturnsFullyQualifiedNames()
     {
-        $node = $this->parse(<<<'EOT'
+        $node = $this->parse(
+            <<<'EOT'
 <?php
 
 use Foobar;
@@ -48,5 +49,4 @@ EOT
         $parser = new Parser();
         return $parser->parseSourceFile($source);
     }
-
 }

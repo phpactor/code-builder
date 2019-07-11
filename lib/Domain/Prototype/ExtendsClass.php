@@ -8,6 +8,7 @@ final class ExtendsClass extends Prototype
 
     public function __construct(Type $class)
     {
+        parent::__construct();
         $this->class = $class;
     }
 
