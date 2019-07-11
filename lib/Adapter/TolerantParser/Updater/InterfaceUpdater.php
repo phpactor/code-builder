@@ -15,7 +15,7 @@ class InterfaceUpdater
     private $renderer;
 
     /**
-     * @var MethodUpdater
+     * @var InterfaceMethodUpdater
      */
     private $methodUpdater;
 

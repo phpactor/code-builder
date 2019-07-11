@@ -36,6 +36,8 @@ class NodeHelper
             return '';
         }
 
+        $part = '';
+
         if (count($parts) == 1) {
             $part = reset($parts);
         }

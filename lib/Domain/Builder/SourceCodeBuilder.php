@@ -2,6 +2,7 @@
 
 namespace Phpactor\CodeBuilder\Domain\Builder;
 
+use InvalidArgumentException;
 use Phpactor\CodeBuilder\Domain\Prototype\SourceCode;
 use Phpactor\CodeBuilder\Domain\Prototype\NamespaceName;
 use Phpactor\CodeBuilder\Domain\Prototype\Type;

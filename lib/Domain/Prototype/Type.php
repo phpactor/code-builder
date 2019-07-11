@@ -23,6 +23,7 @@ final class Type extends Prototype
 
     public function __construct(string $type = null, bool $nullable = false)
     {
+        parent::__construct();
         $this->type = $type;
         $this->nullable = $nullable;
     }

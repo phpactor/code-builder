@@ -9,6 +9,7 @@ use Microsoft\PhpParser\Node\PropertyDeclaration;
 use Microsoft\PhpParser\Node\Statement\ClassDeclaration;
 use Phpactor\CodeBuilder\Adapter\TolerantParser\Edits;
 use Phpactor\CodeBuilder\Domain\Prototype\ClassPrototype;
+use Phpactor\CodeBuilder\Domain\Prototype\Constant;
 use Phpactor\CodeBuilder\Domain\Prototype\ExtendsClass;
 use Phpactor\CodeBuilder\Domain\Prototype\ImplementsInterfaces;
 
@@ -99,10 +100,7 @@ class ClassUpdater extends ClassLikeUpdater
         }
 
         foreach ($classPrototype->constants()->notIn($existingConstantNames) as $constant) {
-            // if constant type exists then the last constant has a docblock - add a line break
-            if ($lastConstant instanceof ConstantDeclaration && $constant->type() != Type::none()) {
-                $edits->after($lastConstant, PHP_EOL);
-            }
+            assert($constant instanceof Constant);
 
             $edits->after(
                 $lastConstant,

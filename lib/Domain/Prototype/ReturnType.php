@@ -8,12 +8,13 @@ final class ReturnType extends Prototype
 
     public function __construct(Type $class)
     {
+        parent::__construct();
         $this->class = $class;
     }
 
     public static function fromString($string)
     {
-        return new self(Type::fromString($string, true));
+        return new self(Type::fromString($string));
     }
 
     public function __toString()

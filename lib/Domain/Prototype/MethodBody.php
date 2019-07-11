@@ -11,6 +11,7 @@ final class MethodBody extends Prototype
 
     public function __construct(Lines $lines = null)
     {
+        parent::__construct();
         $this->lines = $lines;
     }
 

@@ -9,7 +9,7 @@ use Phpactor\CodeBuilder\Util\TextFormat;
 class TwigExtension extends AbstractExtension
 {
     /**
-     * @var TwigGenerator
+     * @var TwigRenderer
      */
     private $generator;
 

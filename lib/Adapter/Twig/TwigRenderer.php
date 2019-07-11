@@ -41,7 +41,7 @@ final class TwigRenderer implements Renderer
             $code = $this->twigRender($prototype, $baseTemplateName, $variant);
         }
 
-        return Code::fromString(rtrim($code), PHP_EOL);
+        return Code::fromString(rtrim($code));
     }
 
     private function createTwig()

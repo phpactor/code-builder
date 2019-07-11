@@ -74,7 +74,7 @@ class TolerantUpdater implements Updater
         $this->classUpdater = new ClassUpdater($renderer);
         $this->interfaceUpdater = new InterfaceUpdater($renderer);
         $this->traitUpdater = new TraitUpdater($renderer);
-        $this->useStatementUpdater = new UseStatementUpdater($renderer);
+        $this->useStatementUpdater = new UseStatementUpdater();
     }
 
     public function apply(Prototype $prototype, Code $code): Code
