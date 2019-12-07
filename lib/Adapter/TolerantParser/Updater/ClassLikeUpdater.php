@@ -3,10 +3,12 @@
 namespace Phpactor\CodeBuilder\Adapter\TolerantParser\Updater;
 
 use Microsoft\PhpParser\Node;
+use Microsoft\PhpParser\Node\ClassConstDeclaration;
 use Microsoft\PhpParser\Node\Expression\AssignmentExpression;
 use Microsoft\PhpParser\Node\Expression\Variable;
 use Microsoft\PhpParser\Node\MethodDeclaration;
 use Microsoft\PhpParser\Node\PropertyDeclaration;
+use Microsoft\PhpParser\Node\TraitUseClause;
 use Phpactor\CodeBuilder\Adapter\TolerantParser\Edits;
 use Phpactor\CodeBuilder\Domain\Prototype\ClassLikePrototype;
 use Phpactor\CodeBuilder\Domain\Prototype\Type;
@@ -63,6 +65,13 @@ abstract class ClassLikeUpdater
         foreach ($memberDeclarations as $memberNode) {
             if (null === $nextMember) {
                 $nextMember = $memberNode;
+            }
+
+            // Property goes after traits and constants
+            if ($memberNode instanceof TraitUseClause ||
+                $memberNode instanceof ClassConstDeclaration
+            ) {
+                $lastProperty = $memberNode;
             }
 
             if ($memberNode instanceof PropertyDeclaration) {
