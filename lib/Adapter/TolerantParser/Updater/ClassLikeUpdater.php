@@ -84,6 +84,14 @@ abstract class ClassLikeUpdater
             }
         }
 
+        // If the previous member is neither the open brace of class nor a property
+        // Then we must add a blank line before the new properties
+        if ($lastProperty !== $classMembers->openBrace
+            && !($lastProperty instanceof PropertyDeclaration)
+        ) {
+            $edits->after($lastProperty, PHP_EOL);
+        }
+
         foreach ($classPrototype->properties()->notIn($existingPropertyNames) as $property) {
             // if property type exists then the last property has a docblock - add a line break
             if ($lastProperty instanceof PropertyDeclaration && $property->type() != Type::none()) {
