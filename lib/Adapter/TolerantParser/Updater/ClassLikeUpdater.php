@@ -58,14 +58,10 @@ abstract class ClassLikeUpdater
         $previousMember = $classMembers->openBrace;
         $memberDeclarations = $this->memberDeclarations($classMembers);
 
-        $nextMember = null;
+        $nextMember = reset($memberDeclarations) ?: null;
         $existingPropertyNames = [];
 
         foreach ($memberDeclarations as $memberNode) {
-            if (null === $nextMember) {
-                $nextMember = $memberNode;
-            }
-
             // Property goes after traits and constants
             if ($memberNode instanceof TraitUseClause ||
                 $memberNode instanceof ClassConstDeclaration
