@@ -925,6 +925,7 @@ EOT
                 <<<'EOT'
 class Aardvark
 {
+
     /**
      * @var Hello
      */
@@ -1092,6 +1093,7 @@ EOT
                 <<<'EOT'
 trait Aardvark
 {
+
     /**
      * @var Hello
      */

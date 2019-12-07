@@ -359,6 +359,7 @@ EOT
                     Type::fromString('PlaneCollection')
                 ),
                 <<<'EOT'
+
 /**
  * @var PlaneCollection
  */
@@ -487,6 +488,7 @@ interface Animal
 
 trait Oryctolagus
 {
+
     /**
      * @var bool
      */
@@ -499,6 +501,7 @@ trait Oryctolagus
 
 class Rabbits extends Leporidae implements Animal
 {
+
     /**
      * @var int
      */
@@ -583,6 +586,7 @@ class Rabbits implements Animal
 {
     const LEGS = 4;
     const SKIN = 'soft';
+
 
     /**
      * @var int
