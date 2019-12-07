@@ -18,6 +18,10 @@ class TextFormat
     {
         $lines = explode(PHP_EOL, $string);
         $lines = array_map(function ($line) use ($level) {
+            if (empty($line)) {
+                return $line;
+            }
+
             return str_repeat($this->indentation, $level) . $line;
         }, $lines);
 
