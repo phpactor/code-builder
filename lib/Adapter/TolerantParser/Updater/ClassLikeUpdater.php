@@ -11,7 +11,6 @@ use Microsoft\PhpParser\Node\PropertyDeclaration;
 use Microsoft\PhpParser\Node\TraitUseClause;
 use Phpactor\CodeBuilder\Adapter\TolerantParser\Edits;
 use Phpactor\CodeBuilder\Domain\Prototype\ClassLikePrototype;
-use Phpactor\CodeBuilder\Domain\Prototype\Type;
 use Phpactor\CodeBuilder\Domain\Renderer;
 
 abstract class ClassLikeUpdater
@@ -93,14 +92,15 @@ abstract class ClassLikeUpdater
         }
 
         foreach ($classPrototype->properties()->notIn($existingPropertyNames) as $property) {
-            $edits->after(
-                $lastProperty,
-                PHP_EOL . $edits->indent($this->renderer->render($property), 1)
-            );
+            $renderedProperty = $this->renderer->render($property);
 
-            if ($classPrototype->properties()->isLast($property) && $nextMember instanceof MethodDeclaration) {
-                $edits->after($lastProperty, PHP_EOL);
-            }
+            $edits->after($lastProperty, PHP_EOL . $edits->indent($renderedProperty, 1));
+        }
+
+        if ($lastProperty === $classMembers->openBrace &&
+            $nextMember instanceof MethodDeclaration
+        ) {
+            $edits->after($lastProperty, PHP_EOL);
         }
     }
 }
