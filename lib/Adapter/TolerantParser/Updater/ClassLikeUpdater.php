@@ -55,7 +55,7 @@ abstract class ClassLikeUpdater
             return;
         }
 
-        $lastProperty = $classMembers->openBrace;
+        $previousMember = $classMembers->openBrace;
         $memberDeclarations = $this->memberDeclarations($classMembers);
 
         $nextMember = null;
@@ -70,14 +70,14 @@ abstract class ClassLikeUpdater
             if ($memberNode instanceof TraitUseClause ||
                 $memberNode instanceof ClassConstDeclaration
             ) {
-                $lastProperty = $memberNode;
+                $previousMember = $memberNode;
             }
 
             if ($memberNode instanceof PropertyDeclaration) {
                 foreach ($memberNode->propertyElements->getElements() as $property) {
                     $existingPropertyNames[] = $this->resolvePropertyName($property);
                 }
-                $lastProperty = $memberNode;
+                $previousMember = $memberNode;
                 $nextMember = next($memberDeclarations) ?: $nextMember;
                 prev($memberDeclarations);
             }
@@ -85,22 +85,22 @@ abstract class ClassLikeUpdater
 
         // If the previous member is neither the open brace of class nor a property
         // Then we must add a blank line before the new properties
-        if ($lastProperty !== $classMembers->openBrace
-            && !($lastProperty instanceof PropertyDeclaration)
+        if ($previousMember !== $classMembers->openBrace
+            && !($previousMember instanceof PropertyDeclaration)
         ) {
-            $edits->after($lastProperty, PHP_EOL);
+            $edits->after($previousMember, PHP_EOL);
         }
 
         foreach ($classPrototype->properties()->notIn($existingPropertyNames) as $property) {
             $renderedProperty = $this->renderer->render($property);
 
-            $edits->after($lastProperty, PHP_EOL . $edits->indent($renderedProperty, 1));
+            $edits->after($previousMember, PHP_EOL . $edits->indent($renderedProperty, 1));
         }
 
-        if ($lastProperty === $classMembers->openBrace &&
+        if ($previousMember === $classMembers->openBrace &&
             $nextMember instanceof MethodDeclaration
         ) {
-            $edits->after($lastProperty, PHP_EOL);
+            $edits->after($previousMember, PHP_EOL);
         }
     }
 }
