@@ -13,17 +13,8 @@ use Phpactor\CodeBuilder\Domain\StyleFixer;
 use Phpactor\TextDocument\TextDocument;
 use Phpactor\TextDocument\TextDocumentBuilder;
 
-class MemberEmptyLineFixer implements StyleFixer
+class IndentationFixer implements StyleFixer
 {
-    private const META_SUCCESSOR = 'successor';
-    private const META_NODE_CLASS = 'class';
-    const META_FIRST = 'first';
-    const META_PRECEDING_BLANK_LINES = 'preceding_blank_lines';
-    const META_PRECEDING_BLANK_START = 'blank_start';
-    const META_PRECEDING_BLANK_LENGTH = 'blank_length';
-    const META_INDENTATION = 'indentation';
-
-
     /**
      * @var Parser
      */
@@ -148,7 +139,7 @@ class MemberEmptyLineFixer implements StyleFixer
         $edits[] = new TextEdit(
             $meta[self::META_PRECEDING_BLANK_START],
             $meta[self::META_PRECEDING_BLANK_LENGTH],
-            PHP_EOL . str_repeat(' ', $meta[self::META_INDENTATION] - 1)
+            PHP_EOL . str_repeat(' ', $meta[self::META_INDENTATION] - 1),
         );
 
         return $edits;
