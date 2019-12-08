@@ -1300,6 +1300,35 @@ class Aardvark
 EOT
             ];
 
+        yield 'It adds nullable typed parameters' => [
+                <<<'EOT'
+class Aardvark
+{
+    public function methodOne()
+    {
+    }
+}
+EOT
+                , SourceCodeBuilder::create()
+                    ->class('Aardvark')
+                        ->method('methodOne')
+                            ->parameter('sniff')->type(
+                                Type::fromString('Barf')->asNullable()
+                            )
+                            ->end()
+                        ->end()
+                    ->end()
+                    ->build(),
+                <<<'EOT'
+class Aardvark
+{
+    public function methodOne(?Barf $sniff)
+    {
+    }
+}
+EOT
+            ];
+
         yield 'It adds parameters and leaves existing ones in place' => [
                 <<<'EOT'
 class Aardvark
