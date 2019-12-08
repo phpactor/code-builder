@@ -9,6 +9,7 @@ use Microsoft\PhpParser\Node\MethodDeclaration;
 use Microsoft\PhpParser\Node\PropertyDeclaration;
 use Microsoft\PhpParser\Node\SourceFileNode;
 use Microsoft\PhpParser\Node\Statement\ClassDeclaration;
+use Microsoft\PhpParser\Node\Statement\CompoundStatementNode;
 use Microsoft\PhpParser\Node\TraitUseClause;
 use Microsoft\PhpParser\Parser;
 use Microsoft\PhpParser\TextEdit;
@@ -61,7 +62,8 @@ class IndentationFixer implements StyleFixer
         }
 
         if (
-            $node instanceof ClassMembersNode
+            $node instanceof ClassMembersNode ||
+            $node instanceof CompoundStatementNode
         ) {
             $level++;
         }
