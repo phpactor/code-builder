@@ -4,14 +4,18 @@ namespace Phpactor\CodeBuilder\Adapter\TolerantParser\Fixer;
 
 use Microsoft\PhpParser\Node;
 use Microsoft\PhpParser\Node\ClassConstDeclaration;
+use Microsoft\PhpParser\Node\ClassMembersNode;
 use Microsoft\PhpParser\Node\MethodDeclaration;
 use Microsoft\PhpParser\Node\PropertyDeclaration;
+use Microsoft\PhpParser\Node\SourceFileNode;
+use Microsoft\PhpParser\Node\Statement\ClassDeclaration;
 use Microsoft\PhpParser\Node\TraitUseClause;
 use Microsoft\PhpParser\Parser;
 use Microsoft\PhpParser\TextEdit;
 use Phpactor\CodeBuilder\Domain\StyleFixer;
 use Phpactor\TextDocument\TextDocument;
 use Phpactor\TextDocument\TextDocumentBuilder;
+use Phpactor\TextDocument\Util\LineColFromOffset;
 
 class IndentationFixer implements StyleFixer
 {
@@ -20,9 +24,16 @@ class IndentationFixer implements StyleFixer
      */
     private $parser;
 
-    public function __construct(Parser $parser)
+    /**
+     * @var string
+     */
+    private $indent;
+
+
+    public function __construct(Parser $parser, string $indent = '    ')
     {
         $this->parser = $parser;
+        $this->indent = $indent;
     }
 
     public function fix(TextDocument $document): TextDocument
@@ -30,129 +41,58 @@ class IndentationFixer implements StyleFixer
         $builder = TextDocumentBuilder::fromTextDocument($document);
 
         $node = $this->parser->parseSourceFile($document->__toString());
-
-        $membersMeta = $this->gatherMetadata($node, [
-            TraitUseClause::class,
-            ClassConstDeclaration::class,
-            PropertyDeclaration::class,
-            MethodDeclaration::class,
-        ]);
-        $this->updateDocument($builder, $membersMeta);
+        $edits = $this->indentations($node, 0, 1);
+        $builder->text(TextEdit::applyEdits($edits, $document->__toString()));
 
         return $builder->build();
     }
 
-    private function gatherMetadata(Node $node, array $nodeTypes): array
+    private function indentations(Node $node, int $level, int $prevLineNb): array
     {
-        $nodesMeta = [];
-        $nodes = [];
+        $lineCol = (new LineColFromOffset)->__invoke(
+            $node->getFileContents(),
+            $node->getStart()
+        );
 
-        foreach ($node->getDescendantNodes() as $decendantNode) {
-            if (!in_array(get_class($decendantNode), $nodeTypes)) {
-                continue;
-            }
-
-            $nodes[] = $decendantNode;
-        }
-
-        $previousNode = null;
-        foreach ($nodes as $node) {
-            assert($node instanceof Node);
-            $meta = [
-                self::META_SUCCESSOR => false,
-                self::META_NODE_CLASS => get_class($node),
-                self::META_FIRST => false,
-                self::META_PRECEDING_BLANK_LINES => $this->blankLines($node->getLeadingCommentAndWhitespaceText()),
-                self::META_PRECEDING_BLANK_START => $node->getFullStart(),
-                self::META_PRECEDING_BLANK_LENGTH => $node->getStart() - $node->getFullStart(),
-                self::META_INDENTATION => $this->indentation($node),
-            ];
-
-            if (null === $previousNode) {
-                $meta[self::META_FIRST] = true;
-            }
-
-            if ($previousNode && $previousNode === $meta[self::META_NODE_CLASS]) {
-                $meta[self::META_SUCCESSOR] = true;
-            }
-
-            $nodesMeta[] = $meta;
-            $previousNode = $meta[self::META_NODE_CLASS];
-        }
-
-        return $nodesMeta;
-    }
-
-    private function updateDocument(TextDocumentBuilder $document, array $membersMeta): TextDocumentBuilder
-    {
         $edits = [];
 
-        foreach ($membersMeta as $meta) {
-            if ($meta[self::META_FIRST] && $meta[self::META_PRECEDING_BLANK_LINES] > 2) {
-                $edits = $this->removeBlankLines($edits, $meta);
-                continue;
-            }
-
-            if (
-                $meta[self::META_SUCCESSOR] && 
-                $meta[self::META_PRECEDING_BLANK_LINES] > 2
-            ) {
-                $edits = $this->removeBlankLines($edits, $meta);
-                continue;
-            }
-
-            if (
-                $meta[self::META_FIRST] === false  &&
-                $meta[self::META_SUCCESSOR] === false && 
-                $meta[self::META_PRECEDING_BLANK_LINES] == 2
-            ) {
-                $edits = $this->addBlankLine($edits, $meta);
-                continue;
-            }
+        if ($lineCol->line() !== $prevLineNb && $edit = $this->fixIndentation($node, $level)) {
+            $edits[] = $edit;
         }
 
-        return $document->text(TextEdit::applyEdits($edits, $document->build()->__toString()));
+        if (
+            $node instanceof ClassMembersNode
+        ) {
+            $level++;
+        }
 
+        foreach ($node->getChildNodes() as $childNode) {
+            $edits = array_merge($edits, $this->indentations($childNode, $level, $lineCol->line()));
+        }
+
+        return $edits;
     }
 
-    private function blankLines(string $string): int
+    private function fixIndentation(Node $node, int $level)
     {
-        // TODO: Extract this to a tested utility (perhaps stick it in
-        //       text-document package)
-        return count(array_filter(
-            preg_split("{(\r\n|\n|\r)}", $string),
-            function (string $line) {
-                return trim($line) === '';
-            }
-        ));
+        $existingIndent = $this->indentation($node);
+        $indent = str_repeat($this->indent, $level);
+
+        if (strlen($existingIndent) === strlen($indent)) {
+            return null;
+        }
+
+        return new TextEdit($node->getStart(), 0, $indent);
     }
 
-    private function indentation(Node $node)
+    private function indentation(Node $node): string
     {
+        // TODO: This is an improved version of the one in the other
+        // fixer. Move it somewhere else and test it.
+
         $whitespace = $node->getLeadingCommentAndWhitespaceText();
-        $newLinePos = strrpos($whitespace, "\n");
-        return strlen(substr($whitespace, $newLinePos));
-    }
-
-    private function removeBlankLines(array $edits, $meta)
-    {
-        $edits[] = new TextEdit(
-            $meta[self::META_PRECEDING_BLANK_START],
-            $meta[self::META_PRECEDING_BLANK_LENGTH],
-            PHP_EOL . str_repeat(' ', $meta[self::META_INDENTATION] - 1),
-        );
-
-        return $edits;
-    }
-
-    private function addBlankLine($edits, $meta)
-    {
-        $edits[] = new TextEdit(
-            $meta[self::META_PRECEDING_BLANK_START],
-            0,
-            PHP_EOL,
-        );
-
-        return $edits;
+        // TODO: do not use "\n", can be different on different platforms
+        $newLinePos = (int)strrpos($whitespace, "\n");
+        return substr($whitespace, $newLinePos + 1);
     }
 }
