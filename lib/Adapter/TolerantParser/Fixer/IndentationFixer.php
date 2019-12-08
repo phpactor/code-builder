@@ -84,6 +84,8 @@ class IndentationFixer implements StyleFixer
             return null;
         }
 
+        $indent = substr($indent, 0, strlen($indent) - strlen($existingIndent));
+
         return new TextEdit($node->getStart(), 0, $indent);
     }
 
