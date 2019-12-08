@@ -101,7 +101,9 @@ class WorseBuilderFactory implements BuilderFactory
         if ($method->returnType()->isDefined()) {
             $type = $method->returnType();
             $this->resolveClassMemberType($classBuilder, $method->class()->name(), $type);
-            $methodBuilder->returnType($type->short());
+            $imports = $method->scope()->nameImports();
+            $typeName = $this->resolveTypeNameFromNameImports($type, $imports);
+            $methodBuilder->returnType($typeName);
         }
 
         if ($method->isStatic()) {

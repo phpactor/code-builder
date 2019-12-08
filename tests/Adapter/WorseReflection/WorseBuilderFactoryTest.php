@@ -129,6 +129,19 @@ class WorseBuilderFactoryTest extends TestCase
         $this->assertEquals('string', $source->classes()->first()->methods()->first()->returnType());
     }
 
+    public function testMethodWithNullableReturnType()
+    {
+        $source = $this->build('<?php class Foobar { public function method(): ?string {} }');
+        $this->assertEquals('?string', $source->classes()->first()->methods()->first()->returnType());
+    }
+
+    public function testMethodWithImportedNullableReturnType()
+    {
+        $source = $this->build('<?php namespace Test; use Bar\Baz; class Foobar { public function method(): ?Baz {} }');
+        $this->assertEquals('?Baz', $source->classes()->first()->methods()->first()->returnType());
+        $this->assertEquals('Bar\Baz', (string) $source->useStatements()->first());
+    }
+
     public function testMethodProtected()
     {
         $source = $this->build('<?php class Foobar { protected function method() {} }');
