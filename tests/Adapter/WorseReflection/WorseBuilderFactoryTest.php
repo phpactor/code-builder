@@ -72,6 +72,16 @@ class WorseBuilderFactoryTest extends TestCase
         $this->assertEquals('Bar\Foobar', (string) $source->useStatements()->first());
     }
 
+    public function testClassWithPropertyImportedNullableType()
+    {
+        $source = $this->build('<?php namespace Test; use Bar\Foobar; class Foobar { private ?Foobar $foo = "foobar"; }');
+        $this->assertEquals(
+            '?Foobar',
+            (string) $source->classes()->first()->properties()->first()->type()
+        );
+        $this->assertEquals('Bar\Foobar', (string) $source->useStatements()->first());
+    }
+
     public function testSimpleTrait()
     {
         $source = $this->build('<?php trait Foobar {}');
@@ -141,6 +151,12 @@ class WorseBuilderFactoryTest extends TestCase
     {
         $source = $this->build('<?php class Foobar { public function method(string $param) {} }');
         $this->assertEquals('string', (string) $source->classes()->first()->methods()->first()->parameters()->first()->type());
+    }
+
+    public function testMethodWithNullableTypedParameter()
+    {
+        $source = $this->build('<?php class Foobar { public function method(?string $param) {} }');
+        $this->assertEquals('?string', (string) $source->classes()->first()->methods()->first()->parameters()->first()->type());
     }
 
     public function testMethodWithAliasedParameter()

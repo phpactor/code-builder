@@ -87,7 +87,9 @@ class WorseBuilderFactory implements BuilderFactory
         $type = $property->inferredTypes()->best();
         if ($type->isDefined()) {
             $this->resolveClassMemberType($classBuilder, $property->class()->name(), $type);
-            $propertyBuilder->type((string) $type->short());
+            $imports = $property->scope()->nameImports();
+            $typeName = $this->resolveTypeNameFromNameImports($type, $imports);
+            $propertyBuilder->type($typeName);
         }
     }
 
@@ -150,6 +152,11 @@ class WorseBuilderFactory implements BuilderFactory
                 $typeName = $alias;
             }
         }
+
+        if ($type->isNullable()) {
+            return "?$typeName";
+        }
+
         return $typeName;
     }
 }
