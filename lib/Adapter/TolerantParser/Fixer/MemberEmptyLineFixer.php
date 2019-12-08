@@ -3,6 +3,9 @@
 namespace Phpactor\CodeBuilder\Adapter\TolerantParser\Fixer;
 
 use Microsoft\PhpParser\Node;
+use Microsoft\PhpParser\Node\ClassConstDeclaration;
+use Microsoft\PhpParser\Node\MethodDeclaration;
+use Microsoft\PhpParser\Node\PropertyDeclaration;
 use Microsoft\PhpParser\Node\TraitUseClause;
 use Microsoft\PhpParser\Parser;
 use Microsoft\PhpParser\TextEdit;
@@ -10,7 +13,7 @@ use Phpactor\CodeBuilder\Domain\StyleFixer;
 use Phpactor\TextDocument\TextDocument;
 use Phpactor\TextDocument\TextDocumentBuilder;
 
-class MemberWhitespaceFixer implements StyleFixer
+class MemberEmptyLineFixer implements StyleFixer
 {
     private const META_SUCCESSOR = 'successor';
     private const META_NODE_CLASS = 'class';
@@ -39,6 +42,9 @@ class MemberWhitespaceFixer implements StyleFixer
 
         $membersMeta = $this->gatherMetadata($node, [
             TraitUseClause::class,
+            ClassConstDeclaration::class,
+            PropertyDeclaration::class,
+            MethodDeclaration::class,
         ]);
         $this->updateDocument($builder, $membersMeta);
 
@@ -91,16 +97,26 @@ class MemberWhitespaceFixer implements StyleFixer
         $edits = [];
 
         foreach ($membersMeta as $meta) {
+            if ($meta[self::META_FIRST] && $meta[self::META_PRECEDING_BLANK_LINES] > 2) {
+                $edits = $this->removeBlankLines($edits, $meta);
+                continue;
+            }
+
             if (
                 $meta[self::META_SUCCESSOR] && 
                 $meta[self::META_PRECEDING_BLANK_LINES] > 2
             ) {
-                // remove blank lines
-                $edits[] = new TextEdit(
-                    $meta[self::META_PRECEDING_BLANK_START],
-                    $meta[self::META_PRECEDING_BLANK_LENGTH],
-                    PHP_EOL . str_repeat(' ', $meta[self::META_INDENTATION] - 1),
-                );
+                $edits = $this->removeBlankLines($edits, $meta);
+                continue;
+            }
+
+            if (
+                $meta[self::META_FIRST] === false  &&
+                $meta[self::META_SUCCESSOR] === false && 
+                $meta[self::META_PRECEDING_BLANK_LINES] == 2
+            ) {
+                $edits = $this->addBlankLine($edits, $meta);
+                continue;
             }
         }
 
@@ -125,5 +141,27 @@ class MemberWhitespaceFixer implements StyleFixer
         $whitespace = $node->getLeadingCommentAndWhitespaceText();
         $newLinePos = strrpos($whitespace, "\n");
         return strlen(substr($whitespace, $newLinePos));
+    }
+
+    private function removeBlankLines(array $edits, $meta)
+    {
+        $edits[] = new TextEdit(
+            $meta[self::META_PRECEDING_BLANK_START],
+            $meta[self::META_PRECEDING_BLANK_LENGTH],
+            PHP_EOL . str_repeat(' ', $meta[self::META_INDENTATION] - 1),
+        );
+
+        return $edits;
+    }
+
+    private function addBlankLine($edits, $meta)
+    {
+        $edits[] = new TextEdit(
+            $meta[self::META_PRECEDING_BLANK_START],
+            0,
+            PHP_EOL,
+        );
+
+        return $edits;
     }
 }
