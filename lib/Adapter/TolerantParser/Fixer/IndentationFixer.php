@@ -77,26 +77,29 @@ class IndentationFixer implements StyleFixer
 
     private function fixIndentation(Node $node, int $level)
     {
-        $existingIndent = $this->indentation($node);
-        $indent = str_repeat($this->indent, $level);
+        $existingIndentString = $this->existingIndentation($node->getLeadingCommentAndWhitespaceText());
+        $computedIndentString = str_repeat($this->indent, $level);
 
-        if (strlen($existingIndent) === strlen($indent)) {
+        if (strlen($existingIndentString) === strlen($computedIndentString)) {
             return null;
         }
 
-        $indent = substr($indent, 0, strlen($indent) - strlen($existingIndent));
+        $computedIndentString = substr(
+            $computedIndentString,
+            0,
+            strlen($computedIndentString) - strlen($existingIndentString)
+        );
 
-        return new TextEdit($node->getStart(), 0, $indent);
+        return new TextEdit($node->getStart(), 0, $computedIndentString);
     }
 
-    private function indentation(Node $node): string
+    private function existingIndentation(string $text): string
     {
         // TODO: This is an improved version of the one in the other
         // fixer. Move it somewhere else and test it.
 
-        $whitespace = $node->getLeadingCommentAndWhitespaceText();
         // TODO: do not use "\n", can be different on different platforms
-        $newLinePos = (int)strrpos($whitespace, "\n");
-        return substr($whitespace, $newLinePos + 1);
+        $newLinePos = (int)strrpos($text, "\n");
+        return substr($text, $newLinePos + 1);
     }
 }
