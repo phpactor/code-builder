@@ -23,4 +23,12 @@ class TextFormat
 
         return implode(PHP_EOL, $lines);
     }
+
+    public static function indentationRemove(string $text): string
+    {
+        $text = preg_replace("/\n\s+/m", "\n", $text);
+        $text = preg_replace("/^\s+/m", "", $text);
+
+        return $text;
+    }
 }
