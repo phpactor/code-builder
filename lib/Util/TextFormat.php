@@ -18,6 +18,9 @@ class TextFormat
     {
         $lines = explode(PHP_EOL, $string);
         $lines = array_map(function ($line) use ($level) {
+            if (!$line) {
+                return $line;
+            }
             return str_repeat($this->indentation, $level) . $line;
         }, $lines);
 
@@ -26,7 +29,7 @@ class TextFormat
 
     public static function indentationRemove(string $text): string
     {
-        $text = preg_replace("/\n\s+/m", "\n", $text);
+        $text = preg_replace("/\R +/m", "\n", $text);
         $text = preg_replace("/^ +/m", "", $text);
 
         return $text;

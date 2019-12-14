@@ -34,11 +34,9 @@ class MemberEmptyLineFixer implements StyleFixer
         $this->parser = $parser;
     }
 
-    public function fix(TextDocument $document): TextDocument
+    public function fix(string $text): string
     {
-        $builder = TextDocumentBuilder::fromTextDocument($document);
-
-        $node = $this->parser->parseSourceFile($document->__toString());
+        $node = $this->parser->parseSourceFile($text);
 
         $membersMeta = $this->gatherMetadata($node, [
             TraitUseClause::class,
@@ -46,9 +44,7 @@ class MemberEmptyLineFixer implements StyleFixer
             PropertyDeclaration::class,
             MethodDeclaration::class,
         ]);
-        $this->updateDocument($builder, $membersMeta);
-
-        return $builder->build();
+        return TextEdit::applyEdits($this->textEdits($membersMeta), $text);
     }
 
     private function gatherMetadata(Node $node, array $nodeTypes): array
@@ -92,7 +88,7 @@ class MemberEmptyLineFixer implements StyleFixer
         return $nodesMeta;
     }
 
-    private function updateDocument(TextDocumentBuilder $document, array $membersMeta): TextDocumentBuilder
+    private function textEdits(array $membersMeta): array
     {
         $edits = [];
 
@@ -120,8 +116,7 @@ class MemberEmptyLineFixer implements StyleFixer
             }
         }
 
-        return $document->text(TextEdit::applyEdits($edits, $document->build()->__toString()));
-
+        return $edits;
     }
 
     private function blankLines(string $string): int

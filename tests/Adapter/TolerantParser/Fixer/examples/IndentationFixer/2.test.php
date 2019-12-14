@@ -3,7 +3,7 @@
 
 class TestClass
 {
-    public function foobar() 
+    public function foobar()
     {
     }
 }
@@ -12,7 +12,7 @@ class TestClass
 
 class TestClass
 {
-    public function foobar() 
+    public function foobar()
     {
     }
 }

@@ -4,7 +4,7 @@
 class TestClass
 {
 private $bar;
-    public function foobar() 
+    public function foobar()
     {
     }
 }
@@ -14,7 +14,7 @@ private $bar;
 class TestClass
 {
     private $bar;
-    public function foobar() 
+    public function foobar()
     {
     }
 }

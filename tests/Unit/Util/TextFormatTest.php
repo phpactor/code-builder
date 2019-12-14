@@ -96,4 +96,47 @@ echo $hello;
 EOT
         ];
     }
+
+    /**
+     * @dataProvider provideIndent
+     */
+    public function testIndentat(string $text, int $level, string $expected)
+    {
+        self::assertEquals($expected, TextFormat::indentApply($text, '    ', $level));
+    }
+
+    public function provideIndent()
+    {
+        yield 'empty' => [
+            '',
+            0,
+            ''
+        ];
+
+        yield 'exmaple 1' => [
+            <<<'EOT'
+private $bar;
+EOT
+            ,
+            1,
+           <<<'EOT'
+    private $bar;
+EOT
+        ];
+
+        yield 'exmaple 2' => [
+            <<<'EOT'
+private $bar;
+
+private $bar;
+EOT
+            ,
+            1,
+           <<<'EOT'
+    private $bar;
+
+    private $bar;
+EOT
+        ];
+    }
 }

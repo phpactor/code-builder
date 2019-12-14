@@ -6,5 +6,5 @@ use Phpactor\TextDocument\TextDocument;
 
 interface StyleFixer
 {
-    public function fix(TextDocument $document): TextDocument;
+    public function fix(string $text): string;
 }

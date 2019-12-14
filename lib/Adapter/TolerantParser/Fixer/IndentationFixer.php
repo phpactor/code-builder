@@ -48,15 +48,12 @@ class IndentationFixer implements StyleFixer
         $this->indent = $indent;
     }
 
-    public function fix(TextDocument $document): TextDocument
+    public function fix(string $text): string
     {
-        $builder = TextDocumentBuilder::fromTextDocument($document);
-
-        $node = $this->parser->parseSourceFile($document->__toString());
+        $node = $this->parser->parseSourceFile($text);
         $edits = $this->indentations($node, 0);
-        $builder->text(TextEdit::applyEdits($edits, $document->__toString()));
 
-        return $builder->build();
+        return TextEdit::applyEdits($edits, $text);
     }
 
     private function indentations(Node $node, int $level): array
@@ -81,15 +78,6 @@ class IndentationFixer implements StyleFixer
         }
 
         return $edits;
-        if ($node->getChildNodes()) {
-            $edits = $this->indent(
-                $edits,
-                $node,
-                $level
-            );
-        }
-
-        return $edits;
     }
 
     private function indent(array $edits, Node $node, int $level): array
@@ -104,10 +92,13 @@ class IndentationFixer implements StyleFixer
 
         $text = substr($text, $start, $length);
 
-        echo '1^'.$text.'$' . "\n";
+        // if there are no new lines in the selection, return
+        if (!preg_match('{\R}m', $text)) {
+            return $edits;
+        }
+
         $text = TextFormat::indentationRemove($text);
         $text = TextFormat::indentApply($text, $this->indent, $level);
-        echo '2^'.$text.'$' . "\n";
 
         $edits[] = new TextEdit($start, $length, $text);
 
