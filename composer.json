@@ -17,10 +17,9 @@
     },
     "require-dev": {
         "phpunit/phpunit": "~7.0",
-        "phpactor/test-utils": "^1.0@dev",
+        "phpactor/test-utils": "^1.0",
         "friendsofphp/php-cs-fixer": "~2.15.0",
-        "phpstan/phpstan": "~0.11.0",
-        "symfony/var-dumper": "^5.1@dev"
+        "phpstan/phpstan": "~0.11.0"
     },
     "autoload": {
         "psr-4": {
