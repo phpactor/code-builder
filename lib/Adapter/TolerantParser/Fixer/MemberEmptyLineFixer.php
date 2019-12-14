@@ -157,7 +157,7 @@ class MemberEmptyLineFixer implements StyleFixer
         $edits[] = new TextEdit(
             $meta[self::META_PRECEDING_BLANK_START],
             0,
-            PHP_EOL,
+            PHP_EOL
         );
 
         return $edits;
