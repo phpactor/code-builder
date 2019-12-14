@@ -12,11 +12,22 @@ use Microsoft\PhpParser\Node\Statement\ClassDeclaration;
 use Microsoft\PhpParser\Node\Statement\CompoundStatementNode;
 use Microsoft\PhpParser\Node\TraitUseClause;
 use Microsoft\PhpParser\Parser;
-use Microsoft\PhpParser\TextEdit;
+use Phpactor\CodeBuilder\Adapter\TolerantParser\TextEdit;
 use Phpactor\CodeBuilder\Domain\StyleFixer;
+use Phpactor\CodeBuilder\Util\TextFormat;
 use Phpactor\TextDocument\TextDocument;
 use Phpactor\TextDocument\TextDocumentBuilder;
 use Phpactor\TextDocument\Util\LineColFromOffset;
+use Phpactor\TextDocument\Util\SplitLines;
+
+// Algorithm:
+//
+//
+// level = 0
+// 1 Indent the area between the node start and the first child
+// 2 Indent the area between the last child end and the node end
+// 3 If node is structural, level ++
+// 4 Iterate goto 1
 
 class IndentationFixer implements StyleFixer
 {
@@ -42,24 +53,21 @@ class IndentationFixer implements StyleFixer
         $builder = TextDocumentBuilder::fromTextDocument($document);
 
         $node = $this->parser->parseSourceFile($document->__toString());
-        $edits = $this->indentations($node, 0, 1);
+        $edits = $this->indentations($node, 0);
         $builder->text(TextEdit::applyEdits($edits, $document->__toString()));
 
         return $builder->build();
     }
 
-    private function indentations(Node $node, int $level, int $prevLineNb): array
+    private function indentations(Node $node, int $level): array
     {
-        $lineCol = (new LineColFromOffset)->__invoke(
-            $node->getFileContents(),
-            $node->getStart()
-        );
-
         $edits = [];
 
-        if ($lineCol->line() !== $prevLineNb && $edit = $this->fixIndentation($node, $level)) {
-            $edits[] = $edit;
-        }
+        $edits = $this->indent(
+            $edits,
+            $node,
+            $level
+        );
 
         if (
             $node instanceof ClassMembersNode ||
@@ -69,37 +77,49 @@ class IndentationFixer implements StyleFixer
         }
 
         foreach ($node->getChildNodes() as $childNode) {
-            $edits = array_merge($edits, $this->indentations($childNode, $level, $lineCol->line()));
+            $edits = array_merge($edits, $this->indentations($childNode, $level));
+        }
+
+        return $edits;
+        if ($node->getChildNodes()) {
+            $edits = $this->indent(
+                $edits,
+                $node,
+                $level
+            );
         }
 
         return $edits;
     }
 
-    private function fixIndentation(Node $node, int $level)
+    private function indent(array $edits, Node $node, int $level): array
     {
-        $existingIndentString = $this->existingIndentation($node->getLeadingCommentAndWhitespaceText());
-        $computedIndentString = str_repeat($this->indent, $level);
+        $text = $node->getFileContents();
+        $start = $node->getFullStart();
+        $length = $this->getOffsetUntilFirstChild($node) - $start;
 
-        if (strlen($existingIndentString) === strlen($computedIndentString)) {
-            return null;
+        if ($length === 0) {
+            return $edits;
         }
 
-        $computedIndentString = substr(
-            $computedIndentString,
-            0,
-            strlen($computedIndentString) - strlen($existingIndentString)
-        );
+        $text = substr($text, $start, $length);
 
-        return new TextEdit($node->getStart(), 0, $computedIndentString);
+        echo '1^'.$text.'$' . "\n";
+        $text = TextFormat::indentationRemove($text);
+        $text = TextFormat::indentApply($text, $this->indent, $level);
+        echo '2^'.$text.'$' . "\n";
+
+        $edits[] = new TextEdit($start, $length, $text);
+
+        return $edits;
     }
 
-    private function existingIndentation(string $text): string
+    private function getOffsetUntilFirstChild(Node $node)
     {
-        // TODO: This is an improved version of the one in the other
-        // fixer. Move it somewhere else and test it.
+        foreach ($node->getChildNodes() as $childNode) {
+            return $childNode->getFullStart();
+        }
 
-        // TODO: do not use "\n", can be different on different platforms
-        $newLinePos = (int)strrpos($text, "\n");
-        return substr($text, $newLinePos + 1);
+        return $node->getEndPosition();
     }
 }

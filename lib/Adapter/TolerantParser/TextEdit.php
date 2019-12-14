@@ -49,7 +49,12 @@ class TextEdit
             }
 
             if ($edit->start < 0 || $edit->length < 0 || $edit->start + $edit->length > \strlen($text)) {
-                throw new \OutOfBoundsException("Applied TextEdit range out of bounds.");
+                throw new \OutOfBoundsException(sprintf(
+                    "Applied TextEdit range out of bounds, text length: %s, start: %s, length: %s.",
+                    strlen($text),
+                    $edit->start,
+                    $edit->length
+                ));
             }
             $prevEditStart = $edit->start;
             $head = \substr($text, 0, $edit->start);

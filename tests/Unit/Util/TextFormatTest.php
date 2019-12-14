@@ -71,5 +71,29 @@ echo $hello;
 }
 EOT
         ];
+
+        yield 'preserve new line' => [
+            <<<'EOT'
+
+class Foo
+{
+    public function bar()
+    {
+        echo $hello;
+    }
+}
+EOT
+           ,
+           <<<'EOT'
+
+class Foo
+{
+public function bar()
+{
+echo $hello;
+}
+}
+EOT
+        ];
     }
 }
