@@ -112,6 +112,18 @@ use Foo\Bovine as Cow;
 EOT
             ];
 
+        yield 'It adds use statements with an alias with existing imports' => [
+
+                <<<'EOT'
+use Foo\Dino;
+EOT
+                , SourceCodeBuilder::create()->use('Foo\Bovine', 'Cow')->build(),
+                <<<'EOT'
+use Foo\Bovine as Cow;
+use Foo\Dino;
+EOT
+            ];
+
         yield 'It adds use statements after a namespace' => [
 
                 <<<'EOT'
