@@ -83,19 +83,25 @@ class UseStatementUpdater
         $existingNames = new ImportedNames($lastNode);
         /** @var UseStatement $usePrototype */
         $usePrototypes = $prototype->useStatements()->sorted();
+
         $usePrototypes = array_filter(iterator_to_array($usePrototypes), function (UseStatement $usePrototype) use ($existingNames) {
             $existing = $usePrototype->type() === UseStatement::TYPE_FUNCTION ?
                 $existingNames->functionNames() :
                 $existingNames->classNames();
 
-            $compare = $usePrototype->hasAlias() ? $usePrototype->alias() : $usePrototype->name()->__toString();
+            $candidate = $usePrototype->hasAlias() ? $usePrototype->alias() : $usePrototype->name()->__toString();
+
+            // when we are dealing with aliases, they are stored in the array
+            // keys...
             $existing = $usePrototype->hasAlias() ? array_keys($existing) : array_values($existing);
 
             return false === in_array(
-                $compare,
-                $existing
+                $candidate,
+                $existing,
+                true
             );
         });
+
         return $usePrototypes;
     }
 
