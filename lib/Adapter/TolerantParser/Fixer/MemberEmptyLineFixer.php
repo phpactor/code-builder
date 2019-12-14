@@ -10,8 +10,6 @@ use Microsoft\PhpParser\Node\TraitUseClause;
 use Microsoft\PhpParser\Parser;
 use Microsoft\PhpParser\TextEdit;
 use Phpactor\CodeBuilder\Domain\StyleFixer;
-use Phpactor\TextDocument\TextDocument;
-use Phpactor\TextDocument\TextDocumentBuilder;
 
 class MemberEmptyLineFixer implements StyleFixer
 {
@@ -99,7 +97,7 @@ class MemberEmptyLineFixer implements StyleFixer
             }
 
             if (
-                $meta[self::META_SUCCESSOR] && 
+                $meta[self::META_SUCCESSOR] &&
                 $meta[self::META_PRECEDING_BLANK_LINES] > 2
             ) {
                 $edits = $this->removeBlankLines($edits, $meta);
@@ -108,7 +106,7 @@ class MemberEmptyLineFixer implements StyleFixer
 
             if (
                 $meta[self::META_FIRST] === false  &&
-                $meta[self::META_SUCCESSOR] === false && 
+                $meta[self::META_SUCCESSOR] === false &&
                 $meta[self::META_PRECEDING_BLANK_LINES] == 2
             ) {
                 $edits = $this->addBlankLine($edits, $meta);

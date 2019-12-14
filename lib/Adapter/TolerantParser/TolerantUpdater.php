@@ -74,8 +74,7 @@ class TolerantUpdater implements Updater
         TextFormat $textFormat = null,
         Parser $parser = null,
         StyleFixer $fixer = null
-    )
-    {
+    ) {
         $this->parser = $parser ?: new Parser();
         $this->textFormat = $textFormat ?: new TextFormat();
         $this->renderer = $renderer;
