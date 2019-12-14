@@ -15,11 +15,12 @@ class MemberEmptyLineFixer implements StyleFixer
 {
     private const META_SUCCESSOR = 'successor';
     private const META_NODE_CLASS = 'class';
-    const META_FIRST = 'first';
-    const META_PRECEDING_BLANK_LINES = 'preceding_blank_lines';
-    const META_PRECEDING_BLANK_START = 'blank_start';
-    const META_PRECEDING_BLANK_LENGTH = 'blank_length';
-    const META_INDENTATION = 'indentation';
+    private const META_FIRST = 'first';
+    private const META_PRECEDING_BLANK_LINES = 'preceding_blank_lines';
+    private const META_PRECEDING_BLANK_START = 'blank_start';
+    private const META_PRECEDING_BLANK_LENGTH = 'blank_length';
+    private const META_INDENTATION = 'indentation';
+    private const META_IS_METHOD = 'is_method';
 
 
     /**
@@ -69,6 +70,7 @@ class MemberEmptyLineFixer implements StyleFixer
                 self::META_PRECEDING_BLANK_START => $node->getFullStart(),
                 self::META_PRECEDING_BLANK_LENGTH => $node->getStart() - $node->getFullStart(),
                 self::META_INDENTATION => $this->indentation($node),
+                self::META_IS_METHOD => $node instanceof MethodDeclaration,
             ];
 
             if (null === $previousNode) {
@@ -97,8 +99,11 @@ class MemberEmptyLineFixer implements StyleFixer
             }
 
             if (
-                $meta[self::META_SUCCESSOR] &&
-                $meta[self::META_PRECEDING_BLANK_LINES] > 2
+                !$meta[self::META_IS_METHOD] &&
+                (
+                    $meta[self::META_SUCCESSOR] &&
+                    $meta[self::META_PRECEDING_BLANK_LINES] > 2
+                )
             ) {
                 $edits = $this->removeBlankLines($edits, $meta);
                 continue;
