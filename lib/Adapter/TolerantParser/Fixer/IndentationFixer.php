@@ -4,6 +4,7 @@ namespace Phpactor\CodeBuilder\Adapter\TolerantParser\Fixer;
 
 use Microsoft\PhpParser\Node;
 use Microsoft\PhpParser\Node\ClassMembersNode;
+use Microsoft\PhpParser\Node\DelimitedList\ArrayElementList;
 use Microsoft\PhpParser\Node\Statement\CompoundStatementNode;
 use Microsoft\PhpParser\Parser;
 use Phpactor\CodeBuilder\Adapter\TolerantParser\TextEdit;
@@ -58,7 +59,8 @@ class IndentationFixer implements StyleFixer
 
         if (
             $node instanceof ClassMembersNode ||
-            $node instanceof CompoundStatementNode
+            $node instanceof CompoundStatementNode ||
+            $node instanceof ArrayElementList
         ) {
             $level++;
         }
