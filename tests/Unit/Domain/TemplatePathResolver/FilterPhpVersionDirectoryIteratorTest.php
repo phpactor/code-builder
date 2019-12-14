@@ -1,11 +1,11 @@
 <?php
 
-namespace Phpactor\CodeBuilder\Tests\Unit\Domain\Helper;
+namespace Phpactor\CodeBuilder\Tests\Unit\Domain\TemplatePathResolver;
 
 use ArrayIterator;
 use Iterator;
 use PHPUnit\Framework\TestCase;
-use Phpactor\CodeBuilder\Domain\Helper\FilterPhpVersionDirectoryIterator;
+use Phpactor\CodeBuilder\Domain\TemplatePathResolver\FilterPhpVersionDirectoryIterator;
 use SplFileInfo;
 
 class FilterPhpVersionDirectoryIteratorTest extends TestCase

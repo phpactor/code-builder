@@ -1,10 +1,10 @@
 <?php
 
-namespace Phpactor\CodeBuilder\Domain\Helper;
+namespace Phpactor\CodeBuilder\Domain\TemplatePathResolver;
 
 use FilesystemIterator;
 
-class TemplatePathsResolver
+class PhpVersionPathResolver
 {
     /**
      * @var string In the form of "major.minor.release[extra]"

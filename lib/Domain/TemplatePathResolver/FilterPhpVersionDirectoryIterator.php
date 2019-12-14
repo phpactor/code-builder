@@ -1,6 +1,6 @@
 <?php
 
-namespace Phpactor\CodeBuilder\Domain\Helper;
+namespace Phpactor\CodeBuilder\Domain\TemplatePathResolver;
 
 use Iterator;
 use FilterIterator;
