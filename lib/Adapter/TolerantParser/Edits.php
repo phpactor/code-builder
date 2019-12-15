@@ -2,6 +2,7 @@
 
 namespace Phpactor\CodeBuilder\Adapter\TolerantParser;
 
+use Phpactor\CodeBuilder\Domain\TextEdits;
 use Phpactor\CodeBuilder\Util\TextFormat;
 use Phpactor\CodeBuilder\Domain\TextEdit;
 
@@ -43,6 +44,11 @@ class Edits
     public function apply(string $code): string
     {
         return trim(TextEdit::applyEdits($this->edits, $code));
+    }
+
+    public function textEdits(): TextEdits
+    {
+        return TextEdits::fromTextEdits($this->edits);
     }
 
     public function add(TextEdit $textEdit)

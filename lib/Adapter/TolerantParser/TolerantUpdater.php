@@ -65,7 +65,7 @@ class TolerantUpdater implements Updater
     private $useStatementUpdater;
 
     /**
-     * @var StyleFixer
+     * @var StyleProposer
      */
     private $fixer;
 

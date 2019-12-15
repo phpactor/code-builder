@@ -42,4 +42,8 @@ class TextEdits implements IteratorAggregate
     {
         return TextEdit::applyEdits($this->textEdits, $text);
     }
+
+    public function intersection(TextEdits $textEdits)
+    {
+    }
 }
