@@ -31,5 +31,81 @@ class TextEditsTest extends TestCase
             [
             ],
         ];
+
+        yield 'no intersect' => [
+            [
+                new TextEdit(0, 5, 'foobar'),
+            ],
+            [
+                new TextEdit(10, 5, 'foobar'),
+            ],
+            [
+            ],
+        ];
+
+        yield 'no intersect 2' => [
+            [
+                new TextEdit(0, 5, 'foobar'),
+            ],
+            [
+                new TextEdit(5, 5, 'foobar'),
+            ],
+            [
+            ],
+        ];
+
+        yield 'intersect 1' => [
+            [
+                new TextEdit(0, 5, 'foobar'),
+            ],
+            [
+                new TextEdit(0, 5, 'foobar'),
+            ],
+            [
+                new TextEdit(0, 5, 'foobar'),
+            ],
+        ];
+
+        yield 'intersect 2' => [
+            [
+                new TextEdit(0, 5, 'foobar'),
+            ],
+            [
+                new TextEdit(4, 5, 'foobar'),
+            ],
+            [
+                new TextEdit(0, 5, 'foobar'),
+            ],
+        ];
+
+        yield 'intersect 3' => [
+            [
+                new TextEdit(0, 5, 'foobar'),
+            ],
+            [
+                new TextEdit(4, 5, 'foobar'),
+                new TextEdit(2, 5, 'foobar'),
+                new TextEdit(10, 5, 'foobar'),
+            ],
+            [
+                new TextEdit(0, 5, 'foobar'),
+            ],
+        ];
+
+        yield 'intersect 4' => [
+            [
+                new TextEdit(0, 5, 'foobar'),
+                new TextEdit(15, 1, 'foobar'),
+            ],
+            [
+                new TextEdit(4, 5, 'foobar'),
+                new TextEdit(15, 5, 'foobar'),
+                new TextEdit(16, 5, 'foobar'),
+            ],
+            [
+                new TextEdit(0, 5, 'foobar'),
+                new TextEdit(15, 1, 'foobar'),
+            ],
+        ];
     }
 }

@@ -43,7 +43,21 @@ class TextEdits implements IteratorAggregate
         return TextEdit::applyEdits($this->textEdits, $text);
     }
 
-    public function intersection(TextEdits $textEdits)
+    public function intersection(TextEdits $textEdits): TextEdits
     {
+        $intersection = [];
+        foreach ($this->textEdits as $textEdit1) {
+            $start = $textEdit1->start;
+            $end = $textEdit1->start + $textEdit1->length;
+
+            foreach ($textEdits as $textEdit2) {
+                if ($textEdit2->start >= $start && $textEdit2->start < $end) {
+                    $intersection[] = $textEdit1;
+                    continue 2;
+                }
+            }
+        }
+
+        return new self(...$intersection);
     }
 }
