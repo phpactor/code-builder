@@ -93,11 +93,10 @@ class TolerantUpdater implements Updater
         $this->updateNamespace($edits, $prototype, $node);
         $this->useStatementUpdater->updateUseStatements($edits, $prototype, $node);
         $this->updateClasses($edits, $prototype, $node);
+        $updatedCode = $edits->apply((string) $code);
 
         return Code::fromString(
-            $this->fixer->fix(
-                $edits->apply((string) $code)
-            )
+            $this->fixer->fix($updatedCode)->apply($updatedCode)
         );
     }
 

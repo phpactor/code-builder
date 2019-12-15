@@ -11,7 +11,7 @@ use Phpactor\CodeBuilder\Domain\Prototype\Method;
 use Microsoft\PhpParser\Node;
 use Microsoft\PhpParser\Node\Statement\CompoundStatementNode;
 use Phpactor\CodeBuilder\Domain\Prototype\Parameters;
-use Phpactor\CodeBuilder\Adapter\TolerantParser\TextEdit;
+use Phpactor\CodeBuilder\Domain\TextEdit;
 use Phpactor\CodeBuilder\Domain\Prototype\ClassLikePrototype;
 use Microsoft\PhpParser\ClassLike;
 use Microsoft\PhpParser\Node\Parameter;

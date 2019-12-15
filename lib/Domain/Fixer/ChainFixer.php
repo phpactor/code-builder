@@ -3,6 +3,7 @@
 namespace Phpactor\CodeBuilder\Domain\Fixer;
 
 use Phpactor\CodeBuilder\Domain\StyleFixer;
+use Phpactor\CodeBuilder\Domain\TextEdits;
 
 class ChainFixer implements StyleFixer
 {
@@ -16,12 +17,13 @@ class ChainFixer implements StyleFixer
         $this->fixers = $fixers;
     }
 
-    public function fix(string $text): string
+    public function fix(string $text): TextEdits
     {
+        $edits = TextEdits::none();
         foreach ($this->fixers as $fixer) {
-            $text = $fixer->fix($text);
+            $edits = $edits->merge($fixer->fix($text));
         }
 
-        return $text;
+        return $edits;
     }
 }

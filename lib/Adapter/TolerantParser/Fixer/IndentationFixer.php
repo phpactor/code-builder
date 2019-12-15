@@ -8,8 +8,9 @@ use Microsoft\PhpParser\Node\DelimitedList;
 use Microsoft\PhpParser\Node\DelimitedList\ArrayElementList;
 use Microsoft\PhpParser\Node\Statement\CompoundStatementNode;
 use Microsoft\PhpParser\Parser;
-use Phpactor\CodeBuilder\Adapter\TolerantParser\TextEdit;
+use Phpactor\CodeBuilder\Domain\TextEdit;
 use Phpactor\CodeBuilder\Domain\StyleFixer;
+use Phpactor\CodeBuilder\Domain\TextEdits;
 use Phpactor\CodeBuilder\Util\TextFormat;
 
 // Algorithm:
@@ -33,19 +34,18 @@ class IndentationFixer implements StyleFixer
      */
     private $indent;
 
-
     public function __construct(Parser $parser, string $indent = '    ')
     {
         $this->parser = $parser;
         $this->indent = $indent;
     }
 
-    public function fix(string $text): string
+    public function fix(string $text): TextEdits
     {
         $node = $this->parser->parseSourceFile($text);
         $edits = $this->indentations($node, 0);
 
-        return TextEdit::applyEdits($edits, $text);
+        return TextEdits::fromTextEdits($edits);
     }
 
     private function indentations(Node $node, int $level): array

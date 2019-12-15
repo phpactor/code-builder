@@ -5,7 +5,7 @@
  * https://github.com/Microsoft/tolerant-php-parser/pull/158
  */
 
-namespace Phpactor\CodeBuilder\Adapter\TolerantParser;
+namespace Phpactor\CodeBuilder\Domain;
 
 class TextEdit
 {

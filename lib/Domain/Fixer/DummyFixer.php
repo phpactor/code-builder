@@ -3,11 +3,12 @@
 namespace Phpactor\CodeBuilder\Domain\Fixer;
 
 use Phpactor\CodeBuilder\Domain\StyleFixer;
+use Phpactor\CodeBuilder\Domain\TextEdits;
 
 class DummyFixer implements StyleFixer
 {
-    public function fix(string $text): string
+    public function fix(string $text): TextEdits
     {
-        return $text;
+        return TextEdits::none();
     }
 }

@@ -8,8 +8,9 @@ use Microsoft\PhpParser\Node\MethodDeclaration;
 use Microsoft\PhpParser\Node\PropertyDeclaration;
 use Microsoft\PhpParser\Node\TraitUseClause;
 use Microsoft\PhpParser\Parser;
-use Microsoft\PhpParser\TextEdit;
 use Phpactor\CodeBuilder\Domain\StyleFixer;
+use Phpactor\CodeBuilder\Domain\TextEdit;
+use Phpactor\CodeBuilder\Domain\TextEdits;
 
 class MemberEmptyLineFixer implements StyleFixer
 {
@@ -33,7 +34,7 @@ class MemberEmptyLineFixer implements StyleFixer
         $this->parser = $parser;
     }
 
-    public function fix(string $text): string
+    public function fix(string $text): TextEdits
     {
         $node = $this->parser->parseSourceFile($text);
 
@@ -43,7 +44,8 @@ class MemberEmptyLineFixer implements StyleFixer
             PropertyDeclaration::class,
             MethodDeclaration::class,
         ]);
-        return TextEdit::applyEdits($this->textEdits($membersMeta), $text);
+
+        return TextEdits::fromTextEdits($this->textEdits($membersMeta));
     }
 
     private function gatherMetadata(Node $node, array $nodeTypes): array
