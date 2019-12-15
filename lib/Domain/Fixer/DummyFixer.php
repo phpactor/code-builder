@@ -7,7 +7,7 @@ use Phpactor\CodeBuilder\Domain\TextEdits;
 
 class DummyFixer implements StyleFixer
 {
-    public function fix(string $text): TextEdits
+    public function propose(string $text): TextEdits
     {
         return TextEdits::none();
     }

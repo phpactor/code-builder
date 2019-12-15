@@ -34,7 +34,7 @@ class MemberEmptyLineFixer implements StyleFixer
         $this->parser = $parser;
     }
 
-    public function fix(string $text): TextEdits
+    public function propose(string $text): TextEdits
     {
         $node = $this->parser->parseSourceFile($text);
 

@@ -96,7 +96,7 @@ class TolerantUpdater implements Updater
         $updatedCode = $edits->apply((string) $code);
 
         return Code::fromString(
-            $this->fixer->fix($updatedCode)->apply($updatedCode)
+            $this->fixer->propose($updatedCode)->apply($updatedCode)
         );
     }
 

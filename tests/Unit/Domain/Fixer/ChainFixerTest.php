@@ -12,13 +12,13 @@ class ChainFixerTest extends TestCase
 {
     public function testEmptyFixer()
     {
-        self::assertEquals('foobar', (new ChainFixer())->fix('foobar')->apply('foobar'));
+        self::assertEquals('foobar', (new ChainFixer())->propose('foobar')->apply('foobar'));
     }
 
     public function testAppliesFixers()
     {
         $fixer = new class implements StyleFixer {
-            public function fix(string $string): TextEdits 
+            public function propose(string $string): TextEdits 
             {
                 return TextEdits::fromTextEdits([new TextEdit(0, 0, 'hallo')]);
             }
@@ -26,6 +26,6 @@ class ChainFixerTest extends TestCase
 
         self::assertEquals('hallofoobar', (new ChainFixer(
             $fixer
-        ))->fix('foobar')->apply('foobar'));
+        ))->propose('foobar')->apply('foobar'));
     }
 }

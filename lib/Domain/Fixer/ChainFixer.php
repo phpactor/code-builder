@@ -17,11 +17,11 @@ class ChainFixer implements StyleFixer
         $this->fixers = $fixers;
     }
 
-    public function fix(string $text): TextEdits
+    public function propose(string $text): TextEdits
     {
         $edits = TextEdits::none();
         foreach ($this->fixers as $fixer) {
-            $edits = $edits->merge($fixer->fix($text));
+            $edits = $edits->merge($fixer->propose($text));
         }
 
         return $edits;

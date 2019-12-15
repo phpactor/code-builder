@@ -40,7 +40,7 @@ class IndentationFixer implements StyleFixer
         $this->indent = $indent;
     }
 
-    public function fix(string $text): TextEdits
+    public function propose(string $text): TextEdits
     {
         $node = $this->parser->parseSourceFile($text);
         $edits = $this->indentations($node, 0);

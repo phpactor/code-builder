@@ -4,5 +4,5 @@ namespace Phpactor\CodeBuilder\Domain;
 
 interface StyleFixer
 {
-    public function fix(string $text): TextEdits;
+    public function propose(string $text): TextEdits;
 }
