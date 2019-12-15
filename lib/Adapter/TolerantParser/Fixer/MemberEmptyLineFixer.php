@@ -8,11 +8,11 @@ use Microsoft\PhpParser\Node\MethodDeclaration;
 use Microsoft\PhpParser\Node\PropertyDeclaration;
 use Microsoft\PhpParser\Node\TraitUseClause;
 use Microsoft\PhpParser\Parser;
-use Phpactor\CodeBuilder\Domain\StyleFixer;
+use Phpactor\CodeBuilder\Domain\StyleProposer;
 use Phpactor\CodeBuilder\Domain\TextEdit;
 use Phpactor\CodeBuilder\Domain\TextEdits;
 
-class MemberEmptyLineFixer implements StyleFixer
+class MemberEmptyLineFixer implements StyleProposer
 {
     private const META_SUCCESSOR = 'successor';
     private const META_NODE_CLASS = 'class';

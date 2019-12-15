@@ -9,7 +9,7 @@ use Microsoft\PhpParser\Node\DelimitedList\ArrayElementList;
 use Microsoft\PhpParser\Node\Statement\CompoundStatementNode;
 use Microsoft\PhpParser\Parser;
 use Phpactor\CodeBuilder\Domain\TextEdit;
-use Phpactor\CodeBuilder\Domain\StyleFixer;
+use Phpactor\CodeBuilder\Domain\StyleProposer;
 use Phpactor\CodeBuilder\Domain\TextEdits;
 use Phpactor\CodeBuilder\Util\TextFormat;
 
@@ -22,7 +22,7 @@ use Phpactor\CodeBuilder\Util\TextFormat;
 // 3 If node is structural, level ++
 // 4 Iterate goto 1
 
-class IndentationFixer implements StyleFixer
+class IndentationFixer implements StyleProposer
 {
     /**
      * @var Parser

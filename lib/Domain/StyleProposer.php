@@ -2,7 +2,7 @@
 
 namespace Phpactor\CodeBuilder\Domain;
 
-interface StyleFixer
+interface StyleProposer
 {
     public function propose(string $text): TextEdits;
 }

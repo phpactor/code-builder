@@ -7,13 +7,13 @@ use Microsoft\PhpParser\Parser;
 use PHPUnit\Framework\TestCase;
 use Phpactor\CodeBuilder\Adapter\TolerantParser\Fixer\IndentationFixer;
 use Phpactor\CodeBuilder\Adapter\TolerantParser\Fixer\MemberEmptyLineFixer;
-use Phpactor\CodeBuilder\Domain\StyleFixer;
+use Phpactor\CodeBuilder\Domain\StyleProposer;
 use Phpactor\TestUtils\Workspace;
 use Phpactor\TextDocument\TextDocumentBuilder;
 
 class IndentationFixerTest extends FixerTestCase
 {
-    protected function createFixer(): StyleFixer
+    protected function createFixer(): StyleProposer
     {
         return new IndentationFixer(new Parser());
     }

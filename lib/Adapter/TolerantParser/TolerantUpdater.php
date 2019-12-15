@@ -14,7 +14,7 @@ use Phpactor\CodeBuilder\Domain\Prototype\NamespaceName;
 use Phpactor\CodeBuilder\Domain\Prototype\Prototype;
 use Phpactor\CodeBuilder\Domain\Prototype\SourceCode;
 use Phpactor\CodeBuilder\Domain\Renderer;
-use Phpactor\CodeBuilder\Domain\StyleFixer;
+use Phpactor\CodeBuilder\Domain\StyleProposer;
 use Phpactor\CodeBuilder\Domain\Updater;
 use Phpactor\CodeBuilder\Util\TextFormat;
 use Phpactor\CodeBuilder\Adapter\TolerantParser\Updater\ClassUpdater;
@@ -73,7 +73,7 @@ class TolerantUpdater implements Updater
         Renderer $renderer,
         TextFormat $textFormat = null,
         Parser $parser = null,
-        StyleFixer $fixer = null
+        StyleProposer $fixer = null
     ) {
         $this->parser = $parser ?: new Parser();
         $this->textFormat = $textFormat ?: new TextFormat();

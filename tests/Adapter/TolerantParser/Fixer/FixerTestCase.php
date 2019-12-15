@@ -6,7 +6,7 @@ use Generator;
 use Microsoft\PhpParser\Parser;
 use PHPUnit\Framework\TestCase;
 use Phpactor\CodeBuilder\Adapter\TolerantParser\Fixer\MemberEmptyLineFixer;
-use Phpactor\CodeBuilder\Domain\StyleFixer;
+use Phpactor\CodeBuilder\Domain\StyleProposer;
 use Phpactor\CodeBuilder\Tests\IntegrationTestCase;
 use Phpactor\TestUtils\Workspace;
 use Phpactor\TextDocument\TextDocumentBuilder;
@@ -50,5 +50,5 @@ abstract class FixerTestCase extends IntegrationTestCase
         }
     }
 
-    abstract protected function createFixer(): StyleFixer;
+    abstract protected function createFixer(): StyleProposer;
 }

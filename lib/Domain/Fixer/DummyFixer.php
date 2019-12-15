@@ -2,10 +2,10 @@
 
 namespace Phpactor\CodeBuilder\Domain\Fixer;
 
-use Phpactor\CodeBuilder\Domain\StyleFixer;
+use Phpactor\CodeBuilder\Domain\StyleProposer;
 use Phpactor\CodeBuilder\Domain\TextEdits;
 
-class DummyFixer implements StyleFixer
+class DummyFixer implements StyleProposer
 {
     public function propose(string $text): TextEdits
     {

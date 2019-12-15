@@ -2,17 +2,17 @@
 
 namespace Phpactor\CodeBuilder\Domain\Fixer;
 
-use Phpactor\CodeBuilder\Domain\StyleFixer;
+use Phpactor\CodeBuilder\Domain\StyleProposer;
 use Phpactor\CodeBuilder\Domain\TextEdits;
 
-class ChainFixer implements StyleFixer
+class ChainFixer implements StyleProposer
 {
     /**
      * @var StyleFixer[]
      */
     private $fixers;
 
-    public function __construct(StyleFixer ...$fixers)
+    public function __construct(StyleProposer ...$fixers)
     {
         $this->fixers = $fixers;
     }

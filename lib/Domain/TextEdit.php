@@ -1,21 +1,15 @@
 <?php
 
-/**
- * This is used temporarily until bug is fixed in the Tolerant version:
- * https://github.com/Microsoft/tolerant-php-parser/pull/158
- */
 
 namespace Phpactor\CodeBuilder\Domain;
 
+/**
+ * This class is copied from the Tolerant Parser library.
+ */
 class TextEdit
 {
-    /** @var int */
     public $start;
-
-    /** @var int */
     public $length;
-
-    /** @var string */
     public $content;
 
     public function __construct(int $start, int $length, string $content)
@@ -38,6 +32,7 @@ class TextEdit
     public static function applyEdits(array $edits, string $text) : string
     {
         $prevEditStart = PHP_INT_MAX;
+
         for ($i = \count($edits) - 1; $i >= 0; $i--) {
             $edit = $edits[$i];
 
@@ -61,6 +56,7 @@ class TextEdit
             $tail = \substr($text, $edit->start + $edit->length);
             $text = $head . $edit->content . $tail;
         }
+
         return $text;
     }
 }
