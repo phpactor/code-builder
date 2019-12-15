@@ -2,7 +2,6 @@
 
 namespace Phpactor\CodeBuilder\Tests\Unit\Domain\TemplatePathResolver;
 
-use PHPUnit\Framework\TestCase;
 use Phpactor\CodeBuilder\Domain\TemplatePathResolver\PhpVersionPathResolver;
 use Phpactor\CodeBuilder\Tests\IntegrationTestCase;
 
@@ -21,8 +20,7 @@ class PhpVersionPathResolverTest extends IntegrationTestCase
         array $fullTemplatePaths,
         array $templatePaths,
         array $expectedPaths
-    )
-    {
+    ) {
         foreach ($fullTemplatePaths as $fullTemplatePath) {
             $this->workspace()->mkdir($fullTemplatePath, '');
         }
