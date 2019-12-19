@@ -36,9 +36,9 @@ class TextEdit
         for ($i = \count($edits) - 1; $i >= 0; $i--) {
             $edit = $edits[$i];
 
-            if ($prevEditStart < $edit->start) {
+            if ($prevEditStart < $edit->start || $prevEditStart < $edit->start + $edit->length) {
                 throw new \OutOfBoundsException(sprintf(
-                    'Supplied TextEdit[] "%s" starts before the previous edit',
+                    'Supplied TextEdit[] "%s" must not overlap and be in increasing start position order.',
                     $edit->content
                 ));
             }
