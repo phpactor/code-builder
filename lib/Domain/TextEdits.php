@@ -79,7 +79,6 @@ class TextEdits implements IteratorAggregate
         $inserted = false;
 
         foreach ($myEdits as $myEdit) {
-
             if (!$inserted && $theirEdit->start < $myEdit->start) {
                 $new[] = $theirEdit;
                 $inserted = true;

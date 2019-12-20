@@ -71,9 +71,9 @@ class DocblockIndentationFixer implements StyleProposer
     private function docblockNodes(Node $node, $nodes = []): array
     {
         if (
-            $node instanceof SourceFileNode || 
-            $node instanceof ClassDeclaration || 
-            $node instanceof MethodDeclaration || 
+            $node instanceof SourceFileNode ||
+            $node instanceof ClassDeclaration ||
+            $node instanceof MethodDeclaration ||
             $node instanceof PropertyDeclaration
         ) {
             $nodes[] = $node;
