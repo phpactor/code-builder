@@ -2,7 +2,7 @@
 
 namespace Phpactor\CodeBuilder\Domain;
 
-class StyleFixer
+final class StyleFixer
 {
     /**
      * @var StyleProposer[]
