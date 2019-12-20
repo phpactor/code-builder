@@ -54,7 +54,7 @@ class DocblockIndentationFixer implements StyleProposer
         foreach ($lines as $line) {
             if (preg_match('{^\s*\*}', $line)) {
                 $line = TextFormat::indentationRemove($line);
-                $line = $baseIndent . TextFormat::indentApply($line, ' ', $level);
+                $line = $baseIndent .' '. $line;
             }
 
             if (preg_match('{^\s*/\*\*}', $line)) {
