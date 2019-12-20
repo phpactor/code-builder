@@ -4,10 +4,9 @@ namespace Phpactor\CodeBuilder\Util;
 
 class TextUtil
 {
-    const NL_WINDOWS = "\r\n";
-    const NL_MAC = "\r";
-    const NL_UNIX = "\n";
-
+    private const NL_WINDOWS = "\r\n";
+    private const NL_MAC = "\r";
+    private const NL_UNIX = "\n";
 
     public static function lines(string $text): array
     {

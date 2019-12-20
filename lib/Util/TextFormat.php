@@ -20,7 +20,7 @@ class TextFormat
         $this->newLineChar = $newLineChar;
     }
 
-    public function indent(string $string, int $level = 0)
+    public function indent(string $string, int $level = 0): string
     {
         $lines = TextUtil::lines($string);
         $lines = array_map(function ($line) use ($level) {
@@ -35,13 +35,10 @@ class TextFormat
 
     public function indentRemove(string $text): string
     {
-        $text = preg_replace("/^[ \t]+/m", "", $text);
-
-        return $text;
+        return preg_replace("/^[ \t]+/m", "", $text);
     }
 
     public function implodeLines(array $newLines): string
-
     {
         return implode($this->newLineChar, $newLines);
     }
