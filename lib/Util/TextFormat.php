@@ -35,12 +35,13 @@ class TextFormat
 
     public function indentRemove(string $text): string
     {
-        $text = preg_replace("/^ +/m", "", $text);
+        $text = preg_replace("/^[ \t]+/m", "", $text);
 
         return $text;
     }
 
     public function implodeLines(array $newLines): string
+
     {
         return implode($this->newLineChar, $newLines);
     }

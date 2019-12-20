@@ -36,6 +36,20 @@ asd
 EOT
         ];
 
+        yield 'tabs' => [
+            <<<EOT
+\tasd
+\tasd
+\tasd
+EOT
+           ,
+            <<<'EOT'
+asd
+asd
+asd
+EOT
+        ];
+
         yield 'different indentations' => [
             <<<'EOT'
   asd
