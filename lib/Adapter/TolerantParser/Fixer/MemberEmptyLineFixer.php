@@ -29,9 +29,15 @@ class MemberEmptyLineFixer implements StyleProposer
      */
     private $parser;
 
-    public function __construct(Parser $parser)
+    /**
+     * @var string
+     */
+    private $newLineChar;
+
+    public function __construct(Parser $parser, string $newLineChar = "\n")
     {
         $this->parser = $parser;
+        $this->newLineChar = $newLineChar;
     }
 
     public function propose(string $text): TextEdits
@@ -149,7 +155,7 @@ class MemberEmptyLineFixer implements StyleProposer
         $edits[] = new TextEdit(
             $meta[self::META_PRECEDING_BLANK_START],
             $meta[self::META_PRECEDING_BLANK_LENGTH],
-            PHP_EOL . str_repeat(' ', $meta[self::META_INDENTATION] - 1)
+            $this->newLineChar . str_repeat(' ', $meta[self::META_INDENTATION] - 1)
         );
 
         return $edits;
@@ -160,7 +166,7 @@ class MemberEmptyLineFixer implements StyleProposer
         $edits[] = new TextEdit(
             $meta[self::META_PRECEDING_BLANK_START],
             0,
-            PHP_EOL
+            $this->newLineChar
         );
 
         return $edits;

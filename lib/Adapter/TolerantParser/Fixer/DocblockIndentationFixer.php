@@ -21,9 +21,15 @@ class DocblockIndentationFixer implements StyleProposer
      */
     private $parser;
 
-    public function __construct(Parser $parser)
+    /**
+     * @var string
+     */
+    private $newLineChar;
+
+    public function __construct(Parser $parser, string $newLineChar = "\n")
     {
         $this->parser = $parser;
+        $this->newLineChar = $newLineChar;
     }
 
     public function propose(string $text): TextEdits
@@ -59,7 +65,7 @@ class DocblockIndentationFixer implements StyleProposer
             $newLines[] = $line;
         }
 
-        $replace = implode("\n", $newLines);
+        $replace = implode($this->newLineChar, $newLines);
 
         return new TextEdit(
             $node->getFullStart(),
