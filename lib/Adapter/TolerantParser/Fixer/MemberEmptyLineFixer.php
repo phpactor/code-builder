@@ -11,6 +11,7 @@ use Microsoft\PhpParser\Parser;
 use Phpactor\CodeBuilder\Domain\StyleProposer;
 use Phpactor\CodeBuilder\Domain\TextEdit;
 use Phpactor\CodeBuilder\Domain\TextEdits;
+use Phpactor\CodeBuilder\Util\TextFormat;
 use Phpactor\CodeBuilder\Util\TextUtil;
 
 class MemberEmptyLineFixer implements StyleProposer
@@ -30,14 +31,14 @@ class MemberEmptyLineFixer implements StyleProposer
     private $parser;
 
     /**
-     * @var string
+     * @var TextFormat
      */
-    private $newLineChar;
+    private $textFormat;
 
-    public function __construct(Parser $parser, string $newLineChar = "\n")
+    public function __construct(Parser $parser, ?TextFormat $textFormat = null)
     {
         $this->parser = $parser;
-        $this->newLineChar = $newLineChar;
+        $this->textFormat = $textFormat ?: new TextFormat();
     }
 
     public function propose(string $text): TextEdits
@@ -155,7 +156,7 @@ class MemberEmptyLineFixer implements StyleProposer
         $edits[] = new TextEdit(
             $meta[self::META_PRECEDING_BLANK_START],
             $meta[self::META_PRECEDING_BLANK_LENGTH],
-            $this->newLineChar . str_repeat(' ', $meta[self::META_INDENTATION] - 1)
+            $this->textFormat->newLineChar() . str_repeat(' ', $meta[self::META_INDENTATION] - 1)
         );
 
         return $edits;
@@ -166,7 +167,7 @@ class MemberEmptyLineFixer implements StyleProposer
         $edits[] = new TextEdit(
             $meta[self::META_PRECEDING_BLANK_START],
             0,
-            $this->newLineChar
+            $this->textFormat->newLineChar()
         );
 
         return $edits;

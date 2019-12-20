@@ -22,14 +22,14 @@ class DocblockIndentationFixer implements StyleProposer
     private $parser;
 
     /**
-     * @var string
+     * @var TextFormat
      */
-    private $newLineChar;
+    private $textFormat;
 
-    public function __construct(Parser $parser, string $newLineChar = "\n")
+    public function __construct(Parser $parser, ?TextFormat $textFormat = null)
     {
         $this->parser = $parser;
-        $this->newLineChar = $newLineChar;
+        $this->textFormat = $textFormat ?: new TextFormat();
     }
 
     public function propose(string $text): TextEdits
@@ -48,29 +48,25 @@ class DocblockIndentationFixer implements StyleProposer
     {
         $newLines = [];
         $baseIndent = '';
-        $level = 0;
         $lines = TextUtil::lines($node->getLeadingCommentAndWhitespaceText());
 
         foreach ($lines as $line) {
             if (preg_match('{^\s*\*}', $line)) {
-                $line = TextFormat::indentationRemove($line);
+                $line = $this->textFormat->indentationRemove($line);
                 $line = $baseIndent .' '. $line;
             }
 
             if (preg_match('{^\s*/\*\*}', $line)) {
-                $level = 1;
                 $baseIndent = TextUtil::lineIndentation($line);
             }
 
             $newLines[] = $line;
         }
 
-        $replace = implode($this->newLineChar, $newLines);
-
         return new TextEdit(
             $node->getFullStart(),
             $node->getStart() - $node->getFullStart(),
-            $replace
+            $this->textFormat->implodeLines($newLines)
         );
     }
 

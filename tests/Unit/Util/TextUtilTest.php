@@ -119,40 +119,4 @@ EOT
             23
         ];
     }
-
-    /**
-     * @dataProvider provideNewLineChar
-     */
-    public function testNewLineChar(string $line, string $expectedNewLineChar)
-    {
-        self::assertEquals($expectedNewLineChar, TextUtil::newLineChar($line));
-    }
-
-    public function provideNewLineChar()
-    {
-        yield 'empty' => [
-            '',
-            "\n",
-        ];
-
-        yield 'unix' => [
-            "\n",
-            "\n",
-        ];
-
-        yield 'windows' => [
-            "\r\n",
-            "\r\n",
-        ];
-
-        yield 'mac' => [
-            "\r",
-            "\r",
-        ];
-
-        yield 'windows is returned when mixed ...' => [
-            "hello\rgoodbye\nhello again\r\n",
-            "\r\n",
-        ];
-    }
 }

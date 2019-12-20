@@ -9,14 +9,19 @@ class TextFormat
      */
     private $indentation;
 
-    public function __construct(string $indentation = '    ')
+    /**
+     * @var string
+     */
+    private $newLineChar;
+
+    public function __construct(string $indentation = '    ', string $newLineChar = "\n")
     {
         $this->indentation = $indentation;
+        $this->newLineChar = $newLineChar;
     }
 
     public function indent(string $string, int $level = 0)
     {
-        $newLineChar = TextUtil::newLineChar($string);
         $lines = TextUtil::lines($string);
         $lines = array_map(function ($line) use ($level) {
             if (!$line) {
@@ -25,10 +30,10 @@ class TextFormat
             return str_repeat($this->indentation, $level) . $line;
         }, $lines);
 
-        return implode($newLineChar, $lines);
+        return implode($this->newLineChar, $lines);
     }
 
-    public static function indentationRemove(string $text): string
+    public function indentationRemove(string $text): string
     {
         $text = preg_replace("/^ +/m", "", $text);
 
@@ -38,5 +43,15 @@ class TextFormat
     public static function indentApply(string $text, string $indentation, int $level)
     {
         return (new self($indentation))->indent($text, $level);
+    }
+
+    public function implodeLines(array $newLines): string
+    {
+        return implode($this->newLineChar, $newLines);
+    }
+
+    public function newLineChar(): string
+    {
+        return $this->newLineChar;
     }
 }

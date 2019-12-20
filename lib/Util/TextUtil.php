@@ -39,21 +39,4 @@ class TextUtil
 
         return 0;
     }
-
-    public static function newLineChar(string $text): string
-    {
-        if (false !== $pos = strpos($text, self::NL_WINDOWS)) {
-            return self::NL_WINDOWS;
-        }
-
-        if (false !== $pos = strpos($text, self::NL_MAC)) {
-            return self::NL_MAC;
-        }
-
-        if (false !== $pos = strpos($text, self::NL_UNIX)) {
-            return self::NL_UNIX;
-        }
-
-        return self::NL_UNIX;
-    }
 }

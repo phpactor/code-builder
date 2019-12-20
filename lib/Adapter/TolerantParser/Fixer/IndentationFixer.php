@@ -21,14 +21,15 @@ class IndentationFixer implements StyleProposer
     private $parser;
 
     /**
-     * @var string
+     * @var TextFormat
      */
-    private $indent;
+    private $textFormat;
 
-    public function __construct(Parser $parser, string $indent = '    ')
+
+    public function __construct(Parser $parser, ?TextFormat $textFormat = null)
     {
         $this->parser = $parser;
-        $this->indent = $indent;
+        $this->textFormat = $textFormat ?: new TextFormat();
     }
 
     public function propose(string $text): TextEdits
@@ -81,8 +82,8 @@ class IndentationFixer implements StyleProposer
             return $edits;
         }
 
-        $text = TextFormat::indentationRemove($text);
-        $text = TextFormat::indentApply($text, $this->indent, $level);
+        $text = $this->textFormat->indentationRemove($text);
+        $text = $this->textFormat->indent($text, $level);
 
         $edits[] = new TextEdit($start, $length, $text);
 

@@ -12,7 +12,7 @@ class TextFormatTest extends TestCase
      */
     public function testRemoveIndentation(string $text, string $expeced)
     {
-        self::assertEquals($expeced, TextFormat::indentationRemove($text));
+        self::assertEquals($expeced, (new TextFormat())->indentationRemove($text));
     }
 
     public function provideRemoveIndentation()
@@ -100,9 +100,9 @@ EOT
     /**
      * @dataProvider provideIndent
      */
-    public function testIndentat(string $text, int $level, string $expected)
+    public function testIndent(string $text, int $level, string $expected)
     {
-        self::assertEquals($expected, TextFormat::indentApply($text, '    ', $level));
+        self::assertEquals($expected, (new TextFormat())->indent($text, $level));
     }
 
     public function provideIndent()
