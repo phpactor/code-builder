@@ -4,6 +4,11 @@ namespace Phpactor\CodeBuilder\Util;
 
 class TextUtil
 {
+    const NL_WINDOWS = "\r\n";
+    const NL_MAC = "\r";
+    const NL_UNIX = "\n";
+
+
     public static function lines(string $text): array
     {
         return preg_split("{(\r\n|\n|\r)}", $text);
@@ -20,18 +25,35 @@ class TextUtil
 
     public static function lastNewLineOffset(string $text): int
     {
-        if (false !== $pos = strrpos($text, "\r\n")) {
+        if (false !== $pos = strrpos($text, self::NL_WINDOWS)) {
             return $pos;
         }
 
-        if (false !== $pos = strrpos($text, "\r")) {
+        if (false !== $pos = strrpos($text, self::NL_MAC)) {
             return $pos;
         }
 
-        if (false !== $pos = strrpos($text, "\n")) {
+        if (false !== $pos = strrpos($text, self::NL_UNIX)) {
             return $pos;
         }
 
         return 0;
+    }
+
+    public static function newLineChar(string $text): string
+    {
+        if (false !== $pos = strpos($text, self::NL_WINDOWS)) {
+            return self::NL_WINDOWS;
+        }
+
+        if (false !== $pos = strpos($text, self::NL_MAC)) {
+            return self::NL_MAC;
+        }
+
+        if (false !== $pos = strpos($text, self::NL_UNIX)) {
+            return self::NL_UNIX;
+        }
+
+        return self::NL_UNIX;
     }
 }

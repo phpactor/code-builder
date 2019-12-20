@@ -16,7 +16,8 @@ class TextFormat
 
     public function indent(string $string, int $level = 0)
     {
-        $lines = explode(PHP_EOL, $string);
+        $newLineChar = TextUtil::newLineChar($string);
+        $lines = TextUtil::lines($string);
         $lines = array_map(function ($line) use ($level) {
             if (!$line) {
                 return $line;
@@ -24,7 +25,7 @@ class TextFormat
             return str_repeat($this->indentation, $level) . $line;
         }, $lines);
 
-        return implode(PHP_EOL, $lines);
+        return implode($newLineChar, $lines);
     }
 
     public static function indentationRemove(string $text): string
