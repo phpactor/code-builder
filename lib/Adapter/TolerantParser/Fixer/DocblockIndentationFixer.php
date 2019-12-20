@@ -3,6 +3,10 @@
 namespace Phpactor\CodeBuilder\Adapter\TolerantParser\Fixer;
 
 use Microsoft\PhpParser\Node;
+use Microsoft\PhpParser\Node\MethodDeclaration;
+use Microsoft\PhpParser\Node\PropertyDeclaration;
+use Microsoft\PhpParser\Node\SourceFileNode;
+use Microsoft\PhpParser\Node\Statement\ClassDeclaration;
 use Microsoft\PhpParser\Parser;
 use Phpactor\CodeBuilder\Domain\TextEdit;
 use Phpactor\CodeBuilder\Domain\StyleProposer;
@@ -24,16 +28,18 @@ class DocblockIndentationFixer implements StyleProposer
 
     public function propose(string $text): TextEdits
     {
+        $edits = [];
         $node = $this->parser->parseSourceFile($text);
-        $edits = $this->indentations($node);
+
+        foreach ($this->docblockNodes($node) as $docblockNode) {
+            $edits[] = $this->indentationEdits($docblockNode);
+        }
 
         return TextEdits::fromTextEdits($edits);
     }
 
-    private function indentations(Node $node): array
+    private function indentationEdits(Node $node): TextEdit
     {
-        $edits = [];
-
         $newLines = [];
         $baseIndent = '';
         $level = 0;
@@ -54,16 +60,29 @@ class DocblockIndentationFixer implements StyleProposer
         }
 
         $replace = implode("\n", $newLines);
-        $edits[] = new TextEdit(
+
+        return new TextEdit(
             $node->getFullStart(),
             $node->getStart() - $node->getFullStart(),
             $replace
         );
+    }
 
-        foreach ($node->getChildNodes() as $childNode) {
-            $edits = array_merge($edits, $this->indentations($childNode));
+    private function docblockNodes(Node $node, $nodes = []): array
+    {
+        if (
+            $node instanceof SourceFileNode || 
+            $node instanceof ClassDeclaration || 
+            $node instanceof MethodDeclaration || 
+            $node instanceof PropertyDeclaration
+        ) {
+            $nodes[] = $node;
         }
 
-        return $edits;
+        foreach ($node->getChildNodes() as $childNode) {
+            $nodes = $this->docblockNodes($childNode, $nodes);
+        }
+
+        return $nodes;
     }
 }
