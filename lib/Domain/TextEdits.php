@@ -38,14 +38,7 @@ class TextEdits implements IteratorAggregate
 
     public function merge(TextEdits $edits): self
     {
-        $theirEdits = $edits->textEdits;
-        $edits = $this->textEdits;
-
-        foreach ($theirEdits as $theirEdit) {
-            $edits = $this->add($edits, $theirEdit);
-        }
-
-        return new self(...$edits);
+        return new self(...array_merge($this->textEdits, $edits->textEdits));
     }
 
     public function apply(string $text): string
@@ -71,26 +64,5 @@ class TextEdits implements IteratorAggregate
         }
 
         return new self(...$intersection);
-    }
-
-    private function add(array $myEdits, TextEdit $theirEdit): array
-    {
-        $new = [];
-        $inserted = false;
-
-        foreach ($myEdits as $myEdit) {
-            if (!$inserted && $theirEdit->start < $myEdit->start) {
-                $new[] = $theirEdit;
-                $inserted = true;
-            }
-
-            $new[] = $myEdit;
-        }
-
-        if (!$inserted) {
-            $new[] = $theirEdit;
-        }
-
-        return $new;
     }
 }

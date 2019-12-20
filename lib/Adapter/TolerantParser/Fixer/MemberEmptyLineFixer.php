@@ -134,7 +134,7 @@ class MemberEmptyLineFixer implements StyleProposer
         ));
     }
 
-    private function indentation(Node $node)
+    private function indentation(Node $node): int
     {
         $whitespace = $node->getLeadingCommentAndWhitespaceText();
 
@@ -144,7 +144,7 @@ class MemberEmptyLineFixer implements StyleProposer
         ));
     }
 
-    private function removeBlankLines(array $edits, $meta)
+    private function removeBlankLines(array $edits, $meta): array
     {
         $edits[] = new TextEdit(
             $meta[self::META_PRECEDING_BLANK_START],
@@ -155,7 +155,7 @@ class MemberEmptyLineFixer implements StyleProposer
         return $edits;
     }
 
-    private function addBlankLine($edits, $meta)
+    private function addBlankLine($edits, $meta): array
     {
         $edits[] = new TextEdit(
             $meta[self::META_PRECEDING_BLANK_START],
