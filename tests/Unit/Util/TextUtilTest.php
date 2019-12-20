@@ -73,4 +73,50 @@ class TextUtilTest extends TestCase
             "\t\t"
         ];
     }
+
+    /**
+     * @dataProvider provideLastNewLineOffset
+     */
+    public function testLastNewLineOffset(string $line, int $expectedOffset)
+    {
+        self::assertEquals($expectedOffset, TextUtil::lastNewLineOffset($line));
+    }
+
+    public function provideLastNewLineOffset()
+    {
+        yield 'empty' => [
+            '',
+            0 
+        ];
+
+        yield 'none' => [
+            "\n",
+            '0'
+        ];
+
+        yield 'none' => [
+            "  \n",
+            2
+        ];
+
+        yield 'windows' => [
+            "  \r\n",
+            2
+        ];
+
+        yield 'mac' => [
+            "  \r",
+            2
+        ];
+
+        yield 'none' => [
+            <<<'EOT'
+     foobar
+     barfoo
+
+EOT
+        ,
+            23
+        ];
+    }
 }

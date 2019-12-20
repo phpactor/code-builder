@@ -11,6 +11,7 @@ use Microsoft\PhpParser\Parser;
 use Phpactor\CodeBuilder\Domain\StyleProposer;
 use Phpactor\CodeBuilder\Domain\TextEdit;
 use Phpactor\CodeBuilder\Domain\TextEdits;
+use Phpactor\CodeBuilder\Util\TextUtil;
 
 class MemberEmptyLineFixer implements StyleProposer
 {
@@ -22,7 +23,6 @@ class MemberEmptyLineFixer implements StyleProposer
     private const META_PRECEDING_BLANK_LENGTH = 'blank_length';
     private const META_INDENTATION = 'indentation';
     private const META_IS_METHOD = 'is_method';
-
 
     /**
      * @var Parser
@@ -68,7 +68,7 @@ class MemberEmptyLineFixer implements StyleProposer
                 self::META_SUCCESSOR => false,
                 self::META_NODE_CLASS => get_class($node),
                 self::META_FIRST => false,
-                self::META_PRECEDING_BLANK_LINES => $this->blankLines($node->getLeadingCommentAndWhitespaceText()),
+                self::META_PRECEDING_BLANK_LINES => $this->countBlankLines($node->getLeadingCommentAndWhitespaceText()),
                 self::META_PRECEDING_BLANK_START => $node->getFullStart(),
                 self::META_PRECEDING_BLANK_LENGTH => $node->getStart() - $node->getFullStart(),
                 self::META_INDENTATION => $this->indentation($node),
@@ -124,12 +124,10 @@ class MemberEmptyLineFixer implements StyleProposer
         return $edits;
     }
 
-    private function blankLines(string $string): int
+    private function countBlankLines(string $string): int
     {
-        // TODO: Extract this to a tested utility (perhaps stick it in
-        //       text-document package)
         return count(array_filter(
-            preg_split("{(\r\n|\n|\r)}", $string),
+            TextUtil::lines($string),
             function (string $line) {
                 return trim($line) === '';
             }
@@ -139,8 +137,11 @@ class MemberEmptyLineFixer implements StyleProposer
     private function indentation(Node $node)
     {
         $whitespace = $node->getLeadingCommentAndWhitespaceText();
-        $newLinePos = strrpos($whitespace, "\n");
-        return strlen(substr($whitespace, $newLinePos));
+
+        return strlen(substr(
+            $whitespace,
+            TextUtil::lastNewLineOffset($whitespace)
+        ));
     }
 
     private function removeBlankLines(array $edits, $meta)

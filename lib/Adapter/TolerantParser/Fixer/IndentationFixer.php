@@ -11,15 +11,7 @@ use Phpactor\CodeBuilder\Domain\TextEdit;
 use Phpactor\CodeBuilder\Domain\StyleProposer;
 use Phpactor\CodeBuilder\Domain\TextEdits;
 use Phpactor\CodeBuilder\Util\TextFormat;
-
-// Algorithm:
-//
-//
-// level = 0
-// 1 Indent the area between the node start and the first child
-// 2 Indent the area between the last child end and the node end
-// 3 If node is structural, level ++
-// 4 Iterate goto 1
+use Phpactor\CodeBuilder\Util\TextUtil;
 
 class IndentationFixer implements StyleProposer
 {
@@ -85,7 +77,7 @@ class IndentationFixer implements StyleProposer
         $text = substr($text, $start, $length);
 
         // if there are no new lines in the selection, return
-        if (!preg_match('{\R}m', $text)) {
+        if (count(TextUtil::lines($text)) === 1) {
             return $edits;
         }
 
@@ -97,7 +89,7 @@ class IndentationFixer implements StyleProposer
         return $edits;
     }
 
-    private function getOffsetUntilFirstChild(Node $node)
+    private function getOffsetUntilFirstChild(Node $node): int
     {
         foreach ($node->getChildNodes() as $childNode) {
             return $childNode->getFullStart();
