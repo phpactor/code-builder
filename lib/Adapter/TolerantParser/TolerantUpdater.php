@@ -14,6 +14,7 @@ use Phpactor\CodeBuilder\Domain\Prototype\NamespaceName;
 use Phpactor\CodeBuilder\Domain\Prototype\Prototype;
 use Phpactor\CodeBuilder\Domain\Prototype\SourceCode;
 use Phpactor\CodeBuilder\Domain\Renderer;
+use Phpactor\CodeBuilder\Domain\StyleFixer;
 use Phpactor\CodeBuilder\Domain\StyleProposer;
 use Phpactor\CodeBuilder\Domain\Updater;
 use Phpactor\CodeBuilder\Util\TextFormat;
@@ -65,7 +66,7 @@ class TolerantUpdater implements Updater
     private $useStatementUpdater;
 
     /**
-     * @var StyleProposer
+     * @var StyleFixer
      */
     private $fixer;
 
@@ -73,7 +74,7 @@ class TolerantUpdater implements Updater
         Renderer $renderer,
         TextFormat $textFormat = null,
         Parser $parser = null,
-        StyleProposer $fixer = null
+        StyleFixer $fixer = null
     ) {
         $this->parser = $parser ?: new Parser();
         $this->textFormat = $textFormat ?: new TextFormat();
@@ -82,7 +83,7 @@ class TolerantUpdater implements Updater
         $this->interfaceUpdater = new InterfaceUpdater($renderer);
         $this->traitUpdater = new TraitUpdater($renderer);
         $this->useStatementUpdater = new UseStatementUpdater();
-        $this->fixer = $fixer ?: new NullFixer();
+        $this->fixer = $fixer ?: new StyleFixer();
     }
 
     public function apply(Prototype $prototype, Code $code): Code
@@ -96,7 +97,7 @@ class TolerantUpdater implements Updater
         $updatedCode = $edits->apply((string) $code);
 
         return Code::fromString(
-            $this->fixer->propose($updatedCode)->intersection($edits->textEdits())->apply($updatedCode)
+            $this->fixer->fix($updatedCode, $edits->textEdits())
         );
     }
 
