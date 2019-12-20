@@ -29,7 +29,6 @@ class TextFormat
 
     public static function indentationRemove(string $text): string
     {
-        $text = preg_replace("/\R +/m", "\n", $text);
         $text = preg_replace("/^ +/m", "", $text);
 
         return $text;
