@@ -68,7 +68,7 @@ class MemberEmptyLineFixer implements StyleProposer
             $nodes[] = $decendantNode;
         }
 
-        $previousNode = null;
+        $previousNodeClass = null;
         foreach ($nodes as $node) {
             assert($node instanceof Node);
             $meta = [
@@ -82,16 +82,16 @@ class MemberEmptyLineFixer implements StyleProposer
                 self::META_IS_METHOD => $node instanceof MethodDeclaration,
             ];
 
-            if (null === $previousNode) {
+            if (null === $previousNodeClass) {
                 $meta[self::META_FIRST] = true;
             }
 
-            if ($previousNode && $previousNode === $meta[self::META_NODE_CLASS]) {
+            if ($previousNodeClass && $previousNodeClass === $meta[self::META_NODE_CLASS]) {
                 $meta[self::META_SUCCESSOR] = true;
             }
 
             $nodesMeta[] = $meta;
-            $previousNode = $meta[self::META_NODE_CLASS];
+            $previousNodeClass = $meta[self::META_NODE_CLASS];
         }
 
         return $nodesMeta;

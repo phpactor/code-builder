@@ -52,7 +52,7 @@ class DocblockIndentationFixer implements StyleProposer
 
         foreach ($lines as $line) {
             if (preg_match('{^\s*\*}', $line)) {
-                $line = $this->textFormat->indentationRemove($line);
+                $line = $this->textFormat->indentRemove($line);
                 $line = $baseIndent .' '. $line;
             }
 

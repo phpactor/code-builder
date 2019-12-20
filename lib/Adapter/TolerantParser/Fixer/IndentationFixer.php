@@ -82,8 +82,7 @@ class IndentationFixer implements StyleProposer
             return $edits;
         }
 
-        $text = $this->textFormat->indentationRemove($text);
-        $text = $this->textFormat->indent($text, $level);
+        $text = $this->textFormat->indentReplace($text, $level);
 
         $edits[] = new TextEdit($start, $length, $text);
 

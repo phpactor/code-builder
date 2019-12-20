@@ -33,21 +33,21 @@ class TextFormat
         return implode($this->newLineChar, $lines);
     }
 
-    public function indentationRemove(string $text): string
+    public function indentRemove(string $text): string
     {
         $text = preg_replace("/^ +/m", "", $text);
 
         return $text;
     }
 
-    public static function indentApply(string $text, string $indentation, int $level)
-    {
-        return (new self($indentation))->indent($text, $level);
-    }
-
     public function implodeLines(array $newLines): string
     {
         return implode($this->newLineChar, $newLines);
+    }
+
+    public function indentReplace($text, int $level): string
+    {
+        return $this->indent($this->indentRemove($text), $level);
     }
 
     public function newLineChar(): string
