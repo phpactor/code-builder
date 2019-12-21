@@ -5,7 +5,9 @@ namespace Phpactor\CodeBuilder\Adapter\TolerantParser\Fixer;
 use Microsoft\PhpParser\Node;
 use Microsoft\PhpParser\Node\ClassMembersNode;
 use Microsoft\PhpParser\Node\DelimitedList;
+use Microsoft\PhpParser\Node\InterfaceMembers;
 use Microsoft\PhpParser\Node\Statement\CompoundStatementNode;
+use Microsoft\PhpParser\Node\TraitMembers;
 use Microsoft\PhpParser\Parser;
 use Phpactor\CodeBuilder\Domain\TextEdit;
 use Phpactor\CodeBuilder\Domain\StyleProposer;
@@ -53,7 +55,9 @@ class IndentationFixer implements StyleProposer
         if (
             $node instanceof ClassMembersNode ||
             $node instanceof CompoundStatementNode ||
-            $node instanceof DelimitedList
+            $node instanceof DelimitedList ||
+            $node instanceof InterfaceMembers ||
+            $node instanceof TraitMembers
         ) {
             $level++;
         }
