@@ -175,8 +175,12 @@ class MemberEmptyLineFixer implements StyleProposer
 
     private function blankLength(Node $node): int
     {
-        $text = $node->getFullText();
+        $text = $node->getLeadingCommentAndWhitespaceText();
 
-        return $node->getStart() - $node->getFullStart();
+        if (!preg_match('{^(\s*)}m', $text, $matches)) {
+            return 0;
+        }
+
+        return strlen($matches[1]);
     }
 }
