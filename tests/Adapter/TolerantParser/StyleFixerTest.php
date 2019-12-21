@@ -30,7 +30,7 @@ class StyleFixerTest extends IntegrationTestCase
 <?php
 class Foo
 {
-private $foo;
+    private $foo;
 }
 EOT
         ;

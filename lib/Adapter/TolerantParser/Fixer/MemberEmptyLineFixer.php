@@ -77,7 +77,7 @@ class MemberEmptyLineFixer implements StyleProposer
                 self::META_FIRST => false,
                 self::META_PRECEDING_BLANK_LINES => $this->countBlankLines($node->getLeadingCommentAndWhitespaceText()),
                 self::META_PRECEDING_BLANK_START => $node->getFullStart(),
-                self::META_PRECEDING_BLANK_LENGTH => $node->getStart() - $node->getFullStart(),
+                self::META_PRECEDING_BLANK_LENGTH => $this->blankLength($node),
                 self::META_INDENTATION => $this->indentation($node),
                 self::META_IS_METHOD => $node instanceof MethodDeclaration,
             ];
@@ -171,5 +171,13 @@ class MemberEmptyLineFixer implements StyleProposer
         );
 
         return $edits;
+    }
+
+    private function blankLength(Node $node): int
+    {
+        $text = $node->getFullText();
+        preg_match("{^([\t ])+}m", $node->getFullText(), $matches);
+        return strlen($matches[1]);
+
     }
 }
