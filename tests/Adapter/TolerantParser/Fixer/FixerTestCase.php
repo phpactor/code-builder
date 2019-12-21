@@ -34,20 +34,7 @@ abstract class FixerTestCase extends IntegrationTestCase
     public function provideFixer(): Generator
     {
         $name = basename(str_replace('\\', '/', get_class($this->createFixer())));
-        $dir = __DIR__ . '/examples/' . $name;
-
-        if (!file_exists($dir)) {
-            throw new RuntimeException(sprintf(
-                'Directory "%s" does not exist', $dir
-            ));
-        }
-
-
-        foreach (glob($dir . '/*.test.php') as $filename) {
-            yield basename($filename) => [
-                $filename
-            ];
-        }
+        yield from $this->yieldExamplesIn(__DIR__ . '/examples/' . $name);
     }
 
     abstract protected function createFixer(): StyleProposer;
