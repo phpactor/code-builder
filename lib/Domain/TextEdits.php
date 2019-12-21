@@ -56,7 +56,7 @@ class TextEdits implements IteratorAggregate
             $end = $myEdit->start + $myEdit->length;
 
             foreach ($textEdits as $theirEdit) {
-                if ($theirEdit->start >= $start && $theirEdit->start < $end) {
+                if ($theirEdit->start >= $start && $theirEdit->start <= $end) {
                     $intersection[] = $myEdit;
                     continue 2;
                 }

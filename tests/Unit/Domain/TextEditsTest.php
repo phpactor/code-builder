@@ -115,7 +115,7 @@ class TextEditsTest extends TestCase
             ],
         ];
 
-        yield 'no intersect 2' => [
+        yield 'intersect 0' => [
             [
                 new TextEdit(0, 5, 'foobar'),
             ],
@@ -123,6 +123,7 @@ class TextEditsTest extends TestCase
                 new TextEdit(5, 5, 'foobar'),
             ],
             [
+                new TextEdit(0, 5, 'foobar'),
             ],
         ];
 

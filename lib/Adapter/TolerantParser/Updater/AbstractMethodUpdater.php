@@ -87,10 +87,6 @@ abstract class AbstractMethodUpdater
             return;
         }
 
-        if ($newLine) {
-            $edits->after($lastMember, PHP_EOL);
-        }
-
         foreach ($methodPrototypes as $methodPrototype) {
             $edits->after(
                 $lastMember,
