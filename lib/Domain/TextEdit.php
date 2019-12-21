@@ -45,7 +45,8 @@ class TextEdit
 
             if ($edit->start < 0 || $edit->length < 0 || $edit->start + $edit->length > \strlen($text)) {
                 throw new \OutOfBoundsException(sprintf(
-                    "Applied TextEdit range out of bounds, text length: %s, start: %s, length: %s.",
+                    'Applied TextEdit "%s" range out of bounds, text length: %s, start: %s, length: %s.',
+                    $text,
                     strlen($text),
                     $edit->start,
                     $edit->length

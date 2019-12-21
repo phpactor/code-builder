@@ -75,7 +75,6 @@ class MemberEmptyLineFixer implements StyleProposer
                 self::META_INDENTATION => $this->indentation($node),
                 self::META_IS_METHOD => $node instanceof MethodDeclaration,
                 self::META_HAS_DOCBLOCK => (bool)$node->getDocCommentText(),
-                'text' => $node->getFullText(),
             ];
 
             if (null === $previousNodeClass) {

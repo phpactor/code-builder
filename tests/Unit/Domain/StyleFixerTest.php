@@ -31,6 +31,29 @@ class StyleFixerTest extends TestCase
         ])));
     }
 
+    public function testTakesIntoAccountPreviouslyAppliedFixes()
+    {
+        $proposer1 = $this->prophesize(StyleProposer::class);
+        $proposer1->propose('x x x x x')->willReturn(TextEdits::fromTextEdits([
+            new TextEdit(0, 2, '')
+        ]));
+        $proposer2 = $this->prophesize(StyleProposer::class);
+        $proposer2->propose('x x x x')->willReturn(TextEdits::fromTextEdits([
+            new TextEdit(0, 2, '')
+        ]));
+
+        self::assertEquals('x x x', $this->create([
+            $proposer1->reveal(),
+            $proposer2->reveal(),
+        ])->fixIntersection('x x x x x', TextEdits::fromTextEdits([
+            new TextEdit(0, 0, 'x'),
+            new TextEdit(0, 0, 'x '),
+            new TextEdit(0, 0, 'x '),
+            new TextEdit(0, 0, 'x '),
+            new TextEdit(0, 0, 'x '),
+        ])));
+    }
+
     private function create(array $proposers = []): StyleFixer
     {
         return new StyleFixer(...$proposers);

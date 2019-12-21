@@ -23,13 +23,13 @@ final class StyleFixer
         return $code;
     }
 
-    public function fixIntersection(string $code, TextEdits $previouslyAppliedChanges): string
+    public function fixIntersection(string $code, TextEdits $textEdits): string
     {
         foreach ($this->propsers as $proposer) {
-            $intersection = $proposer
-                ->propose($code)
-                ->intersection($previouslyAppliedChanges->appliedTextEdits());
-            $previouslyAppliedChanges = $previouslyAppliedChanges->merge($intersection);
+            $intersection = $proposer->propose($code)->intersection(
+                $textEdits->appliedTextEdits()
+            );
+            $textEdits = $textEdits->merge($intersection);
             $code = $intersection->apply($code);
         }
 
