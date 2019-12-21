@@ -92,10 +92,6 @@ abstract class AbstractMethodUpdater
                 $lastMember,
                 PHP_EOL . $edits->indent($this->renderMethod($this->renderer, $methodPrototype), 1)
             );
-
-            if (false === $classPrototype->methods()->isLast($methodPrototype)) {
-                $edits->after($lastMember, PHP_EOL);
-            }
         }
     }
 

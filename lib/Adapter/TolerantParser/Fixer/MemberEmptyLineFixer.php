@@ -117,7 +117,11 @@ class MemberEmptyLineFixer implements StyleProposer
 
             if (
                 !$meta[self::META_FIRST]  &&
-                ($meta[self::META_IS_METHOD] || !$meta[self::META_SUCCESSOR] || $meta[self::META_HAS_DOCBLOCK]) &&
+                (
+                    $meta[self::META_IS_METHOD] ||
+                    !$meta[self::META_SUCCESSOR] ||
+                    $meta[self::META_HAS_DOCBLOCK]
+                ) &&
                 $meta[self::META_PRECEDING_BLANK_LINES] == 2
             ) {
                 $edits = $this->addBlankLine($edits, $meta);

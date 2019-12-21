@@ -26,7 +26,10 @@ final class StyleFixer
     public function fixIntersection(string $code, TextEdits $previouslyAppliedChanges): string
     {
         foreach ($this->propsers as $proposer) {
-            $code = $proposer->propose($code)->intersection($previouslyAppliedChanges)->apply($code);
+            $code = $proposer
+                ->propose($code)
+                ->intersection($previouslyAppliedChanges->appliedTextEdits())
+                ->apply($code);
         }
 
         return $code;
