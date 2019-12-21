@@ -8,6 +8,7 @@ use Microsoft\PhpParser\Node\MethodDeclaration;
 use Microsoft\PhpParser\Node\PropertyDeclaration;
 use Microsoft\PhpParser\Node\TraitUseClause;
 use Microsoft\PhpParser\Parser;
+use Phpactor\CodeBuilder\Adapter\TolerantParser\Util\NodeHelper;
 use Phpactor\CodeBuilder\Domain\StyleProposer;
 use Phpactor\CodeBuilder\Domain\TextEdit;
 use Phpactor\CodeBuilder\Domain\TextEdits;
@@ -24,6 +25,7 @@ class MemberEmptyLineFixer implements StyleProposer
     private const META_PRECEDING_BLANK_LENGTH = 'blank_length';
     private const META_INDENTATION = 'indentation';
     private const META_IS_METHOD = 'is_method';
+    private const META_HAS_DOCBLOCK = 'has_docblock';
 
     /**
      * @var Parser
@@ -60,16 +62,8 @@ class MemberEmptyLineFixer implements StyleProposer
         $nodesMeta = [];
         $nodes = [];
 
-        foreach ($node->getDescendantNodes() as $decendantNode) {
-            if (!in_array(get_class($decendantNode), $nodeTypes)) {
-                continue;
-            }
-
-            $nodes[] = $decendantNode;
-        }
-
         $previousNodeClass = null;
-        foreach ($nodes as $node) {
+        foreach (NodeHelper::nodesOfTypes($nodeTypes, $node) as $node) {
             assert($node instanceof Node);
             $meta = [
                 self::META_SUCCESSOR => false,
@@ -80,6 +74,8 @@ class MemberEmptyLineFixer implements StyleProposer
                 self::META_PRECEDING_BLANK_LENGTH => $this->blankLength($node),
                 self::META_INDENTATION => $this->indentation($node),
                 self::META_IS_METHOD => $node instanceof MethodDeclaration,
+                self::META_HAS_DOCBLOCK => TextUtil::hasDocblock($node->getLeadingCommentAndWhitespaceText()),
+                'text' => $node->getFullText(),
             ];
 
             if (null === $previousNodeClass) {
@@ -111,6 +107,7 @@ class MemberEmptyLineFixer implements StyleProposer
                 !$meta[self::META_IS_METHOD] &&
                 (
                     $meta[self::META_SUCCESSOR] &&
+                    !$meta[self::META_HAS_DOCBLOCK] &&
                     $meta[self::META_PRECEDING_BLANK_LINES] > 2
                 )
             ) {
@@ -119,8 +116,8 @@ class MemberEmptyLineFixer implements StyleProposer
             }
 
             if (
-                $meta[self::META_FIRST] === false  &&
-                $meta[self::META_SUCCESSOR] === false &&
+                !$meta[self::META_FIRST]  &&
+                (!$meta[self::META_SUCCESSOR] || $meta[self::META_HAS_DOCBLOCK]) &&
                 $meta[self::META_PRECEDING_BLANK_LINES] == 2
             ) {
                 $edits = $this->addBlankLine($edits, $meta);

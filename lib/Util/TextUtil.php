@@ -38,4 +38,9 @@ class TextUtil
 
         return 0;
     }
+
+    public static function hasDocblock(string $line): bool
+    {
+        return (bool)preg_match('{^\s*\*}m', $line);
+    }
 }

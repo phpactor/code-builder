@@ -8,6 +8,7 @@ use Microsoft\PhpParser\Node\PropertyDeclaration;
 use Microsoft\PhpParser\Node\SourceFileNode;
 use Microsoft\PhpParser\Node\Statement\ClassDeclaration;
 use Microsoft\PhpParser\Parser;
+use Phpactor\CodeBuilder\Adapter\TolerantParser\Util\NodeHelper;
 use Phpactor\CodeBuilder\Domain\TextEdit;
 use Phpactor\CodeBuilder\Domain\StyleProposer;
 use Phpactor\CodeBuilder\Domain\TextEdits;
@@ -51,7 +52,7 @@ class DocblockIndentationFixer implements StyleProposer
         $lines = TextUtil::lines($node->getLeadingCommentAndWhitespaceText());
 
         foreach ($lines as $line) {
-            if (preg_match('{^\s*\*}', $line)) {
+            if (TextUtil::hasDocblock($line)) {
                 $line = $this->textFormat->indentRemove($line);
                 $line = $baseIndent .' '. $line;
             }
@@ -72,19 +73,11 @@ class DocblockIndentationFixer implements StyleProposer
 
     private function docblockNodes(Node $node, $nodes = []): array
     {
-        if (
-            $node instanceof SourceFileNode ||
-            $node instanceof ClassDeclaration ||
-            $node instanceof MethodDeclaration ||
-            $node instanceof PropertyDeclaration
-        ) {
-            $nodes[] = $node;
-        }
-
-        foreach ($node->getChildNodes() as $childNode) {
-            $nodes = $this->docblockNodes($childNode, $nodes);
-        }
-
-        return $nodes;
+        return NodeHelper::nodesOfTypes([
+            SourceFileNode::class,
+            ClassDeclaration::class,
+            MethodDeclaration::class,
+            PropertyDeclaration::class,
+        ], $node);
     }
 }
