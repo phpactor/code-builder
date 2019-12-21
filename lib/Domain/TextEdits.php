@@ -51,13 +51,13 @@ class TextEdits implements IteratorAggregate
     public function intersection(TextEdits $textEdits): TextEdits
     {
         $intersection = [];
-        foreach ($this->textEdits as $textEdit1) {
-            $start = $textEdit1->start;
-            $end = $textEdit1->start + $textEdit1->length;
+        foreach ($this->textEdits as $myEdit) {
+            $start = $myEdit->start;
+            $end = $myEdit->start + $myEdit->length;
 
-            foreach ($textEdits as $textEdit2) {
-                if ($textEdit2->start >= $start && $textEdit2->start < $end) {
-                    $intersection[] = $textEdit1;
+            foreach ($textEdits as $theirEdit) {
+                if ($theirEdit->start >= $start && $theirEdit->start < $end) {
+                    $intersection[] = $myEdit;
                     continue 2;
                 }
             }

@@ -35,9 +35,9 @@ class MemberEmptyLineFixer implements StyleProposer
      */
     private $textFormat;
 
-    public function __construct(Parser $parser, ?TextFormat $textFormat = null)
+    public function __construct(?Parser $parser = null, ?TextFormat $textFormat = null)
     {
-        $this->parser = $parser;
+        $this->parser = $parser ?: new Parser();
         $this->textFormat = $textFormat ?: new TextFormat();
     }
 

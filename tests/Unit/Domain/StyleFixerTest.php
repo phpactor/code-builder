@@ -14,7 +14,7 @@ class StyleFixerTest extends TestCase
 
     public function testAppliesNoChangesWithNoProposers()
     {
-        self::assertEquals(self::EXAMPLE_TEXT, $this->create()->fix(self::EXAMPLE_TEXT, TextEdits::none()));
+        self::assertEquals(self::EXAMPLE_TEXT, $this->create()->fixIntersection(self::EXAMPLE_TEXT, TextEdits::none()));
     }
 
     public function testAppliesProposedChangesToTextRangesFromGivenTextEdits()
@@ -26,7 +26,7 @@ class StyleFixerTest extends TestCase
 
         self::assertEquals('boo', $this->create([
             $proposer->reveal()
-        ])->fix(self::EXAMPLE_TEXT, TextEdits::fromTextEdits([
+        ])->fixIntersection(self::EXAMPLE_TEXT, TextEdits::fromTextEdits([
             new TextEdit(0, 10, '0123456789')
         ])));
     }
