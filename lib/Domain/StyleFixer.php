@@ -29,8 +29,10 @@ final class StyleFixer
             $intersection = $proposer->propose($code)->intersection(
                 $textEdits->appliedTextEdits()
             );
-            $textEdits = $textEdits->merge($intersection);
+
             $code = $intersection->apply($code);
+
+            $textEdits = $textEdits->merge($intersection->appliedTextEdits());
         }
 
         return $code;
