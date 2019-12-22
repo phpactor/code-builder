@@ -36,11 +36,19 @@ class TextEdits implements IteratorAggregate
         return new self(...$textEdits);
     }
 
+    /**
+     * Merge one set of edits into this set.
+     *
+     * Edits from this set are ordered before those of the merged edits.
+     */
     public function merge(TextEdits $edits): self
     {
         return new self(...array_merge($this->textEdits, $edits->textEdits));
     }
 
+    /**
+     * Apply this set of tedits to the given text
+     */
     public function apply(string $text): string
     {
         $textEdits = $this->textEdits;
@@ -48,6 +56,13 @@ class TextEdits implements IteratorAggregate
         return TextEdit::applyEdits($textEdits, $text);
     }
 
+    /**
+     * Return a set of text edits representing these text edits as if they had
+     * been applied.
+     *
+     * If you applied the returned set of edits on the same text this set was
+     * applied to, the returned set would make no further modifications.
+     */
     public function appliedTextEdits(): self
     {
         $applied = [];
@@ -65,6 +80,11 @@ class TextEdits implements IteratorAggregate
         return self::fromTextEdits($applied);
     }
 
+    /**
+     * Return a new set of text edits containing all the edits from this
+     * class which overlap (the start position is on or between any of the start/end
+     * positions) with the given text edits.
+     */
     public function intersection(TextEdits $textEdits): TextEdits
     {
         $intersection = [];

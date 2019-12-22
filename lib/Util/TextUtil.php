@@ -2,7 +2,7 @@
 
 namespace Phpactor\CodeBuilder\Util;
 
-class TextUtil
+final class TextUtil
 {
     private const NL_WINDOWS = "\r\n";
     private const NL_MAC = "\r";

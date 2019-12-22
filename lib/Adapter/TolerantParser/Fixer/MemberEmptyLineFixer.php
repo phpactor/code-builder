@@ -65,10 +65,10 @@ class MemberEmptyLineFixer implements StyleProposer
         $previousNodeClass = null;
         foreach (NodeHelper::nodesOfTypes($nodeTypes, $node) as $node) {
             assert($node instanceof Node);
-            $meta = [
-                self::META_SUCCESSOR => false,
+            $nodesMeta[] = [
+                self::META_SUCCESSOR => $previousNodeClass && $previousNodeClass === get_class($node),
                 self::META_NODE_CLASS => get_class($node),
-                self::META_FIRST => false,
+                self::META_FIRST => null === $previousNodeClass,
                 self::META_PRECEDING_BLANK_LINES => $this->countBlankLines($node->getLeadingCommentAndWhitespaceText()),
                 self::META_PRECEDING_BLANK_START => $node->getFullStart(),
                 self::META_PRECEDING_BLANK_LENGTH => $this->blankLength($node),
@@ -77,16 +77,7 @@ class MemberEmptyLineFixer implements StyleProposer
                 self::META_HAS_DOCBLOCK => (bool)$node->getDocCommentText(),
             ];
 
-            if (null === $previousNodeClass) {
-                $meta[self::META_FIRST] = true;
-            }
-
-            if ($previousNodeClass && $previousNodeClass === $meta[self::META_NODE_CLASS]) {
-                $meta[self::META_SUCCESSOR] = true;
-            }
-
-            $nodesMeta[] = $meta;
-            $previousNodeClass = $meta[self::META_NODE_CLASS];
+            $previousNodeClass = get_class($node);
         }
 
         return $nodesMeta;
