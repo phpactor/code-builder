@@ -119,4 +119,35 @@ EOT
             23
         ];
     }
+
+    /**
+     * @dataProvider provideLeadingSpace
+     */
+    public function testLeadingSpace(string $text, int $expectedSize)
+    {
+        self::assertEquals($expectedSize, strlen(TextUtil::leadingSpace($text)));
+    }
+
+    public function provideLeadingSpace()
+    {
+        yield 'empty' => [
+            '',
+            0 
+        ];
+
+        yield 'no subsequent chars' => [
+            '  ',
+            2 
+        ];
+
+        yield 'subsequent chars' => [
+            '  asd',
+            2 
+        ];
+
+        yield 'tabs' => [
+            "\t\tasd",
+            2 
+        ];
+    }
 }

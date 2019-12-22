@@ -22,6 +22,15 @@ class TextUtil
         return $matches[1];
     }
 
+    public static function leadingSpace(string $text): string
+    {
+        if (!preg_match("{^(\s*)}m", $text, $matches)) {
+            return 0;
+        }
+
+        return $matches[1];
+    }
+
     public static function lastNewLineOffset(string $text): int
     {
         if (false !== $pos = strrpos($text, self::NL_WINDOWS)) {
