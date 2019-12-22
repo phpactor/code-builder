@@ -25,7 +25,7 @@ final class TextUtil
     public static function leadingSpace(string $text): string
     {
         if (!preg_match("{^(\s*)}m", $text, $matches)) {
-            return 0;
+            return '';
         }
 
         return $matches[1];
