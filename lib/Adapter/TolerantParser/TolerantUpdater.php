@@ -13,6 +13,7 @@ use Phpactor\CodeBuilder\Domain\Prototype\NamespaceName;
 use Phpactor\CodeBuilder\Domain\Prototype\Prototype;
 use Phpactor\CodeBuilder\Domain\Prototype\SourceCode;
 use Phpactor\CodeBuilder\Domain\Renderer;
+use Phpactor\CodeBuilder\Domain\StyleFixer;
 use Phpactor\CodeBuilder\Domain\Updater;
 use Phpactor\CodeBuilder\Util\TextFormat;
 use Phpactor\CodeBuilder\Adapter\TolerantParser\Updater\ClassUpdater;
@@ -62,8 +63,17 @@ class TolerantUpdater implements Updater
      */
     private $useStatementUpdater;
 
-    public function __construct(Renderer $renderer, TextFormat $textFormat = null, Parser $parser = null)
-    {
+    /**
+     * @var StyleFixer
+     */
+    private $fixer;
+
+    public function __construct(
+        Renderer $renderer,
+        TextFormat $textFormat = null,
+        Parser $parser = null,
+        StyleFixer $fixer = null
+    ) {
         $this->parser = $parser ?: new Parser();
         $this->textFormat = $textFormat ?: new TextFormat();
         $this->renderer = $renderer;
@@ -71,6 +81,7 @@ class TolerantUpdater implements Updater
         $this->interfaceUpdater = new InterfaceUpdater($renderer);
         $this->traitUpdater = new TraitUpdater($renderer);
         $this->useStatementUpdater = new UseStatementUpdater();
+        $this->fixer = $fixer ?: new StyleFixer();
     }
 
     public function apply(Prototype $prototype, Code $code): Code
@@ -81,8 +92,11 @@ class TolerantUpdater implements Updater
         $this->updateNamespace($edits, $prototype, $node);
         $this->useStatementUpdater->updateUseStatements($edits, $prototype, $node);
         $this->updateClasses($edits, $prototype, $node);
+        $updatedCode = $edits->apply((string) $code);
 
-        return Code::fromString($edits->apply((string) $code));
+        return Code::fromString(
+            $this->fixer->fixIntersection($updatedCode, $edits->textEdits())
+        );
     }
 
     private function updateNamespace(Edits $edits, SourceCode $prototype, SourceFileNode $node)
