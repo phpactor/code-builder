@@ -66,14 +66,31 @@ class IndentationFixer implements StyleProposer
             $edits = array_merge($edits, $this->indentations($childNode, $level));
         }
 
+        if ($level > 0) {
+            $level--;
+        }
+
+        $edits = $this->indent(
+            $edits,
+            $node,
+            $level,
+            true
+        );
+
         return $edits;
     }
 
-    private function indent(array $edits, Node $node, int $level): array
+    private function indent(array $edits, Node $node, int $level, $end = false): array
     {
         $text = $node->getFileContents();
-        $start = $node->getFullStart();
-        $length = $this->getOffsetUntilFirstChild($node) - $start;
+
+        if ($end) {
+            $start = $this->getOffsetForLastChild($node);
+            $length = $node->getEndPosition() - $start;
+        } else {
+            $start = $node->getFullStart();
+            $length = $this->getOffsetUntilFirstChild($node) - $start;
+        }
 
         if ($length === 0) {
             return $edits;
@@ -100,5 +117,14 @@ class IndentationFixer implements StyleProposer
         }
 
         return $node->getEndPosition();
+    }
+
+    private function getOffsetForLastChild(Node $node)
+    {
+        $childNode = $node;
+        foreach ($node->getChildNodes() as $childNode) {
+        }
+
+        return $childNode->getEndPosition();
     }
 }
