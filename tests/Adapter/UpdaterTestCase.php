@@ -3,6 +3,7 @@
 namespace Phpactor\CodeBuilder\Tests\Adapter;
 
 use PHPUnit\Framework\TestCase;
+use Phpactor\CodeBuilder\Adapter\Symfony\ProcessFilter;
 use Phpactor\CodeBuilder\Domain\Updater;
 use Phpactor\CodeBuilder\Domain\Code;
 use Phpactor\CodeBuilder\Domain\Builder\SourceCodeBuilder;
@@ -442,13 +443,17 @@ EOT
                 <<<'EOT'
 namespace Animal;
 
-class Foo {}
+class Foo
+{
+}
 EOT
                 , SourceCodeBuilder::create()->use('Animal\Primate')->build()
                 , <<<'EOT'
 namespace Animal;
 
-class Foo {}
+class Foo
+{
+}
 EOT
             ];
     }
@@ -1492,8 +1497,7 @@ class Aardvark
 {
     public function hello(
         array $foobar = []
-    )
-    {
+    ) {
     }
 }
 EOT
@@ -1507,8 +1511,7 @@ class Aardvark
 {
     public function hello(
         array $foobar = []
-    )
-    {
+    ) {
     }
 }
 EOT
@@ -1793,6 +1796,10 @@ EOT
     private function assertUpdate(string $existingCode, SourceCode $prototype, string $expectedCode)
     {
         $code = $this->updater()->apply($prototype, Code::fromString('<?php'.PHP_EOL.$existingCode));
-        $this->assertEquals('<?php' . PHP_EOL . $expectedCode, (string) $code);
+        $filter = new ProcessFilter(
+            __DIR__ . '/../../vendor/bin/php-cs-fixer fix --rules=@PSR2 %file%'
+        );
+        $code = $filter->filter($code);
+        $this->assertEquals('<?php' . PHP_EOL . $expectedCode, trim((string) $code));
     }
 }
