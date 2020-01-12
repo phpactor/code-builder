@@ -6,7 +6,7 @@ use Phpactor\CodeBuilder\Domain\TextEdits;
 
 interface StyleProposer
 {
-    public function propose(NodeQuery $node): TextEdits;
+    public function onEnter(NodeQuery $node): TextEdits;
 
     public function onExit(NodeQuery $node): TextEdits;
 }

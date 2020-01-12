@@ -32,7 +32,7 @@ class MemberBlankLineProposer implements StyleProposer
         $this->textFormat = $textFormat;
     }
 
-    public function propose(NodeQuery $node): TextEdits
+    public function onEnter(NodeQuery $node): TextEdits
     {
         if (!in_array($node->fqn(), $this->memberClasses)) {
             return TextEdits::none();

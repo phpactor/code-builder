@@ -39,7 +39,7 @@ class TolerantStyleFixer implements StyleFixer
     private function walk(Node $node, TextEdits $edits): TextEdits
     {
         foreach ($this->proposers as $proposer) {
-            $edits = $edits->merge($proposer->propose(new NodeQuery($node)));
+            $edits = $edits->merge($proposer->onEnter(new NodeQuery($node)));
         }
 
         foreach ($node->getChildNodes() as $childNode) {

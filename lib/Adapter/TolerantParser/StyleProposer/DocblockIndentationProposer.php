@@ -8,7 +8,7 @@ use Phpactor\CodeBuilder\Domain\TextEdits;
 
 class DocblockIndentationProposer implements StyleProposer
 {
-    public function propose(NodeQuery $node): TextEdits
+    public function onEnter(NodeQuery $node): TextEdits
     {
         return TextEdits::none();
     }

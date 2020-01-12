@@ -41,7 +41,7 @@ class IndentationProposer implements StyleProposer
         $this->textFormat = $textFormat;
     }
 
-    public function propose(NodeQuery $node): TextEdits
+    public function onEnter(NodeQuery $node): TextEdits
     {
         $edits = $this->editsForIndentation($node);
 
