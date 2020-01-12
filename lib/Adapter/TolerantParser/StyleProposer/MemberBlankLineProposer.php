@@ -55,7 +55,7 @@ class MemberBlankLineProposer implements StyleProposer
 
     private function proposeSameSiblingFix(NodeQuery $node): TextEdits
     {
-        if ($node->isMethodDeclaration()) {
+        if ($node->isMethodDeclaration() || $node->hasDocblock()) {
             return $this->ensureOneBlankLine($node);
         }
 
@@ -73,6 +73,10 @@ class MemberBlankLineProposer implements StyleProposer
             if ($char === $this->textFormat->newLineChar()) {
                 $positions[] = $pos;
                 continue;
+            }
+
+            if ($char !== ' ') {
+                break;
             }
         }
 

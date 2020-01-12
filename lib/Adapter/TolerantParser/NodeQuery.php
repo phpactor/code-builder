@@ -54,4 +54,9 @@ class NodeQuery
     {
         return $this->fqn() === MethodDeclaration::class;
     }
+
+    public function hasDocblock(): bool
+    {
+        return !empty($this->node->getDocCommentText());
+    }
 }
