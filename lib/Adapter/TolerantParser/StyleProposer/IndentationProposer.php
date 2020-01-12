@@ -23,7 +23,6 @@ class IndentationProposer implements StyleProposer
     private $levelChangers = [
         ClassMembersNode::class,
         CompoundStatementNode::class,
-        IfStatementNode::class,
     ];
 
     /**
@@ -48,17 +47,24 @@ class IndentationProposer implements StyleProposer
 
     public function propose(NodeQuery $node): TextEdits
     {
-        if ($node->lineNumber() === $this->currentLineNumber) {
-            return TextEdits::none();
-        } else {
-            $this->currentLineNumber = $node->lineNumber();
-        }
-
-        $textEdits = $this->replaceIndentation($node);
+        $edits = $this->editsForIndentation($node);
 
         if (in_array($node->fqn(), $this->levelChangers)) {
             $this->level++;
         }
+
+        return $edits;
+    }
+
+    private function editsForIndentation(NodeQuery $node): TextEdits
+    {
+        // skip if same line number as previous line
+        if ($node->lineNumber() === $this->currentLineNumber) {
+            return TextEdits::none();
+        }
+
+        $this->currentLineNumber = $node->lineNumber();
+        $textEdits = $this->replaceIndentation($node);
 
         return $textEdits;
     }
@@ -67,6 +73,10 @@ class IndentationProposer implements StyleProposer
     {
         if (in_array($node->fqn(), $this->levelChangers)) {
             $this->level--;
+        }
+
+        if ($this->level < 0) {
+debug_node($node);
         }
 
         $start = $end = $node->end();
@@ -110,7 +120,6 @@ class IndentationProposer implements StyleProposer
         $start = $end = $length = 0;
         $ranges = [];
         $parsing = false;
-        debug_node($node);
 
         foreach ($chars as $pos => $char) {
             if (!$parsing && $char === $this->textFormat->newLineChar()) {
@@ -126,9 +135,6 @@ class IndentationProposer implements StyleProposer
                 $ranges[] = [$start, $length];
                 $parsing = false;
             }
-        }
-        if ($node->innerNode() instanceof MethodDeclaration) {
-            var_dump($chars);
         }
 
         if ($parsing === true) {
