@@ -60,4 +60,22 @@ class NodeQueries implements IteratorAggregate
             return $node->id();
         }, $this->nodeQueries);
     }
+
+    public function preceding(NodeQuery $target): self
+    {
+        $preceding = [];
+        foreach ($this->nodeQueries as $query) {
+            if ($target->id() === $query->id()) {
+                return new self(...$preceding);
+            }
+            $preceding[] = $query;
+        }
+
+        return new self();
+    }
+
+    public function count(): int
+    {
+        return count($this->nodeQueries);
+    }
 }

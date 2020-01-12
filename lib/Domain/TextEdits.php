@@ -102,4 +102,9 @@ class TextEdits implements IteratorAggregate
 
         return new self(...$intersection);
     }
+
+    public function add(TextEdit $textEdit): self
+    {
+        return new self(...array_merge($this->textEdits, [$textEdit]));
+    }
 }

@@ -44,14 +44,8 @@ class NodeQuery
         return $this->node->getFullStart();
     }
 
-    public function debug(): void
+    public function innerNode(): Node
     {
-        $exporter = new Exporter();
-        $lines = [];
-        $lines[] = get_class($this->node);
-        $lines[] = sprintf('start: %s, end: %s', $this->node->getFullStart(), $this->node->getEndPosition());
-        $lines[] = sprintf('%s', $exporter->export($this->node->getFullText()));
-
-        echo PHP_EOL.implode("\n", $lines).PHP_EOL;
+        return $this->node;
     }
 }
