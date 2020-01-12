@@ -2,11 +2,12 @@
 
 namespace Phpactor\CodeBuilder\Tests\Adapter\TolerantParser;
 
-use Phpactor\CodeBuilder\Adapter\TolerantParser\Fixer\DocblockIndentationFixer;
-use Phpactor\CodeBuilder\Adapter\TolerantParser\Fixer\IndentationFixer;
-use Phpactor\CodeBuilder\Adapter\TolerantParser\Fixer\MemberEmptyLineFixer;
-use Phpactor\CodeBuilder\Domain\StyleFixer;
+use Phpactor\CodeBuilder\Adapter\TolerantParser\StyleProposer\DocblockIndentationProposer;
+use Phpactor\CodeBuilder\Adapter\TolerantParser\StyleProposer\IndentationProposer;
+use Phpactor\CodeBuilder\Adapter\TolerantParser\StyleProposer\MemberBlankLineProposer;
+use Phpactor\CodeBuilder\Adapter\TolerantParser\TolerantStyleFixer;
 use Phpactor\CodeBuilder\Tests\IntegrationTestCase;
+use Phpactor\CodeBuilder\Util\TextFormat;
 
 class StyleFixerTest extends IntegrationTestCase
 {
@@ -17,10 +18,10 @@ class StyleFixerTest extends IntegrationTestCase
 
     protected function setUp(): void
     {
-        $this->fixer = new StyleFixer(...[
-            new MemberEmptyLineFixer(),
-            new IndentationFixer(),
-            new DocblockIndentationFixer()
+        $this->fixer = new TolerantStyleFixer(null, ...[
+            new MemberBlankLineProposer(new TextFormat()),
+            new IndentationProposer(new TextFormat()),
+            new DocblockIndentationProposer(new TextFormat())
         ]);
     }
 

@@ -2,20 +2,16 @@
 
 namespace Phpactor\CodeBuilder\Tests\Adapter\TolerantParser\Fixer;
 
-use Generator;
-use Microsoft\PhpParser\Parser;
-use PHPUnit\Framework\TestCase;
-use Phpactor\CodeBuilder\Adapter\TolerantParser\Fixer\DocblockIndentationFixer;
-use Phpactor\CodeBuilder\Adapter\TolerantParser\Fixer\IndentationFixer;
-use Phpactor\CodeBuilder\Adapter\TolerantParser\Fixer\MemberEmptyLineFixer;
-use Phpactor\CodeBuilder\Domain\StyleProposer;
-use Phpactor\TestUtils\Workspace;
-use Phpactor\TextDocument\TextDocumentBuilder;
+use Phpactor\CodeBuilder\Util\TextFormat;
+
+use Phpactor\CodeBuilder\Adapter\TolerantParser\StyleProposer\DocblockIndentationProposer;
+
+use Phpactor\CodeBuilder\Adapter\TolerantParser\StyleProposer;
 
 class DocblockIndentationFixerTest extends FixerTestCase
 {
-    protected function createFixer(): StyleProposer
+    protected function createProposer(): StyleProposer
     {
-        return new DocblockIndentationFixer(new Parser());
+        return new DocblockIndentationProposer(new TextFormat());
     }
 }
