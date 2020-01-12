@@ -33,20 +33,22 @@ class TolerantStyleFixer implements StyleFixer
         $rootNode = $this->parser->parseSourceFile($code);
 
         $edits = new TextEdits();
-        foreach ($this->allNodes($rootNode) as $node) {
-            foreach ($this->proposers as $proposer) {
-                $edits = $edits->merge($proposer->propose(new NodeQuery($node)));
-            }
-        }
+        $edits = $this->walk($rootNode, $edits);
 
         return $edits->apply($code);
     }
 
-    private function allNodes(Node $node): Generator
+    private function walk(Node $node, TextEdits $edits): TextEdits
     {
-        yield $node;
-        foreach ($node->getChildNodes() as $childNode) {
-            yield from $this->allNodes($childNode);
+        foreach ($this->proposers as $proposer) {
+            $edits = $edits->merge($proposer->propose(new NodeQuery($node)));
         }
+        foreach ($node->getChildNodes() as $childNode) {
+            $edits = $this->walk($childNode, $edits);
+        }
+        foreach ($this->proposers as $proposer) {
+            $proposer->onExit(new NodeQuery($node));
+        }
+        return $edits;
     }
 }

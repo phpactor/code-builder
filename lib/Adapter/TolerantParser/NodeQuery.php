@@ -4,6 +4,7 @@ namespace Phpactor\CodeBuilder\Adapter\TolerantParser;
 
 use Microsoft\PhpParser\Node;
 use Microsoft\PhpParser\Node\MethodDeclaration;
+use Phpactor\CodeBuilder\Util\TextUtil;
 use SebastianBergmann\Exporter\Exporter;
 
 class NodeQuery
@@ -58,5 +59,15 @@ class NodeQuery
     public function hasDocblock(): bool
     {
         return !empty($this->node->getDocCommentText());
+    }
+
+    public function lineNumber(): int
+    {
+        return count(TextUtil::lines(substr($this->node->getFileContents(), 0, $this->node->getStart())));
+    }
+
+    public function start(): int
+    {
+        return $this->node->getStart();
     }
 }

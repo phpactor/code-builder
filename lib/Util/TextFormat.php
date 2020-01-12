@@ -24,9 +24,6 @@ class TextFormat
     {
         $lines = TextUtil::lines($string);
         $lines = array_map(function ($line) use ($level) {
-            if (!$line) {
-                return $line;
-            }
             return str_repeat($this->indentation, $level) . $line;
         }, $lines);
 
@@ -51,5 +48,10 @@ class TextFormat
     public function newLineChar(): string
     {
         return $this->newLineChar;
+    }
+
+    public function indentation(int $level): string
+    {
+        return str_repeat($this->indentation, $level);
     }
 }
