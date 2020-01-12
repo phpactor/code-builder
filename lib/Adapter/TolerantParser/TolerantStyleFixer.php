@@ -2,10 +2,8 @@
 
 namespace Phpactor\CodeBuilder\Adapter\TolerantParser;
 
-use Generator;
 use Microsoft\PhpParser\Node;
 use Microsoft\PhpParser\Parser;
-use Microsoft\PhpParser\Token;
 use Phpactor\CodeBuilder\Domain\StyleFixer;
 use Phpactor\CodeBuilder\Domain\TextEdits;
 

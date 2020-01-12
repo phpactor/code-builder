@@ -5,7 +5,6 @@ namespace Phpactor\CodeBuilder\Adapter\TolerantParser;
 use Microsoft\PhpParser\Node;
 use Microsoft\PhpParser\Node\MethodDeclaration;
 use Phpactor\CodeBuilder\Util\TextUtil;
-use SebastianBergmann\Exporter\Exporter;
 
 class NodeQuery
 {

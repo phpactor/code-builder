@@ -12,8 +12,6 @@ use Phpactor\CodeBuilder\Domain\TextEdit;
 use Phpactor\CodeBuilder\Domain\TextEdits;
 use Phpactor\CodeBuilder\Util\TextFormat;
 use Phpactor\CodeBuilder\Adapter\TolerantParser\NodeQuery;
-use Phpactor\CodeBuilder\Util\TextUtil;
-use SebastianBergmann\Exporter\Exporter;
 
 class MemberBlankLineProposer implements StyleProposer
 {

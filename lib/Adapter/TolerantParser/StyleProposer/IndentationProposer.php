@@ -2,25 +2,15 @@
 
 namespace Phpactor\CodeBuilder\Adapter\TolerantParser\StyleProposer;
 
-use Microsoft\PhpParser\Node;
-use Microsoft\PhpParser\Node\ClassConstDeclaration;
 use Microsoft\PhpParser\Node\ClassMembersNode;
 use Microsoft\PhpParser\Node\DelimitedList\ArgumentExpressionList;
-use Microsoft\PhpParser\Node\DelimitedList\ArrayElementList;
-use Microsoft\PhpParser\Node\Expression\ArgumentExpression;
 use Microsoft\PhpParser\Node\Expression\ArrayCreationExpression;
-use Microsoft\PhpParser\Node\MethodDeclaration;
-use Microsoft\PhpParser\Node\PropertyDeclaration;
 use Microsoft\PhpParser\Node\Statement\CompoundStatementNode;
-use Microsoft\PhpParser\Node\Statement\IfStatementNode;
-use Microsoft\PhpParser\Node\TraitUseClause;
 use Phpactor\CodeBuilder\Adapter\TolerantParser\StyleProposer;
 use Phpactor\CodeBuilder\Domain\TextEdit;
 use Phpactor\CodeBuilder\Domain\TextEdits;
 use Phpactor\CodeBuilder\Util\TextFormat;
 use Phpactor\CodeBuilder\Adapter\TolerantParser\NodeQuery;
-use Phpactor\CodeBuilder\Util\TextUtil;
-use SebastianBergmann\Exporter\Exporter;
 
 class IndentationProposer implements StyleProposer
 {
