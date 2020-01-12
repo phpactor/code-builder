@@ -6,7 +6,8 @@ use Generator;
 use Microsoft\PhpParser\Parser;
 use PHPUnit\Framework\TestCase;
 use Phpactor\CodeBuilder\Adapter\TolerantParser\Fixer\MemberEmptyLineFixer;
-use Phpactor\CodeBuilder\Domain\StyleProposer;
+use Phpactor\CodeBuilder\Adapter\TolerantParser\StyleProposer;
+use Phpactor\CodeBuilder\Adapter\TolerantParser\TolerantStyleFixer;
 use Phpactor\CodeBuilder\Tests\IntegrationTestCase;
 use Phpactor\TestUtils\Workspace;
 use Phpactor\TextDocument\TextDocumentBuilder;
@@ -20,22 +21,25 @@ abstract class FixerTestCase extends IntegrationTestCase
     }
 
     /**
-     * @dataProvider provideFixer
+     * @dataProvider provideProposer
      */
-    public function testFixer(string $path)
+    public function testProposer(string $path)
     {
         $this->workspace()->loadManifest(file_get_contents($path));
         $document = TextDocumentBuilder::create($this->workspace()->getContents('source.php'))->build();
-        $fixed = $this->createFixer()->propose($document)->apply($document);
+        $fixed = (new TolerantStyleFixer(
+            null,
+            $this->createProposer()
+        ))->fix($document->__toString());
 
         self::assertEquals(trim($this->workspace()->getContents('expected.php')), trim($fixed));
     }
 
-    public function provideFixer(): Generator
+    public function provideProposer(): Generator
     {
-        $name = basename(str_replace('\\', '/', get_class($this->createFixer())));
+        $name = basename(str_replace('\\', '/', get_class($this->createProposer())));
         yield from $this->yieldExamplesIn(__DIR__ . '/examples/' . $name);
     }
 
-    abstract protected function createFixer(): StyleProposer;
+    abstract protected function createProposer(): StyleProposer;
 }
