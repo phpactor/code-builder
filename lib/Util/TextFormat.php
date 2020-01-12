@@ -2,6 +2,8 @@
 
 namespace Phpactor\CodeBuilder\Util;
 
+use RuntimeException;
+
 class TextFormat
 {
     /**
@@ -52,6 +54,12 @@ class TextFormat
 
     public function indentation(int $level): string
     {
+        if ($level < 0) {
+            throw new RuntimeException(sprintf(
+                'Indentation level must be equal to or greater than 0, got "%s"',
+                $level
+            ));
+        }
         return str_repeat($this->indentation, $level);
     }
 }

@@ -43,11 +43,13 @@ class TolerantStyleFixer implements StyleFixer
         foreach ($this->proposers as $proposer) {
             $edits = $edits->merge($proposer->propose(new NodeQuery($node)));
         }
+
         foreach ($node->getChildNodes() as $childNode) {
             $edits = $this->walk($childNode, $edits);
         }
+
         foreach ($this->proposers as $proposer) {
-            $proposer->onExit(new NodeQuery($node));
+            $edits = $edits->merge($proposer->onExit(new NodeQuery($node)));
         }
         return $edits;
     }

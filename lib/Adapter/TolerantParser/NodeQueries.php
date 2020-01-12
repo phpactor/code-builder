@@ -7,6 +7,7 @@ use Iterator;
 use IteratorAggregate;
 use Microsoft\PhpParser\Node;
 use OutOfBoundsException;
+use RuntimeException;
 
 class NodeQueries implements IteratorAggregate
 {
@@ -77,5 +78,18 @@ class NodeQueries implements IteratorAggregate
     public function count(): int
     {
         return count($this->nodeQueries);
+    }
+
+    public function last()
+    {
+        $query = null;
+        foreach ($this->nodeQueries as $query) {
+        }
+        if (null === $query) {
+            throw new RuntimeException(
+                'Query collection is empty when trying to get last query'
+            );
+        }
+        return $query;
     }
 }

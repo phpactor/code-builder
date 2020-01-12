@@ -6,6 +6,7 @@ class TestClass
 public function foobar()
 {
     // foo
+    echo '12';
 }
 }
 // File: expected.php
@@ -15,6 +16,7 @@ class TestClass
 {
     public function foobar()
     {
-    // foo
+        // foo
+        echo '12';
     }
 }

@@ -63,56 +63,82 @@ class IndentationProposer implements StyleProposer
         return $textEdits;
     }
 
-    public function onExit(NodeQuery $node): void
+    public function onExit(NodeQuery $node): TextEdits
     {
         if (in_array($node->fqn(), $this->levelChangers)) {
             $this->level--;
         }
+
+        $start = $end = $node->end();
+
+        if ($node->children()->count()) {
+            $start = $node->children()->last()->end();
+        }
+
+        if ($start === $end) {
+            return TextEdits::none();
+        }
+
+        return $this->indentSelection($node, $start, $end);
     }
 
     private function replaceIndentation(NodeQuery $node): TextEdits
     {
-        $chars = str_split($node->leadingText());
-        $prevChar = null;
-        $start = $end = $length = 0;
+        $selectionStart = $node->fullStart();
+        $selectionEnd = $node->start();
+
+        return $this->indentSelection($node, $selectionStart, $selectionEnd);
+    }
+
+    private function replaceWithIndentation(TextEdits $edits, int $selectionStart, int $start, int $length)
+    {
+        return $edits->add(
+            new TextEdit(
+                $selectionStart + $start,
+                $length,
+                $this->textFormat->indentation($this->level)
+            )
+        );
+    }
+
+    private function indentSelection(NodeQuery $node, int $selectionStart, int $selectionEnd)
+    {
+        $text = $node->textSelection($selectionStart, $selectionEnd);
+        $chars = str_split($text);
+
         $edits = TextEdits::none();
-        $replaceLast = false;
+        $start = $end = $length = 0;
         $ranges = [];
+        $parsing = false;
+        debug_node($node);
 
         foreach ($chars as $pos => $char) {
-            if (!$start && $char === $this->textFormat->newLineChar()) {
+            if (!$parsing && $char === $this->textFormat->newLineChar()) {
                 $start = $pos + strlen($char);
+                $parsing = true;
                 continue;
             }
 
             $length = $pos - $start;
 
-            if ($char != ' ') {
+            // for docblocks
+            if ($parsing && $char != ' ') {
                 $ranges[] = [$start, $length];
-                $start = null;
+                $parsing = false;
             }
         }
-
-        if ($start) {
-            $ranges[] = [$start, $pos];
+        if ($node->innerNode() instanceof MethodDeclaration) {
+            var_dump($chars);
         }
 
+        if ($parsing === true) {
+            $ranges[] = [$start, count($chars) - $start];
+        }
 
         foreach ($ranges as [$start, $length]) {
-            $edits = $this->replaceWithIndentation($edits, $node, $start, $length);
+            $edits = $this->replaceWithIndentation($edits, $selectionStart, $start, $length);
         }
 
         return $edits;
-    }
-
-    private function replaceWithIndentation(TextEdits $edits, NodeQuery $node, int $start, int $length)
-    {
-        return $edits->add(
-            new TextEdit(
-                $node->fullStart() + $start,
-                $length,
-                $this->textFormat->indentation($this->level)
-            )
-        );
     }
 }

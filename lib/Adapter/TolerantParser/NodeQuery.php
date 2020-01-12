@@ -70,4 +70,19 @@ class NodeQuery
     {
         return $this->node->getStart();
     }
+
+    public function end(): int
+    {
+        return $this->node->getEndPosition();
+    }
+
+    public function textSelection(int $selectionStart, int $selectionEnd): string
+    {
+        return substr($this->node->getFileContents(), $selectionStart, $selectionEnd - $selectionStart);
+    }
+
+    public function children(): NodeQueries
+    {
+        return NodeQueries::fromNodes(...$this->node->getChildNodes());
+    }
 }

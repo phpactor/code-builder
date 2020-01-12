@@ -107,7 +107,8 @@ class MemberBlankLineProposer implements StyleProposer
         return $edits;
     }
 
-    public function onExit(NodeQuery $node): void
+    public function onExit(NodeQuery $node): TextEdits
     {
+        return TextEdits::none();
     }
 }

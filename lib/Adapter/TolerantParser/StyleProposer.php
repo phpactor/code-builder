@@ -9,5 +9,5 @@ interface StyleProposer
 {
     public function propose(NodeQuery $node): TextEdits;
 
-    public function onExit(NodeQuery $node): void;
+    public function onExit(NodeQuery $node): TextEdits;
 }
