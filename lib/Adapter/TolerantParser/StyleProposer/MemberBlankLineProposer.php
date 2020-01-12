@@ -4,6 +4,8 @@ namespace Phpactor\CodeBuilder\Adapter\TolerantParser\StyleProposer;
 
 use Microsoft\PhpParser\Node;
 use Microsoft\PhpParser\Node\ClassConstDeclaration;
+use Microsoft\PhpParser\Node\MethodDeclaration;
+use Microsoft\PhpParser\Node\PropertyDeclaration;
 use Microsoft\PhpParser\Node\TraitUseClause;
 use Phpactor\CodeBuilder\Adapter\TolerantParser\StyleProposer;
 use Phpactor\CodeBuilder\Domain\TextEdit;
@@ -17,7 +19,9 @@ class MemberBlankLineProposer implements StyleProposer
 {
     private $memberClasses = [
         TraitUseClause::class,
-        ClassConstDeclaration::class
+        ClassConstDeclaration::class,
+        PropertyDeclaration::class,
+        MethodDeclaration::class,
     ];
 
     /**
@@ -43,7 +47,7 @@ class MemberBlankLineProposer implements StyleProposer
 
         // if node is first of it's kind
         if ($node->siblings()->ofType($node->fqn())->indexOf($node) === 0) {
-            return $this->proposeFirstOfKindFix($node);
+            return $this->ensureOneBlankLine($node);
         }
 
         return TextEdits::none();
@@ -51,6 +55,10 @@ class MemberBlankLineProposer implements StyleProposer
 
     private function proposeSameSiblingFix(NodeQuery $node): TextEdits
     {
+        if ($node->isMethodDeclaration()) {
+            return $this->ensureOneBlankLine($node);
+        }
+
         return $this->removeBlankLines($node);
     }
 
@@ -83,7 +91,7 @@ class MemberBlankLineProposer implements StyleProposer
         ]);
     }
 
-    private function proposeFirstOfKindFix(NodeQuery $node): TextEdits
+    private function ensureOneBlankLine(NodeQuery $node): TextEdits
     {
         if ($node->siblings()->preceding($node)->count() === 0) {
             return $this->removeBlankLines($node);

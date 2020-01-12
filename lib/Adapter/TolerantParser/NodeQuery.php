@@ -3,6 +3,7 @@
 namespace Phpactor\CodeBuilder\Adapter\TolerantParser;
 
 use Microsoft\PhpParser\Node;
+use Microsoft\PhpParser\Node\MethodDeclaration;
 use SebastianBergmann\Exporter\Exporter;
 
 class NodeQuery
@@ -47,5 +48,10 @@ class NodeQuery
     public function innerNode(): Node
     {
         return $this->node;
+    }
+
+    public function isMethodDeclaration(): bool
+    {
+        return $this->fqn() === MethodDeclaration::class;
     }
 }
