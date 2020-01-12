@@ -5,6 +5,10 @@ namespace Phpactor\CodeBuilder\Adapter\TolerantParser\StyleProposer;
 use Microsoft\PhpParser\Node;
 use Microsoft\PhpParser\Node\ClassConstDeclaration;
 use Microsoft\PhpParser\Node\ClassMembersNode;
+use Microsoft\PhpParser\Node\DelimitedList\ArgumentExpressionList;
+use Microsoft\PhpParser\Node\DelimitedList\ArrayElementList;
+use Microsoft\PhpParser\Node\Expression\ArgumentExpression;
+use Microsoft\PhpParser\Node\Expression\ArrayCreationExpression;
 use Microsoft\PhpParser\Node\MethodDeclaration;
 use Microsoft\PhpParser\Node\PropertyDeclaration;
 use Microsoft\PhpParser\Node\Statement\CompoundStatementNode;
@@ -23,6 +27,8 @@ class IndentationProposer implements StyleProposer
     private $levelChangers = [
         ClassMembersNode::class,
         CompoundStatementNode::class,
+        ArrayCreationExpression::class,
+        ArgumentExpressionList::class,
     ];
 
     /**
@@ -56,27 +62,10 @@ class IndentationProposer implements StyleProposer
         return $edits;
     }
 
-    private function editsForIndentation(NodeQuery $node): TextEdits
-    {
-        // skip if same line number as previous line
-        if ($node->lineNumber() === $this->currentLineNumber) {
-            return TextEdits::none();
-        }
-
-        $this->currentLineNumber = $node->lineNumber();
-        $textEdits = $this->replaceIndentation($node);
-
-        return $textEdits;
-    }
-
     public function onExit(NodeQuery $node): TextEdits
     {
         if (in_array($node->fqn(), $this->levelChangers)) {
             $this->level--;
-        }
-
-        if ($this->level < 0) {
-debug_node($node);
         }
 
         $start = $end = $node->end();
@@ -92,23 +81,29 @@ debug_node($node);
         return $this->indentSelection($node, $start, $end);
     }
 
+    private function editsForIndentation(NodeQuery $node): TextEdits
+    {
+        if (false === $node->amTopNodeAtMyPosition()) {
+            return TextEdits::none();
+        }
+
+        // skip if same line number as previous line
+        if ($node->lineNumber() === $this->currentLineNumber) {
+            return TextEdits::none();
+        }
+
+        $this->currentLineNumber = $node->lineNumber();
+        $textEdits = $this->replaceIndentation($node);
+
+        return $textEdits;
+    }
+
     private function replaceIndentation(NodeQuery $node): TextEdits
     {
         $selectionStart = $node->fullStart();
         $selectionEnd = $node->start();
 
         return $this->indentSelection($node, $selectionStart, $selectionEnd);
-    }
-
-    private function replaceWithIndentation(TextEdits $edits, int $selectionStart, int $start, int $length)
-    {
-        return $edits->add(
-            new TextEdit(
-                $selectionStart + $start,
-                $length,
-                $this->textFormat->indentation($this->level)
-            )
-        );
     }
 
     private function indentSelection(NodeQuery $node, int $selectionStart, int $selectionEnd)
@@ -146,5 +141,17 @@ debug_node($node);
         }
 
         return $edits;
+    }
+
+    private function replaceWithIndentation(TextEdits $edits, int $selectionStart, int $start, int $length)
+    {
+        $indent = $this->textFormat->indentation($this->level);
+        return $edits->add(
+            new TextEdit(
+                $selectionStart + $start,
+                $length,
+                $indent
+            )
+        );
     }
 }

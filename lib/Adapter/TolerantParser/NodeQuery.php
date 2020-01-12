@@ -85,4 +85,20 @@ class NodeQuery
     {
         return NodeQueries::fromNodes(...$this->node->getChildNodes());
     }
+
+    public function fullText(): string
+    {
+        return $this->node->getFullText();
+    }
+
+    public function amTopNodeAtMyPosition(): bool
+    {
+        foreach ($this->node->getDescendantNodes() as $node) {
+            if ($node->getFullStart() === $this->node->getFullStart()) {
+                return false;
+            }
+        }
+
+        return true;
+    }
 }

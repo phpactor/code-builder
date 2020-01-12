@@ -8,21 +8,28 @@ require __DIR__  . '/../vendor/autoload.php';
 
 function debug_node($node): void
 {
-    if ($node instanceof NodeQuery) {
-        $node = $node->innerNode();
+    if ($node instanceof Node) {
+        $node = new NodeQuery($node);
     }
 
-    if (!$node instanceof Node) {
+    if (!$node instanceof NodeQuery) {
         throw new RuntimeException(sprintf(
             'Invalid debug node type "%s"', get_class($node)
         ));
     }
 
+
     $exporter = new Exporter();
     $lines = [];
-    $lines[] = get_class($node);
-    $lines[] = sprintf('start: %s, end: %s', $node->getFullStart(), $node->getEndPosition());
-    $lines[] = sprintf('%s', $exporter->export($node->getFullText()));
+    $lines[] = get_class($node->innerNode());
+    $lines[] = sprintf(
+        'full-start: %s, start: %s, end: %s, line: %s',
+        $node->fullStart(),
+        $node->start(),
+        $node->end(),
+        $node->lineNumber()
+    );
+    $lines[] = sprintf('%s', $exporter->export($node->fullText()));
 
     echo PHP_EOL.implode("\n", $lines).PHP_EOL;
 }
