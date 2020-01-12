@@ -7,14 +7,16 @@ use Microsoft\PhpParser\Parser;
 use PHPUnit\Framework\TestCase;
 use Phpactor\CodeBuilder\Adapter\TolerantParser\Fixer\IndentationFixer;
 use Phpactor\CodeBuilder\Adapter\TolerantParser\Fixer\MemberEmptyLineFixer;
-use Phpactor\CodeBuilder\Domain\StyleProposer;
+use Phpactor\CodeBuilder\Adapter\TolerantParser\StyleProposer;
+use Phpactor\CodeBuilder\Adapter\TolerantParser\StyleProposer\IndentationProposer;
+use Phpactor\CodeBuilder\Util\TextFormat;
 use Phpactor\TestUtils\Workspace;
 use Phpactor\TextDocument\TextDocumentBuilder;
 
-class IndentationFixerTest extends FixerTestCase
+class IndentationProposerTest extends FixerTestCase
 {
-    protected function createFixer(): StyleProposer
+    protected function createProposer(): StyleProposer
     {
-        return new IndentationFixer(new Parser());
+        return new IndentationProposer(new TextFormat());
     }
 }
