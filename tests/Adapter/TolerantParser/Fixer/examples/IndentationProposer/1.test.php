@@ -20,11 +20,11 @@ class TestClass
 class TestClass
 {
     private $foo;
-    
+
     public function foobar()
     {
         $bar = $foo;
-        
+
         if ($bar) {
             $bar = $foo;
         }

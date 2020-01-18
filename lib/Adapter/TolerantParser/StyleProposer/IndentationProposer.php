@@ -11,6 +11,7 @@ use Phpactor\CodeBuilder\Domain\TextEdit;
 use Phpactor\CodeBuilder\Domain\TextEdits;
 use Phpactor\CodeBuilder\Util\TextFormat;
 use Phpactor\CodeBuilder\Adapter\TolerantParser\NodeQuery;
+use Phpactor\CodeBuilder\Util\TextUtil;
 
 class IndentationProposer implements StyleProposer
 {
@@ -106,7 +107,6 @@ class IndentationProposer implements StyleProposer
         $ranges = [];
         $parsing = false;
 
-        $buffer = '';
         foreach ($chars as $pos => $char) {
             if (!$parsing && $char === $this->textFormat->newLineChar()) {
                 $start = $pos + strlen($char);
@@ -118,25 +118,26 @@ class IndentationProposer implements StyleProposer
 
             // for docblocks
             if ($parsing && $char != ' ') {
-                $ranges[] = [$start, $length];
+                $empty = $char === $this->textFormat->newLineChar();
+                $ranges[] = [$start, $length, $empty];
                 $parsing = false;
             }
         }
 
         if ($parsing === true) {
-            $ranges[] = [$start, count($chars) - $start];
+            $ranges[] = [$start, count($chars) - $start, false];
         }
 
-        foreach ($ranges as [$start, $length]) {
-            $edits = $this->replaceWithIndentation($edits, $selectionStart, $start, $length);
+        foreach ($ranges as [$start, $length, $empty]) {
+            $edits = $this->replaceWithIndentation($edits, $selectionStart, $start, $length, $empty ? 0 : $this->level);
         }
 
         return $edits;
     }
 
-    private function replaceWithIndentation(TextEdits $edits, int $selectionStart, int $start, int $length)
+    private function replaceWithIndentation(TextEdits $edits, int $selectionStart, int $start, int $length, int $level)
     {
-        $indent = $this->textFormat->indentation($this->level);
+        $indent = $this->textFormat->indentation($level);
         return $edits->add(
             new TextEdit(
                 $selectionStart + $start,
