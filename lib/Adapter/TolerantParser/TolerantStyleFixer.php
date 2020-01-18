@@ -29,10 +29,11 @@ class TolerantStyleFixer implements StyleFixer
     public function fix(string $code): string
     {
         foreach ($this->proposers as $proposer) {
-            $rootNode = $this->parser->parseSourceFile($code);
-            $edits = new TextEdits();
-            $edits = $this->walk($proposer, $rootNode, $edits);
-            $code = $edits->apply($code);
+            $code = $this->walk(
+                $proposer,
+                $this->parser->parseSourceFile($code),
+                new TextEdits()
+            )->apply($code);
         }
 
         return $code;
