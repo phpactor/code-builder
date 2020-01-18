@@ -22,13 +22,13 @@ class TolerantStyleFixer implements StyleFixer
     /**
      * @var int
      */
-    private $delta;
+    private $tolerance;
 
-    public function __construct(array $proposers = [], Parser $parser = null, int $delta = 80)
+    public function __construct(array $proposers = [], Parser $parser = null, int $tolerance = 80)
     {
         $this->proposers = $proposers;
         $this->parser = $parser ?: new Parser();
-        $this->delta = $delta;
+        $this->tolerance = $tolerance;
     }
 
     public function fix(string $code): string
@@ -51,7 +51,7 @@ class TolerantStyleFixer implements StyleFixer
                 $proposer,
                 $this->parser->parseSourceFile($code),
                 new TextEdits()
-            )->intersection($intersection, $this->delta)->apply($code);
+            )->intersection($intersection, $this->tolerance)->apply($code);
         }
 
         return $code;
