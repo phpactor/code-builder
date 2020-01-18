@@ -137,21 +137,6 @@ EOT
     private $bar;
 EOT
         ];
-
-        yield 'exmaple 2' => [
-            <<<'EOT'
-private $bar;
-
-private $bar;
-EOT
-            ,
-            1,
-           <<<'EOT'
-    private $bar;
-
-    private $bar;
-EOT
-        ];
     }
 
     public function testReplacesIndentation()

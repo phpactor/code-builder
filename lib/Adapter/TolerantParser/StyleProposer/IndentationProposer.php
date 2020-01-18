@@ -4,6 +4,7 @@ namespace Phpactor\CodeBuilder\Adapter\TolerantParser\StyleProposer;
 
 use Microsoft\PhpParser\Node\ClassMembersNode;
 use Microsoft\PhpParser\Node\DelimitedList\ArgumentExpressionList;
+use Microsoft\PhpParser\Node\DelimitedList\ParameterDeclarationList;
 use Microsoft\PhpParser\Node\Expression\ArrayCreationExpression;
 use Microsoft\PhpParser\Node\InterfaceMembers;
 use Microsoft\PhpParser\Node\Statement\CompoundStatementNode;
@@ -21,6 +22,7 @@ class IndentationProposer implements StyleProposer
         ClassMembersNode::class,
         TraitMembers::class,
         InterfaceMembers::class,
+        ParameterDeclarationList::class,
         CompoundStatementNode::class,
         ArrayCreationExpression::class,
         ArgumentExpressionList::class,
