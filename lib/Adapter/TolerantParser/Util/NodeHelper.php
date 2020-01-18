@@ -50,17 +50,4 @@ class NodeHelper
 
         return $part;
     }
-
-    public static function nodesOfTypes(array $types, Node $node, $nodes = []): array
-    {
-        if (in_array(get_class($node), $types)) {
-            $nodes[] = $node;
-        }
-
-        foreach ($node->getChildNodes() as $childNode) {
-            $nodes = self::nodesOfTypes($types, $childNode, $nodes);
-        }
-
-        return $nodes;
-    }
 }
