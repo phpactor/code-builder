@@ -28,7 +28,6 @@ class TolerantStyleFixer implements StyleFixer
 
     public function fix(string $code): string
     {
-
         foreach ($this->proposers as $proposer) {
             $rootNode = $this->parser->parseSourceFile($code);
             $edits = new TextEdits();
