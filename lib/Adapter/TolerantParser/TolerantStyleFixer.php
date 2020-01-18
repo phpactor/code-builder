@@ -19,8 +19,10 @@ class TolerantStyleFixer implements StyleFixer
      */
     private $parser;
 
-    private int $delta;
-
+    /**
+     * @var int
+     */
+    private $delta;
 
     public function __construct(array $proposers = [], Parser $parser = null, int $delta = 80)
     {
