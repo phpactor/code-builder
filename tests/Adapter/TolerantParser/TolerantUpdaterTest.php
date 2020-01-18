@@ -17,10 +17,11 @@ class TolerantUpdaterTest extends UpdaterTestCase
     protected function updater(): Updater
     {
         return new TolerantUpdater(new TwigRenderer(), null, null, new TolerantStyleFixer(
-            null,
-            new MemberBlankLineProposer(new TextFormat()),
-            new IndentationProposer(new TextFormat()),
-            new DocblockIndentationProposer(new TextFormat())
+            [
+                new MemberBlankLineProposer(new TextFormat()),
+                new IndentationProposer(new TextFormat()),
+                new DocblockIndentationProposer(new TextFormat())
+            ]
         ));
     }
 }

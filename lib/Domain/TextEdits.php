@@ -85,12 +85,12 @@ class TextEdits implements IteratorAggregate
      * class which overlap (the start position is on or between any of the start/end
      * positions) with the given text edits.
      */
-    public function intersection(TextEdits $textEdits): TextEdits
+    public function intersection(TextEdits $textEdits, int $delta = 0): TextEdits
     {
         $intersection = [];
         foreach ($this->textEdits as $myEdit) {
-            $start = $myEdit->start;
-            $end = $myEdit->start + $myEdit->length;
+            $start = $myEdit->start - $delta;
+            $end = $myEdit->start + $myEdit->length + $delta;
 
             foreach ($textEdits as $theirEdit) {
                 if ($theirEdit->start >= $start && $theirEdit->start <= $end) {
@@ -108,7 +108,7 @@ class TextEdits implements IteratorAggregate
         return new self(...array_merge($this->textEdits, [$textEdit]));
     }
 
-    public static function one(TextEdit $textEdit): self
+    public static function one(TextEdit $textEdit)
     {
         return new self($textEdit);
     }

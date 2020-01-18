@@ -27,10 +27,9 @@ abstract class FixerTestCase extends IntegrationTestCase
     {
         $this->workspace()->loadManifest(file_get_contents($path));
         $document = TextDocumentBuilder::create($this->workspace()->getContents('source.php'))->build();
-        $fixed = (new TolerantStyleFixer(
-            null,
+        $fixed = (new TolerantStyleFixer([
             $this->createProposer()
-        ))->fix($document->__toString());
+        ]))->fix($document->__toString());
 
         self::assertEquals(trim($this->workspace()->getContents('expected.php')), trim($fixed));
     }

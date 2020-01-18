@@ -18,7 +18,7 @@ class StyleFixerTest extends IntegrationTestCase
 
     protected function setUp(): void
     {
-        $this->fixer = new TolerantStyleFixer(null, ...[
+        $this->fixer = new TolerantStyleFixer([
             new MemberBlankLineProposer(new TextFormat()),
             new IndentationProposer(new TextFormat()),
             new DocblockIndentationProposer(new TextFormat())

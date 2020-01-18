@@ -19,11 +19,14 @@ class TolerantStyleFixer implements StyleFixer
      */
     private $parser;
 
+    private int $delta;
 
-    public function __construct(Parser $parser = null, StyleProposer ...$proposers)
+
+    public function __construct(array $proposers = [], Parser $parser = null, int $delta = 80)
     {
         $this->proposers = $proposers;
         $this->parser = $parser ?: new Parser();
+        $this->delta = $delta;
     }
 
     public function fix(string $code): string
@@ -34,6 +37,19 @@ class TolerantStyleFixer implements StyleFixer
                 $this->parser->parseSourceFile($code),
                 new TextEdits()
             )->apply($code);
+        }
+
+        return $code;
+    }
+
+    public function fixIntersection(TextEdits $intersection, string $code): string
+    {
+        foreach ($this->proposers as $proposer) {
+            $code = $this->walk(
+                $proposer,
+                $this->parser->parseSourceFile($code),
+                new TextEdits()
+            )->intersection($intersection, $this->delta)->apply($code);
         }
 
         return $code;
