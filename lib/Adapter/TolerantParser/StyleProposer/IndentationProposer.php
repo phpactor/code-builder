@@ -5,7 +5,9 @@ namespace Phpactor\CodeBuilder\Adapter\TolerantParser\StyleProposer;
 use Microsoft\PhpParser\Node\ClassMembersNode;
 use Microsoft\PhpParser\Node\DelimitedList\ArgumentExpressionList;
 use Microsoft\PhpParser\Node\Expression\ArrayCreationExpression;
+use Microsoft\PhpParser\Node\InterfaceMembers;
 use Microsoft\PhpParser\Node\Statement\CompoundStatementNode;
+use Microsoft\PhpParser\Node\TraitMembers;
 use Phpactor\CodeBuilder\Adapter\TolerantParser\StyleProposer;
 use Phpactor\CodeBuilder\Domain\TextEdit;
 use Phpactor\CodeBuilder\Domain\TextEdits;
@@ -17,6 +19,8 @@ class IndentationProposer implements StyleProposer
 {
     private $levelChangers = [
         ClassMembersNode::class,
+        TraitMembers::class,
+        InterfaceMembers::class,
         CompoundStatementNode::class,
         ArrayCreationExpression::class,
         ArgumentExpressionList::class,
