@@ -106,6 +106,7 @@ class IndentationProposer implements StyleProposer
         $ranges = [];
         $parsing = false;
 
+        $buffer = '';
         foreach ($chars as $pos => $char) {
             if (!$parsing && $char === $this->textFormat->newLineChar()) {
                 $start = $pos + strlen($char);

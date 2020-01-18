@@ -107,4 +107,9 @@ class TextEdits implements IteratorAggregate
     {
         return new self(...array_merge($this->textEdits, [$textEdit]));
     }
+
+    public static function one(TextEdit $textEdit): self
+    {
+        return new self($textEdit);
+    }
 }

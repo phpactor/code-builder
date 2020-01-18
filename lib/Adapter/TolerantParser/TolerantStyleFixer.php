@@ -28,27 +28,25 @@ class TolerantStyleFixer implements StyleFixer
 
     public function fix(string $code): string
     {
-        $rootNode = $this->parser->parseSourceFile($code);
 
-        $edits = new TextEdits();
-        $edits = $this->walk($rootNode, $edits);
+        foreach ($this->proposers as $proposer) {
+            $rootNode = $this->parser->parseSourceFile($code);
+            $edits = new TextEdits();
+            $edits = $this->walk($proposer, $rootNode, $edits);
+            $code = $edits->apply($code);
+        }
 
-        return $edits->apply($code);
+        return $code;
     }
 
-    private function walk(Node $node, TextEdits $edits): TextEdits
+    private function walk(StyleProposer $proposer, Node $node, TextEdits $edits): TextEdits
     {
-        foreach ($this->proposers as $proposer) {
-            $edits = $edits->merge($proposer->onEnter(new NodeQuery($node)));
-        }
+        $edits = $edits->merge($proposer->onEnter(new NodeQuery($node)));
 
         foreach ($node->getChildNodes() as $childNode) {
-            $edits = $this->walk($childNode, $edits);
+            $edits = $this->walk($proposer, $childNode, $edits);
         }
 
-        foreach ($this->proposers as $proposer) {
-            $edits = $edits->merge($proposer->onExit(new NodeQuery($node)));
-        }
-        return $edits;
+        return $edits->merge($proposer->onExit(new NodeQuery($node)));
     }
 }

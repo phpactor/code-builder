@@ -38,18 +38,15 @@ class TextEdit
 
             if ($prevEditStart < $edit->start || $prevEditStart < $edit->start + $edit->length) {
                 throw new \OutOfBoundsException(sprintf(
-                    'Supplied TextEdit[] "%s" must not overlap and be in increasing start position order.',
-                    $edit->content
+                    "Overlapping text edit:\n%s",
+                    self::renderDebugTextEdits($edit, $edits)
                 ));
             }
 
             if ($edit->start < 0 || $edit->length < 0 || $edit->start + $edit->length > \strlen($text)) {
                 throw new \OutOfBoundsException(sprintf(
-                    'Applied TextEdit "%s" range out of bounds, text length: %s, start: %s, length: %s.',
-                    $text,
-                    strlen($text),
-                    $edit->start,
-                    $edit->length
+                    "Applied TextEdit out of bounds:\n%s",
+                    self::renderDebugTextEdits($edit, $edits)
                 ));
             }
             $prevEditStart = $edit->start;
@@ -59,5 +56,18 @@ class TextEdit
         }
 
         return $text;
+    }
+
+    private static function renderDebugTextEdits(TextEdit $edit, array $edits): string
+    {
+        return implode("\n", array_map(function (TextEdit $otherEdit) use ($edit) {
+            return sprintf(
+                '%s%s %s "%s"',
+                $edit === $otherEdit ? '> ' : '  ',
+                $otherEdit->start,
+                $otherEdit->start + $otherEdit->length,
+                str_replace("\n", '\n', $otherEdit->content)
+            );
+        }, $edits));
     }
 }
