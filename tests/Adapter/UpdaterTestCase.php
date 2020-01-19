@@ -7,6 +7,7 @@ use Phpactor\CodeBuilder\Domain\Updater;
 use Phpactor\CodeBuilder\Domain\Code;
 use Phpactor\CodeBuilder\Domain\Builder\SourceCodeBuilder;
 use Phpactor\CodeBuilder\Domain\Prototype\SourceCode;
+use Phpactor\WorseReflection\Core\Type;
 
 abstract class UpdaterTestCase extends TestCase
 {
@@ -895,7 +896,7 @@ class Aardvark
 EOT
             ];
 
-        yield 'It adds a documented properties' => [
+        yield 'It adds a typed property' => [
                 <<<'EOT'
 class Aardvark
 {
@@ -914,6 +915,33 @@ class Aardvark
 
     /**
      * @var Hello
+     */
+    public $propertyOne;
+}
+EOT
+            ];
+
+        yield 'It adds a nullable typed property' => [
+                <<<'EOT'
+class Aardvark
+{
+    public $eyes
+}
+EOT
+                , SourceCodeBuilder::create()
+                    ->class('Aardvark')
+                        ->property('propertyOne')->type(
+                            Type::fromString('Hello')->asNullable()
+                        )->end()
+                    ->end()
+                    ->build(),
+                <<<'EOT'
+class Aardvark
+{
+    public $eyes
+
+    /**
+     * @var Hello|null
      */
     public $propertyOne;
 }
@@ -1276,6 +1304,35 @@ EOT
 class Aardvark
 {
     public function methodOne(Barf $sniff)
+    {
+    }
+}
+EOT
+            ];
+
+        yield 'It adds nullable typed parameters' => [
+                <<<'EOT'
+class Aardvark
+{
+    public function methodOne()
+    {
+    }
+}
+EOT
+                , SourceCodeBuilder::create()
+                    ->class('Aardvark')
+                        ->method('methodOne')
+                            ->parameter('sniff')->type(
+                                Type::fromString('Barf')->asNullable()
+                            )
+                            ->end()
+                        ->end()
+                    ->end()
+                    ->build(),
+                <<<'EOT'
+class Aardvark
+{
+    public function methodOne(?Barf $sniff)
     {
     }
 }
