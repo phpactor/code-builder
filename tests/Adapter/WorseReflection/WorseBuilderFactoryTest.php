@@ -119,6 +119,13 @@ class WorseBuilderFactoryTest extends TestCase
         $this->assertEquals('string', $source->classes()->first()->methods()->first()->returnType());
     }
 
+    public function testMethodWithNullableReturnType()
+    {
+        $source = $this->build('<?php class Foobar { public function method(): ?string {} }');
+        $this->assertEquals('string', $source->classes()->first()->methods()->first()->returnType());
+        $this->assertTrue($source->classes()->first()->methods()->first()->returnType()->nullable(), 'Type is nullable');
+    }
+
     public function testMethodProtected()
     {
         $source = $this->build('<?php class Foobar { protected function method() {} }');
@@ -129,6 +136,12 @@ class WorseBuilderFactoryTest extends TestCase
     {
         $source = $this->build('<?php class Foobar { public function method($param) {} }');
         $this->assertEquals('param', $source->classes()->first()->methods()->first()->parameters()->first()->name());
+    }
+
+    public function testMethodWithNullableParameter()
+    {
+        $source = $this->build('<?php class Foobar { public function method(?string $param) {} }');
+        $this->assertTrue($source->classes()->first()->methods()->first()->parameters()->first()->type()->nullable());
     }
 
     public function testMethodWithParameterByReference()

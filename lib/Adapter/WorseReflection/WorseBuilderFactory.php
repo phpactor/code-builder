@@ -99,7 +99,11 @@ class WorseBuilderFactory implements BuilderFactory
         if ($method->returnType()->isDefined()) {
             $type = $method->returnType();
             $this->resolveClassMemberType($classBuilder, $method->class()->name(), $type);
-            $methodBuilder->returnType($type->short());
+            $typeName = $type->short();
+            if ($type->isNullable()) {
+                $typeName = '?' . $typeName;
+            }
+            $methodBuilder->returnType($typeName);
         }
 
         if ($method->isStatic()) {
@@ -122,6 +126,11 @@ class WorseBuilderFactory implements BuilderFactory
             $this->resolveClassMemberType($methodBuilder->end(), $method->class()->name(), $type);
 
             $typeName = $this->resolveTypeNameFromNameImports($type, $imports);
+
+            if ($type->isNullable()) {
+                $typeName = '?' . $typeName;
+            }
+
             $parameterBuilder->type($typeName);
         }
 
