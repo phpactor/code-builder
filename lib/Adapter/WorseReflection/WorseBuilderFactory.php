@@ -150,6 +150,7 @@ class WorseBuilderFactory implements BuilderFactory
                 $typeName = $alias;
             }
         }
+
         return $typeName;
     }
 }
