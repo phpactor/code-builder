@@ -57,6 +57,30 @@ class TextEdits implements IteratorAggregate
     }
 
     /**
+     * Return a set of text edits representing these text edits as if they had
+     * been applied.
+     *
+     * If you applied the returned set of edits on the same text this set was
+     * applied to, the returned set would make no further modifications.
+     */
+    public function appliedTextEdits(): self
+    {
+        $applied = [];
+        $diff = 0;
+
+        foreach ($this->textEdits as $textEdit) {
+            $applied[] = new TextEdit(
+                $textEdit->start + $diff,
+                strlen($textEdit->content),
+                $textEdit->content
+            );
+            $diff = strlen($textEdit->content) - $textEdit->length;
+        }
+
+        return self::fromTextEdits($applied);
+    }
+
+    /**
      * Return a new set of text edits containing all the edits from this
      * class which overlap (the start position is on or between any of the start/end
      * positions) with the given text edits.

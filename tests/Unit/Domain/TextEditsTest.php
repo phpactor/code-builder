@@ -196,4 +196,69 @@ class TextEditsTest extends TestCase
             ],
         ];
     }
+
+    /**
+     * @dataProvider provideAppliedTextEdits
+     */
+    public function testAppliedTextEdits(array $edits1, array $expectedEdits)
+    {
+        self::assertEquals(
+            TextEdits::fromTextEdits($expectedEdits),
+            TextEdits::fromTextEdits($edits1)->appliedTextEdits()
+        );
+    }
+
+    public function provideAppliedTextEdits()
+    {
+        yield 'empty' => [
+            [
+            ],
+            [
+            ],
+            [
+            ],
+        ];
+
+        yield 'no effect on static change' => [
+            [
+                new TextEdit(0, 0, ''),
+                new TextEdit(0, 0, ''),
+            ],
+            [
+                new TextEdit(0, 0, ''),
+                new TextEdit(0, 0, ''),
+            ],
+        ];
+
+        yield 'advances length on insert 1' => [
+            [
+                new TextEdit(0, 0, 'foobar'),
+            ],
+            [
+                new TextEdit(0, 6, 'foobar'),
+            ],
+        ];
+
+        yield 'advances length on insert 2' => [
+            [
+                new TextEdit(0, 0, 'foobar'),
+                new TextEdit(6, 12, 'foobar'),
+            ],
+            [
+                new TextEdit(0, 6, 'foobar'),
+                new TextEdit(12, 6, 'foobar'),
+            ],
+        ];
+
+        yield 'decreases start on deletions' => [
+            [
+                new TextEdit(6, 5, 'a'),
+                new TextEdit(12, 1, 'b'),
+            ],
+            [
+                new TextEdit(6, 1,  'a'),
+                new TextEdit(8, 1,  'b'),
+            ],
+        ];
+    }
 }
