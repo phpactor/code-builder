@@ -5,6 +5,7 @@ namespace Phpactor\CodeBuilder\Tests\Unit\Domain\Builder;
 use Generator;
 use PHPUnit\Framework\TestCase;
 use Phpactor\CodeBuilder\Domain\Builder\SourceCodeBuilder;
+use Phpactor\CodeBuilder\Domain\Prototype\Method;
 use Phpactor\CodeBuilder\Domain\Prototype\SourceCode;
 use Phpactor\CodeBuilder\Domain\Builder\MethodBuilder;
 use Phpactor\CodeBuilder\Domain\Prototype\UseStatement;
@@ -265,8 +266,9 @@ class SourceCodeBuilderTest extends TestCase
                 ->type('One')
                 ->defaultValue(1)
                 ->end(),
-                function ($method) {
-                    $this->assertEquals('?string', $method->returnType()->__toString());
+                function (Method $method) {
+                    $this->assertEquals('string', $method->returnType()->__toString());
+                    $this->assertTrue($method->returnType()->nullable());
                 }
         ],
             'Method mofifiers 1' => [

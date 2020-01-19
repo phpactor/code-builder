@@ -44,7 +44,7 @@ final class Type extends Prototype
 
     public function __toString()
     {
-        return $this->nullable ? sprintf('?%s', $this->type) : $this->type;
+        return $this->type;
     }
 
     public function namespace(): ?string
