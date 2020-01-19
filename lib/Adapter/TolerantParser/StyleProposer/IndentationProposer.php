@@ -41,6 +41,8 @@ class IndentationProposer implements StyleProposer
      * @var int
      */
     private $currentLineNumber = 0;
+    private array $lineHasIndented = [];
+    private array $indentNodes = [];
 
     public function __construct(TextFormat $textFormat)
     {
@@ -51,7 +53,9 @@ class IndentationProposer implements StyleProposer
     {
         $edits = $this->editsForIndentation($node);
 
-        if (in_array($node->fqn(), $this->levelChangers)) {
+        if (in_array($node->fqn(), $this->levelChangers) && !isset($this->lineHasIndented[$node->lineNumber()])) {
+            $this->lineHasIndented[$node->lineNumber()] = true;
+            $this->indentNodes[] = $node->id();
             $this->level++;
         }
 
@@ -60,7 +64,7 @@ class IndentationProposer implements StyleProposer
 
     public function onExit(NodeQuery $node): TextEdits
     {
-        if (in_array($node->fqn(), $this->levelChangers)) {
+        if (in_array($node->id(), $this->indentNodes)) {
             $this->level--;
         }
 
