@@ -244,6 +244,14 @@ EOT
 private function hello($one, string $two, $three = 42)
 EOT
             ],
+            'Renders a method nullable parameter' => [
+                new Method('hello', Visibility::private(), Parameters::fromParameters([
+                    new Parameter('two', Type::fromString('?string')),
+                ])),
+                <<<'EOT'
+private function hello(?string $two)
+EOT
+            ],
             'Renders a method parameter passed as a reference' => [
                 new Method('hello', Visibility::private(), Parameters::fromParameters([
                     new Parameter('three', Type::none(), DefaultValue::none(), true),
@@ -317,6 +325,17 @@ EOT
                 ),
                 <<<'EOT'
 private function hello(): Hello
+EOT
+            ],
+            'Renders method nullable return type' => [
+                new Method(
+                    'hello',
+                    Visibility::private(),
+                    Parameters::empty(),
+                    ReturnType::fromString('?Hello')
+                ),
+                <<<'EOT'
+private function hello(): ?Hello
 EOT
             ],
             'Renders a class with a parent' => [
