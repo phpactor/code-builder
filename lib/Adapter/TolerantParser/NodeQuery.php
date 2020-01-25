@@ -4,6 +4,7 @@ namespace Phpactor\CodeBuilder\Adapter\TolerantParser;
 
 use Microsoft\PhpParser\Node;
 use Microsoft\PhpParser\Node\MethodDeclaration;
+use Phpactor\CodeBuilder\Util\Lines;
 use Phpactor\CodeBuilder\Util\TextUtil;
 
 class NodeQuery
@@ -60,9 +61,19 @@ class NodeQuery
         return !empty($this->node->getDocCommentText());
     }
 
-    public function lineNumber(): int
+    public function startLineNumber(): int
     {
         return count(TextUtil::lines(substr($this->node->getFileContents(), 0, $this->node->getStart())));
+    }
+
+    public function fullStartLineNumber(): int
+    {
+        return count(TextUtil::lines(substr($this->node->getFileContents(), 0, $this->node->getFullStart())));
+    }
+
+    public function endLineNumber(): int
+    {
+        return count(TextUtil::lines(substr($this->node->getFileContents(), 0, $this->node->getEndPosition())));
     }
 
     public function start(): int
@@ -99,5 +110,10 @@ class NodeQuery
         }
 
         return true;
+    }
+
+    public function lines(): Lines
+    {
+        return Lines::fromText($this->fullText());
     }
 }

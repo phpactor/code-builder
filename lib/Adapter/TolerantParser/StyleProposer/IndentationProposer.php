@@ -12,6 +12,8 @@ use Microsoft\PhpParser\Node\TraitMembers;
 use Phpactor\CodeBuilder\Adapter\TolerantParser\StyleProposer;
 use Phpactor\CodeBuilder\Domain\TextEdit;
 use Phpactor\CodeBuilder\Domain\TextEdits;
+use Phpactor\CodeBuilder\Util\Line;
+use Phpactor\CodeBuilder\Util\Lines;
 use Phpactor\CodeBuilder\Util\TextFormat;
 use Phpactor\CodeBuilder\Adapter\TolerantParser\NodeQuery;
 
@@ -33,16 +35,11 @@ class IndentationProposer implements StyleProposer
     private $textFormat;
 
     /**
-     * @var int
+     * @var string
      */
-    private $level = 0;
+    private $startNodeId;
 
-    /**
-     * @var int
-     */
-    private $currentLineNumber = 0;
-    private array $lineHasIndented = [];
-    private array $indentNodes = [];
+    private $lineIndentations = [];
 
     public function __construct(TextFormat $textFormat)
     {
@@ -51,108 +48,82 @@ class IndentationProposer implements StyleProposer
 
     public function onEnter(NodeQuery $node): TextEdits
     {
-        $edits = $this->editsForIndentation($node);
-
-        if (in_array($node->fqn(), $this->levelChangers) && !isset($this->lineHasIndented[$node->lineNumber()])) {
-            $this->lineHasIndented[$node->lineNumber()] = true;
-            $this->indentNodes[] = $node->id();
-            $this->level++;
+        if (null === $this->startNodeId) {
+            $this->startNodeId = $node->id();
         }
 
-        return $edits;
+        if (
+            in_array($node->fqn(), $this->levelChangers)
+        ) {
+            $this->incLineNumber($node);
+        }
+            return TextEdits::none();
     }
 
     public function onExit(NodeQuery $node): TextEdits
     {
-        if (in_array($node->id(), $this->indentNodes)) {
-            $this->level--;
+        if (
+            in_array($node->fqn(), $this->levelChangers)
+        ) {
+            $this->decLineNumber($node);
         }
 
-        $start = $end = $node->end();
-
-        if ($node->children()->count()) {
-            $start = $node->children()->last()->end();
-        }
-
-        if ($start === $end) {
+        if ($node->id() !== $this->startNodeId) {
             return TextEdits::none();
         }
 
-        return $this->indentSelection($node, $start, $end);
+        return $this->buildIndentationEdits($node->lines(), $this->lineIndentations);
     }
 
-    private function editsForIndentation(NodeQuery $node): TextEdits
+    private function incLineNumber(NodeQuery $node): void
     {
-        if (false === $node->amTopNodeAtMyPosition()) {
-            return TextEdits::none();
+        $this->initLineIndentation($node->fullStartLineNumber());
+        $this->lineIndentations[$node->fullStartLineNumber()]++;
+    }
+
+    private function decLineNumber(NodeQuery $node): void
+    {
+        $this->initLineIndentation($node->endLineNumber());
+        $this->lineIndentations[$node->endLineNumber()]--;
+    }
+
+    private function buildIndentationEdits(Lines $lines, array $lineIndentations): TextEdits
+    {
+        $textEdits = TextEdits::none();
+        $level = 0;
+        foreach ($lines as $lineNo => $line) {
+            var_dump(token_get_all($line->content()));
+            $textEdits = $textEdits->merge($this->lineEdits($level, $lineNo + 1, $line, $lineIndentations));
+
         }
-
-        // skip if same line number as previous line
-        if ($node->lineNumber() === $this->currentLineNumber) {
-            return TextEdits::none();
-        }
-
-        $this->currentLineNumber = $node->lineNumber();
-        $textEdits = $this->replaceIndentation($node);
-
         return $textEdits;
     }
 
-    private function replaceIndentation(NodeQuery $node): TextEdits
+    private function lineEdits(int &$level, int $lineNo, Line $line, array $lineIndentations): TextEdits
     {
-        $selectionStart = $node->fullStart();
-        $selectionEnd = $node->start();
-
-        return $this->indentSelection($node, $selectionStart, $selectionEnd);
-    }
-
-    private function indentSelection(NodeQuery $node, int $selectionStart, int $selectionEnd)
-    {
-        $text = $node->textSelection($selectionStart, $selectionEnd);
-        $chars = str_split($text);
-
-        $edits = TextEdits::none();
-        $start = $end = $length = 0;
-        $ranges = [];
-        $parsing = false;
-
-        foreach ($chars as $pos => $char) {
-            if (!$parsing && $char === $this->textFormat->newLineChar()) {
-                $start = $pos + strlen($char);
-                $parsing = true;
-                continue;
-            }
-
-            $length = $pos - $start;
-
-            // for docblocks
-            if ($parsing && $char != ' ') {
-                $empty = $char === $this->textFormat->newLineChar();
-                $ranges[] = [$start, $length, $empty];
-                $parsing = false;
-            }
-        }
-
-        if ($parsing === true) {
-            $ranges[] = [$start, count($chars) - $start, false];
-        }
-
-        foreach ($ranges as [$start, $length, $empty]) {
-            $edits = $this->replaceWithIndentation($edits, $selectionStart, $start, $length, $empty ? 0 : $this->level);
-        }
-
-        return $edits;
-    }
-
-    private function replaceWithIndentation(TextEdits $edits, int $selectionStart, int $start, int $length, int $level)
-    {
-        $indent = $this->textFormat->indentation($level);
-        return $edits->add(
-            new TextEdit(
-                $selectionStart + $start,
-                $length,
-                $indent
-            )
+        var_dump($lineIndentations);die();
+        $textEdit = new TextEdit(
+            $line->start(),
+            $line->contentLength(),
+            $this->textFormat->indent(ltrim($line->content()), $level)
         );
+
+        if (isset($lineIndentations[$lineNo])) {
+            if ($lineIndentations[$lineNo] > 0) {
+                $level++;
+            }
+            if ($lineIndentations[$lineNo] < 0) {
+                $level--;
+            }
+        }
+
+        return TextEdits::one($textEdit);
+    }
+
+    private function initLineIndentation(int $lineNo): void
+    {
+        if (!isset($this->lineIndentations[$lineNo])) {
+            $this->lineIndentations[$lineNo] = 0;
+        }
     }
 }
