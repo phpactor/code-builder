@@ -181,6 +181,20 @@ class TextEditsTest extends TestCase
             ],
         ];
 
+        yield 'intersect end' => [
+            [
+                new TextEdit(0, 5, 'foobar'),
+                new TextEdit(15, 1, 'foobar'),
+            ],
+            [
+                new TextEdit(12, 10, 'foobar'),
+            ],
+            [
+                new TextEdit(15, 1, 'foobar'),
+            ],
+        ];
+
+
         yield 'preserve order for edits on same offset' => [
             [
                 new TextEdit(18, 2, 'foobar'),
@@ -283,21 +297,6 @@ class TextEditsTest extends TestCase
             [
             ],
             [
-            ],
-        ];
-
-        yield 'removes duplicates' => [
-            [
-                new TextEdit(0, 0, ''),
-                new TextEdit(0, 0, ''),
-            ],
-            [
-                new TextEdit(0, 0, ''),
-                new TextEdit(0, 0, ''),
-            ],
-            [
-                new TextEdit(0, 0, ''),
-                new TextEdit(0, 0, ''),
             ],
         ];
 

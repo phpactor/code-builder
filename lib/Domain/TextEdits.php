@@ -47,7 +47,7 @@ class TextEdits implements IteratorAggregate
     }
 
     /**
-     * Apply this set of tedits to the given text
+     * Apply this set of edits to the given text
      */
     public function apply(string $text): string
     {
