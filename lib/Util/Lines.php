@@ -56,8 +56,8 @@ class Lines implements IteratorAggregate
             throw new RuntimeException(sprintf(
                 'Line number "%s" is not existing, I have "%s" lines',
                 $lineNo,
-                    count($this->lines)
-                ));
+                count($this->lines)
+            ));
         }
 
         return $this->lines[$lineNo - 1];
