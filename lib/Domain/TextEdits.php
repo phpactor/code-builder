@@ -85,30 +85,15 @@ class TextEdits implements IteratorAggregate
         $integrated = iterator_to_array($newEdits);
         $deltas = [];
 
-        foreach ($newEdits as $textEdit) {
-            $delta = strlen($textEdit->content) - $textEdit->length;
-
-            if (!isset($deltas[$textEdit->start])) {
-                $deltas[$textEdit->start] = 0;
-            }
-
-            $deltas[$textEdit->start] += $delta;
-        }
-
+        $delta = 0;
         foreach ($this->textEdits as $myEdit) {
             assert($myEdit instanceof TextEdit);
 
-            foreach ($deltas as $start => $diff) {
-                if ($myEdit->start <= $start) {
-                    continue;
-                }
-
-                $integrated[] =new TextEdit(
-                    $myEdit->start + $diff,
-                    $myEdit->length,
-                    $myEdit->content
-                );
-            }
+            $integrated[] = new TextEdit(
+                $myEdit->start + $newEdits->cumulativeDeltaUntil($myEdit->start),
+                $myEdit->length,
+                str_repeat('x', $myEdit->length),
+            );
         }
 
         return TextEdits::fromTextEdits($integrated);
@@ -119,15 +104,19 @@ class TextEdits implements IteratorAggregate
      * class which overlap (the start position is on or between any of the start/end
      * positions) with the given text edits.
      */
-    public function intersection(TextEdits $textEdits, int $delta = 0): TextEdits
+    public function intersection(TextEdits $intersectEdits, int $delta = 0): TextEdits
     {
         $intersection = [];
         foreach ($this->textEdits as $myEdit) {
-            $start = $myEdit->start - $delta;
-            $end = $myEdit->start + $myEdit->length + $delta;
 
-            foreach ($textEdits as $theirEdit) {
-                if ($theirEdit->start >= $start && $theirEdit->start <= $end) {
+            foreach ($intersectEdits as $intersectEdit) {
+                $intersectStart = $intersectEdit->start - $delta;
+                $intersectEnd = $intersectEdit->start + $intersectEdit->length + $delta;
+
+                if (
+                    ($myEdit->start >= $intersectStart && $myEdit->start <= $intersectEdit->end()) ||
+                    ($myEdit->end() >= $intersectStart && $myEdit->end() <= $intersectEdit->end())
+                ) {
                     $intersection[] = $myEdit;
                     continue 2;
                 }
@@ -145,5 +134,14 @@ class TextEdits implements IteratorAggregate
     public static function one(TextEdit $textEdit)
     {
         return new self($textEdit);
+    }
+
+    private function cumulativeDeltaUntil(int $offset): int
+    {
+        $delta = 0;
+        foreach ($this->textEdits as $textEdit) {
+            $delta += $textEdit->delta();
+        }
+        return $delta;
     }
 }

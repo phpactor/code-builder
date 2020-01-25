@@ -19,6 +19,16 @@ class TextEdit
         $this->content = $content;
     }
 
+    public function delta(): int
+    {
+        return strlen($this->content) - $this->length;
+    }
+
+    public function end(): int
+    {
+        return $this->start + $this->length;
+    }
+
     /**
      * Applies array of edits to the document, and returns the resulting text.
      * Supplied $edits must not overlap, and be ordered by increasing start position.
