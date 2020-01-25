@@ -2,7 +2,7 @@
 
 namespace Phpactor\CodeBuilder\Adapter\TolerantParser\StyleProposer;
 
-use Phpactor\CodeBuilder\Adapter\TolerantParser\StyleProposer;
+use Phpactor\CodeBuilder\Domain\StyleFixer;
 use Phpactor\CodeBuilder\Domain\TextEdit;
 use Phpactor\CodeBuilder\Domain\TextEdits;
 use Phpactor\CodeBuilder\Util\Line;
@@ -10,17 +10,12 @@ use Phpactor\CodeBuilder\Util\Lines;
 use Phpactor\CodeBuilder\Util\TextFormat;
 use Phpactor\CodeBuilder\Adapter\TolerantParser\NodeQuery;
 
-class IndentationProposer implements StyleProposer
+class IndentationProposer implements StyleFixer
 {
     /**
      * @var TextFormat
      */
     private $textFormat;
-
-    /**
-     * @var string
-     */
-    private $startNodeId;
 
     private $lineIndentations = [];
 
@@ -97,5 +92,13 @@ class IndentationProposer implements StyleProposer
         }
 
         return $edits;
+    }
+
+    public function fix(string $code): string
+    {
+    }
+
+    public function fixIntersection(TextEdits $edits, string $code): string
+    {
     }
 }

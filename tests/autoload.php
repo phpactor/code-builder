@@ -23,11 +23,12 @@ function debug_node($node): void
     $lines = [];
     $lines[] = get_class($node->innerNode());
     $lines[] = sprintf(
-        'full-start: %s, start: %s, end: %s, line: %s',
+        'full-start: %s, start: %s, end: %s, start-line: %s, end-line: %s',
         $node->fullStart(),
         $node->start(),
         $node->end(),
-        $node->lineNumber()
+        $node->startLineNumber(),
+        $node->endLineNumber()
     );
     $lines[] = sprintf('%s', $exporter->export($node->fullText()));
 
