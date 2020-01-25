@@ -261,4 +261,59 @@ class TextEditsTest extends TestCase
             ],
         ];
     }
+
+    /**
+     * @dataProvider provideIntegrate
+     */
+    public function testIntegrate(array $original, array $new, array $expectedEdits)
+    {
+        self::assertEquals(
+            TextEdits::fromTextEdits($expectedEdits),
+            TextEdits::fromTextEdits($original)->integrate(TextEdits::fromTextEdits($new))
+        );
+    }
+
+    public function provideIntegrate()
+    {
+        yield 'empty' => [
+            [
+            ],
+            [
+            ],
+            [
+            ],
+            [
+            ],
+        ];
+
+        yield 'removes duplicates' => [
+            [
+                new TextEdit(0, 0, ''),
+                new TextEdit(0, 0, ''),
+            ],
+            [
+                new TextEdit(0, 0, ''),
+                new TextEdit(0, 0, ''),
+            ],
+            [
+                new TextEdit(0, 0, ''),
+                new TextEdit(0, 0, ''),
+            ],
+        ];
+
+        yield 'applies insertion offset' => [
+            [
+                new TextEdit(10, 0, ''),
+                new TextEdit(12, 0, ''),
+            ],
+            [
+                new TextEdit(0, 0, '  '),
+            ],
+            [
+                new TextEdit(0, 0, '  '),
+                new TextEdit(12, 0, ''),
+                new TextEdit(14, 0, ''),
+            ],
+        ];
+    }
 }

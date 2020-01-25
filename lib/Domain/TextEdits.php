@@ -66,18 +66,49 @@ class TextEdits implements IteratorAggregate
     public function appliedTextEdits(): self
     {
         $applied = [];
-        $diff = 0;
+        $delta = 0;
 
         foreach ($this->textEdits as $textEdit) {
             $applied[] = new TextEdit(
-                $textEdit->start + $diff,
+                $textEdit->start + $delta,
                 strlen($textEdit->content),
                 $textEdit->content
             );
-            $diff = strlen($textEdit->content) - $textEdit->length;
+            $delta = strlen($textEdit->content) - $textEdit->length;
         }
 
         return self::fromTextEdits($applied);
+    }
+
+    public function integrate(TextEdits $newEdits): self
+    {
+        $integrated = $newEdits;
+        $deltas = [];
+
+        foreach ($newEdits as $textEdit) {
+            $delta = strlen($textEdit->content) - $textEdit->length;
+
+            if (!isset($deltas[$textEdit->start])) {
+                $deltas[$textEdit->start] = 0;
+            }
+
+            $deltas[$textEdit->start] += $delta;
+        }
+
+        foreach ($this->textEdits as $myEdit) {
+            assert($myEdit instanceof TextEdit);
+            foreach ($deltas as $start => $diff) {
+                if ($myEdit->start > $start) {
+                    $integrated = $integrated->add(new TextEdit(
+                        $myEdit->start + $diff,
+                        $myEdit->length,
+                        $myEdit->content
+                    ));
+                }
+            }
+        }
+
+        return $integrated;
     }
 
     /**
@@ -112,4 +143,5 @@ class TextEdits implements IteratorAggregate
     {
         return new self($textEdit);
     }
+
 }

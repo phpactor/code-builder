@@ -47,11 +47,15 @@ class TolerantStyleFixer implements StyleFixer
     public function fixIntersection(TextEdits $intersection, string $code): string
     {
         foreach ($this->proposers as $proposer) {
-            $code = $this->walk(
+            $edits = $this->walk(
                 $proposer,
                 $this->parser->parseSourceFile($code),
                 new TextEdits()
-            )->intersection($intersection, $this->tolerance)->apply($code);
+            );
+
+            $code = $edits->intersection($intersection, $this->tolerance)->apply($code);
+            $appliedEdits = $edits->appliedTextEdits();
+            $intersection = $intersection->integrate($appliedEdits);
         }
 
         return $code;
