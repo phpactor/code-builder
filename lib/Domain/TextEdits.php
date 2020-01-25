@@ -92,7 +92,7 @@ class TextEdits implements IteratorAggregate
             $integrated[] = new TextEdit(
                 $myEdit->start + $newEdits->cumulativeDeltaUntil($myEdit->start),
                 $myEdit->length,
-                str_repeat('x', $myEdit->length),
+                str_repeat('x', $myEdit->length)
             );
         }
 
