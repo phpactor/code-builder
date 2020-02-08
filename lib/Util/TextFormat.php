@@ -2,8 +2,6 @@
 
 namespace Phpactor\CodeBuilder\Util;
 
-use RuntimeException;
-
 class TextFormat
 {
     /**
@@ -37,29 +35,8 @@ class TextFormat
         return preg_replace("/^[ \t]+/m", "", $text);
     }
 
-    public function implodeLines(array $newLines): string
-    {
-        return implode($this->newLineChar, $newLines);
-    }
-
     public function indentReplace($text, int $level): string
     {
         return $this->indent($this->indentRemove($text), $level);
-    }
-
-    public function newLineChar(): string
-    {
-        return $this->newLineChar;
-    }
-
-    public function indentation(int $level): string
-    {
-        if ($level < 0) {
-            throw new RuntimeException(sprintf(
-                'Indentation level must be equal to or greater than 0, got "%s"',
-                $level
-            ));
-        }
-        return str_repeat($this->indentation, $level);
     }
 }
