@@ -11,7 +11,7 @@ use Phpactor\CodeBuilder\Domain\Prototype\Method;
 use Microsoft\PhpParser\Node;
 use Microsoft\PhpParser\Node\Statement\CompoundStatementNode;
 use Phpactor\CodeBuilder\Domain\Prototype\Parameters;
-use Phpactor\CodeBuilder\Domain\TextEdit;
+use Phpactor\CodeBuilder\Adapter\TolerantParser\TextEdit;
 use Phpactor\CodeBuilder\Domain\Prototype\ClassLikePrototype;
 use Microsoft\PhpParser\ClassLike;
 use Microsoft\PhpParser\Node\Parameter;
@@ -87,11 +87,19 @@ abstract class AbstractMethodUpdater
             return;
         }
 
+        if ($newLine) {
+            $edits->after($lastMember, PHP_EOL);
+        }
+
         foreach ($methodPrototypes as $methodPrototype) {
             $edits->after(
                 $lastMember,
                 PHP_EOL . $edits->indent($this->renderMethod($this->renderer, $methodPrototype), 1)
             );
+
+            if (false === $classPrototype->methods()->isLast($methodPrototype)) {
+                $edits->after($lastMember, PHP_EOL);
+            }
         }
     }
 
