@@ -108,7 +108,6 @@ class TextEdits implements IteratorAggregate
     {
         $intersection = [];
         foreach ($this->textEdits as $myEdit) {
-
             foreach ($intersectEdits as $intersectEdit) {
                 $intersectStart = $intersectEdit->start - $delta;
                 $intersectEnd = $intersectEdit->start + $intersectEdit->length + $delta;

@@ -51,7 +51,7 @@ class TextEditRenderer
                 if (isset($row[$i])) {
                     $cellData = $row[$i];
                     $out[] = '<td>';
-                    $out[] = $cellData['char']; 
+                    $out[] = $cellData['char'];
                     $out[] = '</td>';
                 }
                 $out[] = '</td>';
