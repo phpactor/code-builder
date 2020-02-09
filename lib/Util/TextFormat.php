@@ -26,7 +26,8 @@ class TextFormat
     {
         if ($level < 0) {
             throw new RuntimeException(sprintf(
-                'Level must be greater than or equal to 0, got "%s"', $level
+                'Level must be greater than or equal to 0, got "%s"',
+                $level
             ));
         }
         $lines = TextUtil::lines($string);
