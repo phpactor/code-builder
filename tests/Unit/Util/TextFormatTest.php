@@ -4,6 +4,7 @@ namespace Phpactor\CodeBuilder\Tests\Unit\Util;
 
 use PHPUnit\Framework\TestCase;
 use Phpactor\CodeBuilder\Util\TextFormat;
+use RuntimeException;
 
 class TextFormatTest extends TestCase
 {
@@ -137,6 +138,12 @@ EOT
     private $bar;
 EOT
         ];
+    }
+
+    public function testIndentExceptionIfLevelLessThan0()
+    {
+        $this->expectException(RuntimeException::class);
+        (new TextFormat())->indent('foobar', -1);
     }
 
     public function testReplacesIndentation()

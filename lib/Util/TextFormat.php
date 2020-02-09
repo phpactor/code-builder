@@ -2,6 +2,8 @@
 
 namespace Phpactor\CodeBuilder\Util;
 
+use RuntimeException;
+
 class TextFormat
 {
     /**
@@ -22,6 +24,11 @@ class TextFormat
 
     public function indent(string $string, int $level = 0): string
     {
+        if ($level < 0) {
+            throw new RuntimeException(sprintf(
+                'Level must be greater than or equal to 0, got "%s"', $level
+            ));
+        }
         $lines = TextUtil::lines($string);
         $lines = array_map(function ($line) use ($level) {
             return str_repeat($this->indentation, $level) . $line;
