@@ -10,6 +10,7 @@
         }
     ],
     "require": {
+        "php": "^7.3",
         "microsoft/tolerant-php-parser": "~0.0.1",
         "twig/twig": "^2.4",
         "phpactor/text-document": "^1.2.2",
