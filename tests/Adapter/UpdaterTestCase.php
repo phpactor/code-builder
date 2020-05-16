@@ -269,6 +269,7 @@ EOT
 namespace Kingdom;
 
 use Primate\Ape;
+
 EOT
             ];
 
@@ -284,24 +285,6 @@ EOT
 namespace Kingdom;
 
 use Primate as Foobar;
-EOT
-            ];
-
-        yield 'class import: It appends multiple use statements' => [
-
-                <<<'EOT'
-namespace Kingdom;
-
-use Primate;
-EOT
-                , SourceCodeBuilder::create()->use('Animal\Bovine')->use('Feline')->use('Canine')->build(),
-                <<<'EOT'
-namespace Kingdom;
-
-use Animal\Bovine;
-use Canine;
-use Feline;
-use Primate;
 EOT
             ];
 
