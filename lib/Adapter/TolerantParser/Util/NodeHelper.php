@@ -50,4 +50,24 @@ class NodeHelper
 
         return $part;
     }
+
+    public static function emptyLinesPrecedingNode(Node $node): int
+    {
+        $contents = $node->getFileContents();
+        $preceding = substr($contents, 0, $node->getStart());
+
+        $lines = 0;
+        $lastChar = null;
+        for ($i = $node->getStart() - 1; $i > 0; $i--) {
+            $char = $contents[$i];
+
+            if ($char !== "\n") {
+                break;
+            }
+
+            $lines++;
+        }
+
+        return $lines - 1;
+    }
 }

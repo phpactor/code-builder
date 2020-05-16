@@ -8,16 +8,20 @@ use Phpactor\CodeBuilder\Domain\Renderer;
 use Phpactor\CodeBuilder\Domain\Updater;
 use Phpactor\CodeBuilder\Domain\Prototype;
 use Phpactor\CodeBuilder\Domain\Code;
+use Phpactor\TextDocument\TextEdits;
 
 class SourceBuilderTest extends TestCase
 {
+    /**
+     * @var Updater
+     */
     private $updater;
     private $builder;
     private $generator;
 
     private $prototype;
 
-    public function setUp()
+    protected function setUp(): void
     {
         $this->generator = $this->prophesize(Renderer::class);
         $this->updater = $this->prophesize(Updater::class);
@@ -46,10 +50,9 @@ class SourceBuilderTest extends TestCase
     public function testUpdate()
     {
         $sourceCode = Code::fromString('');
-        $expectedCode = Code::fromString('');
-        $this->updater->apply($this->prototype->reveal(), $sourceCode)->willReturn($expectedCode);
+        $this->updater->textEditsFor($this->prototype->reveal(), $sourceCode)->willReturn(TextEdits::none());
         $code = $this->builder->apply($this->prototype->reveal(), $sourceCode);
 
-        $this->assertSame($expectedCode, $code);
+        $this->assertEquals('', $code);
     }
 }

@@ -269,6 +269,7 @@ EOT
 namespace Kingdom;
 
 use Primate\Ape;
+
 EOT
             ];
 
@@ -284,24 +285,6 @@ EOT
 namespace Kingdom;
 
 use Primate as Foobar;
-EOT
-            ];
-
-        yield 'class import: It appends multiple use statements' => [
-
-                <<<'EOT'
-namespace Kingdom;
-
-use Primate;
-EOT
-                , SourceCodeBuilder::create()->use('Animal\Bovine')->use('Feline')->use('Canine')->build(),
-                <<<'EOT'
-namespace Kingdom;
-
-use Animal\Bovine;
-use Canine;
-use Feline;
-use Primate;
 EOT
             ];
 
@@ -1849,7 +1832,8 @@ EOT
 
     private function assertUpdate(string $existingCode, SourceCode $prototype, string $expectedCode)
     {
-        $code = $this->updater()->apply($prototype, Code::fromString('<?php'.PHP_EOL.$existingCode));
-        $this->assertEquals('<?php' . PHP_EOL . $expectedCode, (string) $code);
+        $existingCode = '<?php'.PHP_EOL.$existingCode;
+        $edits = $this->updater()->textEditsFor($prototype, Code::fromString($existingCode));
+        $this->assertEquals('<?php' . PHP_EOL . $expectedCode, $edits->apply($existingCode));
     }
 }

@@ -19,6 +19,7 @@ use Phpactor\CodeBuilder\Adapter\TolerantParser\Updater\ClassUpdater;
 use Microsoft\PhpParser\Node\Statement\InterfaceDeclaration;
 use Phpactor\CodeBuilder\Adapter\TolerantParser\Updater\InterfaceUpdater;
 use Phpactor\CodeBuilder\Adapter\TolerantParser\Updater\TraitUpdater;
+use Phpactor\TextDocument\TextEdits;
 
 class TolerantUpdater implements Updater
 {
@@ -76,7 +77,7 @@ class TolerantUpdater implements Updater
         $this->useStatementUpdater = new UseStatementUpdater();
     }
 
-    public function apply(Prototype $prototype, Code $code): Code
+    public function textEditsFor(Prototype $prototype, Code $code): TextEdits
     {
         $edits = new Edits($this->textFormat);
         $node = $this->parser->parseSourceFile((string) $code);
@@ -84,9 +85,7 @@ class TolerantUpdater implements Updater
         $this->updateNamespace($edits, $prototype, $node);
         $this->useStatementUpdater->updateUseStatements($edits, $prototype, $node);
         $this->updateClasses($edits, $prototype, $node);
-        $updatedCode = $edits->apply((string) $code);
-
-        return Code::fromString($updatedCode);
+        return $edits->textEdits();
     }
 
     private function updateNamespace(Edits $edits, SourceCode $prototype, SourceFileNode $node)
@@ -153,10 +152,6 @@ class TolerantUpdater implements Updater
             $this->traitUpdater->updateTrait($edits, $traitPrototype, $traitNodes[$traitPrototype->name()]);
         }
 
-        if (substr($lastStatement->getText(), -1) !== PHP_EOL) {
-            $edits->after($lastStatement, PHP_EOL);
-        }
-
         $classes = array_merge(
             iterator_to_array($prototype->classes()->notIn(array_keys($classNodes))),
             iterator_to_array($prototype->interfaces()->notIn(array_keys($interfaceNodes))),
@@ -165,6 +160,10 @@ class TolerantUpdater implements Updater
 
         $index = 0;
         foreach ($classes as $classPrototype) {
+            if (substr($lastStatement->getText(), -1) !== PHP_EOL) {
+                $edits->after($lastStatement, PHP_EOL);
+            }
+
             if ($index > 0 && $index + 1 == count($classes)) {
                 $edits->after($lastStatement, PHP_EOL);
             }

@@ -11,11 +11,11 @@ use Phpactor\CodeBuilder\Domain\Prototype\Method;
 use Microsoft\PhpParser\Node;
 use Microsoft\PhpParser\Node\Statement\CompoundStatementNode;
 use Phpactor\CodeBuilder\Domain\Prototype\Parameters;
-use Phpactor\CodeBuilder\Adapter\TolerantParser\TextEdit;
 use Phpactor\CodeBuilder\Domain\Prototype\ClassLikePrototype;
 use Microsoft\PhpParser\ClassLike;
 use Microsoft\PhpParser\Node\Parameter;
 use Phpactor\CodeBuilder\Domain\Prototype\ReturnType;
+use Phpactor\TextDocument\TextEdit;
 
 abstract class AbstractMethodUpdater
 {
@@ -174,7 +174,7 @@ abstract class AbstractMethodUpdater
             return;
         }
 
-        $edits->add(new TextEdit($methodDeclaration->openParen->getStartPosition() + 1, 0, implode(', ', $replacementParameters)));
+        $edits->add(TextEdit::create($methodDeclaration->openParen->getStartPosition() + 1, 0, implode(', ', $replacementParameters)));
     }
 
     private function updateOrAddReturnType(Edits $edits, ReturnType $returnType, MethodDeclaration $methodDeclaration)

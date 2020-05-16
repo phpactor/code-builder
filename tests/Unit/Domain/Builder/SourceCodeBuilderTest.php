@@ -21,7 +21,6 @@ class SourceCodeBuilderTest extends TestCase
         $setup($builder);
         $assertion($builder);
 
-
         $builder->class('Hello')->method('goodbye');
         $this->assertTrue($builder->isModified(), 'method has been modified since last snapshot');
     }

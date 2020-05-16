@@ -9,6 +9,7 @@ use Microsoft\PhpParser\Node\Statement\NamespaceDefinition;
 use Microsoft\PhpParser\Node\Statement\NamespaceUseDeclaration;
 use Phpactor\CodeBuilder\Adapter\TolerantParser\Edits;
 use Phpactor\CodeBuilder\Adapter\TolerantParser\Util\ImportedNames;
+use Phpactor\CodeBuilder\Adapter\TolerantParser\Util\NodeHelper;
 use Phpactor\CodeBuilder\Domain\Prototype\SourceCode;
 use Phpactor\CodeBuilder\Domain\Prototype\UseStatement;
 
@@ -20,25 +21,35 @@ class UseStatementUpdater
             return;
         }
 
-        $lastNode = $node->getFirstChildNode(NamespaceUseDeclaration::class, NamespaceDefinition::class, InlineHtml::class);
-
-        // fast forward to last use declaration
-        if ($lastNode instanceof NamespaceUseDeclaration) {
-            $parent = $lastNode->parent;
-            foreach ($parent->getChildNodes() as $child) {
-                if ($child instanceof NamespaceUseDeclaration) {
-                    $lastNode = $child;
-                }
+        $startNode = $node;
+        foreach ($node->getChildNodes() as $childNode) {
+            if ($childNode instanceof InlineHtml) {
+                $startNode = $node->getFirstChildNode(InlineHtml::class);
+            }
+            if ($childNode instanceof NamespaceDefinition) {
+                $startNode = $childNode;
+            }
+            if ($childNode instanceof NamespaceUseDeclaration) {
+                $startNode = $childNode;
             }
         }
-        $usePrototypes = $this->resolveUseStatements($prototype, $lastNode);
+
+        $bodyNode = null;
+        foreach ($node->getChildNodes() as $childNode) {
+            if ($childNode->getStart() > $startNode->getStart()) {
+                $bodyNode = $childNode;
+                break;
+            }
+        }
+
+        $usePrototypes = $this->resolveUseStatements($prototype, $startNode);
 
         if (empty($usePrototypes)) {
             return;
         }
 
-        if ($lastNode instanceof NamespaceDefinition) {
-            $edits->after($lastNode, PHP_EOL);
+        if ($startNode instanceof NamespaceDefinition) {
+            $edits->after($startNode, PHP_EOL);
         }
 
         foreach ($usePrototypes as $usePrototype) {
@@ -62,11 +73,12 @@ class UseStatementUpdater
             }
 
             $newUseStatement = PHP_EOL . $editText;
-            $edits->after($lastNode, $newUseStatement);
+            $edits->after($startNode, $newUseStatement);
         }
 
-        if ($lastNode instanceof InlineHtml) {
-            $edits->after($lastNode, PHP_EOL . PHP_EOL);
+        if ($bodyNode && NodeHelper::emptyLinesPrecedingNode($bodyNode) === 0) {
+            $edits->after($startNode, "\n");
+            $edits->after($startNode, "\n");
         }
     }
 
