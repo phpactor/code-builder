@@ -7,5 +7,5 @@ use Phpactor\TextDocument\TextEdits;
 
 interface Updater
 {
-    public function apply(Prototype $prototype, Code $code): TextEdits;
+    public function textEditsFor(Prototype $prototype, Code $code): TextEdits;
 }

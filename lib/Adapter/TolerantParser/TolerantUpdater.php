@@ -77,7 +77,7 @@ class TolerantUpdater implements Updater
         $this->useStatementUpdater = new UseStatementUpdater();
     }
 
-    public function apply(Prototype $prototype, Code $code): TextEdits
+    public function textEditsFor(Prototype $prototype, Code $code): TextEdits
     {
         $edits = new Edits($this->textFormat);
         $node = $this->parser->parseSourceFile((string) $code);

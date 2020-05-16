@@ -12,6 +12,9 @@ use Phpactor\TextDocument\TextEdits;
 
 class SourceBuilderTest extends TestCase
 {
+    /**
+     * @var Updater
+     */
     private $updater;
     private $builder;
     private $generator;
@@ -47,7 +50,7 @@ class SourceBuilderTest extends TestCase
     public function testUpdate()
     {
         $sourceCode = Code::fromString('');
-        $this->updater->apply($this->prototype->reveal(), $sourceCode)->willReturn(TextEdits::none());
+        $this->updater->textEditsFor($this->prototype->reveal(), $sourceCode)->willReturn(TextEdits::none());
         $code = $this->builder->apply($this->prototype->reveal(), $sourceCode);
 
         $this->assertEquals('', $code);
