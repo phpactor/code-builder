@@ -34,6 +34,6 @@ class SourceBuilder
 
     public function apply(Prototype\Prototype $prototype, Code $code)
     {
-        return $this->updater->apply($prototype, $code);
+        return $this->updater->apply($prototype, $code)->apply($code);
     }
 }

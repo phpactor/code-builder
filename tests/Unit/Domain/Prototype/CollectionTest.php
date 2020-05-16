@@ -2,18 +2,16 @@
 
 namespace Phpactor\CodeBuilder\Tests\Unit\Domain\Prototype;
 
+use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use Phpactor\CodeBuilder\Domain\Prototype\Collection;
 
 class CollectionTest extends TestCase
 {
-    /**
-     * @testdox Get throws exception
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Unknown test "foo", known items
-     */
-    public function testGetException()
+    public function testGetThrowsException()
     {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Unknown test "foo", known items');
         $collection = TestCollection::fromArray([
             'one' => new \stdClass()
         ]);
