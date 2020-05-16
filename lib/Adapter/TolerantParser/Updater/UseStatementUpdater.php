@@ -2,11 +2,8 @@
 
 namespace Phpactor\CodeBuilder\Adapter\TolerantParser\Updater;
 
-use Microsoft\PhpParser\ClassLike;
 use Microsoft\PhpParser\Node;
 use Microsoft\PhpParser\Node\SourceFileNode;
-use Microsoft\PhpParser\Node\StatementNode;
-use Microsoft\PhpParser\Node\Statement\FunctionDeclaration;
 use Microsoft\PhpParser\Node\Statement\InlineHtml;
 use Microsoft\PhpParser\Node\Statement\NamespaceDefinition;
 use Microsoft\PhpParser\Node\Statement\NamespaceUseDeclaration;

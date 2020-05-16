@@ -44,11 +44,6 @@ class Edits
         $this->edits[] = TextEdit::create($node->getFullStart(), $node->getFullWidth(), $text);
     }
 
-    public function apply(string $code): string
-    {
-        return trim(TextEdit::applyEdits($this->edits, $code));
-    }
-
     public function textEdits(): TextEdits
     {
         return TextEdits::fromTextEdits($this->edits);
