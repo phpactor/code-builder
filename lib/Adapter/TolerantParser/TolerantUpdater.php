@@ -152,10 +152,6 @@ class TolerantUpdater implements Updater
             $this->traitUpdater->updateTrait($edits, $traitPrototype, $traitNodes[$traitPrototype->name()]);
         }
 
-        if (substr($lastStatement->getText(), -1) !== PHP_EOL) {
-            $edits->after($lastStatement, PHP_EOL);
-        }
-
         $classes = array_merge(
             iterator_to_array($prototype->classes()->notIn(array_keys($classNodes))),
             iterator_to_array($prototype->interfaces()->notIn(array_keys($interfaceNodes))),
@@ -164,6 +160,10 @@ class TolerantUpdater implements Updater
 
         $index = 0;
         foreach ($classes as $classPrototype) {
+            if (substr($lastStatement->getText(), -1) !== PHP_EOL) {
+                $edits->after($lastStatement, PHP_EOL);
+            }
+
             if ($index > 0 && $index + 1 == count($classes)) {
                 $edits->after($lastStatement, PHP_EOL);
             }

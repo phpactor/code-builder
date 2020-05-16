@@ -8,6 +8,9 @@ use Phpactor\TextDocument\TextEdits;
 
 class Edits
 {
+    /**
+     * @var array<TextEdit>
+     */
     private $edits = [];
 
     /**
