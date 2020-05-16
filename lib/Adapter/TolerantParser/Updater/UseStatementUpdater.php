@@ -76,8 +76,11 @@ class UseStatementUpdater
             $edits->after($startNode, $newUseStatement);
         }
 
-        if ($bodyNode && NodeHelper::emptyLinesPrecedingNode($bodyNode) === 0) {
+        if ($startNode instanceof InlineHtml) {
             $edits->after($startNode, "\n");
+        }
+
+        if ($bodyNode && NodeHelper::emptyLinesPrecedingNode($bodyNode) === 0) {
             $edits->after($startNode, "\n");
         }
     }
