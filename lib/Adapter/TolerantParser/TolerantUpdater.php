@@ -19,6 +19,7 @@ use Phpactor\CodeBuilder\Adapter\TolerantParser\Updater\ClassUpdater;
 use Microsoft\PhpParser\Node\Statement\InterfaceDeclaration;
 use Phpactor\CodeBuilder\Adapter\TolerantParser\Updater\InterfaceUpdater;
 use Phpactor\CodeBuilder\Adapter\TolerantParser\Updater\TraitUpdater;
+use Phpactor\TextDocument\TextEdits;
 
 class TolerantUpdater implements Updater
 {
@@ -76,7 +77,7 @@ class TolerantUpdater implements Updater
         $this->useStatementUpdater = new UseStatementUpdater();
     }
 
-    public function apply(Prototype $prototype, Code $code): Code
+    public function apply(Prototype $prototype, Code $code): TextEdits
     {
         $edits = new Edits($this->textFormat);
         $node = $this->parser->parseSourceFile((string) $code);
@@ -84,9 +85,7 @@ class TolerantUpdater implements Updater
         $this->updateNamespace($edits, $prototype, $node);
         $this->useStatementUpdater->updateUseStatements($edits, $prototype, $node);
         $this->updateClasses($edits, $prototype, $node);
-        $updatedCode = $edits->apply((string) $code);
-
-        return Code::fromString($updatedCode);
+        return $edits->textEdits();
     }
 
     private function updateNamespace(Edits $edits, SourceCode $prototype, SourceFileNode $node)

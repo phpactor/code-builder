@@ -2,9 +2,9 @@
 
 namespace Phpactor\CodeBuilder\Adapter\TolerantParser;
 
-use Phpactor\CodeBuilder\Domain\TextEdits;
 use Phpactor\CodeBuilder\Util\TextFormat;
-use Phpactor\CodeBuilder\Domain\TextEdit;
+use Phpactor\TextDocument\TextEdit;
+use Phpactor\TextDocument\TextEdits;
 
 class Edits
 {
@@ -23,22 +23,22 @@ class Edits
 
     public function remove($node)
     {
-        $this->edits[] = new TextEdit($node->getFullStart(), $node->getFullWidth(), '');
+        $this->edits[] = TextEdit::create($node->getFullStart(), $node->getFullWidth(), '');
     }
 
     public function before($node, string $text)
     {
-        $this->edits[] = new TextEdit($node->getStart(), 0, $text);
+        $this->edits[] = TextEdit::create($node->getStart(), 0, $text);
     }
 
     public function after($node, string $text)
     {
-        $this->edits[] = new TextEdit($node->getEndPosition(), 0, $text);
+        $this->edits[] = TextEdit::create($node->getEndPosition(), 0, $text);
     }
 
     public function replace($node, string $text)
     {
-        $this->edits[] = new TextEdit($node->getFullStart(), $node->getFullWidth(), $text);
+        $this->edits[] = TextEdit::create($node->getFullStart(), $node->getFullWidth(), $text);
     }
 
     public function apply(string $code): string

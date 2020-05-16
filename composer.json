@@ -12,11 +12,11 @@
     "require": {
         "microsoft/tolerant-php-parser": "~0.0.1",
         "twig/twig": "^2.4",
-        "phpactor/text-document": "^1.0",
+        "phpactor/text-document": "^1.2.2",
         "phpactor/worse-reflection": "~0.2"
     },
     "require-dev": {
-        "phpunit/phpunit": "~7.0",
+        "phpunit/phpunit": "~8.0",
         "phpactor/test-utils": "^1.0",
         "friendsofphp/php-cs-fixer": "~2.15.0",
         "phpstan/phpstan": "~0.11.0"

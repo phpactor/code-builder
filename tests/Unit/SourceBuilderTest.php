@@ -17,7 +17,7 @@ class SourceBuilderTest extends TestCase
 
     private $prototype;
 
-    public function setUp()
+    protected function setUp(): void
     {
         $this->generator = $this->prophesize(Renderer::class);
         $this->updater = $this->prophesize(Updater::class);
