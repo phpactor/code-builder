@@ -99,6 +99,7 @@ EOT
                 <<<'EOT'
 
 use Foo\Bovine;
+
 EOT
             ];
 
@@ -110,6 +111,7 @@ EOT
                 <<<'EOT'
 
 use Foo\Bovine as Cow;
+
 EOT
             ];
 
@@ -117,11 +119,13 @@ EOT
 
                 <<<'EOT'
 use Foo\Dino;
+
 EOT
                 , SourceCodeBuilder::create()->use('Foo\Bovine', 'Cow')->build(),
                 <<<'EOT'
 use Foo\Bovine as Cow;
 use Foo\Dino;
+
 EOT
             ];
 
@@ -146,6 +150,7 @@ EOT
                 <<<'EOT'
 
 use function Foo\hello;
+
 EOT
             ];
 
@@ -157,6 +162,7 @@ EOT
                 <<<'EOT'
 
 use function Foo\hello as bar;
+
 EOT
             ];
 
