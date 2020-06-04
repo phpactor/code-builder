@@ -3,6 +3,7 @@
 namespace Phpactor\CodeBuilder\Adapter\TolerantParser\Updater;
 
 use Microsoft\PhpParser\Node;
+use Microsoft\PhpParser\Node\NamespaceUseClause;
 use Microsoft\PhpParser\Node\SourceFileNode;
 use Microsoft\PhpParser\Node\Statement\InlineHtml;
 use Microsoft\PhpParser\Node\Statement\NamespaceDefinition;
@@ -53,14 +54,21 @@ class UseStatementUpdater
         }
 
         foreach ($usePrototypes as $usePrototype) {
+            $prototypeOrder = $usePrototype->type() === UseStatement::TYPE_FUNCTION ? '1' : '0';
             $editText = $this->buildEditText($usePrototype);
 
             foreach ($node->getChildNodes() as $childNode) {
                 if ($childNode instanceof NamespaceUseDeclaration) {
                     foreach ($childNode->useClauses->getElements() as $useClause) {
-                        /* try to find the first lexicographycally greater use
-                        statement and insert before if there is one */
-                        $cmp = strcmp($useClause->namespaceName->getText(), $usePrototype->__toString());
+                        assert($useClause instanceof NamespaceUseClause);
+
+                        $nodeOrder = $childNode->functionOrConst !== null ? '1' : '0';
+                        // try to find the first lexicographycally greater use
+                        // statement and insert before if there is one
+                        $cmp = strcmp(
+                            $nodeOrder.$useClause->namespaceName->getText(),
+                            $prototypeOrder.$usePrototype->__toString()
+                        );
                         if ($cmp === 0) {
                             continue 3;
                         }
@@ -85,7 +93,10 @@ class UseStatementUpdater
         }
     }
 
-    private function resolveUseStatements(SourceCode $prototype, Node $lastNode)
+    /**
+     * @return UseStatement[]
+     */
+    private function resolveUseStatements(SourceCode $prototype, Node $lastNode): array
     {
         $usePrototypes = $this->filterExisting($lastNode, $prototype);
         $usePrototypes = $this->filterSameNamespace($lastNode, $usePrototypes);

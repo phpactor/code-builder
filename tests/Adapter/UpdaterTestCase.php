@@ -12,14 +12,15 @@ use Phpactor\WorseReflection\Core\Type;
 abstract class UpdaterTestCase extends TestCase
 {
     /**
-     * @dataProvider provideNamespaceAndUse
+     * @dataProvider provideClassImport
+     * @dataProvider provideFunctionImport
      */
     public function testNamespaceAndUse(string $existingCode, SourceCode $prototype, string $expectedCode)
     {
         $this->assertUpdate($existingCode, $prototype, $expectedCode);
     }
 
-    public function provideNamespaceAndUse()
+    public function provideClassImport()
     {
         yield 'It does nothing when given an empty source code protoytpe' => [
 
@@ -139,53 +140,6 @@ EOT
 namespace Kingdom;
 
 use Bovine;
-EOT
-            ];
-
-        yield 'It adds use function statements' => [
-
-                <<<'EOT'
-EOT
-                , SourceCodeBuilder::create()->useFunction('Foo\hello')->build(),
-                <<<'EOT'
-
-use function Foo\hello;
-
-EOT
-            ];
-
-        yield 'It adds use function statements with an alias' => [
-
-                <<<'EOT'
-EOT
-                , SourceCodeBuilder::create()->useFunction('Foo\hello', 'bar')->build(),
-                <<<'EOT'
-
-use function Foo\hello as bar;
-
-EOT
-            ];
-
-        yield 'It adds use function statements after with an alias' => [
-
-                <<<'EOT'
-use function Foo\hello as boo;
-EOT
-                , SourceCodeBuilder::create()->useFunction('Foo\hello', 'bar')->build(),
-                <<<'EOT'
-use function Foo\hello as boo;
-use function Foo\hello as bar;
-EOT
-            ];
-
-        yield 'It ignores existing function imports' => [
-
-                <<<'EOT'
-use function Foo\hello as boo;
-EOT
-                , SourceCodeBuilder::create()->useFunction('Foo\hello', 'boo')->build(),
-                <<<'EOT'
-use function Foo\hello as boo;
 EOT
             ];
 
@@ -442,6 +396,73 @@ class Foo {}
 EOT
             ];
     }
+
+    public function provideFunctionImport()
+    {
+        yield 'It adds use function statements' => [
+
+                <<<'EOT'
+EOT
+                , SourceCodeBuilder::create()->useFunction('Foo\hello')->build(),
+                <<<'EOT'
+
+use function Foo\hello;
+
+EOT
+            ];
+
+        yield 'It adds use function statements with an alias' => [
+
+                <<<'EOT'
+EOT
+                , SourceCodeBuilder::create()->useFunction('Foo\hello', 'bar')->build(),
+                <<<'EOT'
+
+use function Foo\hello as bar;
+
+EOT
+            ];
+
+        yield 'It adds use function statements after with an alias' => [
+
+                <<<'EOT'
+use function Foo\hello as boo;
+EOT
+                , SourceCodeBuilder::create()->useFunction('Foo\hello', 'bar')->build(),
+                <<<'EOT'
+use function Foo\hello as boo;
+use function Foo\hello as bar;
+EOT
+            ];
+
+        yield 'It ignores existing function imports' => [
+
+                <<<'EOT'
+use function Foo\hello as boo;
+EOT
+                , SourceCodeBuilder::create()->useFunction('Foo\hello', 'boo')->build(),
+                <<<'EOT'
+use function Foo\hello as boo;
+EOT
+            ];
+
+        yield 'adds function imports after class imports' => [
+
+                <<<'EOT'
+use Foobar\Acme;
+use Foobar\Hello;
+use Foobar\Zoo;
+EOT
+                , SourceCodeBuilder::create()->useFunction('Foobar\Bello')->build(),
+                <<<'EOT'
+use Foobar\Acme;
+use Foobar\Hello;
+use Foobar\Zoo;
+use function Foobar\Bello;
+EOT
+            ];
+    }
+
 
     /**
      * @dataProvider provideClasses
