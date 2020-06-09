@@ -466,6 +466,7 @@ EOT
 
     /**
      * @dataProvider provideClasses
+     * @dataProvider provideMethodParameters
      */
     public function testClasses(string $existingCode, SourceCode $prototype, string $expectedCode)
     {
@@ -1261,124 +1262,6 @@ class Aardvark
 EOT
             ];
 
-        yield 'It updates parameters' => [
-                <<<'EOT'
-class Aardvark
-{
-    public function methodOne(Snort $sniff)
-    {
-    }
-}
-EOT
-                , SourceCodeBuilder::create()
-                    ->class('Aardvark')
-                        ->method('methodOne')
-                            ->parameter('sniff')
-                                ->type('Barf')
-                            ->end()
-                            ->parameter('plod')
-                                ->type('Blog')
-                            ->end()
-                        ->end()
-                    ->end()
-                    ->build(),
-                <<<'EOT'
-class Aardvark
-{
-    public function methodOne(Barf $sniff, Blog $plod)
-    {
-    }
-}
-EOT
-            ];
-
-        yield 'It adds parameters' => [
-                <<<'EOT'
-class Aardvark
-{
-    public function methodOne()
-    {
-    }
-}
-EOT
-                , SourceCodeBuilder::create()
-                    ->class('Aardvark')
-                        ->method('methodOne')
-                            ->parameter('sniff')
-                                ->type('Barf')
-                            ->end()
-                        ->end()
-                    ->end()
-                    ->build(),
-                <<<'EOT'
-class Aardvark
-{
-    public function methodOne(Barf $sniff)
-    {
-    }
-}
-EOT
-            ];
-
-        yield 'It adds nullable typed parameters' => [
-                <<<'EOT'
-class Aardvark
-{
-    public function methodOne()
-    {
-    }
-}
-EOT
-                , SourceCodeBuilder::create()
-                    ->class('Aardvark')
-                        ->method('methodOne')
-                            ->parameter('sniff')->type(
-                                Type::fromString('Barf')->asNullable()
-                            )
-                            ->end()
-                        ->end()
-                    ->end()
-                    ->build(),
-                <<<'EOT'
-class Aardvark
-{
-    public function methodOne(?Barf $sniff)
-    {
-    }
-}
-EOT
-            ];
-
-        yield 'It adds parameters and leaves existing ones in place' => [
-                <<<'EOT'
-class Aardvark
-{
-    public function methodOne($arg1, Hello $hello, $arg2)
-    {
-    }
-}
-EOT
-                , SourceCodeBuilder::create()
-                    ->class('Aardvark')
-                        ->method('methodOne')
-                            ->parameter('arg1')
-                            ->end()
-                            ->parameter('sniff')
-                                ->type('Barf')
-                            ->end()
-                        ->end()
-                    ->end()
-                    ->build(),
-                <<<'EOT'
-class Aardvark
-{
-    public function methodOne($arg1, Barf $sniff, Hello $hello, $arg2)
-    {
-    }
-}
-EOT
-            ];
-
         yield 'It adds a method after existing methods' => [
                 <<<'EOT'
 class Aardvark
@@ -1634,30 +1517,6 @@ class Aardvark
 }
 EOT
             ];
-
-        yield 'It modifies the parameter type' => [
-                <<<'EOT'
-class Aardvark
-{
-    public function hello(Foobar $foobar)
-    {
-    }
-}
-EOT
-                , SourceCodeBuilder::create()
-                    ->class('Aardvark')
-                        ->method('hello')->parameter('foobar')->type('Barfoo')->end()->end()
-                    ->end()
-                    ->build(),
-                <<<'EOT'
-class Aardvark
-{
-    public function hello(Barfoo $foobar)
-    {
-    }
-}
-EOT
-            ];
     }
 
     /**
@@ -1849,6 +1708,66 @@ EOT
 interface Aardvark
 {
     public function foo();
+}
+EOT
+            ];
+    }
+
+    public function provideMethodParameters()
+    {
+        yield 'It adds parameters' => [
+                <<<'EOT'
+class Aardvark
+{
+    public function methodOne()
+    {
+    }
+}
+EOT
+                , SourceCodeBuilder::create()
+                    ->class('Aardvark')
+                        ->method('methodOne')
+                            ->parameter('sniff')
+                                ->type('Barf')
+                            ->end()
+                        ->end()
+                    ->end()
+                    ->build(),
+                <<<'EOT'
+class Aardvark
+{
+    public function methodOne(Barf $sniff)
+    {
+    }
+}
+EOT
+            ];
+
+        yield 'It adds nullable typed parameters' => [
+                <<<'EOT'
+class Aardvark
+{
+    public function methodOne()
+    {
+    }
+}
+EOT
+                , SourceCodeBuilder::create()
+                    ->class('Aardvark')
+                        ->method('methodOne')
+                            ->parameter('sniff')->type(
+                                Type::fromString('Barf')->asNullable()
+                            )
+                            ->end()
+                        ->end()
+                    ->end()
+                    ->build(),
+                <<<'EOT'
+class Aardvark
+{
+    public function methodOne(?Barf $sniff)
+    {
+    }
 }
 EOT
             ];

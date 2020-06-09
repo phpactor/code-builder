@@ -215,6 +215,14 @@ EOT
         $this->assertEquals('hello', (string) $source->interfaces()->first()->methods()->get('hello')->name());
     }
 
+    public function testInterfaceWithMethodParameters()
+    {
+        $source = $this->build('<?php interface Foobar { public function hello(World $world, string $bar, $foo); }');
+        $this->assertEquals('hello', (string) $source->interfaces()->first()->methods()->get('hello')->name());
+        $this->assertEquals('world', (string) $source->interfaces()->first()->methods()->get('hello')->parameters()->first()->name());
+        $this->assertEquals('foo', (string) $source->interfaces()->first()->methods()->get('hello')->parameters()->get('foo')->name());
+    }
+
     private function build(string $source): SourceCode
     {
         $reflector = ReflectorBuilder::create()

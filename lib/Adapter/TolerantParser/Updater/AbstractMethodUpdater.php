@@ -6,6 +6,7 @@ use Phpactor\CodeBuilder\Adapter\TolerantParser\Edits;
 use Microsoft\PhpParser\Node\PropertyDeclaration;
 use Microsoft\PhpParser\Node\MethodDeclaration;
 use Phpactor\CodeBuilder\Adapter\TolerantParser\Util\NodeHelper;
+use Phpactor\CodeBuilder\Domain\Prototype\Parameter as PhpactorParameter;
 use Phpactor\CodeBuilder\Domain\Renderer;
 use Phpactor\CodeBuilder\Domain\Prototype\Method;
 use Microsoft\PhpParser\Node;
@@ -134,47 +135,31 @@ abstract class AbstractMethodUpdater
             return;
         }
 
-        $parameterNodes = [];
+        $renderedParameters = [];
         if ($methodDeclaration->parameters) {
-            $parameterNodes = iterator_to_array($methodDeclaration->parameters->getElements());
+            $renderedParameters = array_combine(
+                array_map(function (Parameter $parameter) {
+                    return substr($parameter->variableName ? $parameter->variableName->getText($parameter->getFileContents()) : false, 1);
+                }, iterator_to_array($methodDeclaration->parameters->getElements())),
+                array_map(function (Parameter $parameter) {
+                    return $parameter->getText();
+                }, iterator_to_array($methodDeclaration->parameters->getElements()))
+            );
         }
-        $replacementParameters = [];
 
         foreach ($parameters as $parameter) {
-            $parameterNode = current($parameterNodes);
-
-            $existingType = '';
-            if ($parameterNode instanceof Parameter) {
-                $existingType = $parameter->type() ? NodeHelper::resolvedShortName($parameterNode, $parameterNode->typeDeclaration) : '';
+            assert($parameter instanceof PhpactorParameter);
+            if (!isset($renderedParameters[$parameter->name()])) {
+                $renderedParameters[$parameter->name()] = $this->renderer->render($parameter);
             }
-
-            if ($parameterNode) {
-                $parameterNodeName = ltrim($parameterNode->variableName->getText($parameterNode->getFileContents()), '$');
-
-                if ($parameter->type()->notNone() && $parameterNodeName == $parameter->name() && $existingType == (string) $parameter->type()) {
-                    continue;
-                }
-
-                if ($parameterNodeName == $parameter->name()) {
-                    $replacementParameters[] = $this->renderer->render($parameter);
-                    array_shift($parameterNodes);
-                    continue;
-                }
-            }
-
-            $replacementParameters[] = $this->renderer->render($parameter);
         }
 
-        foreach ($parameterNodes as $parameterNode) {
-            $replacementParameters[] = $parameterNode->getText($parameterNode->getFileContents());
-        }
-
-        if ($methodDeclaration->parameters) {
-            $edits->replace($methodDeclaration->parameters, implode(', ', $replacementParameters));
-            return;
-        }
-
-        $edits->add(TextEdit::create($methodDeclaration->openParen->getStartPosition() + 1, 0, implode(', ', $replacementParameters)));
+        $startPosition = $methodDeclaration->openParen->getStartPosition();
+        $edits->add(TextEdit::create(
+            $startPosition + 1,
+            $methodDeclaration->closeParen->getStartPosition() - $startPosition - 1,
+            implode(', ', $renderedParameters)
+        ));
     }
 
     private function updateOrAddReturnType(Edits $edits, ReturnType $returnType, MethodDeclaration $methodDeclaration)
