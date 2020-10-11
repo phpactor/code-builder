@@ -3,6 +3,7 @@
     "description": "Generating and modifying source code",
     "license": "MIT",
     "minimum-stability": "dev",
+    "prefer-stable": true,
     "authors": [
         {
             "name": "Daniel Leech",

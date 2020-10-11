@@ -95,24 +95,30 @@ EOT
         yield 'It adds use statements' => [
 
                 <<<'EOT'
+$bovine = new Bovine();
 EOT
                 , SourceCodeBuilder::create()->use('Foo\Bovine')->build(),
                 <<<'EOT'
 
 use Foo\Bovine;
 
+$bovine = new Bovine();
 EOT
             ];
 
         yield 'It adds use statements with an alias' => [
 
                 <<<'EOT'
+// test
+$bovine = new Bovine();
 EOT
                 , SourceCodeBuilder::create()->use('Foo\Bovine', 'Cow')->build(),
                 <<<'EOT'
 
 use Foo\Bovine as Cow;
 
+// test
+$bovine = new Bovine();
 EOT
             ];
 
@@ -121,12 +127,16 @@ EOT
                 <<<'EOT'
 use Foo\Dino;
 
+// test
+$bovine = new Bovine();
 EOT
                 , SourceCodeBuilder::create()->use('Foo\Bovine', 'Cow')->build(),
                 <<<'EOT'
 use Foo\Bovine as Cow;
 use Foo\Dino;
 
+// test
+$bovine = new Bovine();
 EOT
             ];
 
@@ -134,12 +144,16 @@ EOT
 
                 <<<'EOT'
 namespace Kingdom;
+
+$bovine = new Bovine();
 EOT
                 , SourceCodeBuilder::create()->use('Bovine')->build(),
                 <<<'EOT'
 namespace Kingdom;
 
 use Bovine;
+
+$bovine = new Bovine();
 EOT
             ];
 
@@ -402,24 +416,29 @@ EOT
         yield 'It adds use function statements' => [
 
                 <<<'EOT'
+hello('you');
 EOT
                 , SourceCodeBuilder::create()->useFunction('Foo\hello')->build(),
                 <<<'EOT'
 
 use function Foo\hello;
 
+hello('you');
 EOT
             ];
 
         yield 'It adds use function statements with an alias' => [
 
                 <<<'EOT'
+
+hello('you');
 EOT
                 , SourceCodeBuilder::create()->useFunction('Foo\hello', 'bar')->build(),
                 <<<'EOT'
 
 use function Foo\hello as bar;
 
+hello('you');
 EOT
             ];
 
@@ -427,11 +446,15 @@ EOT
 
                 <<<'EOT'
 use function Foo\hello as boo;
+
+hello('you');
 EOT
                 , SourceCodeBuilder::create()->useFunction('Foo\hello', 'bar')->build(),
                 <<<'EOT'
 use function Foo\hello as boo;
 use function Foo\hello as bar;
+
+hello('you');
 EOT
             ];
 
@@ -439,10 +462,14 @@ EOT
 
                 <<<'EOT'
 use function Foo\hello as boo;
+
+hello('you');
 EOT
                 , SourceCodeBuilder::create()->useFunction('Foo\hello', 'boo')->build(),
                 <<<'EOT'
 use function Foo\hello as boo;
+
+hello('you');
 EOT
             ];
 
@@ -452,6 +479,8 @@ EOT
 use Foobar\Acme;
 use Foobar\Hello;
 use Foobar\Zoo;
+
+hello('you');
 EOT
                 , SourceCodeBuilder::create()->useFunction('Foobar\Bello')->build(),
                 <<<'EOT'
@@ -459,6 +488,8 @@ use Foobar\Acme;
 use Foobar\Hello;
 use Foobar\Zoo;
 use function Foobar\Bello;
+
+hello('you');
 EOT
             ];
     }
