@@ -49,7 +49,17 @@ class UseStatementUpdater
             return;
         }
 
+        // When adding after the namespace definition the text is added before the new line
+        // And when adding after the php declaration the text is added after the new line
+        // Examples:
+        // $startNode->getText(); // Returns: namespace Test;\n
+        // $edits->after($startNode, 'TOTO'); // Result: namespace Test;TOTO\n
+        // $startNode->getText(); // Returns: <?php\n
+        // $edits->after($startNode, 'TOTO'); // Result: <?php\n
+        //                                               TOTO
+
         if ($startNode instanceof NamespaceDefinition) {
+            // Add a new line to be in the same case that if it was an InlineHtml node
             $edits->after($startNode, PHP_EOL);
         }
 
@@ -73,6 +83,8 @@ class UseStatementUpdater
                             continue 3;
                         }
                         if ($cmp > 0) {
+                            // Add before one of the use import and add a new
+                            // line so the new import is on its own line
                             $edits->before($childNode, $editText . PHP_EOL);
                             continue 3;
                         }
@@ -80,16 +92,28 @@ class UseStatementUpdater
                 }
             }
 
+            // Either add after the NamespaceUseDeclaration node if there
+            // already was use imports or after the namespace/php declaration
+            // Since it will add before the lasts new line of the node we
+            // preprend with another one so that the use statement is on its
+            // own line
             $newUseStatement = PHP_EOL . $editText;
             $edits->after($startNode, $newUseStatement);
         }
 
         if ($startNode instanceof InlineHtml) {
-            $edits->after($startNode, "\n");
+            // Add a new line after the last use statement so that it's on its
+            // own line
+            $edits->after($startNode, PHP_EOL);
         }
 
-        if ($bodyNode && NodeHelper::emptyLinesPrecedingNode($bodyNode) === 0) {
-            $edits->after($startNode, "\n");
+        // Add another new line to separate the new use declaration from
+        // the code that follow
+        if (
+            !$startNode instanceof NamespaceUseDeclaration &&
+            $bodyNode && NodeHelper::emptyLinesPrecedingNode($bodyNode) === 0
+        ) {
+            $edits->after($startNode, PHP_EOL);
         }
     }
 
