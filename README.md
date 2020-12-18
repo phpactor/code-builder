@@ -1,7 +1,7 @@
 Code Builder
 ============
 
-[![Build Status](https://travis-ci.org/phpactor/code-builder.svg?branch=master)](https://travis-ci.org/phpactor/code-builder)
+![CI](https://github.com/phpactor/code-builder/workflows/CI/badge.svg)
 
 This library can be used to *generate* or idempotently *add* **classes**, **methods**, **properties**, **use
 statements**, etc. to existing source code using *prototypes*.
