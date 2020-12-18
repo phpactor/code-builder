@@ -1,0 +1,52 @@
+parameters:
+	ignoreErrors:
+		-
+			message: "#^Unsafe usage of new static\\(\\)\\.$#"
+			count: 1
+			path: lib/Domain/Prototype/Classes.php
+
+		-
+			message: "#^Unsafe usage of new static\\(\\)\\.$#"
+			count: 3
+			path: lib/Domain/Prototype/Collection.php
+
+		-
+			message: "#^Unsafe usage of new static\\(\\)\\.$#"
+			count: 1
+			path: lib/Domain/Prototype/Constants.php
+
+		-
+			message: "#^Unsafe usage of new static\\(\\)\\.$#"
+			count: 1
+			path: lib/Domain/Prototype/ImplementsInterfaces.php
+
+		-
+			message: "#^Unsafe usage of new static\\(\\)\\.$#"
+			count: 1
+			path: lib/Domain/Prototype/Interfaces.php
+
+		-
+			message: "#^Unsafe usage of new static\\(\\)\\.$#"
+			count: 1
+			path: lib/Domain/Prototype/Methods.php
+
+		-
+			message: "#^Unsafe usage of new static\\(\\)\\.$#"
+			count: 1
+			path: lib/Domain/Prototype/Properties.php
+
+		-
+			message: "#^Unsafe usage of new static\\(\\)\\.$#"
+			count: 1
+			path: lib/Domain/Prototype/QualifiedName.php
+
+		-
+			message: "#^Unsafe usage of new static\\(\\)\\.$#"
+			count: 1
+			path: lib/Domain/Prototype/Traits.php
+
+		-
+			message: "#^Unsafe usage of new static\\(\\)\\.$#"
+			count: 1
+			path: lib/Domain/Prototype/Value.php
+
