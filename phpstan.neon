@@ -1,10 +1,8 @@
 includes:
-    - vendor/phpstan/phpstan/conf/config.level1.neon
-
+    - phpstan-baseline.neon
 parameters:
     inferPrivatePropertyTypeFromConstructor: true
-    ignoreErrors:
-        
+    ignoreErrors: null
     paths:
         - lib
-
+    level: '1'
