@@ -1,9 +1,754 @@
 parameters:
 	ignoreErrors:
 		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Adapter\\\\TolerantParser\\\\Edits\\:\\:remove\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: lib/Adapter/TolerantParser/Edits.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Adapter\\\\TolerantParser\\\\Edits\\:\\:remove\\(\\) has parameter \\$node with no typehint specified\\.$#"
+			count: 1
+			path: lib/Adapter/TolerantParser/Edits.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Adapter\\\\TolerantParser\\\\Edits\\:\\:before\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: lib/Adapter/TolerantParser/Edits.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Adapter\\\\TolerantParser\\\\Edits\\:\\:before\\(\\) has parameter \\$node with no typehint specified\\.$#"
+			count: 1
+			path: lib/Adapter/TolerantParser/Edits.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Adapter\\\\TolerantParser\\\\Edits\\:\\:after\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: lib/Adapter/TolerantParser/Edits.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Adapter\\\\TolerantParser\\\\Edits\\:\\:after\\(\\) has parameter \\$node with no typehint specified\\.$#"
+			count: 1
+			path: lib/Adapter/TolerantParser/Edits.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Adapter\\\\TolerantParser\\\\Edits\\:\\:replace\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: lib/Adapter/TolerantParser/Edits.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Adapter\\\\TolerantParser\\\\Edits\\:\\:replace\\(\\) has parameter \\$node with no typehint specified\\.$#"
+			count: 1
+			path: lib/Adapter/TolerantParser/Edits.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Adapter\\\\TolerantParser\\\\Edits\\:\\:add\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: lib/Adapter/TolerantParser/Edits.php
+
+		-
+			message: "#^Property Phpactor\\\\CodeBuilder\\\\Adapter\\\\TolerantParser\\\\TolerantUpdater\\:\\:\\$edits has unknown class Phpactor\\\\CodeBuilder\\\\Adapter\\\\TolerantParser\\\\TextEdit as its type\\.$#"
+			count: 1
+			path: lib/Adapter/TolerantParser/TolerantUpdater.php
+
+		-
+			message: "#^Parameter \\#2 \\$prototype of method Phpactor\\\\CodeBuilder\\\\Adapter\\\\TolerantParser\\\\TolerantUpdater\\:\\:updateNamespace\\(\\) expects Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\SourceCode, Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\Prototype given\\.$#"
+			count: 1
+			path: lib/Adapter/TolerantParser/TolerantUpdater.php
+
+		-
+			message: "#^Parameter \\#2 \\$prototype of method Phpactor\\\\CodeBuilder\\\\Adapter\\\\TolerantParser\\\\Updater\\\\UseStatementUpdater\\:\\:updateUseStatements\\(\\) expects Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\SourceCode, Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\Prototype given\\.$#"
+			count: 1
+			path: lib/Adapter/TolerantParser/TolerantUpdater.php
+
+		-
+			message: "#^Parameter \\#2 \\$prototype of method Phpactor\\\\CodeBuilder\\\\Adapter\\\\TolerantParser\\\\TolerantUpdater\\:\\:updateClasses\\(\\) expects Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\SourceCode, Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\Prototype given\\.$#"
+			count: 1
+			path: lib/Adapter/TolerantParser/TolerantUpdater.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Adapter\\\\TolerantParser\\\\TolerantUpdater\\:\\:updateNamespace\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: lib/Adapter/TolerantParser/TolerantUpdater.php
+
+		-
+			message: "#^Access to an undefined property Microsoft\\\\PhpParser\\\\Node\\:\\:\\$name\\.$#"
+			count: 1
+			path: lib/Adapter/TolerantParser/TolerantUpdater.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Adapter\\\\TolerantParser\\\\TolerantUpdater\\:\\:updateClasses\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: lib/Adapter/TolerantParser/TolerantUpdater.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Adapter\\\\TolerantParser\\\\Updater\\\\AbstractMethodUpdater\\:\\:updateMethods\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: lib/Adapter/TolerantParser/Updater/AbstractMethodUpdater.php
+
+		-
+			message: "#^Variable \\$methodBuilder in PHPDoc tag @var does not match any variable in the foreach loop\\: \\$methodPrototype$#"
+			count: 1
+			path: lib/Adapter/TolerantParser/Updater/AbstractMethodUpdater.php
+
+		-
+			message: "#^Parameter \\#3 \\$bodyNode of method Phpactor\\\\CodeBuilder\\\\Adapter\\\\TolerantParser\\\\Updater\\\\AbstractMethodUpdater\\:\\:appendLinesToMethod\\(\\) expects Microsoft\\\\PhpParser\\\\Node, Microsoft\\\\PhpParser\\\\Node\\\\Statement\\\\CompoundStatementNode\\|Microsoft\\\\PhpParser\\\\Token given\\.$#"
+			count: 1
+			path: lib/Adapter/TolerantParser/Updater/AbstractMethodUpdater.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Adapter\\\\TolerantParser\\\\Updater\\\\AbstractMethodUpdater\\:\\:appendLinesToMethod\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: lib/Adapter/TolerantParser/Updater/AbstractMethodUpdater.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Adapter\\\\TolerantParser\\\\Updater\\\\AbstractMethodUpdater\\:\\:updateOrAddParameters\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: lib/Adapter/TolerantParser/Updater/AbstractMethodUpdater.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Adapter\\\\TolerantParser\\\\Updater\\\\AbstractMethodUpdater\\:\\:updateOrAddParameters\\(\\) has parameter \\$parameters with no value type specified in iterable type Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\Parameters\\.$#"
+			count: 1
+			path: lib/Adapter/TolerantParser/Updater/AbstractMethodUpdater.php
+
+		-
+			message: "#^If condition is always true\\.$#"
+			count: 1
+			path: lib/Adapter/TolerantParser/Updater/AbstractMethodUpdater.php
+
+		-
+			message: "#^Parameter \\#1 \\$string of function substr expects string, bool\\|string\\|null given\\.$#"
+			count: 1
+			path: lib/Adapter/TolerantParser/Updater/AbstractMethodUpdater.php
+
+		-
+			message: "#^Ternary operator condition is always true\\.$#"
+			count: 1
+			path: lib/Adapter/TolerantParser/Updater/AbstractMethodUpdater.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Adapter\\\\TolerantParser\\\\Updater\\\\AbstractMethodUpdater\\:\\:updateOrAddReturnType\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: lib/Adapter/TolerantParser/Updater/AbstractMethodUpdater.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Adapter\\\\TolerantParser\\\\Updater\\\\AbstractMethodUpdater\\:\\:prototypeSameAsDeclaration\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: lib/Adapter/TolerantParser/Updater/AbstractMethodUpdater.php
+
+		-
+			message: "#^Parameter \\#1 \\$str of function ltrim expects string, bool\\|string\\|null given\\.$#"
+			count: 1
+			path: lib/Adapter/TolerantParser/Updater/AbstractMethodUpdater.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\Parameters\\:\\:get\\(\\) invoked with 1 parameter, 0 required\\.$#"
+			count: 1
+			path: lib/Adapter/TolerantParser/Updater/AbstractMethodUpdater.php
+
+		-
+			message: "#^Method Microsoft\\\\PhpParser\\\\Node\\:\\:getText\\(\\) invoked with 1 parameter, 0 required\\.$#"
+			count: 1
+			path: lib/Adapter/TolerantParser/Updater/AbstractMethodUpdater.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Adapter\\\\TolerantParser\\\\Updater\\\\AbstractMethodUpdater\\:\\:memberDeclarations\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: lib/Adapter/TolerantParser/Updater/AbstractMethodUpdater.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Adapter\\\\TolerantParser\\\\Updater\\\\AbstractMethodUpdater\\:\\:memberDeclarationsNode\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: lib/Adapter/TolerantParser/Updater/AbstractMethodUpdater.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Adapter\\\\TolerantParser\\\\Updater\\\\AbstractMethodUpdater\\:\\:renderMethod\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: lib/Adapter/TolerantParser/Updater/AbstractMethodUpdater.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Adapter\\\\TolerantParser\\\\Updater\\\\ClassLikeUpdater\\:\\:resolvePropertyName\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: lib/Adapter/TolerantParser/Updater/ClassLikeUpdater.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Adapter\\\\TolerantParser\\\\Updater\\\\ClassLikeUpdater\\:\\:memberDeclarations\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Adapter/TolerantParser/Updater/ClassLikeUpdater.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Adapter\\\\TolerantParser\\\\Updater\\\\ClassLikeUpdater\\:\\:updateProperties\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: lib/Adapter/TolerantParser/Updater/ClassLikeUpdater.php
+
+		-
+			message: "#^Access to an undefined property Microsoft\\\\PhpParser\\\\Node\\:\\:\\$openBrace\\.$#"
+			count: 1
+			path: lib/Adapter/TolerantParser/Updater/ClassLikeUpdater.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Adapter\\\\TolerantParser\\\\Updater\\\\ClassMethodUpdater\\:\\:memberDeclarations\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: lib/Adapter/TolerantParser/Updater/ClassMethodUpdater.php
+
+		-
+			message: "#^Access to an undefined property Microsoft\\\\PhpParser\\\\ClassLike\\:\\:\\$classMembers\\.$#"
+			count: 2
+			path: lib/Adapter/TolerantParser/Updater/ClassMethodUpdater.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Adapter\\\\TolerantParser\\\\Updater\\\\ClassMethodUpdater\\:\\:memberDeclarationsNode\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: lib/Adapter/TolerantParser/Updater/ClassMethodUpdater.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Adapter\\\\TolerantParser\\\\Updater\\\\ClassMethodUpdater\\:\\:renderMethod\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: lib/Adapter/TolerantParser/Updater/ClassMethodUpdater.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Adapter\\\\TolerantParser\\\\Updater\\\\ClassUpdater\\:\\:updateClass\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: lib/Adapter/TolerantParser/Updater/ClassUpdater.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Adapter\\\\TolerantParser\\\\Updater\\\\ClassUpdater\\:\\:updateExtends\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: lib/Adapter/TolerantParser/Updater/ClassUpdater.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Adapter\\\\TolerantParser\\\\Updater\\\\ClassUpdater\\:\\:updateImplements\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: lib/Adapter/TolerantParser/Updater/ClassUpdater.php
+
+		-
+			message: "#^Call to an undefined method Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\Collection\\:\\:__toString\\(\\)\\.$#"
+			count: 1
+			path: lib/Adapter/TolerantParser/Updater/ClassUpdater.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Adapter\\\\TolerantParser\\\\Updater\\\\ClassUpdater\\:\\:updateConstants\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: lib/Adapter/TolerantParser/Updater/ClassUpdater.php
+
+		-
+			message: "#^Access to an undefined property Microsoft\\\\PhpParser\\\\Node\\:\\:\\$openBrace\\.$#"
+			count: 1
+			path: lib/Adapter/TolerantParser/Updater/ClassUpdater.php
+
+		-
+			message: "#^Access to an undefined property Microsoft\\\\PhpParser\\\\Node\\:\\:\\$classMemberDeclarations\\.$#"
+			count: 2
+			path: lib/Adapter/TolerantParser/Updater/ClassUpdater.php
+
+		-
+			message: "#^PHPDoc tag @var for variable \\$memberNode contains unknown class Phpactor\\\\CodeBuilder\\\\Adapter\\\\TolerantParser\\\\Updater\\\\ConstDeclaration\\.$#"
+			count: 1
+			path: lib/Adapter/TolerantParser/Updater/ClassUpdater.php
+
+		-
+			message: "#^Variable \\$memberNode in PHPDoc tag @var does not match any variable in the foreach loop\\: \\$variable$#"
+			count: 1
+			path: lib/Adapter/TolerantParser/Updater/ClassUpdater.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Adapter\\\\TolerantParser\\\\Updater\\\\InterfaceMethodUpdater\\:\\:memberDeclarations\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: lib/Adapter/TolerantParser/Updater/InterfaceMethodUpdater.php
+
+		-
+			message: "#^Access to an undefined property Microsoft\\\\PhpParser\\\\ClassLike\\:\\:\\$interfaceMembers\\.$#"
+			count: 2
+			path: lib/Adapter/TolerantParser/Updater/InterfaceMethodUpdater.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Adapter\\\\TolerantParser\\\\Updater\\\\InterfaceMethodUpdater\\:\\:memberDeclarationsNode\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: lib/Adapter/TolerantParser/Updater/InterfaceMethodUpdater.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Adapter\\\\TolerantParser\\\\Updater\\\\InterfaceMethodUpdater\\:\\:renderMethod\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: lib/Adapter/TolerantParser/Updater/InterfaceMethodUpdater.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Adapter\\\\TolerantParser\\\\Updater\\\\InterfaceUpdater\\:\\:updateInterface\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: lib/Adapter/TolerantParser/Updater/InterfaceUpdater.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Adapter\\\\TolerantParser\\\\Updater\\\\TraitUpdater\\:\\:updateTrait\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: lib/Adapter/TolerantParser/Updater/TraitUpdater.php
+
+		-
+			message: "#^Access to an undefined property Microsoft\\\\PhpParser\\\\Node\\:\\:\\$traitMemberDeclarations\\.$#"
+			count: 1
+			path: lib/Adapter/TolerantParser/Updater/TraitUpdater.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Adapter\\\\TolerantParser\\\\Updater\\\\UseStatementUpdater\\:\\:updateUseStatements\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: lib/Adapter/TolerantParser/Updater/UseStatementUpdater.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Adapter\\\\TolerantParser\\\\Updater\\\\UseStatementUpdater\\:\\:filterExisting\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: lib/Adapter/TolerantParser/Updater/UseStatementUpdater.php
+
+		-
+			message: "#^Variable \\$usePrototype in PHPDoc tag @var does not match assigned variable \\$usePrototypes\\.$#"
+			count: 1
+			path: lib/Adapter/TolerantParser/Updater/UseStatementUpdater.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Adapter\\\\TolerantParser\\\\Updater\\\\UseStatementUpdater\\:\\:filterSameNamespace\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: lib/Adapter/TolerantParser/Updater/UseStatementUpdater.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Adapter\\\\TolerantParser\\\\Updater\\\\UseStatementUpdater\\:\\:filterSameNamespace\\(\\) has parameter \\$usePrototypes with no typehint specified\\.$#"
+			count: 1
+			path: lib/Adapter/TolerantParser/Updater/UseStatementUpdater.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Adapter\\\\TolerantParser\\\\Updater\\\\UseStatementUpdater\\:\\:buildEditText\\(\\) has parameter \\$usePrototype with no typehint specified\\.$#"
+			count: 1
+			path: lib/Adapter/TolerantParser/Updater/UseStatementUpdater.php
+
+		-
+			message: "#^Class Phpactor\\\\CodeBuilder\\\\Adapter\\\\TolerantParser\\\\Util\\\\ImportedNames implements generic interface IteratorAggregate but does not specify its types\\: TKey, TValue$#"
+			count: 1
+			path: lib/Adapter/TolerantParser/Util/ImportedNames.php
+
+		-
+			message: "#^Property Phpactor\\\\CodeBuilder\\\\Adapter\\\\TolerantParser\\\\Util\\\\ImportedNames\\:\\:\\$table type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Adapter/TolerantParser/Util/ImportedNames.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Adapter\\\\TolerantParser\\\\Util\\\\ImportedNames\\:\\:getIterator\\(\\) return type has no value type specified in iterable type Traversable\\<mixed, mixed\\>\\.$#"
+			count: 1
+			path: lib/Adapter/TolerantParser/Util/ImportedNames.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Adapter\\\\TolerantParser\\\\Util\\\\ImportedNames\\:\\:classNames\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Adapter/TolerantParser/Util/ImportedNames.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Adapter\\\\TolerantParser\\\\Util\\\\ImportedNames\\:\\:classNamesFromNode\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Adapter/TolerantParser/Util/ImportedNames.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Adapter\\\\TolerantParser\\\\Util\\\\ImportedNames\\:\\:functionNames\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Adapter/TolerantParser/Util/ImportedNames.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Adapter\\\\TolerantParser\\\\Util\\\\NodeHelper\\:\\:resolvedShortName\\(\\) should return string but returns bool\\|string\\|null\\.$#"
+			count: 2
+			path: lib/Adapter/TolerantParser/Util/NodeHelper.php
+
+		-
+			message: "#^Property Phpactor\\\\CodeBuilder\\\\Adapter\\\\Twig\\\\TwigExtension\\:\\:\\$textFormat \\(int\\) does not accept Phpactor\\\\CodeBuilder\\\\Util\\\\TextFormat\\.$#"
+			count: 1
+			path: lib/Adapter/Twig/TwigExtension.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Adapter\\\\Twig\\\\TwigExtension\\:\\:indent\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: lib/Adapter/Twig/TwigExtension.php
+
+		-
+			message: "#^Cannot call method indent\\(\\) on int\\.$#"
+			count: 1
+			path: lib/Adapter/Twig/TwigExtension.php
+
+		-
+			message: "#^Property Phpactor\\\\CodeBuilder\\\\Adapter\\\\Twig\\\\TwigRenderer\\:\\:\\$twig has no typehint specified\\.$#"
+			count: 1
+			path: lib/Adapter/Twig/TwigRenderer.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Adapter\\\\Twig\\\\TwigRenderer\\:\\:createTwig\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: lib/Adapter/Twig/TwigRenderer.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Adapter\\\\Twig\\\\TwigRenderer\\:\\:twigRender\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: lib/Adapter/Twig/TwigRenderer.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Adapter\\\\WorseReflection\\\\WorseBuilderFactory\\:\\:fromSource\\(\\) has parameter \\$source with no typehint specified\\.$#"
+			count: 1
+			path: lib/Adapter/WorseReflection/WorseBuilderFactory.php
+
+		-
+			message: "#^Call to an undefined method Phpactor\\\\WorseReflection\\\\Core\\\\ClassName\\|Phpactor\\\\WorseReflection\\\\Reflector\\:\\:reflectClassesIn\\(\\)\\.$#"
+			count: 1
+			path: lib/Adapter/WorseReflection/WorseBuilderFactory.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Adapter\\\\WorseReflection\\\\WorseBuilderFactory\\:\\:build\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: lib/Adapter/WorseReflection/WorseBuilderFactory.php
+
+		-
+			message: "#^Call to an undefined method Phpactor\\\\WorseReflection\\\\Core\\\\Reflection\\\\ReflectionClassLike\\:\\:properties\\(\\)\\.$#"
+			count: 1
+			path: lib/Adapter/WorseReflection/WorseBuilderFactory.php
+
+		-
+			message: "#^Parameter \\#2 \\$method of method Phpactor\\\\CodeBuilder\\\\Adapter\\\\WorseReflection\\\\WorseBuilderFactory\\:\\:buildMethod\\(\\) expects Phpactor\\\\WorseReflection\\\\Core\\\\Reflection\\\\ReflectionMethod, Phpactor\\\\WorseReflection\\\\Core\\\\Reflection\\\\ReflectionMember given\\.$#"
+			count: 1
+			path: lib/Adapter/WorseReflection/WorseBuilderFactory.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Adapter\\\\WorseReflection\\\\WorseBuilderFactory\\:\\:buildProperty\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: lib/Adapter/WorseReflection/WorseBuilderFactory.php
+
+		-
+			message: "#^Call to an undefined method Phpactor\\\\CodeBuilder\\\\Domain\\\\Builder\\\\ClassLikeBuilder\\:\\:property\\(\\)\\.$#"
+			count: 1
+			path: lib/Adapter/WorseReflection/WorseBuilderFactory.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Adapter\\\\WorseReflection\\\\WorseBuilderFactory\\:\\:buildMethod\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: lib/Adapter/WorseReflection/WorseBuilderFactory.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Adapter\\\\WorseReflection\\\\WorseBuilderFactory\\:\\:buildParameter\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: lib/Adapter/WorseReflection/WorseBuilderFactory.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Adapter\\\\WorseReflection\\\\WorseBuilderFactory\\:\\:resolveClassMemberType\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: lib/Adapter/WorseReflection/WorseBuilderFactory.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Adapter\\\\WorseReflection\\\\WorseBuilderFactory\\:\\:resolveTypeNameFromNameImports\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: lib/Adapter/WorseReflection/WorseBuilderFactory.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Adapter\\\\WorseReflection\\\\WorseBuilderFactory\\:\\:resolveTypeNameFromNameImports\\(\\) has parameter \\$imports with no value type specified in iterable type Phpactor\\\\WorseReflection\\\\Core\\\\NameImports\\.$#"
+			count: 1
+			path: lib/Adapter/WorseReflection/WorseBuilderFactory.php
+
+		-
+			message: "#^Property Phpactor\\\\CodeBuilder\\\\Domain\\\\Builder\\\\AbstractBuilder\\:\\:\\$originalProperties has no typehint specified\\.$#"
+			count: 1
+			path: lib/Domain/Builder/AbstractBuilder.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Domain\\\\Builder\\\\AbstractBuilder\\:\\:snapshot\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: lib/Domain/Builder/AbstractBuilder.php
+
+		-
+			message: "#^Argument of an invalid type Phpactor\\\\CodeBuilder\\\\Domain\\\\Builder\\\\AbstractBuilder supplied for foreach, only iterables are supported\\.$#"
+			count: 1
+			path: lib/Domain/Builder/AbstractBuilder.php
+
+		-
+			message: "#^Call to an undefined method Phpactor\\\\CodeBuilder\\\\Domain\\\\Builder\\\\Builder\\:\\:snapshot\\(\\)\\.$#"
+			count: 1
+			path: lib/Domain/Builder/AbstractBuilder.php
+
+		-
+			message: "#^Call to an undefined method Phpactor\\\\CodeBuilder\\\\Domain\\\\Builder\\\\Builder\\:\\:isModified\\(\\)\\.$#"
+			count: 1
+			path: lib/Domain/Builder/AbstractBuilder.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Domain\\\\Builder\\\\Builder\\:\\:childNames\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Domain/Builder/Builder.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Domain\\\\Builder\\\\ClassBuilder\\:\\:childNames\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Domain/Builder/ClassBuilder.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Domain\\\\Builder\\\\ClassBuilder\\:\\:add\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: lib/Domain/Builder/ClassBuilder.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Domain\\\\Builder\\\\ClassBuilder\\:\\:constant\\(\\) has parameter \\$value with no typehint specified\\.$#"
+			count: 1
+			path: lib/Domain/Builder/ClassBuilder.php
+
+		-
+			message: "#^Parameter \\#5 \\$extendsClass of class Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\ClassPrototype constructor expects Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\ExtendsClass\\|null, string given\\.$#"
+			count: 1
+			path: lib/Domain/Builder/ClassBuilder.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Domain\\\\Builder\\\\ClassLikeBuilder\\:\\:childNames\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Domain/Builder/ClassLikeBuilder.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Domain\\\\Builder\\\\ClassLikeBuilder\\:\\:add\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: lib/Domain/Builder/ClassLikeBuilder.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Domain\\\\Builder\\\\ConstantBuilder\\:\\:childNames\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Domain/Builder/ConstantBuilder.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Domain\\\\Builder\\\\ConstantBuilder\\:\\:__construct\\(\\) has parameter \\$value with no typehint specified\\.$#"
+			count: 1
+			path: lib/Domain/Builder/ConstantBuilder.php
+
+		-
+			message: "#^Property Phpactor\\\\CodeBuilder\\\\Domain\\\\Builder\\\\ConstantBuilder\\:\\:\\$parent \\(Phpactor\\\\CodeBuilder\\\\Domain\\\\Builder\\\\ClassBuilder\\) does not accept Phpactor\\\\CodeBuilder\\\\Domain\\\\Builder\\\\ClassLikeBuilder\\.$#"
+			count: 1
+			path: lib/Domain/Builder/ConstantBuilder.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Domain\\\\Builder\\\\InterfaceBuilder\\:\\:childNames\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Domain/Builder/InterfaceBuilder.php
+
+		-
+			message: "#^Array \\(array\\<Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\Lines\\>\\) does not accept Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\Line\\.$#"
+			count: 1
+			path: lib/Domain/Builder/MethodBodyBuilder.php
+
+		-
+			message: "#^Property Phpactor\\\\CodeBuilder\\\\Domain\\\\Builder\\\\MethodBuilder\\:\\:\\$parent \\(Phpactor\\\\CodeBuilder\\\\Domain\\\\Builder\\\\SourceCodeBuilder\\) does not accept Phpactor\\\\CodeBuilder\\\\Domain\\\\Builder\\\\ClassLikeBuilder\\.$#"
+			count: 1
+			path: lib/Domain/Builder/MethodBuilder.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Domain\\\\Builder\\\\MethodBuilder\\:\\:childNames\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Domain/Builder/MethodBuilder.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Domain\\\\Builder\\\\MethodBuilder\\:\\:add\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: lib/Domain/Builder/MethodBuilder.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Domain\\\\Builder\\\\MethodBuilder\\:\\:build\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: lib/Domain/Builder/MethodBuilder.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Domain\\\\Builder\\\\MethodBuilder\\:\\:end\\(\\) should return Phpactor\\\\CodeBuilder\\\\Domain\\\\Builder\\\\ClassLikeBuilder but returns Phpactor\\\\CodeBuilder\\\\Domain\\\\Builder\\\\SourceCodeBuilder\\.$#"
+			count: 1
+			path: lib/Domain/Builder/MethodBuilder.php
+
+		-
+			message: "#^Property Phpactor\\\\CodeBuilder\\\\Domain\\\\Builder\\\\ParameterBuilder\\:\\:\\$parent \\(Phpactor\\\\CodeBuilder\\\\Domain\\\\Builder\\\\SourceCodeBuilder\\) does not accept Phpactor\\\\CodeBuilder\\\\Domain\\\\Builder\\\\MethodBuilder\\.$#"
+			count: 1
+			path: lib/Domain/Builder/ParameterBuilder.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Domain\\\\Builder\\\\ParameterBuilder\\:\\:childNames\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Domain/Builder/ParameterBuilder.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Domain\\\\Builder\\\\ParameterBuilder\\:\\:defaultValue\\(\\) has parameter \\$value with no typehint specified\\.$#"
+			count: 1
+			path: lib/Domain/Builder/ParameterBuilder.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Domain\\\\Builder\\\\ParameterBuilder\\:\\:build\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: lib/Domain/Builder/ParameterBuilder.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Domain\\\\Builder\\\\ParameterBuilder\\:\\:end\\(\\) should return Phpactor\\\\CodeBuilder\\\\Domain\\\\Builder\\\\MethodBuilder but returns Phpactor\\\\CodeBuilder\\\\Domain\\\\Builder\\\\SourceCodeBuilder\\.$#"
+			count: 1
+			path: lib/Domain/Builder/ParameterBuilder.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Domain\\\\Builder\\\\ParameterBuilder\\:\\:byReference\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: lib/Domain/Builder/ParameterBuilder.php
+
+		-
+			message: "#^Property Phpactor\\\\CodeBuilder\\\\Domain\\\\Builder\\\\PropertyBuilder\\:\\:\\$parent \\(Phpactor\\\\CodeBuilder\\\\Domain\\\\Builder\\\\SourceCodeBuilder\\) does not accept Phpactor\\\\CodeBuilder\\\\Domain\\\\Builder\\\\ClassLikeBuilder\\.$#"
+			count: 1
+			path: lib/Domain/Builder/PropertyBuilder.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Domain\\\\Builder\\\\PropertyBuilder\\:\\:childNames\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Domain/Builder/PropertyBuilder.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Domain\\\\Builder\\\\PropertyBuilder\\:\\:defaultValue\\(\\) has parameter \\$value with no typehint specified\\.$#"
+			count: 1
+			path: lib/Domain/Builder/PropertyBuilder.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Domain\\\\Builder\\\\PropertyBuilder\\:\\:end\\(\\) should return Phpactor\\\\CodeBuilder\\\\Domain\\\\Builder\\\\ClassLikeBuilder but returns Phpactor\\\\CodeBuilder\\\\Domain\\\\Builder\\\\SourceCodeBuilder\\.$#"
+			count: 1
+			path: lib/Domain/Builder/PropertyBuilder.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Domain\\\\Builder\\\\SourceCodeBuilder\\:\\:childNames\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Domain/Builder/SourceCodeBuilder.php
+
+		-
+			message: "#^Property Phpactor\\\\CodeBuilder\\\\Domain\\\\Builder\\\\SourceCodeBuilder\\:\\:\\$namespace \\(Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\NamespaceName\\) does not accept Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\QualifiedName\\.$#"
+			count: 1
+			path: lib/Domain/Builder/SourceCodeBuilder.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Domain\\\\Builder\\\\TraitBuilder\\:\\:childNames\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Domain/Builder/TraitBuilder.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Domain\\\\Builder\\\\TraitBuilder\\:\\:add\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: lib/Domain/Builder/TraitBuilder.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Domain\\\\Builder\\\\TraitBuilder\\:\\:constant\\(\\) has parameter \\$value with no typehint specified\\.$#"
+			count: 1
+			path: lib/Domain/Builder/TraitBuilder.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Domain\\\\BuilderFactory\\:\\:fromSource\\(\\) has parameter \\$source with no typehint specified\\.$#"
+			count: 1
+			path: lib/Domain/BuilderFactory.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Domain\\\\Code\\:\\:fromString\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: lib/Domain/Code.php
+
+		-
+			message: "#^Property Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\ClassLikePrototype\\:\\:\\$methods type has no value type specified in iterable type Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\Methods\\.$#"
+			count: 1
+			path: lib/Domain/Prototype/ClassLikePrototype.php
+
+		-
+			message: "#^Property Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\ClassLikePrototype\\:\\:\\$properties type has no value type specified in iterable type Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\Properties\\.$#"
+			count: 1
+			path: lib/Domain/Prototype/ClassLikePrototype.php
+
+		-
+			message: "#^Property Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\ClassLikePrototype\\:\\:\\$constants type has no value type specified in iterable type Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\Constants\\.$#"
+			count: 1
+			path: lib/Domain/Prototype/ClassLikePrototype.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\ClassLikePrototype\\:\\:__construct\\(\\) has parameter \\$constants with no value type specified in iterable type Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\Constants\\.$#"
+			count: 1
+			path: lib/Domain/Prototype/ClassLikePrototype.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\ClassLikePrototype\\:\\:__construct\\(\\) has parameter \\$methods with no value type specified in iterable type Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\Methods\\.$#"
+			count: 1
+			path: lib/Domain/Prototype/ClassLikePrototype.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\ClassLikePrototype\\:\\:__construct\\(\\) has parameter \\$properties with no value type specified in iterable type Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\Properties\\.$#"
+			count: 1
+			path: lib/Domain/Prototype/ClassLikePrototype.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\ClassLikePrototype\\:\\:name\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: lib/Domain/Prototype/ClassLikePrototype.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\ClassLikePrototype\\:\\:methods\\(\\) return type has no value type specified in iterable type Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\Methods\\.$#"
+			count: 1
+			path: lib/Domain/Prototype/ClassLikePrototype.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\ClassLikePrototype\\:\\:properties\\(\\) return type has no value type specified in iterable type Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\Properties\\.$#"
+			count: 1
+			path: lib/Domain/Prototype/ClassLikePrototype.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\ClassLikePrototype\\:\\:constants\\(\\) return type has no value type specified in iterable type Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\Constants\\.$#"
+			count: 1
+			path: lib/Domain/Prototype/ClassLikePrototype.php
+
+		-
+			message: "#^Property Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\ClassPrototype\\:\\:\\$implementsInterfaces type has no value type specified in iterable type Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\ImplementsInterfaces\\.$#"
+			count: 1
+			path: lib/Domain/Prototype/ClassPrototype.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\ClassPrototype\\:\\:__construct\\(\\) has parameter \\$constants with no value type specified in iterable type Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\Constants\\.$#"
+			count: 1
+			path: lib/Domain/Prototype/ClassPrototype.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\ClassPrototype\\:\\:__construct\\(\\) has parameter \\$implementsInterfaces with no value type specified in iterable type Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\ImplementsInterfaces\\.$#"
+			count: 1
+			path: lib/Domain/Prototype/ClassPrototype.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\ClassPrototype\\:\\:__construct\\(\\) has parameter \\$methods with no value type specified in iterable type Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\Methods\\.$#"
+			count: 1
+			path: lib/Domain/Prototype/ClassPrototype.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\ClassPrototype\\:\\:__construct\\(\\) has parameter \\$properties with no value type specified in iterable type Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\Properties\\.$#"
+			count: 1
+			path: lib/Domain/Prototype/ClassPrototype.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\ClassPrototype\\:\\:implementsInterfaces\\(\\) return type has no value type specified in iterable type Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\ImplementsInterfaces\\.$#"
+			count: 1
+			path: lib/Domain/Prototype/ClassPrototype.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\Classes\\:\\:fromClasses\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: lib/Domain/Prototype/Classes.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\Classes\\:\\:fromClasses\\(\\) has parameter \\$classes with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Domain/Prototype/Classes.php
+
+		-
 			message: "#^Unsafe usage of new static\\(\\)\\.$#"
 			count: 1
 			path: lib/Domain/Prototype/Classes.php
+
+		-
+			message: "#^Class Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\Collection implements generic interface IteratorAggregate but does not specify its types\\: TKey, TValue$#"
+			count: 1
+			path: lib/Domain/Prototype/Collection.php
+
+		-
+			message: "#^Property Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\Collection\\:\\:\\$items has no typehint specified\\.$#"
+			count: 1
+			path: lib/Domain/Prototype/Collection.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\Collection\\:\\:__construct\\(\\) has parameter \\$items with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Domain/Prototype/Collection.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\Collection\\:\\:empty\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: lib/Domain/Prototype/Collection.php
 
 		-
 			message: "#^Unsafe usage of new static\\(\\)\\.$#"
@@ -11,9 +756,129 @@ parameters:
 			path: lib/Domain/Prototype/Collection.php
 
 		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\Collection\\:\\:getIterator\\(\\) return type has no value type specified in iterable type Traversable\\<mixed, mixed\\>\\.$#"
+			count: 1
+			path: lib/Domain/Prototype/Collection.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\Collection\\:\\:isLast\\(\\) has parameter \\$item with no typehint specified\\.$#"
+			count: 1
+			path: lib/Domain/Prototype/Collection.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\Collection\\:\\:first\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: lib/Domain/Prototype/Collection.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\Collection\\:\\:get\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: lib/Domain/Prototype/Collection.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\Collection\\:\\:notIn\\(\\) has parameter \\$names with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Domain/Prototype/Collection.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\Collection\\:\\:notIn\\(\\) return type has no value type specified in iterable type Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\Collection\\.$#"
+			count: 1
+			path: lib/Domain/Prototype/Collection.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\Collection\\:\\:in\\(\\) has parameter \\$names with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Domain/Prototype/Collection.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\Collection\\:\\:in\\(\\) return type has no value type specified in iterable type Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\Collection\\.$#"
+			count: 1
+			path: lib/Domain/Prototype/Collection.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\Constants\\:\\:fromConstants\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: lib/Domain/Prototype/Constants.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\Constants\\:\\:fromConstants\\(\\) has parameter \\$constants with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Domain/Prototype/Constants.php
+
+		-
 			message: "#^Unsafe usage of new static\\(\\)\\.$#"
 			count: 1
 			path: lib/Domain/Prototype/Constants.php
+
+		-
+			message: "#^Property Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\DefaultValue\\:\\:\\$none has no typehint specified\\.$#"
+			count: 1
+			path: lib/Domain/Prototype/DefaultValue.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\DefaultValue\\:\\:none\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: lib/Domain/Prototype/DefaultValue.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\DefaultValue\\:\\:notNone\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: lib/Domain/Prototype/DefaultValue.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\Docblock\\:\\:fromString\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: lib/Domain/Prototype/Docblock.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\Docblock\\:\\:none\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: lib/Domain/Prototype/Docblock.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\Docblock\\:\\:notNone\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: lib/Domain/Prototype/Docblock.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\Docblock\\:\\:asLines\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Domain/Prototype/Docblock.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\ExtendsClass\\:\\:fromString\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: lib/Domain/Prototype/ExtendsClass.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\ExtendsClass\\:\\:fromString\\(\\) has parameter \\$string with no typehint specified\\.$#"
+			count: 1
+			path: lib/Domain/Prototype/ExtendsClass.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\ExtendsClass\\:\\:none\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: lib/Domain/Prototype/ExtendsClass.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\ExtendsInterfaces\\:\\:fromTypes\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: lib/Domain/Prototype/ExtendsInterfaces.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\ExtendsInterfaces\\:\\:fromTypes\\(\\) has parameter \\$types with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Domain/Prototype/ExtendsInterfaces.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\ImplementsInterfaces\\:\\:fromTypes\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: lib/Domain/Prototype/ImplementsInterfaces.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\ImplementsInterfaces\\:\\:fromTypes\\(\\) has parameter \\$types with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Domain/Prototype/ImplementsInterfaces.php
 
 		-
 			message: "#^Unsafe usage of new static\\(\\)\\.$#"
@@ -21,9 +886,124 @@ parameters:
 			path: lib/Domain/Prototype/ImplementsInterfaces.php
 
 		-
+			message: "#^Property Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\InterfacePrototype\\:\\:\\$extendsInterfaces type has no value type specified in iterable type Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\ExtendsInterfaces\\.$#"
+			count: 1
+			path: lib/Domain/Prototype/InterfacePrototype.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\InterfacePrototype\\:\\:__construct\\(\\) has parameter \\$extendsInterfaces with no value type specified in iterable type Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\ExtendsInterfaces\\.$#"
+			count: 1
+			path: lib/Domain/Prototype/InterfacePrototype.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\InterfacePrototype\\:\\:__construct\\(\\) has parameter \\$methods with no value type specified in iterable type Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\Methods\\.$#"
+			count: 1
+			path: lib/Domain/Prototype/InterfacePrototype.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\InterfacePrototype\\:\\:extendsInterfaces\\(\\) return type has no value type specified in iterable type Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\ExtendsInterfaces\\.$#"
+			count: 1
+			path: lib/Domain/Prototype/InterfacePrototype.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\Interfaces\\:\\:fromInterfaces\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: lib/Domain/Prototype/Interfaces.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\Interfaces\\:\\:fromInterfaces\\(\\) has parameter \\$interfaces with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Domain/Prototype/Interfaces.php
+
+		-
 			message: "#^Unsafe usage of new static\\(\\)\\.$#"
 			count: 1
 			path: lib/Domain/Prototype/Interfaces.php
+
+		-
+			message: "#^Property Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\Line\\:\\:\\$line has no typehint specified\\.$#"
+			count: 1
+			path: lib/Domain/Prototype/Line.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\Line\\:\\:__construct\\(\\) has parameter \\$line with no typehint specified\\.$#"
+			count: 1
+			path: lib/Domain/Prototype/Line.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\Lines\\:\\:fromLines\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: lib/Domain/Prototype/Lines.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\Lines\\:\\:fromLines\\(\\) has parameter \\$lines with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Domain/Prototype/Lines.php
+
+		-
+			message: "#^Property Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\Method\\:\\:\\$parameters type has no value type specified in iterable type Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\Parameters\\.$#"
+			count: 1
+			path: lib/Domain/Prototype/Method.php
+
+		-
+			message: "#^Property Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\Method\\:\\:\\$docblock has no typehint specified\\.$#"
+			count: 1
+			path: lib/Domain/Prototype/Method.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\Method\\:\\:__construct\\(\\) has parameter \\$parameters with no value type specified in iterable type Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\Parameters\\.$#"
+			count: 1
+			path: lib/Domain/Prototype/Method.php
+
+		-
+			message: "#^Property Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\Method\\:\\:\\$isStatic \\(bool\\) does not accept int\\.$#"
+			count: 1
+			path: lib/Domain/Prototype/Method.php
+
+		-
+			message: "#^Property Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\Method\\:\\:\\$isAbstract \\(bool\\) does not accept int\\.$#"
+			count: 1
+			path: lib/Domain/Prototype/Method.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\Method\\:\\:parameters\\(\\) return type has no value type specified in iterable type Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\Parameters\\.$#"
+			count: 1
+			path: lib/Domain/Prototype/Method.php
+
+		-
+			message: "#^Property Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\MethodBody\\:\\:\\$lines type has no value type specified in iterable type Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\Lines\\.$#"
+			count: 1
+			path: lib/Domain/Prototype/MethodBody.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\MethodBody\\:\\:__construct\\(\\) has parameter \\$lines with no value type specified in iterable type Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\Lines\\.$#"
+			count: 1
+			path: lib/Domain/Prototype/MethodBody.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\MethodBody\\:\\:fromLines\\(\\) has parameter \\$lines with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Domain/Prototype/MethodBody.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\MethodBody\\:\\:none\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: lib/Domain/Prototype/MethodBody.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\MethodBody\\:\\:lines\\(\\) return type has no value type specified in iterable type Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\Lines\\.$#"
+			count: 1
+			path: lib/Domain/Prototype/MethodBody.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\Methods\\:\\:fromMethods\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: lib/Domain/Prototype/Methods.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\Methods\\:\\:fromMethods\\(\\) has parameter \\$methods with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Domain/Prototype/Methods.php
 
 		-
 			message: "#^Unsafe usage of new static\\(\\)\\.$#"
@@ -31,9 +1011,34 @@ parameters:
 			path: lib/Domain/Prototype/Methods.php
 
 		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\Parameters\\:\\:fromParameters\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: lib/Domain/Prototype/Parameters.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\Parameters\\:\\:fromParameters\\(\\) has parameter \\$parameters with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Domain/Prototype/Parameters.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\Properties\\:\\:fromProperties\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: lib/Domain/Prototype/Properties.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\Properties\\:\\:fromProperties\\(\\) has parameter \\$properties with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Domain/Prototype/Properties.php
+
+		-
 			message: "#^Unsafe usage of new static\\(\\)\\.$#"
 			count: 1
 			path: lib/Domain/Prototype/Properties.php
+
+		-
+			message: "#^Property Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\Prototype\\:\\:\\$updatePolicy has no typehint specified\\.$#"
+			count: 1
+			path: lib/Domain/Prototype/Prototype.php
 
 		-
 			message: "#^Unsafe usage of new static\\(\\)\\.$#"
@@ -41,12 +1046,247 @@ parameters:
 			path: lib/Domain/Prototype/QualifiedName.php
 
 		-
-			message: "#^Unsafe usage of new static\\(\\)\\.$#"
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\ReturnType\\:\\:fromString\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: lib/Domain/Prototype/ReturnType.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\ReturnType\\:\\:fromString\\(\\) has parameter \\$string with no typehint specified\\.$#"
+			count: 1
+			path: lib/Domain/Prototype/ReturnType.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\ReturnType\\:\\:none\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: lib/Domain/Prototype/ReturnType.php
+
+		-
+			message: "#^Property Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\SourceCode\\:\\:\\$useStatements type has no value type specified in iterable type Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\UseStatements\\.$#"
+			count: 1
+			path: lib/Domain/Prototype/SourceCode.php
+
+		-
+			message: "#^Property Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\SourceCode\\:\\:\\$classes type has no value type specified in iterable type Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\Classes\\.$#"
+			count: 1
+			path: lib/Domain/Prototype/SourceCode.php
+
+		-
+			message: "#^Property Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\SourceCode\\:\\:\\$interfaces type has no value type specified in iterable type Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\Interfaces\\.$#"
+			count: 1
+			path: lib/Domain/Prototype/SourceCode.php
+
+		-
+			message: "#^Property Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\SourceCode\\:\\:\\$traits type has no value type specified in iterable type Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\Traits\\.$#"
+			count: 1
+			path: lib/Domain/Prototype/SourceCode.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\SourceCode\\:\\:__construct\\(\\) has parameter \\$classes with no value type specified in iterable type Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\Classes\\.$#"
+			count: 1
+			path: lib/Domain/Prototype/SourceCode.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\SourceCode\\:\\:__construct\\(\\) has parameter \\$interfaces with no value type specified in iterable type Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\Interfaces\\.$#"
+			count: 1
+			path: lib/Domain/Prototype/SourceCode.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\SourceCode\\:\\:__construct\\(\\) has parameter \\$traits with no value type specified in iterable type Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\Traits\\.$#"
+			count: 1
+			path: lib/Domain/Prototype/SourceCode.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\SourceCode\\:\\:__construct\\(\\) has parameter \\$useStatements with no value type specified in iterable type Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\UseStatements\\.$#"
+			count: 1
+			path: lib/Domain/Prototype/SourceCode.php
+
+		-
+			message: "#^Property Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\SourceCode\\:\\:\\$namespace \\(Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\NamespaceName\\) does not accept Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\QualifiedName\\.$#"
+			count: 1
+			path: lib/Domain/Prototype/SourceCode.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\SourceCode\\:\\:useStatements\\(\\) return type has no value type specified in iterable type Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\UseStatements\\.$#"
+			count: 1
+			path: lib/Domain/Prototype/SourceCode.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\SourceCode\\:\\:classes\\(\\) return type has no value type specified in iterable type Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\Classes\\.$#"
+			count: 1
+			path: lib/Domain/Prototype/SourceCode.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\SourceCode\\:\\:interfaces\\(\\) return type has no value type specified in iterable type Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\Interfaces\\.$#"
+			count: 1
+			path: lib/Domain/Prototype/SourceCode.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\SourceCode\\:\\:traits\\(\\) return type has no value type specified in iterable type Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\Traits\\.$#"
+			count: 1
+			path: lib/Domain/Prototype/SourceCode.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\TraitPrototype\\:\\:__construct\\(\\) has parameter \\$constants with no value type specified in iterable type Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\Constants\\.$#"
+			count: 1
+			path: lib/Domain/Prototype/TraitPrototype.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\TraitPrototype\\:\\:__construct\\(\\) has parameter \\$methods with no value type specified in iterable type Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\Methods\\.$#"
+			count: 1
+			path: lib/Domain/Prototype/TraitPrototype.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\TraitPrototype\\:\\:__construct\\(\\) has parameter \\$properties with no value type specified in iterable type Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\Properties\\.$#"
+			count: 1
+			path: lib/Domain/Prototype/TraitPrototype.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\Traits\\:\\:fromTraits\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: lib/Domain/Prototype/Traits.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\Traits\\:\\:fromTraits\\(\\) has parameter \\$traits with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: lib/Domain/Prototype/Traits.php
 
 		-
 			message: "#^Unsafe usage of new static\\(\\)\\.$#"
 			count: 1
+			path: lib/Domain/Prototype/Traits.php
+
+		-
+			message: "#^Parameter \\#3 \\$length of function substr expects int, int\\<0, max\\>\\|false given\\.$#"
+			count: 1
+			path: lib/Domain/Prototype/Type.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\UpdatePolicy\\:\\:fromModifiedState\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: lib/Domain/Prototype/UpdatePolicy.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\UseStatement\\:\\:fromNameAndAlias\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: lib/Domain/Prototype/UseStatement.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\UseStatement\\:\\:fromNameAliasAndType\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: lib/Domain/Prototype/UseStatement.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\UseStatement\\:\\:fromType\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: lib/Domain/Prototype/UseStatement.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\UseStatements\\:\\:fromUseStatements\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: lib/Domain/Prototype/UseStatements.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\UseStatements\\:\\:fromUseStatements\\(\\) has parameter \\$useStatements with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Domain/Prototype/UseStatements.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\UseStatements\\:\\:sorted\\(\\) return type has no value type specified in iterable type Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\UseStatements\\.$#"
+			count: 1
+			path: lib/Domain/Prototype/UseStatements.php
+
+		-
+			message: "#^Property Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\Value\\:\\:\\$value has no typehint specified\\.$#"
+			count: 1
 			path: lib/Domain/Prototype/Value.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\Value\\:\\:__construct\\(\\) has parameter \\$value with no typehint specified\\.$#"
+			count: 1
+			path: lib/Domain/Prototype/Value.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\Value\\:\\:fromValue\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: lib/Domain/Prototype/Value.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\Value\\:\\:fromValue\\(\\) has parameter \\$value with no typehint specified\\.$#"
+			count: 1
+			path: lib/Domain/Prototype/Value.php
+
+		-
+			message: "#^Unsafe usage of new static\\(\\)\\.$#"
+			count: 1
+			path: lib/Domain/Prototype/Value.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\Value\\:\\:value\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: lib/Domain/Prototype/Value.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\Value\\:\\:export\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: lib/Domain/Prototype/Value.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\Visibility\\:\\:fromString\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: lib/Domain/Prototype/Visibility.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\Visibility\\:\\:private\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: lib/Domain/Prototype/Visibility.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\Visibility\\:\\:protected\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: lib/Domain/Prototype/Visibility.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\Visibility\\:\\:public\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: lib/Domain/Prototype/Visibility.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Domain\\\\TemplatePathResolver\\\\FilterPhpVersionDirectoryIterator\\:\\:__construct\\(\\) has parameter \\$iterator with no value type specified in iterable type Iterator\\.$#"
+			count: 1
+			path: lib/Domain/TemplatePathResolver/FilterPhpVersionDirectoryIterator.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Domain\\\\TemplatePathResolver\\\\PhpVersionPathResolver\\:\\:resolve\\(\\) has parameter \\$paths with no value type specified in iterable type iterable\\.$#"
+			count: 1
+			path: lib/Domain/TemplatePathResolver/PhpVersionPathResolver.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Domain\\\\TemplatePathResolver\\\\PhpVersionPathResolver\\:\\:resolve\\(\\) return type has no value type specified in iterable type iterable\\.$#"
+			count: 1
+			path: lib/Domain/TemplatePathResolver/PhpVersionPathResolver.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\SourceBuilder\\:\\:render\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: lib/SourceBuilder.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\SourceBuilder\\:\\:apply\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: lib/SourceBuilder.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Util\\\\TextFormat\\:\\:indentReplace\\(\\) has parameter \\$text with no typehint specified\\.$#"
+			count: 1
+			path: lib/Util/TextFormat.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Util\\\\TextUtil\\:\\:lines\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/Util/TextUtil.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Util\\\\TextUtil\\:\\:lines\\(\\) should return array but returns array\\<int, string\\>\\|false\\.$#"
+			count: 1
+			path: lib/Util/TextUtil.php
 
