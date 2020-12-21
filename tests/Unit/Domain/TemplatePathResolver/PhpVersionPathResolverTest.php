@@ -7,7 +7,7 @@ use Phpactor\CodeBuilder\Tests\IntegrationTestCase;
 
 class PhpVersionPathResolverTest extends IntegrationTestCase
 {
-    protected function setUp(): void
+    protected function setUp(): void: void
     {
         $this->workspace()->reset();
     }

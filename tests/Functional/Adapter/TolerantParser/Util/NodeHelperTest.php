@@ -14,7 +14,7 @@ class NodeHelperTest extends TestCase
      */
     private $parser;
 
-    protected function setUp(): void
+    protected function setUp(): void: void
     {
         $this->parser = new Parser();
     }
