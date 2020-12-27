@@ -223,6 +223,12 @@ EOT
         $this->assertEquals('foo', (string) $source->interfaces()->first()->methods()->get('hello')->parameters()->get('foo')->name());
     }
 
+    public function testDoesNotBuildPHP8PromotedProperties(): void
+    {
+        $source = $this->build('<?php class Foobar { function __construct(private $foobar){}}');
+        self::assertEquals(0, $source->classes()->first()->properties()->count());
+    }
+
     private function build(string $source): SourceCode
     {
         $reflector = ReflectorBuilder::create()

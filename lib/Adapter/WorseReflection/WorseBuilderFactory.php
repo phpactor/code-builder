@@ -5,6 +5,8 @@ namespace Phpactor\CodeBuilder\Adapter\WorseReflection;
 use Phpactor\CodeBuilder\Domain\BuilderFactory;
 use Phpactor\TextDocument\TextDocument;
 use Phpactor\TextDocument\TextDocumentBuilder;
+use Phpactor\WorseReflection\Core\Reflection\ReflectionClass;
+use Phpactor\WorseReflection\Core\Reflection\ReflectionTrait;
 use Phpactor\WorseReflection\Reflector;
 use Phpactor\CodeBuilder\Domain\Builder\SourceCodeBuilder;
 use Phpactor\WorseReflection\Core\Reflection\ReflectionProperty;
@@ -67,9 +69,12 @@ class WorseBuilderFactory implements BuilderFactory
         $classBuilder = $builder->$type($reflectionClass->name()->short());
         $builder->namespace($reflectionClass->name()->namespace());
 
-        if ($reflectionClass->isClass() || $reflectionClass->isTrait()) {
-            // TODO: Worse reflection doesn't support ->belongingTo properties
+        if ($reflectionClass instanceof ReflectionClass || $reflectionClass instanceof ReflectionTrait) {
             foreach ($reflectionClass->properties()->belongingTo($reflectionClass->name()) as $property) {
+                assert($property instanceof ReflectionProperty);
+                if ($property->isPromoted()) {
+                    continue;
+                }
                 $this->buildProperty($classBuilder, $property);
             }
         }
