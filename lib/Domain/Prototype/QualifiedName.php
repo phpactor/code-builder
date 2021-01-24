@@ -11,13 +11,13 @@ class QualifiedName
         $this->name = $name;
     }
 
-    public static function fromString(string $name): QualifiedName
-    {
-        return new static($name);
-    }
-
     public function __toString()
     {
         return $this->name;
+    }
+
+    public static function fromString(string $name): QualifiedName
+    {
+        return new static($name);
     }
 }

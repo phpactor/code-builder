@@ -36,7 +36,7 @@ class SourceBuilderTest extends TestCase
     /**
      * @testdoc It should delegate to the generator.
      */
-    public function testGenerate()
+    public function testGenerate(): void
     {
         $expectedCode = Code::fromString('');
         $this->generator->render($this->prototype->reveal())->willReturn($expectedCode);
@@ -48,7 +48,7 @@ class SourceBuilderTest extends TestCase
     /**
      * @testdoc It should delegate to the updater.
      */
-    public function testUpdate()
+    public function testUpdate(): void
     {
         $sourceCode = Code::fromString('');
         $this->updater->textEditsFor($this->prototype->reveal(), $sourceCode)->willReturn(TextEdits::none());

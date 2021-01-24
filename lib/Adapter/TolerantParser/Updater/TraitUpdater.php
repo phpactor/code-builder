@@ -9,7 +9,7 @@ use Phpactor\CodeBuilder\Domain\Prototype\TraitPrototype;
 
 class TraitUpdater extends ClassLikeUpdater
 {
-    public function updateTrait(Edits $edits, TraitPrototype $classPrototype, TraitDeclaration $classNode)
+    public function updateTrait(Edits $edits, TraitPrototype $classPrototype, TraitDeclaration $classNode): void
     {
         if (false === $classPrototype->applyUpdate()) {
             return;

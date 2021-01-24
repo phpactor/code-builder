@@ -6,10 +6,6 @@ use Phpactor\CodeBuilder\Domain\Builder\Exception\InvalidBuilderException;
 
 abstract class ClassLikeBuilder extends AbstractBuilder implements Builder
 {
-    /**
-     * @var SourceCodeBuilder
-     */
-    private $parent;
 
     /**
      * @var MethodBuilder[]
@@ -20,6 +16,16 @@ abstract class ClassLikeBuilder extends AbstractBuilder implements Builder
      * @var string
      */
     protected $name;
+    /**
+     * @var SourceCodeBuilder
+     */
+    private $parent;
+
+    public function __construct(SourceCodeBuilder $parent, string $name)
+    {
+        $this->parent = $parent;
+        $this->name = $name;
+    }
 
     public static function childNames(): array
     {
@@ -28,13 +34,7 @@ abstract class ClassLikeBuilder extends AbstractBuilder implements Builder
         ];
     }
 
-    public function __construct(SourceCodeBuilder $parent, string $name)
-    {
-        $this->parent = $parent;
-        $this->name = $name;
-    }
-
-    public function add(Builder $builder)
+    public function add(Builder $builder): void
     {
         if ($builder instanceof MethodBuilder) {
             $this->methods[$builder->builderName()] = $builder;

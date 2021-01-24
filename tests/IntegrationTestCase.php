@@ -18,7 +18,8 @@ abstract class IntegrationTestCase extends TestCase
     {
         if (!file_exists($path)) {
             throw new RuntimeException(sprintf(
-                'Directory "%s" does not exist', $path
+                'Directory "%s" does not exist',
+                $path
             ));
         }
 

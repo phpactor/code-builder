@@ -2,6 +2,8 @@
 
 namespace Phpactor\CodeBuilder\Domain\Prototype;
 
+use InvalidArgumentException;
+
 final class Visibility
 {
     const PUBLIC = 'public';
@@ -22,7 +24,7 @@ final class Visibility
     private function __construct(string $visibility)
     {
         if (!in_array($visibility, self::VISIBILITIES)) {
-            throw new \InvalidArgumentException(sprintf(
+            throw new InvalidArgumentException(sprintf(
                 'Invalid visibility "%s", valid visibilities: "%s"',
                 $visibility,
                 implode('", "', self::VISIBILITIES)
@@ -30,6 +32,11 @@ final class Visibility
         }
 
         $this->visibility = $visibility;
+    }
+
+    public function __toString()
+    {
+        return $this->visibility;
     }
 
     public static function fromString(string $string)
@@ -50,10 +57,5 @@ final class Visibility
     public static function public()
     {
         return new self(self::PUBLIC);
-    }
-
-    public function __toString()
-    {
-        return $this->visibility;
     }
 }

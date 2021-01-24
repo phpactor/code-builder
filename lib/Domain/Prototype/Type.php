@@ -26,6 +26,11 @@ final class Type extends Prototype
         $this->nullable = $nullable;
     }
 
+    public function __toString()
+    {
+        return $this->type;
+    }
+
     public static function fromString(string $string): Type
     {
         $nullable = 0 === strpos($string, '?');
@@ -40,11 +45,6 @@ final class Type extends Prototype
         $new->none = true;
 
         return $new;
-    }
-
-    public function __toString()
-    {
-        return $this->type;
     }
 
     public function namespace(): ?string

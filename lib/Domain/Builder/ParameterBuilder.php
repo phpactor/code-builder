@@ -9,10 +9,6 @@ use Phpactor\CodeBuilder\Domain\Prototype\UpdatePolicy;
 
 class ParameterBuilder extends AbstractBuilder
 {
-    /**
-     * @var SourceCodeBuilder
-     */
-    private $parent;
 
     /**
      * @var string
@@ -33,6 +29,10 @@ class ParameterBuilder extends AbstractBuilder
      * @var bool
      */
     protected $byReference = false;
+    /**
+     * @var SourceCodeBuilder
+     */
+    private $parent;
 
     public function __construct(MethodBuilder $parent, string $name)
     {

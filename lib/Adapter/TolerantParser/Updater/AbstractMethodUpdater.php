@@ -30,7 +30,7 @@ abstract class AbstractMethodUpdater
         $this->renderer = $renderer;
     }
 
-    public function updateMethods(Edits $edits, ClassLikePrototype $classPrototype, ClassLike $classNode)
+    public function updateMethods(Edits $edits, ClassLikePrototype $classPrototype, ClassLike $classNode): void
     {
         if (count($classPrototype->methods()) === 0) {
             return;
@@ -104,7 +104,13 @@ abstract class AbstractMethodUpdater
         }
     }
 
-    private function appendLinesToMethod(Edits $edits, Method $method, Node $bodyNode)
+    abstract protected function memberDeclarations(ClassLike $classNode);
+
+    abstract protected function memberDeclarationsNode(ClassLike $classNode);
+
+    abstract protected function renderMethod(Renderer $renderer, Method $method);
+
+    private function appendLinesToMethod(Edits $edits, Method $method, Node $bodyNode): void
     {
         if (false === $bodyNode instanceof CompoundStatementNode) {
             return;
@@ -129,7 +135,7 @@ abstract class AbstractMethodUpdater
         }
     }
 
-    private function updateOrAddParameters(Edits $edits, Parameters $parameters, MethodDeclaration $methodDeclaration)
+    private function updateOrAddParameters(Edits $edits, Parameters $parameters, MethodDeclaration $methodDeclaration): void
     {
         if (0 === $parameters->count()) {
             return;
@@ -162,7 +168,7 @@ abstract class AbstractMethodUpdater
         ));
     }
 
-    private function updateOrAddReturnType(Edits $edits, ReturnType $returnType, MethodDeclaration $methodDeclaration)
+    private function updateOrAddReturnType(Edits $edits, ReturnType $returnType, MethodDeclaration $methodDeclaration): void
     {
         if (false === $returnType->notNone()) {
             return;
@@ -239,10 +245,4 @@ abstract class AbstractMethodUpdater
 
         return true;
     }
-
-    abstract protected function memberDeclarations(ClassLike $classNode);
-
-    abstract protected function memberDeclarationsNode(ClassLike $classNode);
-
-    abstract protected function renderMethod(Renderer $renderer, Method $method);
 }

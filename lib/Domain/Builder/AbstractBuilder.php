@@ -9,7 +9,7 @@ abstract class AbstractBuilder implements Builder
 {
     private $originalProperties = [];
 
-    public function snapshot()
+    public function snapshot(): void
     {
         $propertyValues = [];
         foreach ($this as $propertyName => $property) {

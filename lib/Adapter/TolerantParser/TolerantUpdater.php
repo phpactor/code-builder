@@ -88,7 +88,7 @@ class TolerantUpdater implements Updater
         return $edits->textEdits();
     }
 
-    private function updateNamespace(Edits $edits, SourceCode $prototype, SourceFileNode $node)
+    private function updateNamespace(Edits $edits, SourceCode $prototype, SourceFileNode $node): void
     {
         $namespaceNode = $node->getFirstChildNode(NamespaceDefinition::class);
 
@@ -114,7 +114,7 @@ class TolerantUpdater implements Updater
         $edits->after($startTag, 'namespace ' . (string) $prototype->namespace() . ';' . PHP_EOL.PHP_EOL);
     }
 
-    private function updateClasses(Edits $edits, SourceCode $prototype, SourceFileNode $node)
+    private function updateClasses(Edits $edits, SourceCode $prototype, SourceFileNode $node): void
     {
         $classNodes = [];
         $traitNodes = [];

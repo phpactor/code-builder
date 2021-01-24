@@ -11,7 +11,7 @@ class ClassesTest extends TestCase
     /**
      * @testdox Create from classes
      */
-    public function testCreateFromClasses()
+    public function testCreateFromClasses(): void
     {
         $classes = Classes::fromClasses([
             new ClassPrototype('One'),

@@ -18,7 +18,7 @@ class FilterPhpVersionDirectoryIteratorTest extends TestCase
         Iterator $iterator,
         string $phpVersion,
         array $expectedFilteredDirectories
-    ) {
+    ): void {
         $filteredDirectories = \iterator_to_array(
             new FilterPhpVersionDirectoryIterator($iterator, $phpVersion)
         );

@@ -9,12 +9,12 @@ use Phpactor\CodeBuilder\Adapter\TolerantParser\Util\ImportedNames;
 
 class ImporterNamesTest extends TestCase
 {
-    public function testReturnsEmptyArrayForSourceFileNode()
+    public function testReturnsEmptyArrayForSourceFileNode(): void
     {
         $node = $this->parse(
             <<<'EOT'
-<?php
-EOT
+                <?php
+                EOT
         );
 
         $iterator = new ImportedNames($node);
@@ -22,19 +22,19 @@ EOT
         $this->assertEquals([], $iterator->classNames());
     }
 
-    public function testReturnsFullyQualifiedNames()
+    public function testReturnsFullyQualifiedNames(): void
     {
         $node = $this->parse(
             <<<'EOT'
-<?php
+                <?php
 
-use Foobar;
-use Barfoo\Barfoo;
+                use Foobar;
+                use Barfoo\Barfoo;
 
-class Foo
-{
-    }
-EOT
+                class Foo
+                {
+                    }
+                EOT
         );
 
         foreach ($node->getDescendantNodes() as $node) {

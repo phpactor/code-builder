@@ -37,6 +37,15 @@ class UseStatement
         }
     }
 
+    public function __toString()
+    {
+        if ($this->alias) {
+            return (string) $this->className . ' as ' . $this->alias;
+        }
+
+        return (string) $this->className;
+    }
+
     public static function fromNameAndAlias(string $type, string $alias = null)
     {
         return new self(Type::fromString($type), $alias);
@@ -50,15 +59,6 @@ class UseStatement
     public static function fromType(string $type)
     {
         return new self(Type::fromString($type));
-    }
-
-    public function __toString()
-    {
-        if ($this->alias) {
-            return (string) $this->className . ' as ' . $this->alias;
-        }
-
-        return (string) $this->className;
     }
 
     public function hasAlias(): bool

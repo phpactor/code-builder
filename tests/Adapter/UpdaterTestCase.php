@@ -15,7 +15,7 @@ abstract class UpdaterTestCase extends TestCase
      * @dataProvider provideClassImport
      * @dataProvider provideFunctionImport
      */
-    public function testNamespaceAndUse(string $existingCode, SourceCode $prototype, string $expectedCode)
+    public function testNamespaceAndUse(string $existingCode, SourceCode $prototype, string $expectedCode): void
     {
         $this->assertUpdate($existingCode, $prototype, $expectedCode);
     }
@@ -25,389 +25,389 @@ abstract class UpdaterTestCase extends TestCase
         yield 'It does nothing when given an empty source code protoytpe' => [
 
                 <<<'EOT'
-class Aardvark
-{
-}
-EOT
+                    class Aardvark
+                    {
+                    }
+                    EOT
                 , SourceCodeBuilder::create()->build(),
                 <<<'EOT'
-class Aardvark
-{
-}
-EOT
+                    class Aardvark
+                    {
+                    }
+                    EOT
             ];
 
         yield 'It does not change the namespace if it is the same' => [
 
                 <<<'EOT'
-namespace Animal\Kingdom;
+                    namespace Animal\Kingdom;
 
-class Aardvark
-{
-}
-EOT
+                    class Aardvark
+                    {
+                    }
+                    EOT
                 , SourceCodeBuilder::create()->namespace('Animal\Kingdom')->build(),
                 <<<'EOT'
-namespace Animal\Kingdom;
+                    namespace Animal\Kingdom;
 
-class Aardvark
-{
-}
-EOT
+                    class Aardvark
+                    {
+                    }
+                    EOT
             ];
 
         yield 'It adds the namespace if it doesnt exist' => [
 
                 <<<'EOT'
-class Aardvark
-{
-}
-EOT
+                    class Aardvark
+                    {
+                    }
+                    EOT
                 , SourceCodeBuilder::create()->namespace('Animal\Kingdom')->build(),
                 <<<'EOT'
-namespace Animal\Kingdom;
+                    namespace Animal\Kingdom;
 
-class Aardvark
-{
-}
-EOT
+                    class Aardvark
+                    {
+                    }
+                    EOT
             ];
 
         yield 'It updates the namespace' => [
 
                 <<<'EOT'
-namespace Animal\Kingdom;
+                    namespace Animal\Kingdom;
 
-class Aardvark
-{
-}
-EOT
+                    class Aardvark
+                    {
+                    }
+                    EOT
                 , SourceCodeBuilder::create()->namespace('Bovine\Kingdom')->build(),
                 <<<'EOT'
-namespace Bovine\Kingdom;
+                    namespace Bovine\Kingdom;
 
-class Aardvark
-{
-}
-EOT
+                    class Aardvark
+                    {
+                    }
+                    EOT
             ];
 
         yield 'It adds use statements' => [
 
                 <<<'EOT'
-$bovine = new Bovine();
-EOT
+                    $bovine = new Bovine();
+                    EOT
                 , SourceCodeBuilder::create()->use('Foo\Bovine')->build(),
                 <<<'EOT'
 
-use Foo\Bovine;
+                    use Foo\Bovine;
 
-$bovine = new Bovine();
-EOT
+                    $bovine = new Bovine();
+                    EOT
             ];
 
         yield 'It adds use statements with an alias' => [
 
                 <<<'EOT'
-// test
-$bovine = new Bovine();
-EOT
+                    // test
+                    $bovine = new Bovine();
+                    EOT
                 , SourceCodeBuilder::create()->use('Foo\Bovine', 'Cow')->build(),
                 <<<'EOT'
 
-use Foo\Bovine as Cow;
+                    use Foo\Bovine as Cow;
 
-// test
-$bovine = new Bovine();
-EOT
+                    // test
+                    $bovine = new Bovine();
+                    EOT
             ];
 
         yield 'It adds use statements with an alias with existing imports' => [
 
                 <<<'EOT'
-use Foo\Dino;
+                    use Foo\Dino;
 
-// test
-$bovine = new Bovine();
-EOT
+                    // test
+                    $bovine = new Bovine();
+                    EOT
                 , SourceCodeBuilder::create()->use('Foo\Bovine', 'Cow')->build(),
                 <<<'EOT'
-use Foo\Bovine as Cow;
-use Foo\Dino;
+                    use Foo\Bovine as Cow;
+                    use Foo\Dino;
 
-// test
-$bovine = new Bovine();
-EOT
+                    // test
+                    $bovine = new Bovine();
+                    EOT
             ];
 
         yield 'It adds use statements after a namespace' => [
 
                 <<<'EOT'
-namespace Kingdom;
+                    namespace Kingdom;
 
-$bovine = new Bovine();
-EOT
+                    $bovine = new Bovine();
+                    EOT
                 , SourceCodeBuilder::create()->use('Bovine')->build(),
                 <<<'EOT'
-namespace Kingdom;
+                    namespace Kingdom;
 
-use Bovine;
+                    use Bovine;
 
-$bovine = new Bovine();
-EOT
+                    $bovine = new Bovine();
+                    EOT
             ];
 
         yield 'class import: It inserts use statements before the first lexicographically greater use statement' => [
 
                 <<<'EOT'
-namespace Kingdom;
+                    namespace Kingdom;
 
-use Aardvark;
-use Badger;
-use Antilope;
-use Zebra;
-use Primate;
-EOT
+                    use Aardvark;
+                    use Badger;
+                    use Antilope;
+                    use Zebra;
+                    use Primate;
+                    EOT
                 , SourceCodeBuilder::create()->use('Bovine')->build(),
                 <<<'EOT'
-namespace Kingdom;
+                    namespace Kingdom;
 
-use Aardvark;
-use Badger;
-use Antilope;
-use Bovine;
-use Zebra;
-use Primate;
-EOT
+                    use Aardvark;
+                    use Badger;
+                    use Antilope;
+                    use Bovine;
+                    use Zebra;
+                    use Primate;
+                    EOT
             ];
 
         yield 'class import: It inserts use statements just before the first lexicographically greater use statement' => [
 
                 <<<'EOT'
-namespace Kingdom;
+                    namespace Kingdom;
 
-use Zebra;
-use Primate;
-EOT
+                    use Zebra;
+                    use Primate;
+                    EOT
                 , SourceCodeBuilder::create()->use('Bovine')->build(),
                 <<<'EOT'
-namespace Kingdom;
+                    namespace Kingdom;
 
-use Bovine;
-use Zebra;
-use Primate;
-EOT
+                    use Bovine;
+                    use Zebra;
+                    use Primate;
+                    EOT
             ];
 
         yield 'class import: It inserts use statements after all lexicographically smaller use statements' => [
 
                 <<<'EOT'
-namespace Kingdom;
+                    namespace Kingdom;
 
-use Badger;
-use Aardvark;
-EOT
+                    use Badger;
+                    use Aardvark;
+                    EOT
                 , SourceCodeBuilder::create()->use('Bovine')->build(),
                 <<<'EOT'
-namespace Kingdom;
+                    namespace Kingdom;
 
-use Badger;
-use Aardvark;
-use Bovine;
-EOT
+                    use Badger;
+                    use Aardvark;
+                    use Bovine;
+                    EOT
             ];
 
         yield 'class import: It ignores existing use statements' => [
 
                 <<<'EOT'
-namespace Kingdom;
+                    namespace Kingdom;
 
-use Primate;
-EOT
+                    use Primate;
+                    EOT
                 , SourceCodeBuilder::create()->use('Primate')->build(),
                 <<<'EOT'
-namespace Kingdom;
+                    namespace Kingdom;
 
-use Primate;
-EOT
+                    use Primate;
+                    EOT
             ];
 
         yield 'class import: It ignores repeated namespaced use statements' => [
 
                 <<<'EOT'
-namespace Kingdom;
+                    namespace Kingdom;
 
-EOT
+                    EOT
                 , SourceCodeBuilder::create()->use('Primate\Ape')->use('Primate\Ape')->build(),
                 <<<'EOT'
-namespace Kingdom;
+                    namespace Kingdom;
 
-use Primate\Ape;
+                    use Primate\Ape;
 
-EOT
+                    EOT
             ];
 
         yield 'class import: It ignores existing aliased use statements' => [
 
                 <<<'EOT'
-namespace Kingdom;
+                    namespace Kingdom;
 
-use Primate as Foobar;
-EOT
+                    use Primate as Foobar;
+                    EOT
                 , SourceCodeBuilder::create()->use('Primate')->build(),
                 <<<'EOT'
-namespace Kingdom;
+                    namespace Kingdom;
 
-use Primate as Foobar;
-EOT
+                    use Primate as Foobar;
+                    EOT
             ];
 
         yield 'class import: It appends multiple use statements' => [
 
                 <<<'EOT'
-namespace Kingdom;
+                    namespace Kingdom;
 
-use Primate;
-EOT
+                    use Primate;
+                    EOT
                 , SourceCodeBuilder::create()->use('Animal\Bovine')->use('Feline')->use('Canine')->build(),
                 <<<'EOT'
-namespace Kingdom;
+                    namespace Kingdom;
 
-use Animal\Bovine;
-use Canine;
-use Feline;
-use Primate;
-EOT
+                    use Animal\Bovine;
+                    use Canine;
+                    use Feline;
+                    use Primate;
+                    EOT
             ];
 
         yield 'class import: It maintains an empty line between the class and the use statements' => [
 
                 <<<'EOT'
-namespace Kingdom;
+                    namespace Kingdom;
 
-class Foobar
-{
-}
-EOT
+                    class Foobar
+                    {
+                    }
+                    EOT
                 , SourceCodeBuilder::create()->use('Feline')->build(),
                 <<<'EOT'
-namespace Kingdom;
+                    namespace Kingdom;
 
-use Feline;
+                    use Feline;
 
-class Foobar
-{
-}
-EOT
+                    class Foobar
+                    {
+                    }
+                    EOT
             ];
 
         yield 'class import: It maintains an empty line between the trait and the use statements' => [
 
                 <<<'EOT'
-namespace Kingdom;
+                    namespace Kingdom;
 
-trait Foobar
-{
-}
-EOT
+                    trait Foobar
+                    {
+                    }
+                    EOT
                 , SourceCodeBuilder::create()->use('Feline')->build(),
                 <<<'EOT'
-namespace Kingdom;
+                    namespace Kingdom;
 
-use Feline;
+                    use Feline;
 
-trait Foobar
-{
-}
-EOT
+                    trait Foobar
+                    {
+                    }
+                    EOT
             ];
 
         yield 'class import: it maintains empty line between class with no namespace' => [
 
                 <<<'EOT'
-class Foobar
-{
-}
-EOT
+                    class Foobar
+                    {
+                    }
+                    EOT
                 , SourceCodeBuilder::create()->use('Foo\Feline')->build(),
                 <<<'EOT'
 
-use Foo\Feline;
+                    use Foo\Feline;
 
-class Foobar
-{
-}
-EOT
+                    class Foobar
+                    {
+                    }
+                    EOT
             ];
 
         yield 'class import: it maintains empty line between trait with no namespace' => [
 
                 <<<'EOT'
-trait Foobar
-{
-}
-EOT
+                    trait Foobar
+                    {
+                    }
+                    EOT
                 , SourceCodeBuilder::create()->use('Foo\Feline')->build(),
                 <<<'EOT'
 
-use Foo\Feline;
+                    use Foo\Feline;
 
-trait Foobar
-{
-}
-EOT
+                    trait Foobar
+                    {
+                    }
+                    EOT
             ];
 
         yield 'class import: previously included class with a lexigraphically greater member before it' => [
                 <<<'EOT'
-<?php
+                    <?php
 
-namespace Phpactor\WorseReflection\Core\Reflection\TypeResolver;
+                    namespace Phpactor\WorseReflection\Core\Reflection\TypeResolver;
 
-use Phpactor\WorseReflection\Core\Logger;
-use Phpactor\WorseReflection\Core\Reflection\ReflectionMethod;
-use Phpactor\WorseReflection\Core\Reflection\ReflectionClassLike;
-use Phpactor\WorseReflection\Core\Reflection\ReflectionInterface;
-EOT
+                    use Phpactor\WorseReflection\Core\Logger;
+                    use Phpactor\WorseReflection\Core\Reflection\ReflectionMethod;
+                    use Phpactor\WorseReflection\Core\Reflection\ReflectionClassLike;
+                    use Phpactor\WorseReflection\Core\Reflection\ReflectionInterface;
+                    EOT
                 , SourceCodeBuilder::create()
                     ->use('Phpactor\WorseReflection\Core\Reflection\ReflectionClassLike')
                 ->build(),
                 <<<'EOT'
-<?php
+                    <?php
 
-namespace Phpactor\WorseReflection\Core\Reflection\TypeResolver;
+                    namespace Phpactor\WorseReflection\Core\Reflection\TypeResolver;
 
-use Phpactor\WorseReflection\Core\Logger;
-use Phpactor\WorseReflection\Core\Reflection\ReflectionMethod;
-use Phpactor\WorseReflection\Core\Reflection\ReflectionClassLike;
-use Phpactor\WorseReflection\Core\Reflection\ReflectionInterface;
-EOT
+                    use Phpactor\WorseReflection\Core\Logger;
+                    use Phpactor\WorseReflection\Core\Reflection\ReflectionMethod;
+                    use Phpactor\WorseReflection\Core\Reflection\ReflectionClassLike;
+                    use Phpactor\WorseReflection\Core\Reflection\ReflectionInterface;
+                    EOT
             ];
 
         yield 'class import: It ignores classes in the same namespace' => [
 
                 <<<'EOT'
-namespace Animal;
-EOT
+                    namespace Animal;
+                    EOT
                 , SourceCodeBuilder::create()->use('Animal\Primate')->build()
                 , <<<'EOT'
-namespace Animal;
-EOT
+                    namespace Animal;
+                    EOT
             ];
 
         yield 'it does not add additional space' => [
 
                 <<<'EOT'
-namespace Animal;
+                    namespace Animal;
 
-class Foo {}
-EOT
+                    class Foo {}
+                    EOT
                 , SourceCodeBuilder::create()->use('Animal\Primate')->build()
                 , <<<'EOT'
-namespace Animal;
+                    namespace Animal;
 
-class Foo {}
-EOT
+                    class Foo {}
+                    EOT
             ];
     }
 
@@ -416,81 +416,81 @@ EOT
         yield 'It adds use function statements' => [
 
                 <<<'EOT'
-hello('you');
-EOT
+                    hello('you');
+                    EOT
                 , SourceCodeBuilder::create()->useFunction('Foo\hello')->build(),
                 <<<'EOT'
 
-use function Foo\hello;
+                    use function Foo\hello;
 
-hello('you');
-EOT
+                    hello('you');
+                    EOT
             ];
 
         yield 'It adds use function statements with an alias' => [
 
                 <<<'EOT'
 
-hello('you');
-EOT
+                    hello('you');
+                    EOT
                 , SourceCodeBuilder::create()->useFunction('Foo\hello', 'bar')->build(),
                 <<<'EOT'
 
-use function Foo\hello as bar;
+                    use function Foo\hello as bar;
 
-hello('you');
-EOT
+                    hello('you');
+                    EOT
             ];
 
         yield 'It adds use function statements after with an alias' => [
 
                 <<<'EOT'
-use function Foo\hello as boo;
+                    use function Foo\hello as boo;
 
-hello('you');
-EOT
+                    hello('you');
+                    EOT
                 , SourceCodeBuilder::create()->useFunction('Foo\hello', 'bar')->build(),
                 <<<'EOT'
-use function Foo\hello as boo;
-use function Foo\hello as bar;
+                    use function Foo\hello as boo;
+                    use function Foo\hello as bar;
 
-hello('you');
-EOT
+                    hello('you');
+                    EOT
             ];
 
         yield 'It ignores existing function imports' => [
 
                 <<<'EOT'
-use function Foo\hello as boo;
+                    use function Foo\hello as boo;
 
-hello('you');
-EOT
+                    hello('you');
+                    EOT
                 , SourceCodeBuilder::create()->useFunction('Foo\hello', 'boo')->build(),
                 <<<'EOT'
-use function Foo\hello as boo;
+                    use function Foo\hello as boo;
 
-hello('you');
-EOT
+                    hello('you');
+                    EOT
             ];
 
         yield 'adds function imports after class imports' => [
 
                 <<<'EOT'
-use Foobar\Acme;
-use Foobar\Hello;
-use Foobar\Zoo;
+                    use Foobar\Acme;
+                    use Foobar\Hello;
+                    use Foobar\Zoo;
 
-hello('you');
-EOT
+                    hello('you');
+                    EOT
                 , SourceCodeBuilder::create()->useFunction('Foobar\Bello')->build(),
                 <<<'EOT'
-use Foobar\Acme;
-use Foobar\Hello;
-use Foobar\Zoo;
-use function Foobar\Bello;
+                    use Foobar\Acme;
+                    use Foobar\Hello;
+                    use Foobar\Zoo;
+                    use function Foobar\Bello;
 
-hello('you');
-EOT
+                    hello('you');
+                    EOT
             ];
     }
 
@@ -499,7 +499,7 @@ EOT
      * @dataProvider provideClasses
      * @dataProvider provideMethodParameters
      */
-    public function testClasses(string $existingCode, SourceCode $prototype, string $expectedCode)
+    public function testClasses(string $existingCode, SourceCode $prototype, string $expectedCode): void
     {
         $this->assertUpdate($existingCode, $prototype, $expectedCode);
     }
@@ -509,211 +509,211 @@ EOT
         yield 'It does nothing when prototype has only the class' => [
 
                 <<<'EOT'
-class Aardvark
-{
-}
-EOT
+                    class Aardvark
+                    {
+                    }
+                    EOT
                 , SourceCodeBuilder::create()->class('Aardvark')->end()->build(),
                 <<<'EOT'
-class Aardvark
-{
-}
-EOT
+                    class Aardvark
+                    {
+                    }
+                    EOT
             ];
 
         yield 'It adds a class to an empty file' => [
 
                 <<<'EOT'
-EOT
+                    EOT
                 , SourceCodeBuilder::create()->class('Anteater')->end()->build(),
                 <<<'EOT'
 
-class Anteater
-{
-}
-EOT
+                    class Anteater
+                    {
+                    }
+                    EOT
             ];
 
         yield 'It adds a class' => [
 
                 <<<'EOT'
-class Aardvark
-{
-}
-EOT
+                    class Aardvark
+                    {
+                    }
+                    EOT
                 , SourceCodeBuilder::create()->class('Anteater')->end()->build(),
                 <<<'EOT'
-class Aardvark
-{
-}
+                    class Aardvark
+                    {
+                    }
 
-class Anteater
-{
-}
-EOT
+                    class Anteater
+                    {
+                    }
+                    EOT
             ];
 
         yield 'It adds a class after a namespace' => [
 
                 <<<'EOT'
-namespace Animals;
+                    namespace Animals;
 
-class Aardvark
-{
-}
-EOT
+                    class Aardvark
+                    {
+                    }
+                    EOT
                 , SourceCodeBuilder::create()->class('Anteater')->end()->build(),
                 <<<'EOT'
-namespace Animals;
+                    namespace Animals;
 
-class Aardvark
-{
-}
+                    class Aardvark
+                    {
+                    }
 
-class Anteater
-{
-}
-EOT
+                    class Anteater
+                    {
+                    }
+                    EOT
             ];
 
         yield 'It does not modify a class with a namespace' => [
 
                 <<<'EOT'
-namespace Animals;
+                    namespace Animals;
 
-class Aardvark
-{
-}
-EOT
+                    class Aardvark
+                    {
+                    }
+                    EOT
                 , SourceCodeBuilder::create()->namespace('Animals')->class('Aardvark')->end()->build(),
                 <<<'EOT'
-namespace Animals;
+                    namespace Animals;
 
-class Aardvark
-{
-}
-EOT
+                    class Aardvark
+                    {
+                    }
+                    EOT
             ];
 
         yield 'It adds multiple classes' => [
                 <<<'EOT'
-EOT
+                    EOT
                 , SourceCodeBuilder::create()->class('Aardvark')->end()->class('Anteater')->end()->build(),
                 <<<'EOT'
 
-class Aardvark
-{
-}
+                    class Aardvark
+                    {
+                    }
 
-class Anteater
-{
-}
-EOT
+                    class Anteater
+                    {
+                    }
+                    EOT
             ];
 
         yield 'It extends a class' => [
                 <<<'EOT'
-class Aardvark
-{
-}
-EOT
+                    class Aardvark
+                    {
+                    }
+                    EOT
                 , SourceCodeBuilder::create()->class('Aardvark')->extends('Animal')->end()->build(),
                 <<<'EOT'
-class Aardvark extends Animal
-{
-}
-EOT
+                    class Aardvark extends Animal
+                    {
+                    }
+                    EOT
             ];
 
         yield 'It modifies an existing extends' => [
                 <<<'EOT'
-class Aardvark extends Giraffe
-{
-}
-EOT
+                    class Aardvark extends Giraffe
+                    {
+                    }
+                    EOT
                 , SourceCodeBuilder::create()->class('Aardvark')->extends('Animal')->end()->build(),
                 <<<'EOT'
-class Aardvark extends Animal
-{
-}
-EOT
+                    class Aardvark extends Animal
+                    {
+                    }
+                    EOT
             ];
 
         yield 'It is idempotent extends' => [
                 <<<'EOT'
-class Aardvark extends Animal
-{
-}
-EOT
+                    class Aardvark extends Animal
+                    {
+                    }
+                    EOT
                 , SourceCodeBuilder::create()->class('Aardvark')->extends('Animal')->end()->build(),
                 <<<'EOT'
-class Aardvark extends Animal
-{
-}
-EOT
+                    class Aardvark extends Animal
+                    {
+                    }
+                    EOT
             ];
 
         yield 'It is implements an interface' => [
                 <<<'EOT'
-class Aardvark
-{
-}
-EOT
+                    class Aardvark
+                    {
+                    }
+                    EOT
                 , SourceCodeBuilder::create()->class('Aardvark')->implements('Animal')->end()->build(),
                 <<<'EOT'
-class Aardvark implements Animal
-{
-}
-EOT
+                    class Aardvark implements Animal
+                    {
+                    }
+                    EOT
             ];
 
         yield 'It is implements implementss' => [
                 <<<'EOT'
-class Aardvark
-{
-}
-EOT
+                    class Aardvark
+                    {
+                    }
+                    EOT
                 , SourceCodeBuilder::create()->class('Aardvark')->implements('Zoo')->implements('Animal')->end()->build(),
                 <<<'EOT'
-class Aardvark implements Zoo, Animal
-{
-}
-EOT
+                    class Aardvark implements Zoo, Animal
+                    {
+                    }
+                    EOT
             ];
 
         yield 'It is adds implements' => [
                 <<<'EOT'
-class Aardvark implements Zoo
-{
-}
-EOT
+                    class Aardvark implements Zoo
+                    {
+                    }
+                    EOT
                 , SourceCodeBuilder::create()->class('Aardvark')->implements('Animal')->end()->build(),
                 <<<'EOT'
-class Aardvark implements Zoo, Animal
-{
-}
-EOT
+                    class Aardvark implements Zoo, Animal
+                    {
+                    }
+                    EOT
             ];
 
         yield 'It ignores existing implements names' => [
                 <<<'EOT'
-class Aardvark implements Animal
-{
-}
-EOT
+                    class Aardvark implements Animal
+                    {
+                    }
+                    EOT
                 , SourceCodeBuilder::create()->class('Aardvark')->implements('Zoo')->implements('Animal')->end()->build(),
                 <<<'EOT'
-class Aardvark implements Animal, Zoo
-{
-}
-EOT
+                    class Aardvark implements Animal, Zoo
+                    {
+                    }
+                    EOT
             ];
     }
 
     /**
      * @dataProvider provideTraits
      */
-    public function testTraits(string $existingCode, SourceCode $prototype, string $expectedCode)
+    public function testTraits(string $existingCode, SourceCode $prototype, string $expectedCode): void
     {
         $this->assertUpdate($existingCode, $prototype, $expectedCode);
     }
@@ -723,113 +723,113 @@ EOT
         yield 'It does nothing when prototype has only the trait' => [
 
                 <<<'EOT'
-trait Aardvark
-{
-}
-EOT
+                    trait Aardvark
+                    {
+                    }
+                    EOT
                 , SourceCodeBuilder::create()->trait('Aardvark')->end()->build(),
                 <<<'EOT'
-trait Aardvark
-{
-}
-EOT
+                    trait Aardvark
+                    {
+                    }
+                    EOT
             ];
 
         yield 'It adds a trait to an empty file' => [
 
                 <<<'EOT'
-EOT
+                    EOT
                 , SourceCodeBuilder::create()->trait('Anteater')->end()->build(),
                 <<<'EOT'
 
-trait Anteater
-{
-}
-EOT
+                    trait Anteater
+                    {
+                    }
+                    EOT
             ];
 
         yield 'It adds a trait' => [
 
                 <<<'EOT'
-trait Aardvark
-{
-}
-EOT
+                    trait Aardvark
+                    {
+                    }
+                    EOT
                 , SourceCodeBuilder::create()->trait('Anteater')->end()->build(),
                 <<<'EOT'
-trait Aardvark
-{
-}
+                    trait Aardvark
+                    {
+                    }
 
-trait Anteater
-{
-}
-EOT
+                    trait Anteater
+                    {
+                    }
+                    EOT
             ];
 
         yield 'It adds a trait after a namespace' => [
 
                 <<<'EOT'
-namespace Animals;
+                    namespace Animals;
 
-trait Aardvark
-{
-}
-EOT
+                    trait Aardvark
+                    {
+                    }
+                    EOT
                 , SourceCodeBuilder::create()->trait('Anteater')->end()->build(),
                 <<<'EOT'
-namespace Animals;
+                    namespace Animals;
 
-trait Aardvark
-{
-}
+                    trait Aardvark
+                    {
+                    }
 
-trait Anteater
-{
-}
-EOT
+                    trait Anteater
+                    {
+                    }
+                    EOT
             ];
 
         yield 'It does not modify a trait with a namespace' => [
 
                 <<<'EOT'
-namespace Animals;
+                    namespace Animals;
 
-trait Aardvark
-{
-}
-EOT
+                    trait Aardvark
+                    {
+                    }
+                    EOT
                 , SourceCodeBuilder::create()->namespace('Animals')->trait('Aardvark')->end()->build(),
                 <<<'EOT'
-namespace Animals;
+                    namespace Animals;
 
-trait Aardvark
-{
-}
-EOT
+                    trait Aardvark
+                    {
+                    }
+                    EOT
             ];
 
         yield 'It adds multiple traites' => [
                 <<<'EOT'
-EOT
+                    EOT
                 , SourceCodeBuilder::create()->trait('Aardvark')->end()->trait('Anteater')->end()->build(),
                 <<<'EOT'
 
-trait Aardvark
-{
-}
+                    trait Aardvark
+                    {
+                    }
 
-trait Anteater
-{
-}
-EOT
+                    trait Anteater
+                    {
+                    }
+                    EOT
             ];
     }
 
     /**
      * @dataProvider provideProperties
      */
-    public function testProperties(string $existingCode, SourceCode $prototype, string $expectedCode)
+    public function testProperties(string $existingCode, SourceCode $prototype, string $expectedCode): void
     {
         $this->assertUpdate($existingCode, $prototype, $expectedCode);
     }
@@ -838,138 +838,138 @@ EOT
     {
         yield 'It adds a property' => [
                 <<<'EOT'
-class Aardvark
-{
-}
-EOT
+                    class Aardvark
+                    {
+                    }
+                    EOT
                 , SourceCodeBuilder::create()
                     ->class('Aardvark')
                         ->property('propertyOne')->end()
                     ->end()
                     ->build(),
                 <<<'EOT'
-class Aardvark
-{
-    public $propertyOne;
-}
-EOT
+                    class Aardvark
+                    {
+                        public $propertyOne;
+                    }
+                    EOT
             ];
 
         yield 'It adds a property idempotently' => [
                 <<<'EOT'
-class Aardvark
-{
-    public $propertyOne;
-}
-EOT
+                    class Aardvark
+                    {
+                        public $propertyOne;
+                    }
+                    EOT
                 , SourceCodeBuilder::create()
                     ->class('Aardvark')
                         ->property('propertyOne')->end()
                     ->end()
                     ->build(),
                 <<<'EOT'
-class Aardvark
-{
-    public $propertyOne;
-}
-EOT
+                    class Aardvark
+                    {
+                        public $propertyOne;
+                    }
+                    EOT
             ];
 
         yield 'It adds a property with existing assigned property' => [
                 <<<'EOT'
-class Aardvark
-{
-    public $propertyOne = false;
-}
-EOT
+                    class Aardvark
+                    {
+                        public $propertyOne = false;
+                    }
+                    EOT
                 , SourceCodeBuilder::create()
                     ->class('Aardvark')
                         ->property('propertyOne')->end()
                     ->end()
                     ->build(),
                 <<<'EOT'
-class Aardvark
-{
-    public $propertyOne = false;
-}
-EOT
+                    class Aardvark
+                    {
+                        public $propertyOne = false;
+                    }
+                    EOT
             ];
 
         yield 'It adds a property after existing properties' => [
                 <<<'EOT'
-class Aardvark
-{
-    public $eyes
-    public $nose;
-}
-EOT
+                    class Aardvark
+                    {
+                        public $eyes
+                        public $nose;
+                    }
+                    EOT
                 , SourceCodeBuilder::create()
                     ->class('Aardvark')
                         ->property('propertyOne')->end()
                     ->end()
                     ->build(),
                 <<<'EOT'
-class Aardvark
-{
-    public $eyes
-    public $nose;
-    public $propertyOne;
-}
-EOT
+                    class Aardvark
+                    {
+                        public $eyes
+                        public $nose;
+                        public $propertyOne;
+                    }
+                    EOT
             ];
 
         yield 'It adds multiple properties' => [
                 <<<'EOT'
-class Aardvark
-{
-}
-EOT
+                    class Aardvark
+                    {
+                    }
+                    EOT
                 , SourceCodeBuilder::create()
                     ->class('Aardvark')
                         ->property('propertyOne')->end()->property('propertyTwo')->end()
                     ->end()
                     ->build(),
                 <<<'EOT'
-class Aardvark
-{
-    public $propertyOne;
-    public $propertyTwo;
-}
-EOT
+                    class Aardvark
+                    {
+                        public $propertyOne;
+                        public $propertyTwo;
+                    }
+                    EOT
             ];
 
         yield 'It adds a typed property' => [
                 <<<'EOT'
-class Aardvark
-{
-    public $eyes
-}
-EOT
+                    class Aardvark
+                    {
+                        public $eyes
+                    }
+                    EOT
                 , SourceCodeBuilder::create()
                     ->class('Aardvark')
                         ->property('propertyOne')->type('Hello')->end()
                     ->end()
                     ->build(),
                 <<<'EOT'
-class Aardvark
-{
-    public $eyes
+                    class Aardvark
+                    {
+                        public $eyes
 
-    /**
-     * @var Hello
-     */
-    public $propertyOne;
-}
-EOT
+                        /**
+                         * @var Hello
+                         */
+                        public $propertyOne;
+                    }
+                    EOT
             ];
 
         yield 'It adds a nullable typed property' => [
                 <<<'EOT'
-class Aardvark
-{
-    public $eyes
-}
-EOT
+                    class Aardvark
+                    {
+                        public $eyes
+                    }
+                    EOT
                 , SourceCodeBuilder::create()
                     ->class('Aardvark')
                         ->property('propertyOne')->type(
@@ -978,52 +978,52 @@ EOT
                     ->end()
                     ->build(),
                 <<<'EOT'
-class Aardvark
-{
-    public $eyes
+                    class Aardvark
+                    {
+                        public $eyes
 
-    /**
-     * @var Hello|null
-     */
-    public $propertyOne;
-}
-EOT
+                        /**
+                         * @var Hello|null
+                         */
+                        public $propertyOne;
+                    }
+                    EOT
             ];
 
         yield 'It adds before methods' => [
                 <<<'EOT'
-class Aardvark
-{
-    public function crawl()
-    {
-    }
-}
-EOT
+                    class Aardvark
+                    {
+                        public function crawl()
+                        {
+                        }
+                    }
+                    EOT
                 , SourceCodeBuilder::create()
                     ->class('Aardvark')
                         ->property('propertyOne')->type('Hello')->end()
                     ->end()
                     ->build(),
                 <<<'EOT'
-class Aardvark
-{
-    /**
-     * @var Hello
-     */
-    public $propertyOne;
+                    class Aardvark
+                    {
+                        /**
+                         * @var Hello
+                         */
+                        public $propertyOne;
 
-    public function crawl()
-    {
-    }
-}
-EOT
+                        public function crawl()
+                        {
+                        }
+                    }
+                    EOT
             ];
     }
 
     /**
      * @dataProvider provideTraitProperties
      */
-    public function testTraitProperties(string $existingCode, SourceCode $prototype, string $expectedCode)
+    public function testTraitProperties(string $existingCode, SourceCode $prototype, string $expectedCode): void
     {
         $this->assertUpdate($existingCode, $prototype, $expectedCode);
     }
@@ -1032,165 +1032,165 @@ EOT
     {
         yield 'trait: It adds a property' => [
                 <<<'EOT'
-trait Aardvark
-{
-}
-EOT
+                    trait Aardvark
+                    {
+                    }
+                    EOT
                 , SourceCodeBuilder::create()
                     ->trait('Aardvark')
                         ->property('propertyOne')->end()
                     ->end()
                     ->build(),
                 <<<'EOT'
-trait Aardvark
-{
-    public $propertyOne;
-}
-EOT
+                    trait Aardvark
+                    {
+                        public $propertyOne;
+                    }
+                    EOT
             ];
 
         yield 'trait: It adds a property idempotently' => [
                 <<<'EOT'
-trait Aardvark
-{
-    public $propertyOne;
-}
-EOT
+                    trait Aardvark
+                    {
+                        public $propertyOne;
+                    }
+                    EOT
                 , SourceCodeBuilder::create()
                     ->trait('Aardvark')
                         ->property('propertyOne')->end()
                     ->end()
                     ->build(),
                 <<<'EOT'
-trait Aardvark
-{
-    public $propertyOne;
-}
-EOT
+                    trait Aardvark
+                    {
+                        public $propertyOne;
+                    }
+                    EOT
             ];
 
         yield 'trait: It adds a property with existing assigned property' => [
                 <<<'EOT'
-trait Aardvark
-{
-    public $propertyOne = false;
-}
-EOT
+                    trait Aardvark
+                    {
+                        public $propertyOne = false;
+                    }
+                    EOT
                 , SourceCodeBuilder::create()
                     ->trait('Aardvark')
                         ->property('propertyOne')->end()
                     ->end()
                     ->build(),
                 <<<'EOT'
-trait Aardvark
-{
-    public $propertyOne = false;
-}
-EOT
+                    trait Aardvark
+                    {
+                        public $propertyOne = false;
+                    }
+                    EOT
             ];
 
         yield 'trait: It adds a property after existing properties' => [
                 <<<'EOT'
-trait Aardvark
-{
-    public $eyes
-    public $nose;
-}
-EOT
+                    trait Aardvark
+                    {
+                        public $eyes
+                        public $nose;
+                    }
+                    EOT
                 , SourceCodeBuilder::create()
                     ->trait('Aardvark')
                         ->property('propertyOne')->end()
                     ->end()
                     ->build(),
                 <<<'EOT'
-trait Aardvark
-{
-    public $eyes
-    public $nose;
-    public $propertyOne;
-}
-EOT
+                    trait Aardvark
+                    {
+                        public $eyes
+                        public $nose;
+                        public $propertyOne;
+                    }
+                    EOT
             ];
 
         yield 'trait: It adds multiple properties' => [
                 <<<'EOT'
-trait Aardvark
-{
-}
-EOT
+                    trait Aardvark
+                    {
+                    }
+                    EOT
                 , SourceCodeBuilder::create()
                     ->trait('Aardvark')
                         ->property('propertyOne')->end()->property('propertyTwo')->end()
                     ->end()
                     ->build(),
                 <<<'EOT'
-trait Aardvark
-{
-    public $propertyOne;
-    public $propertyTwo;
-}
-EOT
+                    trait Aardvark
+                    {
+                        public $propertyOne;
+                        public $propertyTwo;
+                    }
+                    EOT
             ];
 
         yield 'trait: It adds documented properties' => [
                 <<<'EOT'
-trait Aardvark
-{
-    public $eyes
-}
-EOT
+                    trait Aardvark
+                    {
+                        public $eyes
+                    }
+                    EOT
                 , SourceCodeBuilder::create()
                     ->trait('Aardvark')
                         ->property('propertyOne')->type('Hello')->end()
                     ->end()
                     ->build(),
                 <<<'EOT'
-trait Aardvark
-{
-    public $eyes
+                    trait Aardvark
+                    {
+                        public $eyes
 
-    /**
-     * @var Hello
-     */
-    public $propertyOne;
-}
-EOT
+                        /**
+                         * @var Hello
+                         */
+                        public $propertyOne;
+                    }
+                    EOT
             ];
 
         yield 'trait: It adds a property before methods' => [
                 <<<'EOT'
-trait Aardvark
-{
-    public function crawl()
-    {
-    }
-}
-EOT
+                    trait Aardvark
+                    {
+                        public function crawl()
+                        {
+                        }
+                    }
+                    EOT
                 , SourceCodeBuilder::create()
                     ->trait('Aardvark')
                         ->property('propertyOne')->type('Hello')->end()
                     ->end()
                     ->build(),
                 <<<'EOT'
-trait Aardvark
-{
-    /**
-     * @var Hello
-     */
-    public $propertyOne;
+                    trait Aardvark
+                    {
+                        /**
+                         * @var Hello
+                         */
+                        public $propertyOne;
 
-    public function crawl()
-    {
-    }
-}
-EOT
+                        public function crawl()
+                        {
+                        }
+                    }
+                    EOT
             ];
     }
 
     /**
      * @dataProvider provideMethods
      */
-    public function testMethods(string $existingCode, SourceCode $prototype, string $expectedCode)
+    public function testMethods(string $existingCode, SourceCode $prototype, string $expectedCode): void
     {
         $this->assertUpdate($existingCode, $prototype, $expectedCode);
     }
@@ -1199,31 +1199,31 @@ EOT
     {
         yield 'It adds a method' => [
                 <<<'EOT'
-class Aardvark
-{
-}
-EOT
+                    class Aardvark
+                    {
+                    }
+                    EOT
                 , SourceCodeBuilder::create()
                     ->class('Aardvark')
                         ->method('methodOne')->end()
                     ->end()
                     ->build(),
                 <<<'EOT'
-class Aardvark
-{
-    public function methodOne()
-    {
-    }
-}
-EOT
+                    class Aardvark
+                    {
+                        public function methodOne()
+                        {
+                        }
+                    }
+                    EOT
             ];
 
         yield 'It adds multiple methods' => [
                 <<<'EOT'
-class Aardvark
-{
-}
-EOT
+                    class Aardvark
+                    {
+                    }
+                    EOT
                 , SourceCodeBuilder::create()
                     ->class('Aardvark')
                         ->method('methodOne')->end()
@@ -1231,25 +1231,25 @@ EOT
                     ->end()
                     ->build(),
                 <<<'EOT'
-class Aardvark
-{
-    public function methodOne()
-    {
-    }
+                    class Aardvark
+                    {
+                        public function methodOne()
+                        {
+                        }
 
-    public function methodTwo()
-    {
-    }
-}
-EOT
+                        public function methodTwo()
+                        {
+                        }
+                    }
+                    EOT
             ];
 
         yield 'It adds parameterized method' => [
                 <<<'EOT'
-class Aardvark
-{
-}
-EOT
+                    class Aardvark
+                    {
+                    }
+                    EOT
                 , SourceCodeBuilder::create()
                     ->class('Aardvark')
                         ->method('methodOne')
@@ -1260,253 +1260,253 @@ EOT
                     ->end()
                     ->build(),
                 <<<'EOT'
-class Aardvark
-{
-    public function methodOne(Snort $sniff)
-    {
-    }
-}
-EOT
+                    class Aardvark
+                    {
+                        public function methodOne(Snort $sniff)
+                        {
+                        }
+                    }
+                    EOT
             ];
 
         yield 'It is idempotent' => [
                 <<<'EOT'
-class Aardvark
-{
-    public function methodOne()
-    {
-    }
-}
-EOT
+                    class Aardvark
+                    {
+                        public function methodOne()
+                        {
+                        }
+                    }
+                    EOT
                 , SourceCodeBuilder::create()
                     ->class('Aardvark')
                         ->method('methodOne')->end()
                     ->end()
                     ->build(),
                 <<<'EOT'
-class Aardvark
-{
-    public function methodOne()
-    {
-    }
-}
-EOT
+                    class Aardvark
+                    {
+                        public function methodOne()
+                        {
+                        }
+                    }
+                    EOT
             ];
 
         yield 'It adds a method after existing methods' => [
                 <<<'EOT'
-class Aardvark
-{
-    public function eyes()
-    {
-    }
+                    class Aardvark
+                    {
+                        public function eyes()
+                        {
+                        }
 
-    public function nose()
-    {
-    }
-}
-EOT
+                        public function nose()
+                        {
+                        }
+                    }
+                    EOT
                 , SourceCodeBuilder::create()
                     ->class('Aardvark')
                         ->method('methodOne')->end()
                     ->end()
                     ->build(),
                 <<<'EOT'
-class Aardvark
-{
-    public function eyes()
-    {
-    }
+                    class Aardvark
+                    {
+                        public function eyes()
+                        {
+                        }
 
-    public function nose()
-    {
-    }
+                        public function nose()
+                        {
+                        }
 
-    public function methodOne()
-    {
-    }
-}
-EOT
+                        public function methodOne()
+                        {
+                        }
+                    }
+                    EOT
             ];
 
         yield 'It adds a documented methods' => [
                 <<<'EOT'
-class Aardvark
-{
-    public function eyes()
-    {
-    }
-}
-EOT
+                    class Aardvark
+                    {
+                        public function eyes()
+                        {
+                        }
+                    }
+                    EOT
                 , SourceCodeBuilder::create()
                     ->class('Aardvark')
                         ->method('methodOne')->docblock('Hello')->end()
                     ->end()
                     ->build(),
                 <<<'EOT'
-class Aardvark
-{
-    public function eyes()
-    {
-    }
+                    class Aardvark
+                    {
+                        public function eyes()
+                        {
+                        }
 
-    /**
-     * Hello
-     */
-    public function methodOne()
-    {
-    }
-}
-EOT
+                        /**
+                         * Hello
+                         */
+                        public function methodOne()
+                        {
+                        }
+                    }
+                    EOT
             ];
 
         yield 'It adds a method with a body' => [
                 <<<'EOT'
-class Aardvark
-{
-    public function eyes()
-    {
-    }
-}
-EOT
+                    class Aardvark
+                    {
+                        public function eyes()
+                        {
+                        }
+                    }
+                    EOT
                 , SourceCodeBuilder::create()
                     ->class('Aardvark')
                         ->method('methodOne')->body()->line('echo "Hello World";')->end()->end()
                     ->end()
                     ->build(),
                 <<<'EOT'
-class Aardvark
-{
-    public function eyes()
-    {
-    }
+                    class Aardvark
+                    {
+                        public function eyes()
+                        {
+                        }
 
-    public function methodOne()
-    {
-        echo "Hello World";
-    }
-}
-EOT
+                        public function methodOne()
+                        {
+                            echo "Hello World";
+                        }
+                    }
+                    EOT
             ];
 
         yield 'Add line to a methods body' => [
                 <<<'EOT'
-class Aardvark
-{
-    public function eyes()
-    {
-    }
-}
-EOT
+                    class Aardvark
+                    {
+                        public function eyes()
+                        {
+                        }
+                    }
+                    EOT
                 , SourceCodeBuilder::create()
                     ->class('Aardvark')
                         ->method('eyes')->body()->line('echo "Hello World";')->end()->end()
                     ->end()
                     ->build(),
                 <<<'EOT'
-class Aardvark
-{
-    public function eyes()
-    {
-        echo "Hello World";
-    }
-}
-EOT
+                    class Aardvark
+                    {
+                        public function eyes()
+                        {
+                            echo "Hello World";
+                        }
+                    }
+                    EOT
             ];
 
         yield 'Add lines after existing lines' => [
                 <<<'EOT'
-class Aardvark
-{
-    public function eyes()
-    {
-        echo "Goodbye world!";
-    }
-}
-EOT
+                    class Aardvark
+                    {
+                        public function eyes()
+                        {
+                            echo "Goodbye world!";
+                        }
+                    }
+                    EOT
                 , SourceCodeBuilder::create()
                     ->class('Aardvark')
                         ->method('eyes')->body()->line('echo "Hello World";')->end()->end()
                     ->end()
                     ->build(),
                 <<<'EOT'
-class Aardvark
-{
-    public function eyes()
-    {
-        echo "Goodbye world!";
-        echo "Hello World";
-    }
-}
-EOT
+                    class Aardvark
+                    {
+                        public function eyes()
+                        {
+                            echo "Goodbye world!";
+                            echo "Hello World";
+                        }
+                    }
+                    EOT
             ];
 
         yield 'Should not add the same line twice' => [
                 <<<'EOT'
-class Aardvark
-{
-    public function eyes()
-    {
-        echo "Hello World";
-    }
-}
-EOT
+                    class Aardvark
+                    {
+                        public function eyes()
+                        {
+                            echo "Hello World";
+                        }
+                    }
+                    EOT
                 , SourceCodeBuilder::create()
                     ->class('Aardvark')
                         ->method('eyes')->body()->line('echo "Hello World";')->end()->end()
                     ->end()
                     ->build(),
                 <<<'EOT'
-class Aardvark
-{
-    public function eyes()
-    {
-        echo "Hello World";
-    }
-}
-EOT
+                    class Aardvark
+                    {
+                        public function eyes()
+                        {
+                            echo "Hello World";
+                        }
+                    }
+                    EOT
             ];
 
         yield 'It does not modify existing methods 1' => [
                 <<<'EOT'
-class Aardvark
-{
-    public function hello(
-        array $foobar = []
-    )
-    {
-    }
-}
-EOT
+                    class Aardvark
+                    {
+                        public function hello(
+                            array $foobar = []
+                        )
+                        {
+                        }
+                    }
+                    EOT
                 , SourceCodeBuilder::create()
                     ->class('Aardvark')
                         ->method('hello')->parameter('foobar')->type('array')->defaultValue([])->end()->end()
                     ->end()
                     ->build(),
                 <<<'EOT'
-class Aardvark
-{
-    public function hello(
-        array $foobar = []
-    )
-    {
-    }
-}
-EOT
+                    class Aardvark
+                    {
+                        public function hello(
+                            array $foobar = []
+                        )
+                        {
+                        }
+                    }
+                    EOT
             ];
 
         yield 'It does not modify existing methods with imported names' => [
                 <<<'EOT'
 
-use Barfoo as Foobar;
+                    use Barfoo as Foobar;
 
-class Aardvark
-{
-    public function hello(Foobar $foobar): Foobar
-    {
-    }
-}
-EOT
+                    class Aardvark
+                    {
+                        public function hello(Foobar $foobar): Foobar
+                        {
+                        }
+                    }
+                    EOT
                 , SourceCodeBuilder::create()
                     ->class('Aardvark')
                         ->method('hello')->parameter('foobar')->type('Barfoo')->end()->returnType('Barfoo')->end()
@@ -1514,46 +1514,46 @@ EOT
                     ->build(),
                 <<<'EOT'
 
-use Barfoo as Foobar;
+                    use Barfoo as Foobar;
 
-class Aardvark
-{
-    public function hello(Foobar $foobar): Foobar
-    {
-    }
-}
-EOT
+                    class Aardvark
+                    {
+                        public function hello(Foobar $foobar): Foobar
+                        {
+                        }
+                    }
+                    EOT
             ];
 
         yield 'It modifies the return type' => [
                 <<<'EOT'
-class Aardvark
-{
-    public function hello(): Foobar
-    {
-    }
-}
-EOT
+                    class Aardvark
+                    {
+                        public function hello(): Foobar
+                        {
+                        }
+                    }
+                    EOT
                 , SourceCodeBuilder::create()
                     ->class('Aardvark')
                         ->method('hello')->returnType('Barfoo')->end()
                     ->end()
                     ->build(),
                 <<<'EOT'
-class Aardvark
-{
-    public function hello(): Barfoo
-    {
-    }
-}
-EOT
+                    class Aardvark
+                    {
+                        public function hello(): Barfoo
+                        {
+                        }
+                    }
+                    EOT
             ];
     }
 
     /**
      * @dataProvider provideConstants
      */
-    public function testConstants(string $existingCode, SourceCode $prototype, string $expectedCode)
+    public function testConstants(string $existingCode, SourceCode $prototype, string $expectedCode): void
     {
         $this->assertUpdate($existingCode, $prototype, $expectedCode);
     }
@@ -1562,137 +1562,137 @@ EOT
     {
         yield 'It adds a constant' => [
                 <<<'EOT'
-class Aardvark
-{
-}
-EOT
+                    class Aardvark
+                    {
+                    }
+                    EOT
                 , SourceCodeBuilder::create()
                     ->class('Aardvark')
                         ->constant('constantOne', 'foo')->end()
                     ->end()
                     ->build(),
                 <<<'EOT'
-class Aardvark
-{
-    const constantOne = 'foo';
-}
-EOT
+                    class Aardvark
+                    {
+                        const constantOne = 'foo';
+                    }
+                    EOT
             ];
 
         yield 'It adds is idempotent' => [
                 <<<'EOT'
-class Aardvark
-{
-    const constantOne = 'aaa';
-}
-EOT
+                    class Aardvark
+                    {
+                        const constantOne = 'aaa';
+                    }
+                    EOT
                 , SourceCodeBuilder::create()
                     ->class('Aardvark')
                         ->constant('constantOne', 'aaa')->end()
                     ->end()
                     ->build(),
                 <<<'EOT'
-class Aardvark
-{
-    const constantOne = 'aaa';
-}
-EOT
+                    class Aardvark
+                    {
+                        const constantOne = 'aaa';
+                    }
+                    EOT
             ];
 
         yield 'It adds a constant after existing constants' => [
                 <<<'EOT'
-class Aardvark
-{
-    const constantOne = 'aaa';
-}
-EOT
+                    class Aardvark
+                    {
+                        const constantOne = 'aaa';
+                    }
+                    EOT
                 , SourceCodeBuilder::create()
                     ->class('Aardvark')
                         ->constant('constantTwo', 'bbb')->end()
                     ->end()
                     ->build(),
                 <<<'EOT'
-class Aardvark
-{
-    const constantOne = 'aaa';
-    const constantTwo = 'bbb';
-}
-EOT
+                    class Aardvark
+                    {
+                        const constantOne = 'aaa';
+                        const constantTwo = 'bbb';
+                    }
+                    EOT
             ];
 
         yield 'It adds multiple constants' => [
                 <<<'EOT'
-class Aardvark
-{
-}
-EOT
+                    class Aardvark
+                    {
+                    }
+                    EOT
                 , SourceCodeBuilder::create()
                     ->class('Aardvark')
                         ->constant('constantOne', 'a')->end()->constant('constantTwo', 'b')->end()
                     ->end()
                     ->build(),
                 <<<'EOT'
-class Aardvark
-{
-    const constantOne = 'a';
-    const constantTwo = 'b';
-}
-EOT
+                    class Aardvark
+                    {
+                        const constantOne = 'a';
+                        const constantTwo = 'b';
+                    }
+                    EOT
             ];
 
         yield 'It adds before methods' => [
                 <<<'EOT'
-class Aardvark
-{
-    public function crawl()
-    {
-    }
-}
-EOT
+                    class Aardvark
+                    {
+                        public function crawl()
+                        {
+                        }
+                    }
+                    EOT
                 , SourceCodeBuilder::create()
                     ->class('Aardvark')
                     ->constant('constantOne', 1)->end()
                     ->end()
                     ->build(),
                 <<<'EOT'
-class Aardvark
-{
-    const constantOne = 1;
+                    class Aardvark
+                    {
+                        const constantOne = 1;
 
-    public function crawl()
-    {
-    }
-}
-EOT
+                        public function crawl()
+                        {
+                        }
+                    }
+                    EOT
             ];
 
         yield 'It adds before properties' => [
                 <<<'EOT'
-class Aardvark
-{
-    private $crawlSpace;
-}
-EOT
+                    class Aardvark
+                    {
+                        private $crawlSpace;
+                    }
+                    EOT
                 , SourceCodeBuilder::create()
                     ->class('Aardvark')
                     ->constant('constantOne', 1)->end()
                     ->end()
                     ->build(),
                 <<<'EOT'
-class Aardvark
-{
-    const constantOne = 1;
+                    class Aardvark
+                    {
+                        const constantOne = 1;
 
-    private $crawlSpace;
-}
-EOT
+                        private $crawlSpace;
+                    }
+                    EOT
         ];
     }
 
     /**
      * @dataProvider provideInterfaces
      */
-    public function testInterfaces(string $existingCode, SourceCode $prototype, string $expectedCode)
+    public function testInterfaces(string $existingCode, SourceCode $prototype, string $expectedCode): void
     {
         $this->assertUpdate($existingCode, $prototype, $expectedCode);
     }
@@ -1702,45 +1702,45 @@ EOT
         yield 'It adds an interface' => [
 
                 <<<'EOT'
-EOT
+                    EOT
                 , SourceCodeBuilder::create()->interface('Aardvark')->end()->build(),
                 <<<'EOT'
 
-interface Aardvark
-{
-}
-EOT
+                    interface Aardvark
+                    {
+                    }
+                    EOT
             ];
 
         yield 'It adds an interface in a namespace' => [
 
                 <<<'EOT'
-namespace Foobar;
-EOT
+                    namespace Foobar;
+                    EOT
                 , SourceCodeBuilder::create()->interface('Aardvark')->end()->build(),
                 <<<'EOT'
-namespace Foobar;
+                    namespace Foobar;
 
-interface Aardvark
-{
-}
-EOT
+                    interface Aardvark
+                    {
+                    }
+                    EOT
             ];
 
         yield 'It adds methods to an interface' => [
 
                 <<<'EOT'
-interface Aardvark
-{
-}
-EOT
+                    interface Aardvark
+                    {
+                    }
+                    EOT
                 , SourceCodeBuilder::create()->interface('Aardvark')->method('foo')->end()->end()->build(),
                 <<<'EOT'
-interface Aardvark
-{
-    public function foo();
-}
-EOT
+                    interface Aardvark
+                    {
+                        public function foo();
+                    }
+                    EOT
             ];
     }
 
@@ -1748,13 +1748,13 @@ EOT
     {
         yield 'It adds parameters' => [
                 <<<'EOT'
-class Aardvark
-{
-    public function methodOne()
-    {
-    }
-}
-EOT
+                    class Aardvark
+                    {
+                        public function methodOne()
+                        {
+                        }
+                    }
+                    EOT
                 , SourceCodeBuilder::create()
                     ->class('Aardvark')
                         ->method('methodOne')
@@ -1765,24 +1765,24 @@ EOT
                     ->end()
                     ->build(),
                 <<<'EOT'
-class Aardvark
-{
-    public function methodOne(Barf $sniff)
-    {
-    }
-}
-EOT
+                    class Aardvark
+                    {
+                        public function methodOne(Barf $sniff)
+                        {
+                        }
+                    }
+                    EOT
             ];
 
         yield 'It adds nullable typed parameters' => [
                 <<<'EOT'
-class Aardvark
-{
-    public function methodOne()
-    {
-    }
-}
-EOT
+                    class Aardvark
+                    {
+                        public function methodOne()
+                        {
+                        }
+                    }
+                    EOT
                 , SourceCodeBuilder::create()
                     ->class('Aardvark')
                         ->method('methodOne')
@@ -1794,20 +1794,20 @@ EOT
                     ->end()
                     ->build(),
                 <<<'EOT'
-class Aardvark
-{
-    public function methodOne(?Barf $sniff)
-    {
-    }
-}
-EOT
+                    class Aardvark
+                    {
+                        public function methodOne(?Barf $sniff)
+                        {
+                        }
+                    }
+                    EOT
             ];
     }
 
 
     abstract protected function updater(): Updater;
 
-    private function assertUpdate(string $existingCode, SourceCode $prototype, string $expectedCode)
+    private function assertUpdate(string $existingCode, SourceCode $prototype, string $expectedCode): void
     {
         $existingCode = '<?php'.PHP_EOL.$existingCode;
         $edits = $this->updater()->textEditsFor($prototype, Code::fromString($existingCode));

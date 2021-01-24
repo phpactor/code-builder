@@ -31,6 +31,16 @@ class ImportedNames implements IteratorAggregate
         return array_values($this->classNamesFromNode());
     }
 
+    public function functionNames(): array
+    {
+        $names = [];
+        foreach ($this->table[1] as $shortName => $resolvedName) {
+            $names[$shortName] = (string) $resolvedName;
+        }
+
+        return $names;
+    }
+
     private function classNamesFromNode(): array
     {
         $names = [];
@@ -53,15 +63,5 @@ class ImportedNames implements IteratorAggregate
         }
 
         $this->table = $node->getImportTablesForCurrentScope();
-    }
-
-    public function functionNames(): array
-    {
-        $names = [];
-        foreach ($this->table[1] as $shortName => $resolvedName) {
-            $names[$shortName] = (string) $resolvedName;
-        }
-
-        return $names;
     }
 }

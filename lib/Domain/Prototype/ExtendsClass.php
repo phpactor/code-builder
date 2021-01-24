@@ -12,14 +12,14 @@ final class ExtendsClass extends Prototype
         $this->class = $class;
     }
 
-    public static function fromString($string)
-    {
-        return new self(Type::fromString($string));
-    }
-
     public function __toString()
     {
         return (string) $this->class;
+    }
+
+    public static function fromString($string)
+    {
+        return new self(Type::fromString($string));
     }
 
     public static function none()

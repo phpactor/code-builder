@@ -40,7 +40,7 @@ class TextFormat
 
     public function indentRemove(string $text): string
     {
-        return preg_replace("/^[ \t]+/m", "", $text);
+        return preg_replace("/^[ \t]+/m", '', $text);
     }
 
     public function indentReplace($text, int $level): string

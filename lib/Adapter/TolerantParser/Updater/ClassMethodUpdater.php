@@ -8,11 +8,6 @@ use Phpactor\CodeBuilder\Domain\Prototype\Method;
 
 class ClassMethodUpdater extends AbstractMethodUpdater
 {
-    protected function memberDeclarations(ClassLike $classNode)
-    {
-        return $classNode->classMembers->classMemberDeclarations;
-    }
-
     public function memberDeclarationsNode(ClassLike $classNode)
     {
         return $classNode->classMembers;
@@ -23,5 +18,9 @@ class ClassMethodUpdater extends AbstractMethodUpdater
         return $renderer->render($method) .
             PHP_EOL .
             $renderer->render($method->body());
+    }
+    protected function memberDeclarations(ClassLike $classNode)
+    {
+        return $classNode->classMembers->classMemberDeclarations;
     }
 }

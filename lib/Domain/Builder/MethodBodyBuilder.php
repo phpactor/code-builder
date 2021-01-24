@@ -8,15 +8,15 @@ use Phpactor\CodeBuilder\Domain\Prototype\MethodBody;
 
 class MethodBodyBuilder
 {
-    /**
-     * @var MethodBuilder
-     */
-    private $parent;
 
     /**
      * @var Lines[]
      */
     protected $lines = [];
+    /**
+     * @var MethodBuilder
+     */
+    private $parent;
 
     public function __construct(MethodBuilder $parent)
     {

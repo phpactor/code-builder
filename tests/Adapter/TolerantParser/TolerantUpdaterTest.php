@@ -2,7 +2,6 @@
 
 namespace Phpactor\CodeBuilder\Tests\Adapter\TolerantParser;
 
-use Phpactor\CodeBuilder\Util\TextFormat;
 use Phpactor\CodeBuilder\Adapter\Twig\TwigRenderer;
 use Phpactor\CodeBuilder\Adapter\TolerantParser\TolerantUpdater;
 use Phpactor\CodeBuilder\Domain\Updater;

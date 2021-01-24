@@ -11,13 +11,13 @@ final class Line
         $this->line = $line;
     }
 
-    public static function fromString(string $line): Line
-    {
-        return new self($line);
-    }
-
     public function __toString()
     {
         return $this->line;
+    }
+
+    public static function fromString(string $line): Line
+    {
+        return new self($line);
     }
 }

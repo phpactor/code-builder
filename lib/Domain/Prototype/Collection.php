@@ -2,7 +2,12 @@
 
 namespace Phpactor\CodeBuilder\Domain\Prototype;
 
-abstract class Collection implements \IteratorAggregate, \Countable
+use IteratorAggregate;
+use Countable;
+use ArrayIterator;
+use InvalidArgumentException;
+
+abstract class Collection implements IteratorAggregate, Countable
 {
     protected $items = [];
 
@@ -10,8 +15,6 @@ abstract class Collection implements \IteratorAggregate, \Countable
     {
         $this->items = $items;
     }
-
-    abstract protected function singularName(): string;
 
     public static function empty()
     {
@@ -23,7 +26,7 @@ abstract class Collection implements \IteratorAggregate, \Countable
      */
     public function getIterator()
     {
-        return new \ArrayIterator($this->items);
+        return new ArrayIterator($this->items);
     }
 
     public function isLast($item): bool
@@ -50,7 +53,7 @@ abstract class Collection implements \IteratorAggregate, \Countable
     public function get(string $name)
     {
         if (!isset($this->items[$name])) {
-            throw new \InvalidArgumentException(sprintf(
+            throw new InvalidArgumentException(sprintf(
                 'Unknown %s "%s", known items: "%s"',
                 $this->singularName(),
                 $name,
@@ -83,4 +86,6 @@ abstract class Collection implements \IteratorAggregate, \Countable
             return true === in_array($name, $names);
         }, ARRAY_FILTER_USE_KEY));
     }
+
+    abstract protected function singularName(): string;
 }

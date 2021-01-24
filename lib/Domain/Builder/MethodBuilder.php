@@ -12,10 +12,6 @@ use Phpactor\CodeBuilder\Domain\Builder\Exception\InvalidBuilderException;
 
 class MethodBuilder extends AbstractBuilder implements NamedBuilder
 {
-    /**
-     * @var SourceCodeBuilder
-     */
-    private $parent;
 
     /**
      * @var string
@@ -56,6 +52,10 @@ class MethodBuilder extends AbstractBuilder implements NamedBuilder
      * @var MethodBodyBuilder
      */
     protected $bodyBuilder;
+    /**
+     * @var SourceCodeBuilder
+     */
+    private $parent;
 
     public function __construct(ClassLikeBuilder $parent, string $name)
     {
@@ -71,7 +71,7 @@ class MethodBuilder extends AbstractBuilder implements NamedBuilder
         ];
     }
 
-    public function add(NamedBuilder $builder)
+    public function add(NamedBuilder $builder): void
     {
         if ($builder instanceof ParameterBuilder) {
             $this->parameters[$builder->builderName()] = $builder;

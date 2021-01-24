@@ -19,7 +19,7 @@ class NodeHelperTest extends TestCase
         $this->parser = new Parser();
     }
 
-    public function testSelf()
+    public function testSelf(): void
     {
         list($methodNode, $nameNode) = $this->findSelfNode();
         $result = NodeHelper::resolvedShortName($methodNode, $nameNode);

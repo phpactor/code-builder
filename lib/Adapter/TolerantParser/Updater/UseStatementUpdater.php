@@ -16,7 +16,7 @@ use Phpactor\CodeBuilder\Domain\Prototype\UseStatement;
 
 class UseStatementUpdater
 {
-    public function updateUseStatements(Edits $edits, SourceCode $prototype, SourceFileNode $node)
+    public function updateUseStatements(Edits $edits, SourceCode $prototype, SourceFileNode $node): void
     {
         if (0 === count($prototype->useStatements())) {
             return;
