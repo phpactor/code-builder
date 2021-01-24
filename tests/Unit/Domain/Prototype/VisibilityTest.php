@@ -11,7 +11,7 @@ class VisibilityTest extends TestCase
     /**
      * @testdox It throws an exception if an invalid visiblity is given.
      */
-    public function testException()
+    public function testException(): void
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Invalid visibility');

@@ -10,14 +10,14 @@ class DocblockTest extends TestCase
     /**
      * @testdox It returns docblock as lines.
      */
-    public function testAsLines()
+    public function testAsLines(): void
     {
         $this->assertEquals([''], Docblock::fromString('')->asLines());
         $this->assertEquals(['One', 'Two'], Docblock::fromString(
             <<<'EOT'
-One
-Two
-EOT
+                One
+                Two
+                EOT
         )->asLines());
     }
 }

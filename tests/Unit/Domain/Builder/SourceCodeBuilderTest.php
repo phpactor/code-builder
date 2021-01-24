@@ -9,13 +9,14 @@ use Phpactor\CodeBuilder\Domain\Prototype\Method;
 use Phpactor\CodeBuilder\Domain\Prototype\SourceCode;
 use Phpactor\CodeBuilder\Domain\Builder\MethodBuilder;
 use Phpactor\CodeBuilder\Domain\Prototype\UseStatement;
+use Closure;
 
 class SourceCodeBuilderTest extends TestCase
 {
     /**
      * @dataProvider provideModificationTracking
      */
-    public function testModificationTracking(\Closure $setup, \Closure $assertion)
+    public function testModificationTracking(Closure $setup, Closure $assertion): void
     {
         $builder = $this->builder();
         $setup($builder);
@@ -28,70 +29,70 @@ class SourceCodeBuilderTest extends TestCase
     public function provideModificationTracking()
     {
         yield 'new builder is modified by default' => [
-            function (SourceCodeBuilder $builder) {
+            function (SourceCodeBuilder $builder): void {
                 $builder->class('foobar');
             },
-            function (SourceCodeBuilder $builder) {
+            function (SourceCodeBuilder $builder): void {
                 $this->assertTrue($builder->isModified());
             }
         ];
 
         yield 'is not modified after snapshot' => [
-            function (SourceCodeBuilder $builder) {
+            function (SourceCodeBuilder $builder): void {
                 $builder->class('foobar');
                 $builder->snapshot();
             },
-            function (SourceCodeBuilder $builder) {
+            function (SourceCodeBuilder $builder): void {
                 $this->assertFalse($builder->isModified());
             }
         ];
 
         yield 'is not modified if updated values are the same 1' => [
-            function (SourceCodeBuilder $builder) {
+            function (SourceCodeBuilder $builder): void {
                 $builder->class('foobar')->method('foobar')->parameter('barfoo');
                 $builder->snapshot();
                 $builder->class('foobar')->method('foobar')->parameter('barfoo');
             },
-            function (SourceCodeBuilder $builder) {
+            function (SourceCodeBuilder $builder): void {
                 $this->assertFalse($builder->isModified());
             }
         ];
 
         yield 'is not modified if updated values are the same 2' => [
-            function (SourceCodeBuilder $builder) {
+            function (SourceCodeBuilder $builder): void {
                 $builder->class('foobar')->method('foobar');
                 $builder->snapshot();
                 $builder->class('foobar')->method('foobar');
             },
-            function (SourceCodeBuilder $builder) {
+            function (SourceCodeBuilder $builder): void {
                 $this->assertFalse($builder->isModified());
             }
         ];
 
         yield 'is modified when values are different 1' => [
-            function (SourceCodeBuilder $builder) {
+            function (SourceCodeBuilder $builder): void {
                 $builder->class('foobar')->method('foobar');
                 $builder->snapshot();
                 $builder->class('foobar')->method('barbarr');
             },
-            function (SourceCodeBuilder $builder) {
+            function (SourceCodeBuilder $builder): void {
                 $this->assertTrue($builder->isModified());
             }
         ];
 
         yield 'is modified when values are different 2' => [
-            function (SourceCodeBuilder $builder) {
+            function (SourceCodeBuilder $builder): void {
                 $builder->class('foobar')->method('foobar')->parameter('barbar');
                 $builder->snapshot();
                 $builder->class('foobar')->method('barbar')->parameter('fofo');
             },
-            function (SourceCodeBuilder $builder) {
+            function (SourceCodeBuilder $builder): void {
                 $this->assertTrue($builder->isModified());
             }
         ];
     }
 
-    public function testSourceCodeBuilderUse()
+    public function testSourceCodeBuilderUse(): void
     {
         $builder = $this->builder();
         $builder->namespace('Barfoo');
@@ -112,7 +113,7 @@ class SourceCodeBuilderTest extends TestCase
         $this->assertEquals('Goodbye', $code->traits()->first()->name());
     }
 
-    public function testFunctionUse()
+    public function testFunctionUse(): void
     {
         $builder = $this->builder();
         $builder->useFunction('hello');
@@ -125,7 +126,7 @@ class SourceCodeBuilderTest extends TestCase
     }
 
 
-    public function testClassBuilder()
+    public function testClassBuilder(): void
     {
         $builder = $this->builder();
         $classBuilder = $builder->class('Dog')
@@ -145,7 +146,7 @@ class SourceCodeBuilderTest extends TestCase
         $this->assertEquals('method1', $class->methods()->first()->name());
     }
 
-    public function testClassBuilderAddMethodBuilder()
+    public function testClassBuilderAddMethodBuilder(): void
     {
         $builder = $this->builder();
         $methodBuilder = $this->builder()->class('Cat')->method('Whiskers');
@@ -155,7 +156,7 @@ class SourceCodeBuilderTest extends TestCase
         $this->assertSame($classBuilder->method('Whiskers'), $methodBuilder);
     }
 
-    public function testClassBuilderAddPropertyBuilder()
+    public function testClassBuilderAddPropertyBuilder(): void
     {
         $builder = $this->builder();
         $propertyBuilder = $this->builder()->class('Cat')->property('whiskers');
@@ -165,7 +166,7 @@ class SourceCodeBuilderTest extends TestCase
         $this->assertSame($classBuilder->property('whiskers'), $propertyBuilder);
     }
 
-    public function testInterfaceBuilder()
+    public function testInterfaceBuilder(): void
     {
         $builder = $this->builder();
         $interfaceBuilder = $builder->interface('Dog')
@@ -178,7 +179,7 @@ class SourceCodeBuilderTest extends TestCase
         $this->assertSame($interfaceBuilder, $builder->interface('Dog'));
     }
 
-    public function testTraitBuilder()
+    public function testTraitBuilder(): void
     {
         $builder = $this->builder();
         $traitBuilder = $builder->trait('Dog')
@@ -194,7 +195,7 @@ class SourceCodeBuilderTest extends TestCase
         $this->assertEquals('method1', $trait->methods()->first()->name());
     }
 
-    public function testTraitBuilderAddMethodBuilder()
+    public function testTraitBuilderAddMethodBuilder(): void
     {
         $builder = $this->builder();
         $methodBuilder = $this->builder()->trait('Cat')->method('Whiskers');
@@ -204,7 +205,7 @@ class SourceCodeBuilderTest extends TestCase
         $this->assertSame($traitBuilder->method('Whiskers'), $methodBuilder);
     }
 
-    public function testTraitBuilderAddPropertyBuilder()
+    public function testTraitBuilderAddPropertyBuilder(): void
     {
         $builder = $this->builder();
         $propertyBuilder = $this->builder()->trait('Cat')->property('whiskers');
@@ -214,7 +215,7 @@ class SourceCodeBuilderTest extends TestCase
         $this->assertSame($traitBuilder->property('whiskers'), $propertyBuilder);
     }
 
-    public function testPropertyBuilder()
+    public function testPropertyBuilder(): void
     {
         $builder = $this->builder();
         $propertyBuilder = $builder->class('Dog')->property('one')
@@ -228,7 +229,7 @@ class SourceCodeBuilderTest extends TestCase
         $this->assertSame($propertyBuilder, $builder->class('Dog')->property('one'));
     }
 
-    public function testClassMethodBuilderAccess()
+    public function testClassMethodBuilderAccess(): void
     {
         $builder = $this->builder();
         $methodBuilder = $builder->class('Bar')->method('foo');
@@ -236,7 +237,7 @@ class SourceCodeBuilderTest extends TestCase
         $this->assertSame($methodBuilder, $builder->class('Bar')->method('foo'));
     }
 
-    public function testTraitMethodBuilderAccess()
+    public function testTraitMethodBuilderAccess(): void
     {
         $builder = $this->builder();
         $methodBuilder = $builder->trait('Bar')->method('foo');
@@ -247,7 +248,7 @@ class SourceCodeBuilderTest extends TestCase
     /**
      * @dataProvider provideMethodBuilder
      */
-    public function testMethodBuilder(MethodBuilder $methodBuilder, \Closure $assertion)
+    public function testMethodBuilder(MethodBuilder $methodBuilder, Closure $assertion): void
     {
         $builder = $this->builder();
         $method = $methodBuilder->build();
@@ -265,28 +266,28 @@ class SourceCodeBuilderTest extends TestCase
                 ->type('One')
                 ->defaultValue(1)
                 ->end(),
-                function (Method $method) {
+                function (Method $method): void {
                     $this->assertEquals('string', $method->returnType()->__toString());
                     $this->assertTrue($method->returnType()->nullable());
                 }
         ],
             'Method mofifiers 1' => [
                 $this->builder()->class('Dog')->method('one')->static()->abstract(),
-                function ($method) {
+                function ($method): void {
                     $this->assertTrue($method->isStatic());
                     $this->assertTrue($method->isAbstract());
                 }
         ],
             'Method mofifiers 2' => [
                 $this->builder()->class('Dog')->method('one')->abstract(),
-                function ($method) {
+                function ($method): void {
                     $this->assertFalse($method->isStatic());
                     $this->assertTrue($method->isAbstract());
                 }
         ],
             'Method lines' => [
                 $this->builder()->class('Dog')->method('one')->body()->line('one')->line('two')->end(),
-                function ($method) {
+                function ($method): void {
                     $this->assertCount(2, $method->body()->lines());
                     $this->assertEquals('one', (string) $method->body()->lines()->first());
                 }
@@ -294,7 +295,7 @@ class SourceCodeBuilderTest extends TestCase
         ];
     }
 
-    public function testParameterBuilder()
+    public function testParameterBuilder(): void
     {
         $builder = $this->builder();
         $method = $builder->class('Bar')->method('foo');
@@ -308,7 +309,7 @@ class SourceCodeBuilderTest extends TestCase
         return SourceCodeBuilder::create();
     }
 
-    private function assertInstanceOfAndPopNode($className, Generator $nodes)
+    private function assertInstanceOfAndPopNode($className, Generator $nodes): void
     {
         $this->assertInstanceOf($className, $nodes->current());
         $nodes->next();

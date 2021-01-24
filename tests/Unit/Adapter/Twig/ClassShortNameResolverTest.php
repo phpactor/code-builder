@@ -11,7 +11,7 @@ class ClassShortNameResolverTest extends TestCase
     /*
      * @testdox It returns the short name of the class
      */
-    public function testResolver()
+    public function testResolver(): void
     {
         $resolver = new ClassShortNameResolver();
         $this->assertEquals(

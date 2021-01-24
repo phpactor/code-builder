@@ -11,7 +11,7 @@ class DefaultValueTest extends TestCase
      * @testdox It exports values.
      * @dataProvider provideExportValues
      */
-    public function testExportValues($value, $expected)
+    public function testExportValues($value, $expected): void
     {
         $value = DefaultValue::fromValue($value);
         $this->assertEquals($expected, $value->export());

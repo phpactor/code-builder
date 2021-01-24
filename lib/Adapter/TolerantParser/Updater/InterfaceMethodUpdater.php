@@ -8,11 +8,6 @@ use Phpactor\CodeBuilder\Domain\Prototype\Method;
 
 class InterfaceMethodUpdater extends AbstractMethodUpdater
 {
-    protected function memberDeclarations(ClassLike $classNode)
-    {
-        return $classNode->interfaceMembers->interfaceMemberDeclarations;
-    }
-
     public function memberDeclarationsNode(ClassLike $classNode)
     {
         return $classNode->interfaceMembers;
@@ -21,5 +16,9 @@ class InterfaceMethodUpdater extends AbstractMethodUpdater
     public function renderMethod(Renderer $renderer, Method $method)
     {
         return $renderer->render($method) . ';';
+    }
+    protected function memberDeclarations(ClassLike $classNode)
+    {
+        return $classNode->interfaceMembers->interfaceMemberDeclarations;
     }
 }

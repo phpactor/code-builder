@@ -10,7 +10,7 @@ class TypeTest extends TestCase
     /**
      * @dataProvider provideNamespace
      */
-    public function testItReturnsANamespace(string $classFqn, string $expectedNamespace = null)
+    public function testItReturnsANamespace(string $classFqn, string $expectedNamespace = null): void
     {
         $type = Type::fromString($classFqn);
         $this->assertEquals($expectedNamespace, $type->namespace());
@@ -54,7 +54,7 @@ class TypeTest extends TestCase
         ];
     }
 
-    public function testItAllowsNullable()
+    public function testItAllowsNullable(): void
     {
         $type = Type::fromString('Foo\\Bar');
         $this->assertFalse($type->nullable());

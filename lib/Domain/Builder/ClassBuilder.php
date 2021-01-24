@@ -13,10 +13,6 @@ use Phpactor\CodeBuilder\Domain\Prototype\UpdatePolicy;
 
 class ClassBuilder extends ClassLikeBuilder
 {
-    /**
-     * @var string
-     */
-    private $extends;
 
     /**
      * @var PropertyBuilder[]
@@ -32,6 +28,10 @@ class ClassBuilder extends ClassLikeBuilder
      * @var ConstantBuilder[]
      */
     protected $constants = [];
+    /**
+     * @var string
+     */
+    private $extends;
 
     public static function childNames(): array
     {
@@ -48,7 +48,7 @@ class ClassBuilder extends ClassLikeBuilder
         return $this;
     }
 
-    public function add(Builder $builder)
+    public function add(Builder $builder): void
     {
         if ($builder instanceof PropertyBuilder) {
             $this->properties[$builder->builderName()] = $builder;

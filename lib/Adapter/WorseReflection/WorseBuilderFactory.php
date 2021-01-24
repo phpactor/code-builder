@@ -64,7 +64,7 @@ class WorseBuilderFactory implements BuilderFactory
         return $builder;
     }
 
-    private function build(string $type, SourceCodeBuilder $builder, ReflectionClassLike $reflectionClass)
+    private function build(string $type, SourceCodeBuilder $builder, ReflectionClassLike $reflectionClass): void
     {
         $classBuilder = $builder->$type($reflectionClass->name()->short());
         $builder->namespace($reflectionClass->name()->namespace());
@@ -84,7 +84,7 @@ class WorseBuilderFactory implements BuilderFactory
         }
     }
 
-    private function buildProperty(ClassLikeBuilder $classBuilder, ReflectionProperty $property)
+    private function buildProperty(ClassLikeBuilder $classBuilder, ReflectionProperty $property): void
     {
         $propertyBuilder = $classBuilder->property($property->name());
         $propertyBuilder->visibility((string) $property->visibility());
@@ -96,7 +96,7 @@ class WorseBuilderFactory implements BuilderFactory
         }
     }
 
-    private function buildMethod(ClassLikeBuilder $classBuilder, ReflectionMethod $method)
+    private function buildMethod(ClassLikeBuilder $classBuilder, ReflectionMethod $method): void
     {
         $methodBuilder = $classBuilder->method($method->name());
         $methodBuilder->visibility((string) $method->visibility());
@@ -120,7 +120,7 @@ class WorseBuilderFactory implements BuilderFactory
         }
     }
 
-    private function buildParameter(MethodBuilder $methodBuilder, ReflectionMethod $method, ReflectionParameter $parameter)
+    private function buildParameter(MethodBuilder $methodBuilder, ReflectionMethod $method, ReflectionParameter $parameter): void
     {
         $parameterBuilder = $methodBuilder->parameter($parameter->name());
 
@@ -148,7 +148,7 @@ class WorseBuilderFactory implements BuilderFactory
         }
     }
 
-    private function resolveClassMemberType(ClassLikeBuilder $classBuilder, ClassName $classType, Type $type)
+    private function resolveClassMemberType(ClassLikeBuilder $classBuilder, ClassName $classType, Type $type): void
     {
         if ($type->isClass() && $classType->namespace() != $type->className()->namespace()) {
             $classBuilder->end()->use($type->className()->full());

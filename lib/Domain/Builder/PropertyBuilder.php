@@ -10,10 +10,6 @@ use Phpactor\CodeBuilder\Domain\Prototype\Property;
 
 class PropertyBuilder extends AbstractBuilder implements NamedBuilder
 {
-    /**
-     * @var SourceCodeBuilder
-     */
-    private $parent;
 
     /**
      * @var string
@@ -34,6 +30,10 @@ class PropertyBuilder extends AbstractBuilder implements NamedBuilder
      * @var DefaultValue
      */
     protected $defaultValue;
+    /**
+     * @var SourceCodeBuilder
+     */
+    private $parent;
 
     public function __construct(ClassLikeBuilder $parent, string $name)
     {

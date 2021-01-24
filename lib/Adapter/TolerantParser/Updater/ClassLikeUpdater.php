@@ -11,6 +11,7 @@ use Phpactor\CodeBuilder\Adapter\TolerantParser\Edits;
 use Phpactor\CodeBuilder\Domain\Prototype\ClassLikePrototype;
 use Phpactor\CodeBuilder\Domain\Prototype\Type;
 use Phpactor\CodeBuilder\Domain\Renderer;
+use InvalidArgumentException;
 
 abstract class ClassLikeUpdater
 {
@@ -40,7 +41,7 @@ abstract class ClassLikeUpdater
             return $this->resolvePropertyName($property->leftOperand);
         }
 
-        throw new \InvalidArgumentException(sprintf(
+        throw new InvalidArgumentException(sprintf(
             'Do not know how to resolve property element of type "%s"',
             get_class($property)
         ));
@@ -48,7 +49,7 @@ abstract class ClassLikeUpdater
 
     abstract protected function memberDeclarations(Node $node): array;
 
-    protected function updateProperties(Edits $edits, ClassLikePrototype $classPrototype, Node $classMembers)
+    protected function updateProperties(Edits $edits, ClassLikePrototype $classPrototype, Node $classMembers): void
     {
         if (count($classPrototype->properties()) === 0) {
             return;

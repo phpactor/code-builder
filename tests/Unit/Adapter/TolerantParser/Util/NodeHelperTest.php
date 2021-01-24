@@ -13,7 +13,7 @@ class NodeHelperTest extends TestCase
     /**
      * @dataProvider provideEmptyLinesPrecedingNode
      */
-    public function testEmptyLinesPrecedingNode(string $source, int $expectedLines)
+    public function testEmptyLinesPrecedingNode(string $source, int $expectedLines): void
     {
         [ $source, $offset ] = ExtractOffset::fromSource($source);
         $node = (new Parser())->parseSourceFile($source)->getDescendantNodeAtPosition($offset);
@@ -42,13 +42,13 @@ class NodeHelperTest extends TestCase
 
         yield [
             <<<'EOT'
-<?php
-namespace Foobar;
+                <?php
+                namespace Foobar;
 
-<>class Foobar
-{
-}
-EOT
+                <>class Foobar
+                {
+                }
+                EOT
 
             , 1
         ];

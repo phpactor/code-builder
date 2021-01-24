@@ -14,7 +14,8 @@ function debug_node($node): void
 
     if (!$node instanceof NodeQuery) {
         throw new RuntimeException(sprintf(
-            'Invalid debug node type "%s"', get_class($node)
+            'Invalid debug node type "%s"',
+            get_class($node)
         ));
     }
 

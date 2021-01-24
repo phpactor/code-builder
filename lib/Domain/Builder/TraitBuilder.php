@@ -28,7 +28,7 @@ class TraitBuilder extends ClassLikeBuilder
         ]);
     }
 
-    public function add(Builder $builder)
+    public function add(Builder $builder): void
     {
         if ($builder instanceof PropertyBuilder) {
             $this->properties[$builder->builderName()] = $builder;

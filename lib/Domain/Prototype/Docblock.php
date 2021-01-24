@@ -11,6 +11,11 @@ class Docblock
         $this->docblock = $docblock;
     }
 
+    public function __toString()
+    {
+        return $this->docblock;
+    }
+
     public static function fromString(string $string)
     {
         return new self($string);
@@ -24,11 +29,6 @@ class Docblock
     public function notNone()
     {
         return null !== $this->docblock;
-    }
-
-    public function __toString()
-    {
-        return $this->docblock;
     }
 
     public function asLines(): array

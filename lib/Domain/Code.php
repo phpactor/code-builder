@@ -11,13 +11,13 @@ class Code
         $this->code = $code;
     }
 
-    public static function fromString(string $string)
-    {
-        return new self($string);
-    }
-
     public function __toString()
     {
         return $this->code;
+    }
+
+    public static function fromString(string $string)
+    {
+        return new self($string);
     }
 }

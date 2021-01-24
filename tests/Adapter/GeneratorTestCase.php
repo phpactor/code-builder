@@ -38,12 +38,11 @@ use Phpactor\CodeBuilder\Domain\Renderer;
 
 abstract class GeneratorTestCase extends TestCase
 {
-    abstract protected function renderer(): Renderer;
     /**
      * @testdox It should use twig to render a template
      * @dataProvider provideRender
      */
-    public function testRender(Prototype $prototype, string $expectedCode)
+    public function testRender(Prototype $prototype, string $expectedCode): void
     {
         $code = $this->renderer()->render($prototype);
         $this->assertEquals(rtrim(Code::fromString($expectedCode), PHP_EOL), rtrim($code, PHP_EOL));
@@ -61,10 +60,10 @@ abstract class GeneratorTestCase extends TestCase
                     NamespaceName::fromString('Acme')
                 ),
                 <<<'EOT'
-<?php
+                    <?php
 
-namespace Acme;
-EOT
+                    namespace Acme;
+                    EOT
             ],
             'Renders source code with classes' => [
                 new SourceCode(
@@ -73,16 +72,16 @@ EOT
                     Classes::fromClasses([ new ClassPrototype('Dog'), new ClassPrototype('Cat') ])
                 ),
                 <<<'EOT'
-<?php
+                    <?php
 
-class Dog
-{
-}
+                    class Dog
+                    {
+                    }
 
-class Cat
-{
-}
-EOT
+                    class Cat
+                    {
+                    }
+                    EOT
             ],
             'Renders source code with interfacess' => [
                 new SourceCode(
@@ -92,16 +91,16 @@ EOT
                     Interfaces::fromInterfaces([ new InterfacePrototype('Cat'), new InterfacePrototype('Squirrel') ])
                 ),
                 <<<'EOT'
-<?php
+                    <?php
 
-interface Cat
-{
-}
+                    interface Cat
+                    {
+                    }
 
-interface Squirrel
-{
-}
-EOT
+                    interface Squirrel
+                    {
+                    }
+                    EOT
             ],
             'Renders source code with traits' => [
                 new SourceCode(
@@ -112,16 +111,16 @@ EOT
                     Traits::fromTraits([ new TraitPrototype('Fox'), new TraitPrototype('Hare') ])
                 ),
                 <<<'EOT'
-<?php
+                    <?php
 
-trait Fox
-{
-}
+                    trait Fox
+                    {
+                    }
 
-trait Hare
-{
-}
-EOT
+                    trait Hare
+                    {
+                    }
+                    EOT
         ],
             'Renders source code with use statements' => [
                 new SourceCode(
@@ -132,19 +131,19 @@ EOT
                     ])
                 ),
                 <<<'EOT'
-<?php
+                    <?php
 
-use Acme\Post\Board;
-use Acme\Post\Zebra;
-EOT
+                    use Acme\Post\Board;
+                    use Acme\Post\Zebra;
+                    EOT
             ],
             'Renders a class' => [
                 new ClassPrototype('Dog'),
                 <<<'EOT'
-class Dog
-{
-}
-EOT
+                    class Dog
+                    {
+                    }
+                    EOT
             ],
             'Renders a class with properties' => [
                 new ClassPrototype(
@@ -154,23 +153,23 @@ EOT
                     ])
                 ),
                 <<<'EOT'
-class Dog
-{
-    public $planes;
-}
-EOT
+                    class Dog
+                    {
+                        public $planes;
+                    }
+                    EOT
             ],
             'Renders a property' => [
                 new Property('planes'),
                 <<<'EOT'
-public $planes;
-EOT
+                    public $planes;
+                    EOT
             ],
             'Renders private properties with default value' => [
                 new Property('trains', Visibility::private(), DefaultValue::null()),
                 <<<'EOT'
-private $trains = null;
-EOT
+                    private $trains = null;
+                    EOT
             ],
             'Renders a class with constants' => [
                 new ClassPrototype(
@@ -181,11 +180,11 @@ EOT
                     ])
                 ),
                 <<<'EOT'
-class Dog
-{
-    const AAA = 'aaa';
-}
-EOT
+                    class Dog
+                    {
+                        const AAA = 'aaa';
+                    }
+                    EOT
             ],
             'Renders a class with methods' => [
                 new ClassPrototype(
@@ -197,13 +196,13 @@ EOT
                     ])
                 ),
                 <<<'EOT'
-class Dog
-{
-    public function hello()
-    {
-    }
-}
-EOT
+                    class Dog
+                    {
+                        public function hello()
+                        {
+                        }
+                    }
+                    EOT
             ],
             'Renders a class method with a body' => [
                 new ClassPrototype(
@@ -225,14 +224,14 @@ EOT
                     ])
                 ),
                 <<<'EOT'
-class Dog
-{
-    public function hello()
-    {
-        $this->foobar = $barfoo;
-    }
-}
-EOT
+                    class Dog
+                    {
+                        public function hello()
+                        {
+                            $this->foobar = $barfoo;
+                        }
+                    }
+                    EOT
             ],
             'Renders a method parameters' => [
                 new Method('hello', Visibility::private(), Parameters::fromParameters([
@@ -241,24 +240,24 @@ EOT
                     new Parameter('three', Type::none(), DefaultValue::fromValue(42)),
                 ])),
                 <<<'EOT'
-private function hello($one, string $two, $three = 42)
-EOT
+                    private function hello($one, string $two, $three = 42)
+                    EOT
             ],
             'Renders a method nullable parameter' => [
                 new Method('hello', Visibility::private(), Parameters::fromParameters([
                     new Parameter('two', Type::fromString('?string')),
                 ])),
                 <<<'EOT'
-private function hello(?string $two)
-EOT
+                    private function hello(?string $two)
+                    EOT
             ],
             'Renders a method parameter passed as a reference' => [
                 new Method('hello', Visibility::private(), Parameters::fromParameters([
                     new Parameter('three', Type::none(), DefaultValue::none(), true),
                 ])),
                 <<<'EOT'
-private function hello(&$three)
-EOT
+                    private function hello(&$three)
+                    EOT
             ],
             'Renders static method' => [
                 new Method(
@@ -270,8 +269,8 @@ EOT
                     Method::IS_STATIC
                 ),
                 <<<'EOT'
-private static function hello()
-EOT
+                    private static function hello()
+                    EOT
             ],
             'Renders abstract method' => [
                 new Method(
@@ -283,8 +282,8 @@ EOT
                     Method::IS_ABSTRACT
                 ),
                 <<<'EOT'
-abstract private function hello()
-EOT
+                    abstract private function hello()
+                    EOT
             ],
             'Renders method with a docblock' => [
                 new Method(
@@ -295,11 +294,11 @@ EOT
                     Docblock::fromString('Hello bob')
                 ),
                 <<<'EOT'
-/**
- * Hello bob
- */
-private function hello()
-EOT
+                    /**
+                     * Hello bob
+                     */
+                    private function hello()
+                    EOT
             ],
             'Renders method with a with special chars' => [
                 new Method(
@@ -310,11 +309,11 @@ EOT
                     Docblock::fromString('<hello bob>')
                 ),
                 <<<'EOT'
-/**
- * <hello bob>
- */
-private function hello()
-EOT
+                    /**
+                     * <hello bob>
+                     */
+                    private function hello()
+                    EOT
             ],
             'Renders method return type' => [
                 new Method(
@@ -324,8 +323,8 @@ EOT
                     ReturnType::fromString('Hello')
                 ),
                 <<<'EOT'
-private function hello(): Hello
-EOT
+                    private function hello(): Hello
+                    EOT
             ],
             'Renders method nullable return type' => [
                 new Method(
@@ -335,8 +334,8 @@ EOT
                     ReturnType::fromString('?Hello')
                 ),
                 <<<'EOT'
-private function hello(): ?Hello
-EOT
+                    private function hello(): ?Hello
+                    EOT
             ],
             'Renders a class with a parent' => [
                 new ClassPrototype(
@@ -347,10 +346,10 @@ EOT
                     ExtendsClass::fromString('Cat')
                 ),
                 <<<'EOT'
-class Kitten extends Cat
-{
-}
-EOT
+                    class Kitten extends Cat
+                    {
+                    }
+                    EOT
             ],
             'Renders a class with interfaces' => [
                 new ClassPrototype(
@@ -365,10 +364,10 @@ EOT
                     ])
                 ),
                 <<<'EOT'
-class Kitten implements Feline, Infant
-{
-}
-EOT
+                    class Kitten implements Feline, Infant
+                    {
+                    }
+                    EOT
             ],
             'Renders a property with a comment' => [
                 new Property(
@@ -378,40 +377,40 @@ EOT
                     Type::fromString('PlaneCollection')
                 ),
                 <<<'EOT'
-/**
- * @var PlaneCollection
- */
-public $planes;
-EOT
+                    /**
+                     * @var PlaneCollection
+                     */
+                    public $planes;
+                    EOT
             ],
             'Renders an interface' => [
                 new InterfacePrototype('Dog'),
                 <<<'EOT'
-interface Dog
-{
-}
-EOT
+                    interface Dog
+                    {
+                    }
+                    EOT
             ],
             'Renders an interface with methods' => [
                 new InterfacePrototype('Dog', Methods::fromMethods([
                     new Method('hello'),
                 ])),
                 <<<'EOT'
-interface Dog
-{
-    public function hello();
-}
-EOT
+                    interface Dog
+                    {
+                        public function hello();
+                    }
+                    EOT
             ],
             'Renders a trait' => [
                 new TraitPrototype(
                     'Butterfly'
                 ),
                 <<<'EOT'
-trait Butterfly
-{
-}
-EOT
+                    trait Butterfly
+                    {
+                    }
+                    EOT
             ],
             'Renders a trait with properties' => [
                 new TraitPrototype(
@@ -419,11 +418,11 @@ EOT
                     Properties::fromProperties([ new Property('colour') ])
                 ),
                 <<<'EOT'
-trait Butterfly
-{
-    public $colour;
-}
-EOT
+                    trait Butterfly
+                    {
+                        public $colour;
+                    }
+                    EOT
             ],
             'Renders a trait with constants' => [
                 new TraitPrototype(
@@ -434,11 +433,11 @@ EOT
                     ])
                 ),
                 <<<'EOT'
-trait Butterfly
-{
-    const WAS_CATERPILLAR = true;
-}
-EOT
+                    trait Butterfly
+                    {
+                        const WAS_CATERPILLAR = true;
+                    }
+                    EOT
             ],
             'Renders a trait with methods' => [
                 new TraitPrototype(
@@ -450,13 +449,13 @@ EOT
                     ])
                 ),
                 <<<'EOT'
-trait Butterfly
-{
-    public function wings()
-    {
-    }
-}
-EOT
+                    trait Butterfly
+                    {
+                        public function wings()
+                        {
+                        }
+                    }
+                    EOT
             ],
             'Renders a trait method with a body' => [
                 new TraitPrototype(
@@ -478,65 +477,65 @@ EOT
                     ])
                 ),
                 <<<'EOT'
-trait Butterfly
-{
-    public function hello()
-    {
-        $this->foobar = $barfoo;
-    }
-}
-EOT
+                    trait Butterfly
+                    {
+                        public function hello()
+                        {
+                            $this->foobar = $barfoo;
+                        }
+                    }
+                    EOT
             ],
         ];
     }
 
-    public function testFromBuilder()
+    public function testFromBuilder(): void
     {
         $expected = <<<'EOT'
-<?php
+            <?php
 
-namespace Animals;
+            namespace Animals;
 
-use Measurements\Height;
+            use Measurements\Height;
 
-interface Animal
-{
-    public function sleep();
-}
+            interface Animal
+            {
+                public function sleep();
+            }
 
-trait Oryctolagus
-{
-    /**
-     * @var bool
-     */
-    private $domesticated = true;
+            trait Oryctolagus
+            {
+                /**
+                 * @var bool
+                 */
+                private $domesticated = true;
 
-    public function burrow(Depth $depth = 'deep')
-    {
-    }
-}
+                public function burrow(Depth $depth = 'deep')
+                {
+                }
+            }
 
-class Rabbits extends Leporidae implements Animal
-{
-    /**
-     * @var int
-     */
-    private $force = 5;
+            class Rabbits extends Leporidae implements Animal
+            {
+                /**
+                 * @var int
+                 */
+                private $force = 5;
 
-    public $guile;
+                public $guile;
 
-    /**
-     * All the world will be your enemy, prince with a thousand enemies
-     */
-    public function jump(Height $how = 'high')
-    {
-    }
+                /**
+                 * All the world will be your enemy, prince with a thousand enemies
+                 */
+                public function jump(Height $how = 'high')
+                {
+                }
 
-    public function bark(int $volume)
-    {
-    }
-}
-EOT
+                public function bark(int $volume)
+                {
+                }
+            }
+            EOT
         ;
         $source = $builder = SourceCodeBuilder::create()
             ->namespace('Animals')
@@ -586,31 +585,31 @@ EOT
         $this->assertEquals($expected, (string) $code);
     }
 
-    public function testConstantsAndProperties()
+    public function testConstantsAndProperties(): void
     {
         $expected = <<<'EOT'
-<?php
+            <?php
 
-namespace Animals;
+            namespace Animals;
 
-interface Animal
-{
-    public function sleep();
-}
+            interface Animal
+            {
+                public function sleep();
+            }
 
-class Rabbits implements Animal
-{
-    const LEGS = 4;
-    const SKIN = 'soft';
+            class Rabbits implements Animal
+            {
+                const LEGS = 4;
+                const SKIN = 'soft';
 
-    /**
-     * @var int
-     */
-    private $force = 5;
+                /**
+                 * @var int
+                 */
+                private $force = 5;
 
-    public $guile;
-}
-EOT
+                public $guile;
+            }
+            EOT
         ;
         $source = $builder = SourceCodeBuilder::create()
             ->namespace('Animals')
@@ -634,4 +633,5 @@ EOT
 
         $this->assertEquals($expected, (string) $code);
     }
+    abstract protected function renderer(): Renderer;
 }

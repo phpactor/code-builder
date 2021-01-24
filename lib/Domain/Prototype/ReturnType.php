@@ -12,6 +12,11 @@ final class ReturnType extends Prototype
         $this->type = $type;
     }
 
+    public function __toString()
+    {
+        return (string) $this->type;
+    }
+
     public static function fromString($string)
     {
         return new self(Type::fromString($string));
@@ -20,11 +25,6 @@ final class ReturnType extends Prototype
     public function nullable(): bool
     {
         return $this->type->nullable();
-    }
-
-    public function __toString()
-    {
-        return (string) $this->type;
     }
 
     public static function none()

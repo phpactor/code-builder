@@ -24,22 +24,22 @@ class Edits
         ;
     }
 
-    public function remove($node)
+    public function remove($node): void
     {
         $this->edits[] = TextEdit::create($node->getFullStart(), $node->getFullWidth(), '');
     }
 
-    public function before($node, string $text)
+    public function before($node, string $text): void
     {
         $this->edits[] = TextEdit::create($node->getStart(), 0, $text);
     }
 
-    public function after($node, string $text)
+    public function after($node, string $text): void
     {
         $this->edits[] = TextEdit::create($node->getEndPosition(), 0, $text);
     }
 
-    public function replace($node, string $text)
+    public function replace($node, string $text): void
     {
         $this->edits[] = TextEdit::create($node->getFullStart(), $node->getFullWidth(), $text);
     }
@@ -49,7 +49,7 @@ class Edits
         return TextEdits::fromTextEdits($this->edits);
     }
 
-    public function add(TextEdit $textEdit)
+    public function add(TextEdit $textEdit): void
     {
         $this->edits[] = $textEdit;
     }

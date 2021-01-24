@@ -10,7 +10,7 @@ class MethodTest extends TestCase
     /**
      * @testfox It returns if it is static or abstract
      */
-    public function testAbstractStatic()
+    public function testAbstractStatic(): void
     {
         $method = $this->createMethodModifier(Method::IS_STATIC);
         $this->assertTrue($method->isStatic());

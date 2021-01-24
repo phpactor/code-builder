@@ -29,7 +29,7 @@ class InterfaceUpdater
         Edits $edits,
         InterfacePrototype $classPrototype,
         InterfaceDeclaration $classNode
-    ) {
+    ): void {
         $this->methodUpdater->updateMethods($edits, $classPrototype, $classNode);
     }
 }

@@ -1,17 +1,7 @@
 parameters:
 	ignoreErrors:
 		-
-			message: "#^Method Phpactor\\\\CodeBuilder\\\\Adapter\\\\TolerantParser\\\\Edits\\:\\:remove\\(\\) has no return typehint specified\\.$#"
-			count: 1
-			path: lib/Adapter/TolerantParser/Edits.php
-
-		-
 			message: "#^Method Phpactor\\\\CodeBuilder\\\\Adapter\\\\TolerantParser\\\\Edits\\:\\:remove\\(\\) has parameter \\$node with no typehint specified\\.$#"
-			count: 1
-			path: lib/Adapter/TolerantParser/Edits.php
-
-		-
-			message: "#^Method Phpactor\\\\CodeBuilder\\\\Adapter\\\\TolerantParser\\\\Edits\\:\\:before\\(\\) has no return typehint specified\\.$#"
 			count: 1
 			path: lib/Adapter/TolerantParser/Edits.php
 
@@ -21,27 +11,12 @@ parameters:
 			path: lib/Adapter/TolerantParser/Edits.php
 
 		-
-			message: "#^Method Phpactor\\\\CodeBuilder\\\\Adapter\\\\TolerantParser\\\\Edits\\:\\:after\\(\\) has no return typehint specified\\.$#"
-			count: 1
-			path: lib/Adapter/TolerantParser/Edits.php
-
-		-
 			message: "#^Method Phpactor\\\\CodeBuilder\\\\Adapter\\\\TolerantParser\\\\Edits\\:\\:after\\(\\) has parameter \\$node with no typehint specified\\.$#"
 			count: 1
 			path: lib/Adapter/TolerantParser/Edits.php
 
 		-
-			message: "#^Method Phpactor\\\\CodeBuilder\\\\Adapter\\\\TolerantParser\\\\Edits\\:\\:replace\\(\\) has no return typehint specified\\.$#"
-			count: 1
-			path: lib/Adapter/TolerantParser/Edits.php
-
-		-
 			message: "#^Method Phpactor\\\\CodeBuilder\\\\Adapter\\\\TolerantParser\\\\Edits\\:\\:replace\\(\\) has parameter \\$node with no typehint specified\\.$#"
-			count: 1
-			path: lib/Adapter/TolerantParser/Edits.php
-
-		-
-			message: "#^Method Phpactor\\\\CodeBuilder\\\\Adapter\\\\TolerantParser\\\\Edits\\:\\:add\\(\\) has no return typehint specified\\.$#"
 			count: 1
 			path: lib/Adapter/TolerantParser/Edits.php
 
@@ -66,24 +41,9 @@ parameters:
 			path: lib/Adapter/TolerantParser/TolerantUpdater.php
 
 		-
-			message: "#^Method Phpactor\\\\CodeBuilder\\\\Adapter\\\\TolerantParser\\\\TolerantUpdater\\:\\:updateNamespace\\(\\) has no return typehint specified\\.$#"
-			count: 1
-			path: lib/Adapter/TolerantParser/TolerantUpdater.php
-
-		-
 			message: "#^Access to an undefined property Microsoft\\\\PhpParser\\\\Node\\:\\:\\$name\\.$#"
 			count: 1
 			path: lib/Adapter/TolerantParser/TolerantUpdater.php
-
-		-
-			message: "#^Method Phpactor\\\\CodeBuilder\\\\Adapter\\\\TolerantParser\\\\TolerantUpdater\\:\\:updateClasses\\(\\) has no return typehint specified\\.$#"
-			count: 1
-			path: lib/Adapter/TolerantParser/TolerantUpdater.php
-
-		-
-			message: "#^Method Phpactor\\\\CodeBuilder\\\\Adapter\\\\TolerantParser\\\\Updater\\\\AbstractMethodUpdater\\:\\:updateMethods\\(\\) has no return typehint specified\\.$#"
-			count: 1
-			path: lib/Adapter/TolerantParser/Updater/AbstractMethodUpdater.php
 
 		-
 			message: "#^Variable \\$methodBuilder in PHPDoc tag @var does not match any variable in the foreach loop\\: \\$methodPrototype$#"
@@ -96,12 +56,17 @@ parameters:
 			path: lib/Adapter/TolerantParser/Updater/AbstractMethodUpdater.php
 
 		-
-			message: "#^Method Phpactor\\\\CodeBuilder\\\\Adapter\\\\TolerantParser\\\\Updater\\\\AbstractMethodUpdater\\:\\:appendLinesToMethod\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Adapter\\\\TolerantParser\\\\Updater\\\\AbstractMethodUpdater\\:\\:memberDeclarations\\(\\) has no return typehint specified\\.$#"
 			count: 1
 			path: lib/Adapter/TolerantParser/Updater/AbstractMethodUpdater.php
 
 		-
-			message: "#^Method Phpactor\\\\CodeBuilder\\\\Adapter\\\\TolerantParser\\\\Updater\\\\AbstractMethodUpdater\\:\\:updateOrAddParameters\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Adapter\\\\TolerantParser\\\\Updater\\\\AbstractMethodUpdater\\:\\:memberDeclarationsNode\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: lib/Adapter/TolerantParser/Updater/AbstractMethodUpdater.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Adapter\\\\TolerantParser\\\\Updater\\\\AbstractMethodUpdater\\:\\:renderMethod\\(\\) has no return typehint specified\\.$#"
 			count: 1
 			path: lib/Adapter/TolerantParser/Updater/AbstractMethodUpdater.php
 
@@ -126,11 +91,6 @@ parameters:
 			path: lib/Adapter/TolerantParser/Updater/AbstractMethodUpdater.php
 
 		-
-			message: "#^Method Phpactor\\\\CodeBuilder\\\\Adapter\\\\TolerantParser\\\\Updater\\\\AbstractMethodUpdater\\:\\:updateOrAddReturnType\\(\\) has no return typehint specified\\.$#"
-			count: 1
-			path: lib/Adapter/TolerantParser/Updater/AbstractMethodUpdater.php
-
-		-
 			message: "#^Method Phpactor\\\\CodeBuilder\\\\Adapter\\\\TolerantParser\\\\Updater\\\\AbstractMethodUpdater\\:\\:prototypeSameAsDeclaration\\(\\) has no return typehint specified\\.$#"
 			count: 1
 			path: lib/Adapter/TolerantParser/Updater/AbstractMethodUpdater.php
@@ -151,21 +111,6 @@ parameters:
 			path: lib/Adapter/TolerantParser/Updater/AbstractMethodUpdater.php
 
 		-
-			message: "#^Method Phpactor\\\\CodeBuilder\\\\Adapter\\\\TolerantParser\\\\Updater\\\\AbstractMethodUpdater\\:\\:memberDeclarations\\(\\) has no return typehint specified\\.$#"
-			count: 1
-			path: lib/Adapter/TolerantParser/Updater/AbstractMethodUpdater.php
-
-		-
-			message: "#^Method Phpactor\\\\CodeBuilder\\\\Adapter\\\\TolerantParser\\\\Updater\\\\AbstractMethodUpdater\\:\\:memberDeclarationsNode\\(\\) has no return typehint specified\\.$#"
-			count: 1
-			path: lib/Adapter/TolerantParser/Updater/AbstractMethodUpdater.php
-
-		-
-			message: "#^Method Phpactor\\\\CodeBuilder\\\\Adapter\\\\TolerantParser\\\\Updater\\\\AbstractMethodUpdater\\:\\:renderMethod\\(\\) has no return typehint specified\\.$#"
-			count: 1
-			path: lib/Adapter/TolerantParser/Updater/AbstractMethodUpdater.php
-
-		-
 			message: "#^Method Phpactor\\\\CodeBuilder\\\\Adapter\\\\TolerantParser\\\\Updater\\\\ClassLikeUpdater\\:\\:resolvePropertyName\\(\\) has no return typehint specified\\.$#"
 			count: 1
 			path: lib/Adapter/TolerantParser/Updater/ClassLikeUpdater.php
@@ -176,17 +121,12 @@ parameters:
 			path: lib/Adapter/TolerantParser/Updater/ClassLikeUpdater.php
 
 		-
-			message: "#^Method Phpactor\\\\CodeBuilder\\\\Adapter\\\\TolerantParser\\\\Updater\\\\ClassLikeUpdater\\:\\:updateProperties\\(\\) has no return typehint specified\\.$#"
-			count: 1
-			path: lib/Adapter/TolerantParser/Updater/ClassLikeUpdater.php
-
-		-
 			message: "#^Access to an undefined property Microsoft\\\\PhpParser\\\\Node\\:\\:\\$openBrace\\.$#"
 			count: 1
 			path: lib/Adapter/TolerantParser/Updater/ClassLikeUpdater.php
 
 		-
-			message: "#^Method Phpactor\\\\CodeBuilder\\\\Adapter\\\\TolerantParser\\\\Updater\\\\ClassMethodUpdater\\:\\:memberDeclarations\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Adapter\\\\TolerantParser\\\\Updater\\\\ClassMethodUpdater\\:\\:memberDeclarationsNode\\(\\) has no return typehint specified\\.$#"
 			count: 1
 			path: lib/Adapter/TolerantParser/Updater/ClassMethodUpdater.php
 
@@ -196,39 +136,14 @@ parameters:
 			path: lib/Adapter/TolerantParser/Updater/ClassMethodUpdater.php
 
 		-
-			message: "#^Method Phpactor\\\\CodeBuilder\\\\Adapter\\\\TolerantParser\\\\Updater\\\\ClassMethodUpdater\\:\\:memberDeclarationsNode\\(\\) has no return typehint specified\\.$#"
-			count: 1
-			path: lib/Adapter/TolerantParser/Updater/ClassMethodUpdater.php
-
-		-
 			message: "#^Method Phpactor\\\\CodeBuilder\\\\Adapter\\\\TolerantParser\\\\Updater\\\\ClassMethodUpdater\\:\\:renderMethod\\(\\) has no return typehint specified\\.$#"
 			count: 1
 			path: lib/Adapter/TolerantParser/Updater/ClassMethodUpdater.php
 
 		-
-			message: "#^Method Phpactor\\\\CodeBuilder\\\\Adapter\\\\TolerantParser\\\\Updater\\\\ClassUpdater\\:\\:updateClass\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Adapter\\\\TolerantParser\\\\Updater\\\\ClassMethodUpdater\\:\\:memberDeclarations\\(\\) has no return typehint specified\\.$#"
 			count: 1
-			path: lib/Adapter/TolerantParser/Updater/ClassUpdater.php
-
-		-
-			message: "#^Method Phpactor\\\\CodeBuilder\\\\Adapter\\\\TolerantParser\\\\Updater\\\\ClassUpdater\\:\\:updateExtends\\(\\) has no return typehint specified\\.$#"
-			count: 1
-			path: lib/Adapter/TolerantParser/Updater/ClassUpdater.php
-
-		-
-			message: "#^Method Phpactor\\\\CodeBuilder\\\\Adapter\\\\TolerantParser\\\\Updater\\\\ClassUpdater\\:\\:updateImplements\\(\\) has no return typehint specified\\.$#"
-			count: 1
-			path: lib/Adapter/TolerantParser/Updater/ClassUpdater.php
-
-		-
-			message: "#^Call to an undefined method Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\Collection\\:\\:__toString\\(\\)\\.$#"
-			count: 1
-			path: lib/Adapter/TolerantParser/Updater/ClassUpdater.php
-
-		-
-			message: "#^Method Phpactor\\\\CodeBuilder\\\\Adapter\\\\TolerantParser\\\\Updater\\\\ClassUpdater\\:\\:updateConstants\\(\\) has no return typehint specified\\.$#"
-			count: 1
-			path: lib/Adapter/TolerantParser/Updater/ClassUpdater.php
+			path: lib/Adapter/TolerantParser/Updater/ClassMethodUpdater.php
 
 		-
 			message: "#^Access to an undefined property Microsoft\\\\PhpParser\\\\Node\\:\\:\\$openBrace\\.$#"
@@ -251,7 +166,12 @@ parameters:
 			path: lib/Adapter/TolerantParser/Updater/ClassUpdater.php
 
 		-
-			message: "#^Method Phpactor\\\\CodeBuilder\\\\Adapter\\\\TolerantParser\\\\Updater\\\\InterfaceMethodUpdater\\:\\:memberDeclarations\\(\\) has no return typehint specified\\.$#"
+			message: "#^Call to an undefined method Phpactor\\\\CodeBuilder\\\\Domain\\\\Prototype\\\\Collection\\:\\:__toString\\(\\)\\.$#"
+			count: 1
+			path: lib/Adapter/TolerantParser/Updater/ClassUpdater.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Adapter\\\\TolerantParser\\\\Updater\\\\InterfaceMethodUpdater\\:\\:memberDeclarationsNode\\(\\) has no return typehint specified\\.$#"
 			count: 1
 			path: lib/Adapter/TolerantParser/Updater/InterfaceMethodUpdater.php
 
@@ -261,34 +181,19 @@ parameters:
 			path: lib/Adapter/TolerantParser/Updater/InterfaceMethodUpdater.php
 
 		-
-			message: "#^Method Phpactor\\\\CodeBuilder\\\\Adapter\\\\TolerantParser\\\\Updater\\\\InterfaceMethodUpdater\\:\\:memberDeclarationsNode\\(\\) has no return typehint specified\\.$#"
-			count: 1
-			path: lib/Adapter/TolerantParser/Updater/InterfaceMethodUpdater.php
-
-		-
 			message: "#^Method Phpactor\\\\CodeBuilder\\\\Adapter\\\\TolerantParser\\\\Updater\\\\InterfaceMethodUpdater\\:\\:renderMethod\\(\\) has no return typehint specified\\.$#"
 			count: 1
 			path: lib/Adapter/TolerantParser/Updater/InterfaceMethodUpdater.php
 
 		-
-			message: "#^Method Phpactor\\\\CodeBuilder\\\\Adapter\\\\TolerantParser\\\\Updater\\\\InterfaceUpdater\\:\\:updateInterface\\(\\) has no return typehint specified\\.$#"
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Adapter\\\\TolerantParser\\\\Updater\\\\InterfaceMethodUpdater\\:\\:memberDeclarations\\(\\) has no return typehint specified\\.$#"
 			count: 1
-			path: lib/Adapter/TolerantParser/Updater/InterfaceUpdater.php
-
-		-
-			message: "#^Method Phpactor\\\\CodeBuilder\\\\Adapter\\\\TolerantParser\\\\Updater\\\\TraitUpdater\\:\\:updateTrait\\(\\) has no return typehint specified\\.$#"
-			count: 1
-			path: lib/Adapter/TolerantParser/Updater/TraitUpdater.php
+			path: lib/Adapter/TolerantParser/Updater/InterfaceMethodUpdater.php
 
 		-
 			message: "#^Access to an undefined property Microsoft\\\\PhpParser\\\\Node\\:\\:\\$traitMemberDeclarations\\.$#"
 			count: 1
 			path: lib/Adapter/TolerantParser/Updater/TraitUpdater.php
-
-		-
-			message: "#^Method Phpactor\\\\CodeBuilder\\\\Adapter\\\\TolerantParser\\\\Updater\\\\UseStatementUpdater\\:\\:updateUseStatements\\(\\) has no return typehint specified\\.$#"
-			count: 1
-			path: lib/Adapter/TolerantParser/Updater/UseStatementUpdater.php
 
 		-
 			message: "#^Method Phpactor\\\\CodeBuilder\\\\Adapter\\\\TolerantParser\\\\Updater\\\\UseStatementUpdater\\:\\:filterExisting\\(\\) has no return typehint specified\\.$#"
@@ -336,12 +241,12 @@ parameters:
 			path: lib/Adapter/TolerantParser/Util/ImportedNames.php
 
 		-
-			message: "#^Method Phpactor\\\\CodeBuilder\\\\Adapter\\\\TolerantParser\\\\Util\\\\ImportedNames\\:\\:classNamesFromNode\\(\\) return type has no value type specified in iterable type array\\.$#"
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Adapter\\\\TolerantParser\\\\Util\\\\ImportedNames\\:\\:functionNames\\(\\) return type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: lib/Adapter/TolerantParser/Util/ImportedNames.php
 
 		-
-			message: "#^Method Phpactor\\\\CodeBuilder\\\\Adapter\\\\TolerantParser\\\\Util\\\\ImportedNames\\:\\:functionNames\\(\\) return type has no value type specified in iterable type array\\.$#"
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Adapter\\\\TolerantParser\\\\Util\\\\ImportedNames\\:\\:classNamesFromNode\\(\\) return type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: lib/Adapter/TolerantParser/Util/ImportedNames.php
 
@@ -391,37 +296,12 @@ parameters:
 			path: lib/Adapter/WorseReflection/WorseBuilderFactory.php
 
 		-
-			message: "#^Method Phpactor\\\\CodeBuilder\\\\Adapter\\\\WorseReflection\\\\WorseBuilderFactory\\:\\:build\\(\\) has no return typehint specified\\.$#"
-			count: 1
-			path: lib/Adapter/WorseReflection/WorseBuilderFactory.php
-
-		-
 			message: "#^Parameter \\#2 \\$method of method Phpactor\\\\CodeBuilder\\\\Adapter\\\\WorseReflection\\\\WorseBuilderFactory\\:\\:buildMethod\\(\\) expects Phpactor\\\\WorseReflection\\\\Core\\\\Reflection\\\\ReflectionMethod, Phpactor\\\\WorseReflection\\\\Core\\\\Reflection\\\\ReflectionMember given\\.$#"
 			count: 1
 			path: lib/Adapter/WorseReflection/WorseBuilderFactory.php
 
 		-
-			message: "#^Method Phpactor\\\\CodeBuilder\\\\Adapter\\\\WorseReflection\\\\WorseBuilderFactory\\:\\:buildProperty\\(\\) has no return typehint specified\\.$#"
-			count: 1
-			path: lib/Adapter/WorseReflection/WorseBuilderFactory.php
-
-		-
 			message: "#^Call to an undefined method Phpactor\\\\CodeBuilder\\\\Domain\\\\Builder\\\\ClassLikeBuilder\\:\\:property\\(\\)\\.$#"
-			count: 1
-			path: lib/Adapter/WorseReflection/WorseBuilderFactory.php
-
-		-
-			message: "#^Method Phpactor\\\\CodeBuilder\\\\Adapter\\\\WorseReflection\\\\WorseBuilderFactory\\:\\:buildMethod\\(\\) has no return typehint specified\\.$#"
-			count: 1
-			path: lib/Adapter/WorseReflection/WorseBuilderFactory.php
-
-		-
-			message: "#^Method Phpactor\\\\CodeBuilder\\\\Adapter\\\\WorseReflection\\\\WorseBuilderFactory\\:\\:buildParameter\\(\\) has no return typehint specified\\.$#"
-			count: 1
-			path: lib/Adapter/WorseReflection/WorseBuilderFactory.php
-
-		-
-			message: "#^Method Phpactor\\\\CodeBuilder\\\\Adapter\\\\WorseReflection\\\\WorseBuilderFactory\\:\\:resolveClassMemberType\\(\\) has no return typehint specified\\.$#"
 			count: 1
 			path: lib/Adapter/WorseReflection/WorseBuilderFactory.php
 
@@ -437,11 +317,6 @@ parameters:
 
 		-
 			message: "#^Property Phpactor\\\\CodeBuilder\\\\Domain\\\\Builder\\\\AbstractBuilder\\:\\:\\$originalProperties has no typehint specified\\.$#"
-			count: 1
-			path: lib/Domain/Builder/AbstractBuilder.php
-
-		-
-			message: "#^Method Phpactor\\\\CodeBuilder\\\\Domain\\\\Builder\\\\AbstractBuilder\\:\\:snapshot\\(\\) has no return typehint specified\\.$#"
 			count: 1
 			path: lib/Domain/Builder/AbstractBuilder.php
 
@@ -471,11 +346,6 @@ parameters:
 			path: lib/Domain/Builder/ClassBuilder.php
 
 		-
-			message: "#^Method Phpactor\\\\CodeBuilder\\\\Domain\\\\Builder\\\\ClassBuilder\\:\\:add\\(\\) has no return typehint specified\\.$#"
-			count: 1
-			path: lib/Domain/Builder/ClassBuilder.php
-
-		-
 			message: "#^Method Phpactor\\\\CodeBuilder\\\\Domain\\\\Builder\\\\ClassBuilder\\:\\:constant\\(\\) has parameter \\$value with no typehint specified\\.$#"
 			count: 1
 			path: lib/Domain/Builder/ClassBuilder.php
@@ -491,22 +361,17 @@ parameters:
 			path: lib/Domain/Builder/ClassLikeBuilder.php
 
 		-
-			message: "#^Method Phpactor\\\\CodeBuilder\\\\Domain\\\\Builder\\\\ClassLikeBuilder\\:\\:add\\(\\) has no return typehint specified\\.$#"
-			count: 1
-			path: lib/Domain/Builder/ClassLikeBuilder.php
-
-		-
-			message: "#^Method Phpactor\\\\CodeBuilder\\\\Domain\\\\Builder\\\\ConstantBuilder\\:\\:childNames\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: lib/Domain/Builder/ConstantBuilder.php
-
-		-
 			message: "#^Method Phpactor\\\\CodeBuilder\\\\Domain\\\\Builder\\\\ConstantBuilder\\:\\:__construct\\(\\) has parameter \\$value with no typehint specified\\.$#"
 			count: 1
 			path: lib/Domain/Builder/ConstantBuilder.php
 
 		-
 			message: "#^Property Phpactor\\\\CodeBuilder\\\\Domain\\\\Builder\\\\ConstantBuilder\\:\\:\\$parent \\(Phpactor\\\\CodeBuilder\\\\Domain\\\\Builder\\\\ClassBuilder\\) does not accept Phpactor\\\\CodeBuilder\\\\Domain\\\\Builder\\\\ClassLikeBuilder\\.$#"
+			count: 1
+			path: lib/Domain/Builder/ConstantBuilder.php
+
+		-
+			message: "#^Method Phpactor\\\\CodeBuilder\\\\Domain\\\\Builder\\\\ConstantBuilder\\:\\:childNames\\(\\) return type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: lib/Domain/Builder/ConstantBuilder.php
 
@@ -527,11 +392,6 @@ parameters:
 
 		-
 			message: "#^Method Phpactor\\\\CodeBuilder\\\\Domain\\\\Builder\\\\MethodBuilder\\:\\:childNames\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: lib/Domain/Builder/MethodBuilder.php
-
-		-
-			message: "#^Method Phpactor\\\\CodeBuilder\\\\Domain\\\\Builder\\\\MethodBuilder\\:\\:add\\(\\) has no return typehint specified\\.$#"
 			count: 1
 			path: lib/Domain/Builder/MethodBuilder.php
 
@@ -607,11 +467,6 @@ parameters:
 
 		-
 			message: "#^Method Phpactor\\\\CodeBuilder\\\\Domain\\\\Builder\\\\TraitBuilder\\:\\:childNames\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: lib/Domain/Builder/TraitBuilder.php
-
-		-
-			message: "#^Method Phpactor\\\\CodeBuilder\\\\Domain\\\\Builder\\\\TraitBuilder\\:\\:add\\(\\) has no return typehint specified\\.$#"
 			count: 1
 			path: lib/Domain/Builder/TraitBuilder.php
 

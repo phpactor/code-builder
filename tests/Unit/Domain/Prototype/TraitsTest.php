@@ -11,7 +11,7 @@ class TraitsTest extends TestCase
     /**
      * @testdox Create from traits
      */
-    public function testCreateFromTraits()
+    public function testCreateFromTraits(): void
     {
         $traits = Traits::fromTraits([
             new TraitPrototype('One'),

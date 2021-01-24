@@ -12,7 +12,7 @@ use Phpactor\CodeBuilder\Domain\Prototype\Traits;
 
 class SourceCodeTest extends TestCase
 {
-    public function testAccessors()
+    public function testAccessors(): void
     {
         $namespace = NamespaceName::fromString('Ducks');
         $useStatements = UseStatements::empty();
