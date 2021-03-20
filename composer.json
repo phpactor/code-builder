@@ -12,7 +12,7 @@
         "php": "^7.3 || ^8.0",
         "microsoft/tolerant-php-parser": "~0.0.1",
         "phpactor/text-document": "~1.2.3",
-        "phpactor/worse-reflection": "~0.4.4",
+        "phpactor/worse-reflection": "^0.4.5",
         "twig/twig": "^2.4"
     },
     "require-dev": {
