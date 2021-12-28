@@ -2,6 +2,9 @@
 
 namespace Phpactor\CodeBuilder\Adapter\TolerantParser;
 
+use Microsoft\PhpParser\Node;
+use Microsoft\PhpParser\Node\QualifiedName;
+use Microsoft\PhpParser\Token;
 use Phpactor\CodeBuilder\Util\TextFormat;
 use Phpactor\TextDocument\TextEdit;
 use Phpactor\TextDocument\TextEdits;
@@ -24,24 +27,36 @@ class Edits
         ;
     }
 
+    /**
+     * @param Node|Token $node
+     */
     public function remove($node): void
     {
-        $this->edits[] = TextEdit::create($node->getFullStart(), $node->getFullWidth(), '');
+        $this->edits[] = TextEdit::create($node->getFullStartPosition(), $node->getFullWidth(), '');
     }
 
+    /**
+     * @param Node|Token $node
+     */
     public function before($node, string $text): void
     {
-        $this->edits[] = TextEdit::create($node->getStart(), 0, $text);
+        $this->edits[] = TextEdit::create($node->getStartPosition(), 0, $text);
     }
 
+    /**
+     * @param Node|Token $node
+     */
     public function after($node, string $text): void
     {
         $this->edits[] = TextEdit::create($node->getEndPosition(), 0, $text);
     }
 
+    /**
+     * @param Node|Token|QualifiedName $node
+     */
     public function replace($node, string $text): void
     {
-        $this->edits[] = TextEdit::create($node->getFullStart(), $node->getFullWidth(), $text);
+        $this->edits[] = TextEdit::create($node->getFullStartPosition(), $node->getFullWidth(), $text);
     }
 
     public function textEdits(): TextEdits

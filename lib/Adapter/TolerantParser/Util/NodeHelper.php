@@ -54,11 +54,11 @@ class NodeHelper
     public static function emptyLinesPrecedingNode(Node $node): int
     {
         $contents = $node->getFileContents();
-        $preceding = substr($contents, 0, $node->getStart());
+        $preceding = substr($contents, 0, $node->getStartPosition());
 
         $lines = 0;
         $lastChar = null;
-        for ($i = $node->getStart() - 1; $i > 0; $i--) {
+        for ($i = $node->getStartPosition() - 1; $i > 0; $i--) {
             $char = $contents[$i];
 
             if ($char !== "\n") {

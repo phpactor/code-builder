@@ -10,9 +10,9 @@
     ],
     "require": {
         "php": "^7.3 || ^8.0",
-        "microsoft/tolerant-php-parser": "~0.0.1",
+        "microsoft/tolerant-php-parser": "~0.1.0",
         "phpactor/text-document": "~1.2.3",
-        "phpactor/worse-reflection": "~0.4.4",
+        "phpactor/worse-reflection": "~0.4.7",
         "twig/twig": "^2.4"
     },
     "require-dev": {

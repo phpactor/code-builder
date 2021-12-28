@@ -17,6 +17,7 @@ use Microsoft\PhpParser\ClassLike;
 use Microsoft\PhpParser\Node\Parameter;
 use Phpactor\CodeBuilder\Domain\Prototype\ReturnType;
 use Phpactor\TextDocument\TextEdit;
+use Phpactor\WorseReflection\Core\Util\QualifiedNameListUtil;
 
 abstract class AbstractMethodUpdater
 {
@@ -175,7 +176,18 @@ abstract class AbstractMethodUpdater
         }
 
         $returnType = (string) $returnType;
-        $existingReturnType = $returnType ? NodeHelper::resolvedShortName($methodDeclaration, $methodDeclaration->returnType) : null;
+
+        if (!$methodDeclaration->returnTypeList) {
+            return;
+        }
+
+        $firstReturnType = QualifiedNameListUtil::firstQualifiedNameOrNullOrToken($methodDeclaration->returnTypeList);
+
+        if (null === $firstReturnType) {
+            return;
+        }
+        
+        $existingReturnType = $returnType ? NodeHelper::resolvedShortName($methodDeclaration, $firstReturnType) : null;
 
         if (null === $existingReturnType) {
             // TODO: Add return type
@@ -186,7 +198,7 @@ abstract class AbstractMethodUpdater
             return;
         }
 
-        $edits->replace($methodDeclaration->returnType, ' ' . $returnType);
+        $edits->replace($firstReturnType, ' ' . $returnType);
     }
 
     private function prototypeSameAsDeclaration(Method $methodPrototype, MethodDeclaration $methodDeclaration)
@@ -211,13 +223,13 @@ abstract class AbstractMethodUpdater
                 $type = $parameterPrototype->type();
 
                 // adding a parameter type
-                if (null === $parameter->typeDeclaration && $type->notNone()) {
+                if (null === $parameter->typeDeclarationList && $type->notNone()) {
                     return false;
                 }
 
                 // if parameter has a different type
-                if (null !== $parameter->typeDeclaration) {
-                    $typeName = $parameter->typeDeclaration->getText($methodDeclaration->getFileContents());
+                if (null !== $parameter->typeDeclarationList) {
+                    $typeName = $parameter->typeDeclarationList->getText($methodDeclaration->getFileContents());
                     if ($type->notNone() && (string) $type !== $typeName) {
                         return false;
                     }
@@ -231,13 +243,14 @@ abstract class AbstractMethodUpdater
         }
 
         // are we adding a return type?
-        if ($methodPrototype->returnType()->notNone() && null === $methodDeclaration->returnType) {
+        if ($methodPrototype->returnType()->notNone() && null === $methodDeclaration->returnTypeList) {
             return false;
         }
 
         // is the return type the same?
-        if (null !== $methodDeclaration->returnType) {
-            $name = $methodDeclaration->returnType->getText();
+        if (null !== $methodDeclaration->returnTypeList) {
+            // TODO: Does this work?
+            $name = $methodDeclaration->returnTypeList->getText();
             if ($methodPrototype->returnType()->__toString() !== $name) {
                 return false;
             }
