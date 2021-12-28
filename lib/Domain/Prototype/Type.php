@@ -53,7 +53,7 @@ final class Type extends Prototype
             return null;
         }
 
-        if (false === strpos($this->type, '\\')) {
+        if (false === strrpos($this->type, '\\')) {
             return null;
         }
 

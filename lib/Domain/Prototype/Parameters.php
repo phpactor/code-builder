@@ -4,7 +4,7 @@ namespace Phpactor\CodeBuilder\Domain\Prototype;
 
 /**
  * @method \Phpactor\CodeBuilder\Domain\Prototype\Parameter first()
- * @method \Phpactor\CodeBuilder\Domain\Prototype\Parameter get()
+ * @method \Phpactor\CodeBuilder\Domain\Prototype\Parameter get(string $name)
  */
 class Parameters extends Collection
 {

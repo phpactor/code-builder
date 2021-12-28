@@ -37,7 +37,7 @@ class UseStatementUpdater
 
         $bodyNode = null;
         foreach ($node->getChildNodes() as $childNode) {
-            if ($childNode->getStart() > $startNode->getStart()) {
+            if ($childNode->getStartPosition() > $startNode->getStartPosition()) {
                 $bodyNode = $childNode;
                 break;
             }
