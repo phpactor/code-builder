@@ -60,7 +60,6 @@ abstract class AbstractMethodUpdater
         $methodPrototypes = $classPrototype->methods()->in($existingMethodNames);
 
         $ignoreMethods = [];
-        /** @var Method $methodBuilder */
         foreach ($methodPrototypes as $methodPrototype) {
 
             /** @var MethodDeclaration $methodDeclaration */
@@ -211,7 +210,7 @@ abstract class AbstractMethodUpdater
 
             /** @var Parameter $parameter */
             foreach ($parameters as $parameter) {
-                $name = ltrim($parameter->variableName->getText($methodDeclaration->getFileContents()), '$');
+                $name = ltrim((string)$parameter->variableName->getText($methodDeclaration->getFileContents()), '$');
 
                 // if method prototype doesn't have the existing parameter
                 if (false === $methodPrototype->parameters()->has($name)) {
