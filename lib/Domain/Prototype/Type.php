@@ -53,12 +53,11 @@ final class Type extends Prototype
             return null;
         }
 
-        $hasDelimiter = strpos($this->type, '\\');
-        if (false === $hasDelimiter) {
+        if (false === strrpos($this->type, '\\')) {
             return null;
         }
 
-        return substr($this->type, 0, $hasDelimiter);
+        return substr($this->type, 0, strrpos($this->type, '\\'));
     }
 
     public function notNone(): bool
